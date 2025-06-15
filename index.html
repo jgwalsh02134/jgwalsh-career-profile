@@ -3,78 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>J. Gregory Walsh – Behavioral Science & Public Service</title>
-  <meta name="description" content="Psychology graduate and mental health specialist committed to integrity and mission-driven public service." />
+  <title>James Gregory Walsh – Behavioral Science & Public Service</title>
+  <meta name="description" content="Psychology graduate with extensive clinical experience in the mental health field, poised to apply behavioral analysis and strategic insights to new challenges." />
   <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="J. Gregory Walsh – Behavioral Science & Public Service" />
-  <meta property="og:description" content="Psychology graduate and mental health specialist committed to integrity and mission-driven public service." />
+  <meta name="keywords" content="mental health, crisis intervention, behavioral analysis, psychology, public service, data analysis, clinical experience" />
+  <meta property="og:title" content="James Gregory Walsh – Behavioral Science & Public Service" />
+  <meta property="og:description" content="Psychology graduate with extensive clinical experience in the mental health field, poised to apply behavioral analysis and strategic insights to new challenges." />
   <meta property="og:url" content="https://jgwalsh.com/" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://placehold.co/1200x630/1e3a8a/ffffff?text=J.G.W." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://placehold.co/1200x630/1e3a8a/ffffff?text=J.G.W." />
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- JSON-LD Schema -->
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "James Gregory Walsh",
+      "jobTitle": "Behavioral Science Practitioner",
+      "email": "mailto:jgwalsh@proton.me",
+      "url": "https://jgwalsh.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Albany",
+        "addressRegion": "NY",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/jgregorywalsh",
+        "https://github.com/jgwalsh02134",
+        "https://www.researchgate.net/profile/J-Gregory-Walsh"
+      ]
+    }
+  </script>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom Tailwind Config -->
   <script>
-    function toggleMenu() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy': '#1e3a8a',
+            'sage': '#4b6e5d'
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-out',
+            'scale-hover': 'scaleHover 0.2s ease-in-out'
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            },
+            scaleHover: {
+              '0%': { transform: 'scale(1)' },
+              '100%': { transform: 'scale(1.1)' }
+            }
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+        },
+      }
     }
   </script>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen">
+<body class="bg-gray-50 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
 
   <!-- Header Section -->
   <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
     <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-semibold text-blue-900">J. Gregory Walsh</a>
+      <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
       <div class="sm:hidden">
-        <button onclick="toggleMenu()" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1">
+        <button onclick="toggleMenu()" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-          <span class="sr-only">Menu</span>
+          <span class="sr-only">Toggle menu</span>
         </button>
       </div>
-      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700">
-        <a href="about.html" class="hover:text-blue-600 transition">About</a>
-        <a href="resume.html" class="hover:text-blue-600 transition">Résumé</a>
-        <a href="projects.html" class="hover:text-blue-600 transition">Projects</a>
-        <a href="contact.html" class="hover:text-blue-600 transition">Contact</a>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
+        <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
+        <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
+        <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Projects</a>
+        <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
       </nav>
     </div>
-    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700">
-      <a href="about.html" class="block py-2 text-sm hover:text-blue-600">About</a>
-      <a href="resume.html" class="block py-2 text-sm hover:text-blue-600">Résumé</a>
-      <a href="projects.html" class="block py-2 text-sm hover:text-blue-600">Projects</a>
-      <a href="contact.html" class="block py-2 text-sm hover:text-blue-600">Contact</a>
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" role="navigation" aria-label="Mobile navigation">
+      <a href="about.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
+      <a href="resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
+      <a href="projects.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Projects</a>
+      <a href="contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
     </div>
   </header>
 
   <!-- Main Content Section -->
-  <main class="max-w-4xl mx-auto text-center py-20 sm:py-28 px-4 flex-grow">
-    <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-blue-900">Psychology Graduate & Mental Health Specialist</h1>
-    <p class="text-lg text-slate-700 mb-10 max-w-2xl mx-auto">
-      Committed to integrity and mission-driven public service, I bring experience as a mental health professional with a background in psychology, crisis care, and behavioral analysis—supporting safety initiatives, research, and public-sector strategy.
+  <main id="main-content" class="max-w-4xl mx-auto text-center py-20 sm:py-28 px-4 flex-grow">
+    <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-navy animate-fade-in">Psychology Graduate & Mental Health Specialist</h1>
+    <p class="text-lg text-slate-700 mb-10 max-w-2xl mx-auto animate-fade-in">
+      As a psychology graduate with extensive clinical experience in the mental health field, I am dedicated to integrity and mission-driven service. My background in crisis intervention and behavioral analysis makes me poised to enhance organizational impact, research, and strategic initiatives across diverse sectors.
     </p>
-    <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-      <a href="resume.html" class="w-full sm:w-auto px-6 py-3 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors text-center font-medium">View Résumé</a>
-      <a href="contact.html" class="w-full sm:w-auto px-6 py-3 border border-blue-900 text-blue-900 rounded-lg hover:bg-blue-50 transition-colors text-center font-medium">Get in Touch</a>
+    <div class="flex flex-wrap justify-center items-center gap-4 animate-fade-in">
+      <a href="resume.html" class="w-full sm:w-auto px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-sage">View Résumé</a>
+      <a href="contact.html" class="w-full sm:w-auto px-6 py-3 border border-navy text-navy rounded-lg hover:bg-navy/5 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-sage">Get in Touch</a>
+      <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0AN%3AWalsh%3BJames%20Gregory%3B%3B%3B%0AFN%3AJames%20Gregory%20Walsh%0ANICKNAME%3AGreg%0AEMAIL%3Btype%3DINTERNET%3Btype%3Dpref%3Ajgregorywalsh%40icloud.com%0AEMAIL%3Btype%3DINTERNET%3Ajgwalsh%40bu.edu%0AEMAIL%3Btype%3DINTERNET%3Aj11wals%40alum.siena.edu%0ATEL%3Btype%3DIPHONE%3Btype%3DCELL%3Btype%3DVOICE%3Btype%3Dpref%3A%2B1%20(617)%20383-3745%0ATEL%3A%2B1%20(774)%20563-5543%0AURL%3Ahttps%3A%2F%2Fjgwalsh.net%2Fcard%0AEND%3AVCARD" download="James Gregory Walsh.vcf" class="w-full sm:w-auto px-6 py-3 border border-sage text-sage rounded-lg hover:bg-sage/10 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-sage">Add to Contacts</a>
+    </div>
+    <div class="mt-8 flex flex-col items-center gap-4">
+      <img src="https://placehold.co/96x96/ffffff/1e3a8a?text=QR" alt="QR code linking to J. Gregory Walsh's professional profile" class="w-24 h-24 animate-scale-hover" aria-describedby="qr-description" loading="lazy">
+      <p id="qr-description" class="text-sm text-slate-600">Scan to visit my profile or download contact details.</p>
     </div>
   </main>
 
+  <!-- Featured Project Section -->
+  <section class="bg-white py-16 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-navy animate-fade-in">Featured Project</h2>
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        <div class="md:w-1/2 animate-fade-in text-left">
+          <h3 class="text-xl font-semibold text-gray-800">Crime Analysis Report: Albany, NY (2021-2024)</h3>
+          <p class="text-sm text-gray-500 mb-4">Date: March 21, 2025</p>
+          <p id="project-description" class="text-slate-700 mb-6">
+            This report analyzes crime trends in Albany, New York, from 2021 to 2024, using data obtained through a Freedom of Information Law (FOIL) request from the Albany Police Department. The analysis focuses on total crimes, violent crime categories, neighborhood distribution, case resolution rates, and police response times. Findings reveal a peak in total crimes in 2023, a significant increase in rape cases in 2024, concentrated crime in specific neighborhoods, a high rate of unresolved cases, and variable police response times.
+          </p>
+          <div class="flex flex-wrap gap-4">
+             <a href="https://www.albany.watch/reports/Crime-Analysis-Report.pdf" target="_blank" rel="noopener noreferrer" class="inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/80 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover">View Full Report (PDF)</a>
+          </div>
+        </div>
+        <div class="md:w-1/2 animate-fade-in">
+          <div class="chart-container" role="img" aria-label="Bar chart illustrating Part I Violent Crimes in Albany from 2021-2024">
+            <canvas id="project-chart" style="max-height: 250px;"></canvas>
+          </div>
+          <p class="text-sm text-slate-600 mt-2" id="chart-description">Chart illustrating annual trends in Part I Violent Crimes in Albany from 2021-2024.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer Section -->
-  <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4">
+  <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
     <div class="max-w-4xl mx-auto text-center space-y-4">
       <div class="flex justify-center items-center gap-6 mb-6">
-        <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" aria-label="LinkedIn" class="text-gray-500 hover:text-blue-700 transition">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"/></svg>
-        </a>
-        <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" aria-label="USAJobs" class="hover:opacity-75 transition">
-          <img src="https://iconsusa.org/assets%20/icons_copy/icons8-usa.svg" alt="USAJobs" class="w-6 h-6" />
-        </a>
-        <a href="https://github.com/jgwalsh02134/jgwalsh-com" target="_blank" aria-label="GitHub" class="text-gray-500 hover:text-gray-900 transition">
-          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
-        </a>
+        <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" aria-label="LinkedIn profile" class="text-gray-500 hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover"><img src="https://iconsusa.org/assets/icons_copy/linkedin.svg" alt="LinkedIn" class="w-6 h-6" loading="lazy" /></a>
+        <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" aria-label="USAJobs profile" class="hover:opacity-75 transition focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover"><img src="https://iconsusa.org/assets/icons_copy/icons8-usa.svg" alt="USAJobs" class="w-6 h-6" loading="lazy" /></a>
+        <a href="https://www.researchgate.net/profile/J-Gregory-Walsh" target="_blank" aria-label="ResearchGate profile" class="text-gray-500 hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover"><img src="https://iconsusa.org/assets/icons_copy/orcid.svg" alt="ResearchGate" class="w-6 h-6" loading="lazy" /></a>
       </div>
-      <div>&copy; 2025 J. Gregory Walsh — All rights reserved.</div>
-      <div>Albany, NY &middot; <a href="mailto:jgwalsh@proton.me" class="text-blue-700 hover:underline">jgwalsh@proton.me</a></div>
-      <div class="text-xs text-gray-400 pt-2">Built with HTML &amp; Tailwind CSS &middot; Hosted on Cloudflare Pages</div>
+      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div class="flex justify-center items-center gap-2">
+        <span>Albany, NY</span><span>·</span><a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage">jgwalsh@proton.me</a>
+      </div>
+      <div class="text-xs text-gray-400 pt-2">Built with HTML & Tailwind CSS · Hosted on Cloudflare Pages</div>
     </div>
   </footer>
 
+  <!-- Chart.js and Main App Script -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // --- Helper Function ---
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      menu.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Chart.js Initialization ---
+      const ctx = document.getElementById('project-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['2021', '2022', '2023', '2024'],
+          datasets: [{
+            label: 'Total Part I Violent Crimes',
+            data: [900, 966, 950, 920], // Approximate data based on the report
+            backgroundColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d'],
+            borderColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Number of Incidents', color: '#1e3a8a', font: { size: 14 } },
+              ticks: { color: '#1e3a8a' }
+            },
+            x: {
+              title: { display: true, text: 'Year', color: '#1e3a8a', font: { size: 14 } },
+              ticks: { color: '#1e3a8a' }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#4b6e5d',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+              callbacks: { label: (context) => `${context.dataset.label}: ${context.parsed.y}` }
+            },
+            title: { display: true, text: 'Part I Violent Crimes in Albany', color: '#1e3a8a', font: { size: 16 } }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 1000, easing: 'easeOutQuart' }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
