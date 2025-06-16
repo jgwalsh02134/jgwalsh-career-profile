@@ -8,13 +8,16 @@ This repository contains the professional career profile website for J. Gregory 
 🌐 **Live site:** [jgwalsh.com](https://jgwalsh.com)
 
 ## Site Structure
+
 - Home | About | Résumé | Projects | Contact
 
 ## Tech Stack
+
 - HTML/CSS (Tailwind CSS)
 - Hosted with [Cloudflare Pages](https://pages.cloudflare.com/)
 - Managed via GitHub
 
 ## Contact
+
 - 📍 Albany, NY  
 - ✉️ [jgwalsh@proton.me](mailto:jgwalsh@proton.me)
