@@ -4,75 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>James Gregory Walsh – Behavioral Science & Public Service</title>
-  <meta name="description" content="Psychology graduate with extensive clinical experience, poised to apply behavioral analysis and strategic insights." />
-  <link rel="icon" href="assets/favicon/favicon.ico">
+  <meta name="description" content="Psychology graduate with extensive clinical experience, poised to apply behavioral analysis and strategic insights to new challenges." />
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased flex flex-col min-h-screen">
-
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
   <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
     <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
       <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
-      <nav class="hidden sm:flex space-x-6 text-sm">
-        <a href="#about" class="hover:text-navy">About</a>
-        <a href="#projects" class="hover:text-navy">Projects</a>
+      <div class="sm:hidden">
+        <button onclick="toggleMenu()" class="text-gray-800" aria-controls="mobile-menu" aria-expanded="false">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+          <span class="sr-only">Toggle menu</span>
+        </button>
+      </div>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
+        <a href="about.html" class="hover:text-navy">About</a>
+        <a href="resume.html" class="hover:text-navy">Résumé</a>
+        <a href="projects.html" class="hover:text-navy">Projects</a>
         <a href="contact.html" class="hover:text-navy">Contact</a>
       </nav>
+    </div>
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700">
+      <a href="about.html" class="hover:text-navy">About</a>
+      <a href="resume.html" class="hover:text-navy">Résumé</a>
+      <a href="projects.html" class="hover:text-navy">Projects</a>
+      <a href="contact.html" class="hover:text-navy">Contact</a>
     </div>
   </header>
 
   <main id="main-content" class="max-w-4xl mx-auto text-center py-20 sm:py-28 px-4 flex-grow">
-    <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-navy animate-fade-in">Psychology Graduate & Mental Health Specialist</h1>
-    <p class="text-lg text-slate-700 mb-10 max-w-2xl mx-auto animate-fade-in">
-        As a psychology graduate with extensive clinical experience, I am dedicated to integrity and mission-driven service. My background in crisis intervention and behavioral analysis makes me poised to enhance organizational impact and strategic initiatives.
+    <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-navy">Psychology Graduate & Mental Health Specialist</h1>
+    <p class="text-lg text-slate-700 mb-10 max-w-2xl mx-auto">
+      My background in crisis intervention and behavioral analysis makes me poised to enhance organizational impact, research, and strategic initiatives.
     </p>
-    <div class="flex flex-wrap justify-center items-center gap-4 animate-fade-in">
-        <a href="resume.html" class="btn btn-navy w-full sm:w-auto">View Résumé</a>
-        <a href="contact.html" class="btn btn-outline-navy w-full sm:w-auto">Get in Touch</a>
-        <a href="assets/J. Gregory Walsh.vcf" download class="btn btn-outline-sage w-full sm:w-auto">Add to Contacts</a>
+    <div class="flex flex-wrap justify-center items-center gap-4">
+      <a href="resume.html" class="w-full sm:w-auto px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 text-center font-medium">View Résumé</a>
+      <a href="contact.html" class="w-full sm:w-auto px-6 py-3 border border-navy text-navy rounded-lg hover:bg-navy/5 text-center font-medium">Get in Touch</a>
     </div>
   </main>
 
-  <section id="projects" class="bg-white py-16 px-4">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-navy">Featured Project</h2>
-      <div class="flex flex-col md:flex-row items-center gap-8">
-        <div class="md:w-1/2 text-left">
-          <h3 class="text-xl font-semibold text-gray-800">Crime Analysis Report: Albany, NY (2021-2024)</h3>
-          <p class="text-slate-700 my-4">
-            This report analyzes crime trends in Albany, using data from a FOIL request. It focuses on violent crime, neighborhood distribution, and case resolution, revealing a peak in 2023 and a high rate of unresolved cases.
-          </p>
-          <a href="#" class="btn btn-sage">View Full Report (PDF)</a>
-        </div>
-        <div class="md:w-1/2 w-full">
-            <div class="chart-container">
-                <canvas id="project-chart"></canvas>
-            </div>
-            <p class="text-sm text-slate-600 mt-2">Annual trends in Part I Violent Crimes in Albany (2021-2024).</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
-    <div class="max-w-4xl mx-auto text-center space-y-4">
-      <div class="flex justify-center items-center gap-6 mb-6">
-        <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="text-gray-500 hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover"><img src="assets/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6" loading="lazy" /></a>
-        <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener noreferrer" aria-label="USAJobs profile" class="hover:opacity-75 transition focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover"><img src="assets/icons/usajobs.svg" alt="USAJobs" class="w-6 h-6" loading="lazy" /></a>
-        <a href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener noreferrer" aria-label="ORCID profile" class="text-gray-500 hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage animate-scale-hover"><img src="assets/icons/orcid.svg" alt="ORCID" class="w-6 h-6" loading="lazy" /></a>
-      </div>
-      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
-      <div class="flex justify-center items-center gap-2">
-        <span>Albany, NY</span><span>·</span><a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage">jgwalsh@proton.me</a>
-      </div>
-      <div class="text-xs text-gray-400 pt-2">Built with HTML & CSS · Hosted on Cloudflare Pages</div>
+    <div class="max-w-4xl mx-auto text-center">
+        <div class="flex justify-center items-center gap-6 mb-6">
+            <a href="https://www.linkedin.com/in/jgregorywalsh" aria-label="LinkedIn profile"><img src="assets/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6"></a>
+            <a href="https://github.com/jgwalsh02134" aria-label="GitHub profile"><img src="assets/icons/github.svg" alt="GitHub" class="w-6 h-6"></a>
+            <a href="https://orcid.org/0000-0002-4420-5724" aria-label="ORCID profile"><img src="assets/icons/orcid.svg" alt="ORCID" class="w-6 h-6"></a>
+        </div>
+        <div>© 2025 James Gregory Walsh — All rights reserved.</div>
+        <div class="flex justify-center items-center gap-2">
+            <span>Albany, NY</span>·<a href="mailto:jgwalsh@proton.me" class="hover:underline">jgwalsh@proton.me</a>
+        </div>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="assets/js/script.js" defer></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+  </script>
 </body>
 </html>

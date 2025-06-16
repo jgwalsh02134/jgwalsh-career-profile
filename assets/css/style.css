@@ -1,100 +1,28 @@
 /**
  * @project       J. Gregory Walsh – Career Profile Website (https://jgwalsh.com)
- * @author        J. Gregory Walsh
  * @description   Main stylesheet for the career profile website.
- * @version       1.1.0
- * @last-updated  June 16, 2025
+ * @version       1.2.0
  */
 
-/* --- 1. VARIABLES & ROOT CONFIGURATION --- */
+/* --- Base & Root Configuration --- */
 :root {
     --color-navy: #1e3a8a;
     --color-sage: #4b6e5d;
     --color-gray-50: #f9fafb;
     --color-gray-100: #f3f4f6;
-    --color-gray-200: #e5e7eb;
-    --color-gray-400: #9ca3af;
-    --color-gray-500: #6b7280;
     --color-gray-600: #4b5563;
     --color-gray-800: #1f2937;
-    --color-slate-700: #334155;
     --color-white: #ffffff;
   }
-  
-  html {
-    scroll-behavior: smooth;
-  }
-  
-  /* --- 2. BASE & TYPOGRAPHY --- */
+  html { scroll-behavior: smooth; }
   body {
     background-color: var(--color-gray-50);
     color: var(--color-gray-800);
     font-family: 'Inter', sans-serif;
-    line-height: 1.625;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
   }
   
-  h1, .h1 {
-    font-size: 2.25rem; /* 36px */
-    font-weight: 700;
-    color: var(--color-navy);
-  }
-  
-  h2, .h2 {
-    font-size: 1.875rem; /* 30px */
-    font-weight: 700;
-    color: var(--color-navy);
-  }
-  
-  h3, .h3 {
-    font-size: 1.25rem; /* 20px */
-    font-weight: 600;
-    color: var(--color-gray-800);
-  }
-  
-  p {
-    margin-bottom: 1.25rem;
-  }
-  
-  a {
-    color: var(--color-navy);
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  
-  /* --- 3. ACCESSIBILITY & UTILITIES --- */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-  
-  .antialiased {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  /* --- 4. KEYFRAMES (ANIMATIONS) --- */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .animate-fade-in {
-    animation: fadeIn 1s ease-out forwards;
-  }
-  
-  /* --- 5. LAYOUT & STRUCTURE --- */
+  /* --- Layout & Structure --- */
   .flex { display: flex; }
   .flex-col { flex-direction: column; }
   .flex-wrap { flex-wrap: wrap; }
@@ -103,93 +31,90 @@
   .justify-center { justify-content: center; }
   .justify-between { justify-content: space-between; }
   .gap-4 { gap: 1rem; }
+  .gap-6 { gap: 1.5rem; }
   .min-h-screen { min-height: 100vh; }
   .max-w-6xl { max-width: 72rem; }
   .max-w-4xl { max-width: 56rem; }
   .max-w-2xl { max-width: 42rem; }
-  .mx-auto { margin-left: auto; margin-right: auto; }
   .w-full { width: 100%; }
+  .mx-auto { margin-left: auto; margin-right: auto; }
   .sticky { position: sticky; }
   .top-0 { top: 0; }
   .z-50 { z-index: 50; }
+  .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+  .rounded-lg { border-radius: 0.5rem; }
+  .px-4 { padding-left: 1rem; padding-right: 1rem; }
+  .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+  .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+  .mb-6 { margin-bottom: 1.5rem; }
+  .mb-10 { margin-bottom: 2.5rem; }
+  .mt-auto { margin-top: auto; }
   
-  /* --- 6. HEADER & NAVIGATION --- */
-  header {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  /* --- Header & Navigation --- */
+  .text-2xl { font-size: 1.5rem; }
+  .font-semibold { font-weight: 600; }
+  .text-navy { color: var(--color-navy); }
+  .text-sm { font-size: 0.875rem; }
+  .text-slate-700 { color: #334155; }
+  .space-x-6 > :not([hidden]) ~ :not([hidden]) { margin-left: 1.5rem; }
+  .hover\:text-navy:hover { color: var(--color-navy); }
+  .hidden { display: none; }
+  #mobile-menu a {
+    display: block;
+    padding: 0.5rem 0;
   }
   
-  header nav a:hover {
-    color: var(--color-navy);
-  }
+  /* --- Main Content & Typography --- */
+  .text-3xl { font-size: 1.875rem; }
+  .font-bold { font-weight: 700; }
+  .text-lg { font-size: 1.125rem; }
+  .text-center { text-align: center; }
   
-  /* --- 7. MAIN CONTENT & SECTIONS --- */
-  main {
-    padding: 5rem 1rem;
-    flex-grow: 1;
-  }
+  /* --- Buttons & Links --- */
+  .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+  .bg-navy { background-color: var(--color-navy); }
+  .text-white { color: var(--color-white); }
+  .border { border-width: 1px; }
+  .border-navy { border-color: var(--color-navy); }
+  .border-sage { border-color: var(--color-sage); }
+  .text-sage { color: var(--color-sage); }
+  .hover\:bg-navy\/90:hover { background-color: rgba(30, 58, 138, 0.9); }
+  .hover\:bg-navy\/5:hover { background-color: rgba(30, 58, 138, 0.05); }
+  .hover\:bg-sage\/10:hover { background-color: rgba(75, 110, 93, 0.1); }
+  .font-medium { font-weight: 500; }
   
-  section.bg-white {
-      background-color: var(--color-white);
-      padding: 4rem 1rem;
-  }
-  
-  /* --- 8. COMPONENTS --- */
-  
-  /* Buttons */
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
+  /* --- Forms --- */
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
     border-radius: 0.5rem;
-    font-weight: 500;
-    text-align: center;
-    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 1rem;
   }
-  /* This is a simplified example; full button styles would be here */
-  
-  
-  /* Chart Container */
-  .chart-container {
-      position: relative;
-      height: 16rem; /* h-64 */
-      width: 100%;
+  .form-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    min-height: 120px;
   }
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; }
   
+  /* --- Footer --- */
+  .bg-gray-100 { background-color: var(--color-gray-100); }
+  .text-gray-600 { color: var(--color-gray-600); }
+  .border-t { border-top-width: 1px; }
+  .pt-8 { padding-top: 2rem; }
+  .pb-6 { padding-bottom: 1.5rem; }
+  .hover\:underline:hover { text-decoration: underline; }
   
-  /* --- 9. FOOTER --- */
-  footer {
-    background-color: var(--color-gray-100);
-    border-top: 1px solid var(--color-gray-200);
-    padding: 2rem 1rem;
-    margin-top: auto;
-  }
-  
-  footer a:hover {
-      color: var(--color-navy);
-  }
-  
-  
-  /* --- 10. RESPONSIVE DESIGN (Media Queries) --- */
+  /* --- Responsive Design --- */
   @media (min-width: 640px) {
-    .sm\:w-auto {
-        width: auto;
-    }
-    .sm\:flex {
-        display: flex;
-    }
-    .hidden {
-        display: none;
-    }
-    main {
-        padding-top: 7rem;
-        padding-bottom: 7rem;
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .md\:w-1\/2 {
-        width: 50%;
-    }
-    .md\:flex-row {
-        flex-direction: row;
-    }
+    .sm\:hidden { display: none; }
+    .sm\:flex { display: flex; }
+    .sm\:w-auto { width: auto; }
+    .sm\:py-28 { padding-top: 7rem; padding-bottom: 7rem; }
+    .sm\:text-4xl { font-size: 2.25rem; }
   }
