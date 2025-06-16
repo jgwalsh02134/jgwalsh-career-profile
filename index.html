@@ -6,7 +6,7 @@
   <title>James Gregory Walsh – Behavioral Science & Public Service</title>
   <meta name="description" content="Psychology graduate with extensive clinical experience, poised to apply behavioral analysis and strategic insights." />
   <link rel="icon" href="assets/favicon/favicon.ico">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -72,28 +72,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const ctx = document.getElementById('project-chart')?.getContext('2d');
-      if (ctx) {
-        new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['2021', '2022', '2023', '2024'],
-            datasets: [{
-              label: 'Part I Violent Crimes',
-              data: [900, 966, 950, 920],
-              backgroundColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d']
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } }
-          }
-        });
-      }
-    });
-  </script>
+  <script src="assets/js/script.js" defer></script>
 </body>
 </html>

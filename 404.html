@@ -7,36 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/favicon/favicon.ico" type="image/x-icon">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'navy': '#1e3a8a',
-            'sage': '#4b6e5d'
-          },
-          animation: {
-            'fade-in': 'fadeIn 1s ease-out',
-            'scale-hover': 'scaleHover 0.2s ease-in-out'
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0', transform: 'translateY(10px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' }
-            },
-            scaleHover: {
-              '0%': { transform: 'scale(1)' },
-              '100%': { transform: 'scale(1.1)' }
-            }
-          }
-        },
-        fontFamily: {
-          sans: ['Inter', 'sans-serif'],
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased flex flex-col min-h-screen font-sans">
   <main class="flex-grow flex items-center justify-center px-4 animate-fade-in">

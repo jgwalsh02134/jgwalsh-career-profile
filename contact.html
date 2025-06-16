@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 
   <script type="application/ld+json">
     {
@@ -31,31 +32,6 @@
         "email": "mailto:jgwalsh@proton.me",
         "telephone": "+1-617-383-3745",
         "url": "https://jgwalsh.com"
-      }
-    }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'navy': '#1e3a8a',
-            'sage': '#4b6e5d'
-          },
-          animation: {
-            'fade-in': 'fadeIn 1s ease-out',
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0', transform: 'translateY(10px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' }
-            }
-          }
-        },
-        fontFamily: {
-          sans: ['Inter', 'sans-serif'],
-        },
       }
     }
   </script>
@@ -133,7 +109,8 @@
       </div>
       
       <div class="border-t pt-6">
-          <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0APRODID%3A-//Apple%20Inc.//macOS%2015.5//EN%0AN%3AWalsh%3BJ.%20Gregory%3B%3B%3B%0AFN%3AJ.%20Gregory%20Walsh%0ANICKNAME%3AGreg%0Aitem1.EMAIL%3Btype%3DINTERNET%3Btype%3Dpref%3Ajgregorywalsh%40icloud.com%0Aitem1.X-ABLabel%3AiCloud%0Aitem2.EMAIL%3Btype%3DINTERNET%3Ajgwalsh%40bu.edu%0Aitem2.X-ABLabel%3Aedu%0Aitem3.EMAIL%3Btype%3DINTERNET%3Aj11wals%40alum.siena.edu%0Aitem3.X-ABLabel%3Aedu%0ATEL%3Btype%3DIPHONE%3Btype%3DCELL%3Btype%3DVOICE%3Btype%3Dpref%3A%2B1%20(617)%20383-3745%0Aitem4.TEL%3A%2B1%20(774)%20563-5543%0Aitem4.X-ABLabel%3ASecondary%0AX-SOCIALPROFILE%3Btype%3Dlinkedin%3Ahttp%3A//www.linkedin.com/in/jgregorywalsh%0Aitem5.IMPP%3BX-SERVICE-TYPE%3DBBM%20Enterprise%3Btype%3Dpref%3Ax-apple%3AEF170E90%0Aitem5.X-ABLabel%3ABBM%20Enterprise%0APHOTO%3BENCODING%3Db%3BTYPE%3DJPEG%3A/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAA%0A%20AAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAABQKADAAQAAAABAAABQAAAAAD/7QA4UG%0A%20hvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ%2B/+IN%0A%20MElDQ19QUk9GSUxFAAEBAAANIGFwcGwCEAAAbW50clJHQiBYWVogB%2BkABgAKAAAAAwAYYWNzcE%0A%20FQUEwAAAAAQVBQTAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1hcHBsAAAAAAAAAAAAAAAA%0A%20AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARZGVzYwAAAVAAAABiZHNjbQAAAb%0A%20QAAAH8Y3BydAAAA7AAAAAjd3RwdAAAA9QAAAAUclhZWgAAA%2BgAAAAUZ1hZWgAAA/wAAAAUYlhZ%0A%20WgAABBAAAAAUclRSQwAABCQAAAgMYWFyZwAADDAAAAAgdmNndAAADFAAAAAwbmRpbgAADIAAAA%
+          <a href="data:text/vcard;charset=utf-8,BEGIN%3AVCARD%0AVERSION%3A3.0%0APRODID%3A-//Apple%20Inc.//macOS%2015.5//EN%0AN%3AWalsh%3BJ.%20Gregory%3B%3B%3B%0AFN%3AJ.%20Gregory%20Walsh%0ANICKNAME%3AGreg%0Aitem1.EMAIL%3Btype%3DINTERNET%3Btype%3Dpref%3Ajgregorywalsh%40icloud.com%0Aitem1.X-ABLabel%3AiCloud%0Aitem2.EMAIL%3Btype%3DINTERNET%3Ajgwalsh%40bu.edu%0Aitem2.X-ABLabel%3Aedu%0Aitem3.EMAIL%3Btype%3DINTERNET%3Aj11wals%40alum.siena.edu%0Aitem3.X-ABLabel%3Aedu%0ATEL%3Btype%3DIPHONE%3Btype%3DCELL%3Btype%3DVOICE%3Btype%3Dpref%3A%2B1%20(617)%20383-3745%0Aitem4.TEL%3A%2B1%20(774)%20563-5543%0Aitem4.X-ABLabel%3ASecondary%0AX-SOCIALPROFILE%3Btype%3Dlinkedin%3Ahttp%3A//www.linkedin.com/in/jgregorywalsh%0Aitem5.IMPP%3BX-SERVICE-TYPE%3DBBM%20Enterprise%3Btype%3Dpref%3Ax-apple%3AEF170E90%0Aitem5.X-ABLabel%3ABBM%20Enterprise%0APHOTO%3BENCODING%3Db%3BTYPE%3DJPEG%3A/9j/4AAQSkZJRgABAQAASABIAAD/4QBARXhpZgAATU0AKgAA%0A%20AAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAABQKADAAQAAAABAAABQAAAAAD/7QA4UG%0A%20hvdG9zaG9wIDMuMAA4QklNBAQAAAAAAAA4QklNBCUAAAAAABDUHYzZjwCyBOmACZjs+EJ%2B/+IN%0A%20MElDQ19QUk9GSUxFAAEBAAANIGFwcGwCEAAAbW50clJHQiBYWVogB%2BkABgAKAAAAAwAYYWNzcE%0A%20FQUEwAAAAAQVBQTAAAAAAAAAAAAAAAAAAAAAAAAPbWAAEAAAAA0y1hcHBsAAAAAAAAAAAAAAAA%0A%20AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARZGVzYwAAAVAAAABiZHNjbQAAAb%0A%20QAAAH8Y3BydAAAA7AAAAAjd3RwdAAAA9QAAAAUclhZWgAAA%2BgAAAAUZ1hZWgAAA/wAAAAUYlhZ%
+A%20WgAABBAAAAAUclRSQwAABCQAAAgMYWFyZwAADDAAAAAgdmNndAAADFAAAAAwbmRpbgAADIAAAA%
 A%20A%2BbW1vZAAADMAAAAAodmNncAAADOgAAAA4YlRSQwAABCQAAAgMZ1RSQwAABCQAAAgMYWFiZwAA%
 A%20DDAAAAAgYWFnZwAADDAAAAAgZGVzYwAAAAAAAAAIRGlzcGxheQAAAAAAAAAAAAAAAAAAAAAAAA%
 A%20AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA%
@@ -221,13 +198,6 @@ A%20rsRXJ/76FfAZcHrxSbqAPpvWP2q/itfupsJNP0xV3cQWvmFsjAyZmk%2B71GMc9cjivM9T%2BGXf
     </div>
   </footer>
 
-  <script>
-    // --- Helper Function ---
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
-      menu.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
-    }
-  </script>
+  <script src="assets/js/script.js" defer></script>
 </body>
 </html>
