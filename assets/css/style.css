@@ -2,31 +2,8 @@
  * @project       J. Gregory Walsh – Career Profile Website (https://jgwalsh.com)
  * @author        J. Gregory Walsh
  * @description   Main stylesheet for the career profile website.
- * @version       1.0.0
- * @last-updated  June 17, 2025
- */
-
-/*
- * =============================================
- * TABLE OF CONTENTS
- * =============================================
- *
- * 1.  VARIABLES & ROOT CONFIGURATION
- * 2.  BASE & TYPOGRAPHY
- * 3.  ACCESSIBILITY & UTILITIES
- * 4.  KEYFRAMES (ANIMATIONS)
- * 5.  LAYOUT & STRUCTURE
- * 6.  HEADER & NAVIGATION
- * 7.  MAIN CONTENT & SECTIONS
- * 8.  COMPONENTS
- * - Buttons
- * - Links
- * - Cards & Containers
- * - Forms & Inputs (Future Use)
- * 9.  FOOTER
- * 10. RESPONSIVE DESIGN (Media Queries)
- *
- * =============================================
+ * @version       1.1.0
+ * @last-updated  June 16, 2025
  */
 
 /* --- 1. VARIABLES & ROOT CONFIGURATION --- */
@@ -42,11 +19,6 @@
     --color-gray-800: #1f2937;
     --color-slate-700: #334155;
     --color-white: #ffffff;
-    --color-red-600: #dc2626;
-    --color-amber-500: #f59e0b;
-    --color-lime-600: #65a30d;
-  
-    --font-sans: 'Inter', sans-serif;
   }
   
   html {
@@ -57,7 +29,7 @@
   body {
     background-color: var(--color-gray-50);
     color: var(--color-gray-800);
-    font-family: var(--font-sans);
+    font-family: 'Inter', sans-serif;
     line-height: 1.625;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -107,17 +79,6 @@
     border-width: 0;
   }
   
-  .focus\:not-sr-only:focus {
-      position: static;
-      width: auto;
-      height: auto;
-      padding: 0;
-      margin: 0;
-      overflow: visible;
-      clip: auto;
-      white-space: normal;
-  }
-  
   .antialiased {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -125,37 +86,27 @@
   
   /* --- 4. KEYFRAMES (ANIMATIONS) --- */
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   .animate-fade-in {
     animation: fadeIn 1s ease-out forwards;
   }
   
-  .animate-scale-hover:hover {
-      transform: scale(1.1);
-      transition: transform 0.2s ease-in-out;
-  }
-  
   /* --- 5. LAYOUT & STRUCTURE --- */
   .flex { display: flex; }
   .flex-col { flex-direction: column; }
+  .flex-wrap { flex-wrap: wrap; }
   .flex-grow { flex-grow: 1; }
   .items-center { align-items: center; }
   .justify-center { justify-content: center; }
   .justify-between { justify-content: space-between; }
+  .gap-4 { gap: 1rem; }
   .min-h-screen { min-height: 100vh; }
   .max-w-6xl { max-width: 72rem; }
   .max-w-4xl { max-width: 56rem; }
   .max-w-2xl { max-width: 42rem; }
-  .max-w-md { max-width: 28rem; }
   .mx-auto { margin-left: auto; margin-right: auto; }
   .w-full { width: 100%; }
   .sticky { position: sticky; }
@@ -167,52 +118,14 @@
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   }
   
-  header .text-navy {
-    color: var(--color-navy);
-  }
-  
-  header .font-semibold {
-    font-weight: 600;
-  }
-  
-  header nav a {
-    padding: 0.25rem 0.5rem;
-    color: var(--color-slate-700);
-    font-size: 0.875rem;
-    transition: color 0.2s;
-  }
-  
   header nav a:hover {
     color: var(--color-navy);
-    text-decoration: none;
-  }
-  
-  header nav a.font-bold {
-      font-weight: 700;
-  }
-  
-  header nav a:focus,
-  header button:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 2px var(--color-sage);
-    border-radius: 0.25rem;
-  }
-  
-  #mobile-menu {
-      display: none;
   }
   
   /* --- 7. MAIN CONTENT & SECTIONS --- */
   main {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  main#main-content {
-      flex-grow: 1;
+    padding: 5rem 1rem;
+    flex-grow: 1;
   }
   
   section.bg-white {
@@ -231,107 +144,44 @@
     text-align: center;
     transition: background-color 0.2s, border-color 0.2s;
   }
+  /* This is a simplified example; full button styles would be here */
   
-  .btn-navy {
-    background-color: var(--color-navy);
-    color: var(--color-white);
-  }
   
-  .btn-navy:hover {
-    background-color: rgba(30, 58, 138, 0.9);
-    text-decoration: none;
-  }
-  
-  .btn-outline-navy {
-    border: 1px solid var(--color-navy);
-    color: var(--color-navy);
-  }
-  
-  .btn-outline-navy:hover {
-    background-color: rgba(30, 58, 138, 0.05);
-    text-decoration: none;
-  }
-  
-  .btn-sage {
-      background-color: var(--color-sage);
-      color: var(--color-white);
-  }
-  
-  .btn-sage:hover {
-      background-color: rgba(75, 110, 93, 0.9);
-      text-decoration: none;
-  }
-  
-  /* Links */
-  .group:hover .group-hover\:text-navy {
-      color: var(--color-navy);
-  }
-  
-  .group:hover .group-hover\:opacity-100 {
-      opacity: 1;
-  }
-  
-  /* Cards & Containers */
-  .contact-card {
-    width: 100%;
-    max-width: 28rem;
-    background-color: var(--color-white);
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    padding: 2rem;
-  }
-  
-  .contact-card .space-y-6 > :not([hidden]) ~ :not([hidden]) {
-      --tw-space-y-reverse: 0;
-      margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
-      margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
-  }
-  
+  /* Chart Container */
   .chart-container {
       position: relative;
-      max-height: 250px;
+      height: 16rem; /* h-64 */
+      width: 100%;
   }
+  
   
   /* --- 9. FOOTER --- */
   footer {
     background-color: var(--color-gray-100);
-    color: var(--color-gray-600);
-    font-size: 0.875rem;
-    border-top: 1px solid #e5e7eb;
-    padding: 2rem 1rem 1.5rem;
+    border-top: 1px solid var(--color-gray-200);
+    padding: 2rem 1rem;
     margin-top: auto;
   }
   
-  footer .text-navy {
-    color: var(--color-navy);
-  }
-  
-  footer .hover\:underline:hover {
-      text-decoration: underline;
+  footer a:hover {
+      color: var(--color-navy);
   }
   
   
   /* --- 10. RESPONSIVE DESIGN (Media Queries) --- */
   @media (min-width: 640px) {
-    .sm\:hidden {
-      display: none;
-    }
-  
-    .sm\:flex {
-      display: flex;
-    }
-  
-    main {
-      padding-top: 7rem;
-      padding-bottom: 7rem;
-    }
-  
-    h1, .h1 {
-      font-size: 2.5rem;
-    }
-  
     .sm\:w-auto {
         width: auto;
+    }
+    .sm\:flex {
+        display: flex;
+    }
+    .hidden {
+        display: none;
+    }
+    main {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
     }
   }
   
@@ -339,7 +189,6 @@
     .md\:w-1\/2 {
         width: 50%;
     }
-  
     .md\:flex-row {
         flex-direction: row;
     }
