@@ -18,7 +18,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -38,10 +39,11 @@
   <style>
     .plotly-container {
       width: 100%;
-      min-height: 500px; /* Ensure container has a height */
+      min-height: 520px;
       border: 1px solid #e5e7eb; /* gray-200 */
       border-radius: 0.5rem; /* rounded-lg */
       overflow: hidden;
+      position: relative;
     }
   </style>
 </head>
@@ -69,64 +71,41 @@
 
       <section class="mt-16 bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-navy mb-3">Visualization 1: Interactive Time-Series of Crimes and Arrests</h2>
-        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To provide a granular, month-over-month visualization of total reported crimes versus total arrests, allowing stakeholders to identify seasonal trends, anomalies, and the persistent gap between criminal incidents and law enforcement apprehensions.</p>
-        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> A simple annual line chart, as seen in the source report, obscures significant intra-year fluctuations. An interactive monthly time-series offers superior analytical depth, enabling the identification of seasonal patterns (e.g., potential summer increases in certain crimes) that are critical for dynamic resource allocation and predictive modeling. The dual-axis presentation starkly visualizes the crime-to-arrest gap, a key performance indicator for law enforcement effectiveness. This approach aligns with best practices in temporal data analysis.</p>
-        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
-          <li><strong>Hover-over Data:</strong> Users can mouse over any point on the lines to see the precise number of crimes or arrests for that month.</li>
-          <li><strong>Toggle Traces:</strong> Users can click on the legend to hide or show the "Total Crimes" or "Total Arrests" lines, allowing for focused analysis.</li>
-          <li><strong>Zoom and Pan:</strong> The chart is fully zoomable, enabling detailed examination of specific periods.</li>
-        </ul>
         <div id="plotly-chart-1-container" class="plotly-container mt-4">
-          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
-            Placeholder for Interactive Time-Series Chart
-          </div>
+            <div id="e9c5c7d8-b2e1-4d7a-8d3f-5e7c2f1a2b3c" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+            <script type="text/javascript">
+                window.PLOTLYENV=window.PLOTLYENV||{};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("e9c5c7d8-b2e1-4d7a-8d3f-5e7c2f1a2b3c",[{"line":{"color":"royalblue","width":2},"marker":{"size":4},"mode":"lines+markers","name":"Total Crimes","type":"scatter","x":["2021-01-31T00:00:00","2021-02-28T00:00:00","2021-03-31T00:00:00","2021-04-30T00:00:00","2021-05-31T00:00:00","2021-06-30T00:00:00","2021-07-31T00:00:00","2021-08-31T00:00:00","2021-09-30T00:00:00","2021-10-31T00:00:00","2021-11-30T00:00:00","2021-12-31T00:00:00","2022-01-31T00:00:00","2022-02-28T00:00:00","2022-03-31T00:00:00","2022-04-30T00:00:00","2022-05-31T00:00:00","2022-06-30T00:00:00","2022-07-31T00:00:00","2022-08-31T00:00:00","2022-09-30T00:00:00","2022-10-31T00:00:00","2022-11-30T00:00:00","2022-12-31T00:00:00","2023-01-31T00:00:00","2023-02-28T00:00:00","2023-03-31T00:00:00","2023-04-30T00:00:00","2023-05-31T00:00:00","2023-06-30T00:00:00","2023-07-31T00:00:00","2023-08-31T00:00:00","2023-09-30T00:00:00","2023-10-31T00:00:00","2023-11-30T00:00:00","2023-12-31T00:00:00","2024-01-31T00:00:00","2024-02-29T00:00:00","2024-03-31T00:00:00","2024-04-30T00:00:00","2024-05-31T00:00:00","2024-06-30T00:00:00","2024-07-31T00:00:00","2024-08-31T00:00:00","2024-09-30T00:00:00","2024-10-31T00:00:00","2024-11-30T00:00:00","2024-12-31T00:00:00"],"y":[495,586,575,634,654,713,791,775,775,803,731,732,719,660,690,743,915,773,959,939,785,864,735,765,784,720,717,802,833,786,888,892,860,848,755,698,644,653,682,707,848,746,781,764,712,666,562,656]},{"line":{"color":"green","dash":"dash","width":2},"marker":{"size":4},"mode":"lines+markers","name":"Total Arrests","type":"scatter","x":["2021-01-31T00:00:00","2021-02-28T00:00:00","2021-03-31T00:00:00","2021-04-30T00:00:00","2021-05-31T00:00:00","2021-06-30T00:00:00","2021-07-31T00:00:00","2021-08-31T00:00:00","2021-09-30T00:00:00","2021-10-31T00:00:00","2021-11-30T00:00:00","2021-12-31T00:00:00","2022-01-31T00:00:00","2022-02-28T00:00:00","2022-03-31T00:00:00","2022-04-30T00:00:00","2022-05-31T00:00:00","2022-06-30T00:00:00","2022-07-31T00:00:00","2022-08-31T00:00:00","2022-09-30T00:00:00","2022-10-31T00:00:00","2022-11-30T00:00:00","2022-12-31T00:00:00","2023-01-31T00:00:00","2023-02-28T00:00:00","2023-03-31T00:00:00","2023-04-30T00:00:00","2023-05-31T00:00:00","2023-06-30T00:00:00","2023-07-31T00:00:00","2023-08-31T00:00:00","2023-09-30T00:00:00","2023-10-31T00:00:00","2023-11-30T00:00:00","2023-12-31T00:00:00","2024-01-31T00:00:00","2024-02-29T00:00:00","2024-03-31T00:00:00","2024-04-30T00:00:00","2024-05-31T00:00:00","2024-06-30T00:00:00","2024-07-31T00:00:00","2024-08-31T00:00:00","2024-09-30T00:00:00","2024-10-31T00:00:00","2024-11-30T00:00:00","2024-12-31T00:00:00"],"y":[115,124,144,111,145,179,147,204,240,181,155,114,151,126,140,165,153,162,160,191,190,190,118,123,141,149,151,171,163,196,162,194,173,176,182,139,191,188,182,171,201,189,216,190,179,175,123,145]}],{"title":{"text":"<b>Monthly Crimes vs. Arrests in Albany, NY (2021-2024)</b>"},"font":{"color":"black","family":"Arial, sans-serif","size":12},"legend":{"title":{"text":"Metric"}},"plot_bgcolor":"white","xaxis":{"gridcolor":"lightgrey","showgrid":true,"title":{"text":"Month"}},"yaxis":{"gridcolor":"lightgrey","showgrid":true,"title":{"text":"Number of Incidents"}}})
+            </script>
         </div>
       </section>
 
       <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-navy mb-3">Visualization 2: Interactive Sunburst Chart of Violent Crime Composition</h2>
-        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To provide an interactive, hierarchical view of the composition of Part I Violent Crimes across the four-year period, highlighting trends like the spike in rape cases in 2024.</p>
-        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> The static stacked bar chart in the source report makes it difficult to compare proportions year-over-year. A sunburst chart is a modern visualization technique superior for representing hierarchical data. It clearly shows part-to-whole relationships across multiple levels (Year -> Crime Type), facilitating a more intuitive understanding of compositional shifts. This aligns with the NIST Cybersecurity Framework's "Identify" function by helping to better characterize the nature of the "threat" landscape.</p>
-        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
-          <li><strong>Hierarchical Drill-Down:</strong> Users can click on a year in the center to "zoom" into that year's specific breakdown of violent crimes.</li>
-          <li><strong>Hover-over Insights:</strong> Mousing over any segment reveals the crime type, the year, the number of incidents, and its percentage of the total for that level.</li>
-          <li><strong>Root Navigation:</strong> Users can click the center of the sunburst to return to the top-level view.</li>
-        </ul>
         <div id="plotly-chart-2-container" class="plotly-container mt-4">
-          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
-            Placeholder for Interactive Sunburst Chart
-          </div>
+             <div id="a3b1c8d7-e4f3-4c6a-9b1d-8f7g6e5d4c3b" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+             <script type="text/javascript">
+                window.PLOTLYENV=window.PLOTLYENV||{};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("a3b1c8d7-e4f3-4c6a-9b1d-8f7g6e5d4c3b",[{"type":"sunburst","colorway":["black","skyblue","goldenrod","firebrick","lightgrey"],"ids":["Part I Violent Crimes-2021-Murder","Part I Violent Crimes-2021-Rape","Part I Violent Crimes-2021-Robbery","Part I Violent Crimes-2021-Aggravated Assault","Part I Violent Crimes-2022-Murder","Part I Violent Crimes-2022-Rape","Part I Violent Crimes-2022-Robbery","Part I Violent Crimes-2022-Aggravated Assault","Part I Violent Crimes-2023-Murder","Part I Violent Crimes-2023-Rape","Part I Violent Crimes-2023-Robbery","Part I Violent Crimes-2023-Aggravated Assault","Part I Violent Crimes-2024-Murder","Part I Violent Crimes-2024-Rape","Part I Violent Crimes-2024-Robbery","Part I Violent Crimes-2024-Aggravated Assault","Part I Violent Crimes-2021","Part I Violent Crimes-2022","Part I Violent Crimes-2023","Part I Violent Crimes-2024","Part I Violent Crimes"],"labels":["Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","2021","2022","2023","2024","Part I Violent Crimes"],"parents":["Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes","Part I Violent Crimes","Part I Violent Crimes","Part I Violent Crimes",""],"values":[18,56,183,640,19,75,249,628,20,62,251,611,13,91,237,588,897,971,944,929,3741],"marker":{"colors":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}}],{"title":{"text":"<b>Hierarchical Composition of Part I Violent Crimes (2021-2024)</b>"},"font":{"color":"black","family":"Arial, sans-serif","size":12},"margin":{"b":25,"l":25,"r":25,"t":50}})
+             </script>
         </div>
       </section>
 
       <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-navy mb-3">Visualization 3: Interactive Treemap of Crime Distribution by Neighborhood</h2>
-        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To visualize the concentration of crime across Albany's neighborhoods in a way that allows for easy comparison of volume. This replaces the standard bar chart with a more engaging and spatially efficient format, helping to pinpoint areas for targeted interventions under the "Economic Diversification" pillar.</p>
-        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> A bar chart is effective for comparing values, but a treemap excels at showing part-to-whole relationships and relative magnitudes within a constrained space. It immediately draws the eye to the largest contributors (West Hill, Pine Hills). Critically, this format also effectively visualizes the scale of the "Unknown/Not in NEU Zone" data category, highlighting a significant data limitation that must be addressed for precise geographic analysis. The interactivity adds layers of data (yearly breakdowns) not possible in a static chart.</p>
-        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
-          <li><strong>Proportional Sizing:</strong> Each neighborhood is represented by a rectangle, with its area directly proportional to its total crime count from 2021-2024.</li>
-          <li><strong>Hover-over Details:</strong> Mousing over a neighborhood reveals its total crime count and the breakdown of crimes for each year (2021-2024).</li>
-          <li><strong>Color-Coding:</strong> Rectangles are color-coded to provide an additional layer of information, such as the year with the highest number of reported crimes for that neighborhood.</li>
-        </ul>
         <div id="plotly-chart-3-container" class="plotly-container mt-4">
-          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
-            Placeholder for Interactive Treemap Chart
-          </div>
+            <div id="b2c1d8e7-f3g4-5h8i-9j0k-1l2m3n4o5p6q" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+            <script type="text/javascript">
+                window.PLOTLYENV=window.PLOTLYENV||{};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("b2c1d8e7-f3g4-5h8i-9j0k-1l2m3n4o5p6q",[{"type":"treemap","colorway":["#fee08b","#fc8d59","#d53e4f","#9e0142"],"customdata":[["2703","2980","3519","2584"],["1019","1187","979","988"],["934","1007","1156","870"],["673","795","675","661"],["426","523","453","576"],["376","427","434","402"],["231","307","279","307"],["302","346","226","238"],["229","266","189","225"],["125","260","226","206"],["185","207","135","144"],["116","142","146","139"],["119","121","155","147"],["110","131","118","129"],["107","141","105","121"],["109","125","137","91"],["77","77","132","105"],["79","113","91","114"],["98","97","104","90"],["99","87","83","78"],["54","81","87","74"],["40","53","87","65"],["35","42","40","46"],["18","28","26","20"]],"hovertemplate":"<b>%{label}</b><br>Total Crimes (2021-24): %{value}<br>2021: %{customdata[0]}<br>2022: %{customdata[1]}<br>2023: %{customdata[2]}<br>2024: %{customdata[3]}<extra></extra>","ids":["All Neighborhoods-Unknown/Not in NEU Zone","All Neighborhoods-West Hill","All Neighborhoods-Pine Hills","All Neighborhoods-South End","All Neighborhoods-Arbor Hill Concerned Citizens","All Neighborhoods-Delaware Area","All Neighborhoods-Downtown","All Neighborhoods-N. Albany/Shaker Park","All Neighborhoods-Sheridan Hollow","All Neighborhoods-Pine Bush","All Neighborhoods-Mansion","All Neighborhoods-Helderberg","All Neighborhoods-Woodlawn","All Neighborhoods-Second Avenue","All Neighborhoods-Washington Square","All Neighborhoods-Ten Broeck Triangle","All Neighborhoods-Eagle Hill","All Neighborhoods-Washington Park","All Neighborhoods-Historic Pastures Homeowners Association","All Neighborhoods-Melrose","All Neighborhoods-Whitehall","All Neighborhoods-Buckingham Lake","All Neighborhoods-Port of Albany","All Neighborhoods-Normanskill Area"],"labels":["Unknown/Not in NEU Zone","West Hill","Pine Hills","South End","Arbor Hill Concerned Citizens","Delaware Area","Downtown","N. Albany/Shaker Park","Sheridan Hollow","Pine Bush","Mansion","Helderberg","Woodlawn","Second Avenue","Washington Square","Ten Broeck Triangle","Eagle Hill","Washington Park","Historic Pastures Homeowners Association","Melrose","Whitehall","Buckingham Lake","Port of Albany","Normanskill Area"],"parents":["All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods"],"values":[11786,4173,3967,2804,1978,1639,1124,1112,909,817,671,543,542,488,474,462,391,397,389,347,296,245,163,92],"marker":{"colors":["#d53e4f","#fc8d59","#d53e4f","#fc8d59","#fc8d59","#d53e4f","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#fc8d59","#fee08b","#d53e4f","#d53e4f","#d53e4f","#fee08b","#fee08b"]}}],{"title":{"text":"<b>Crime Distribution by Neighborhood (2021-2024)</b><br><i>Color Indicates Peak Crime Year</i>"},"font":{"color":"black","family":"Arial, sans-serif","size":12},"margin":{"b":25,"l":25,"r":25,"t":60}})
+            </script>
         </div>
       </section>
 
       <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-bold text-navy mb-3">Visualization 4: Sankey Diagram of Case Resolution Flow (2024)</h2>
-        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To illustrate the flow of criminal cases through the justice system for the year 2024, from the total number of reported crimes to arrests and final case dispositions (open vs. closed). This provides a powerful, intuitive representation of the case attrition rate, directly addressing the report's call for improved transparency and oversight and supporting the "Civic Accountability & Transparency" pillar.</p>
-        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> Quantifying case resolution simply as a percentage (e.g., "45% of cases remained open") lacks impact. A Sankey diagram is an advanced visualization specifically designed to depict flows and their magnitudes between nodes. It makes the "funnel" effect of the justice system immediately apparent, showing how a large number of initial crimes narrows down to a smaller number of arrests and closed cases. This provides a clear, data-driven narrative about systemic efficiency and potential bottlenecks.</p>
-        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
-          <li><strong>Flow Highlighting:</strong> Mousing over a flow (link) or a category (node) highlights the entire pathway, showing the magnitude of cases moving from one stage to the next.</li>
-          <li><strong>Detailed Tooltips:</strong> Hovering provides the exact number of cases in each flow.</li>
-        </ul>
         <div id="plotly-chart-4-container" class="plotly-container mt-4">
-          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
-            Placeholder for Sankey Diagram
-          </div>
+             <div id="c1d8e7f3-g4h5-6i7j-8k9l-m0n1o2p3q4r5" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+             <script type="text/javascript">
+                window.PLOTLYENV=window.PLOTLYENV||{};window.PLOTLYENV.BASE_URL="https://plot.ly";Plotly.newPlot("c1d8e7f3-g4h5-6i7j-8k9l-m0n1o2p3q4r5",[{"type":"sankey","link":{"source":[0,0,1,2],"target":[1,2,3,4],"value":[2150,6270,4677,3743]},"node":{"color":"royalblue","label":["Total Reported Crimes (2024)","Arrest Made","No Arrest Made","Case Closed","Case Remained Open"],"line":{"color":"black","width":0.5},"pad":15,"thickness":20}}],{"title":{"text":"<b>Simplified Case Resolution Flow in Albany (2024)</b><br><i>Illustrates attrition from reported crimes to case outcomes</i>"},"font":{"family":"Arial, sans-serif","size":10}})
+             </script>
         </div>
       </section>
 
