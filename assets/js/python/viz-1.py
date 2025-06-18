@@ -54,6 +54,5 @@ fig.update_layout(
     yaxis=dict(showgrid=True, gridcolor='lightgrey')
 )
 
-# To generate the HTML file
-# fig.write_html("interactive_crime_arrest_trends.html")
+fig.write_html("interactive_crime_arrest_trends.html")
 fig.show()

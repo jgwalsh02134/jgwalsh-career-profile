@@ -48,5 +48,5 @@ fig.update_layout(
 )
 
 # To generate the HTML file
-# fig.write_html("case_resolution_sankey_2024.html")
+fig.write_html("case_resolution_sankey_2024.html")
 fig.show()

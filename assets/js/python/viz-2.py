@@ -36,5 +36,5 @@ fig.update_layout(
 )
 
 # To generate the HTML file
-# fig.write_html("interactive_violent_crime_sunburst.html")
+fig.write_html("interactive_violent_crime_sunburst.html")
 fig.show()

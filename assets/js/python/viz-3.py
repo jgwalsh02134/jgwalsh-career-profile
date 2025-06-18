@@ -36,6 +36,5 @@ fig.update_layout(
     margin = dict(t=60, l=25, r=25, b=25)
 )
 
-# To generate the HTML file
-# fig.write_html("interactive_neighborhood_treemap.html")
+fig.write_html("interactive_neighborhood_treemap.html")
 fig.show()
