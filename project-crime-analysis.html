@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project: Interactive Crime Analysis - James Gregory Walsh</title>
-  <meta name="description" content="Interactive analysis of crime trends in Albany, NY (2021-2024), allowing users to explore data on homicide, rape, robbery, and assault." />
+  <title>Project: Advanced Crime Analysis - James Gregory Walsh</title>
+  <meta name="description" content="An advanced, interactive dashboard analyzing Albany, NY crime data (2021-2024) using time-series, hierarchical, and flow visualizations." />
   <meta name="robots" content="index, follow" />
 
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
@@ -26,20 +26,7 @@
         extend: {
           colors: {
             'navy': '#1e3a8a',
-            'sage': '#4b6e5d',
-            'crime-homicide': '#ef4444', // red-500
-            'crime-rape': '#f97316',     // orange-500
-            'crime-robbery': '#eab308',  // yellow-500
-            'crime-assault': '#84cc16', // lime-500
-          },
-          animation: {
-            'fade-in': 'fadeIn 1s ease-out',
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0', transform: 'translateY(10px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' }
-            }
+            'sage': '#4b6e5d'
           }
         },
         fontFamily: {
@@ -48,8 +35,17 @@
       }
     }
   </script>
+  <style>
+    .plotly-container {
+      width: 100%;
+      min-height: 500px; /* Ensure container has a height */
+      border: 1px solid #e5e7eb; /* gray-200 */
+      border-radius: 0.5rem; /* rounded-lg */
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
+<body class="bg-gray-100 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
 
   <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
@@ -64,42 +60,76 @@
       </div>
   </header>
 
-  <main id="main-content" class="max-w-4xl mx-auto py-16 sm:py-24 px-4 flex-grow w-full">
-    <div class="animate-fade-in">
+  <main id="main-content" class="max-w-5xl mx-auto py-12 sm:py-20 px-4 flex-grow w-full">
       <a href="projects.html" class="text-sage hover:text-navy font-medium mb-8 inline-block">&larr; Back to All Projects</a>
-      
-      <h1 class="text-3xl sm:text-4xl font-bold text-navy">Interactive Crime Analysis: Albany, NY (2021-2024)</h1>
-      <p class="text-md text-gray-500 mt-2">Date: March 21, 2025</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-navy text-center">Advanced Analysis of Albany Crime Data (2021-2024)</h1>
+      <p class="text-lg text-slate-600 mt-4 text-center max-w-3xl mx-auto">
+          An interactive dashboard exploring crime trends, compositions, and system flows through a series of advanced data visualizations.
+      </p>
 
-      <div class="mt-8 space-y-6 text-slate-700 text-lg leading-relaxed">
-        <p>
-          This report analyzes crime trends in Albany, New York, from 2021 to 2024, using data obtained through a Freedom of Information Law (FOIL) request. Findings reveal a peak in total crimes in 2023, a significant increase in rape cases in 2024, and other key public safety trends. 
-        </p>
-        <p>
-          The interactive chart below allows for a granular exploration of Part I Violent Crimes. Use the buttons to toggle categories and compare trends over the four-year period.
-        </p>
-        <a href="https://www.albany.watch/reports/Crime-Analysis-Report.pdf" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 px-8 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage">
-            View Full Report (PDF)
-        </a>
-      </div>
-
-      <div class="mt-12 bg-white p-4 sm:p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold text-navy mb-4 text-center">Interactive: Part I Violent Crimes (2021-2024)</h2>
-        
-        <div id="chart-controls" class="flex flex-wrap justify-center gap-2 mb-4">
-            <button onclick="toggleDataset(0)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-homicide text-white" data-dataset="0">Homicide</button>
-            <button onclick="toggleDataset(1)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-rape text-white" data-dataset="1">Rape</button>
-            <button onclick="toggleDataset(2)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-robbery text-white" data-dataset="2">Robbery</button>
-            <button onclick="toggleDataset(3)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-assault text-white" data-dataset="3">Agg. Assault</button>
+      <section class="mt-16 bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-navy mb-3">Visualization 1: Interactive Time-Series of Crimes and Arrests</h2>
+        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To provide a granular, month-over-month visualization of total reported crimes versus total arrests, allowing stakeholders to identify seasonal trends, anomalies, and the persistent gap between criminal incidents and law enforcement apprehensions.</p>
+        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> A simple annual line chart, as seen in the source report, obscures significant intra-year fluctuations. An interactive monthly time-series offers superior analytical depth, enabling the identification of seasonal patterns (e.g., potential summer increases in certain crimes) that are critical for dynamic resource allocation and predictive modeling. The dual-axis presentation starkly visualizes the crime-to-arrest gap, a key performance indicator for law enforcement effectiveness. This approach aligns with best practices in temporal data analysis.</p>
+        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
+          <li><strong>Hover-over Data:</strong> Users can mouse over any point on the lines to see the precise number of crimes or arrests for that month.</li>
+          <li><strong>Toggle Traces:</strong> Users can click on the legend to hide or show the "Total Crimes" or "Total Arrests" lines, allowing for focused analysis.</li>
+          <li><strong>Zoom and Pan:</strong> The chart is fully zoomable, enabling detailed examination of specific periods.</li>
+        </ul>
+        <div id="plotly-chart-1-container" class="plotly-container mt-4">
+          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
+            Placeholder for Interactive Time-Series Chart
+          </div>
         </div>
+      </section>
 
-        <div class="chart-container" style="height:350px" role="img" aria-label="Interactive bar chart of Violent Crimes in Albany from 2021-2024">
-            <canvas id="project-chart"></canvas>
+      <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-navy mb-3">Visualization 2: Interactive Sunburst Chart of Violent Crime Composition</h2>
+        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To provide an interactive, hierarchical view of the composition of Part I Violent Crimes across the four-year period, highlighting trends like the spike in rape cases in 2024.</p>
+        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> The static stacked bar chart in the source report makes it difficult to compare proportions year-over-year. A sunburst chart is a modern visualization technique superior for representing hierarchical data. It clearly shows part-to-whole relationships across multiple levels (Year -> Crime Type), facilitating a more intuitive understanding of compositional shifts. This aligns with the NIST Cybersecurity Framework's "Identify" function by helping to better characterize the nature of the "threat" landscape.</p>
+        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
+          <li><strong>Hierarchical Drill-Down:</strong> Users can click on a year in the center to "zoom" into that year's specific breakdown of violent crimes.</li>
+          <li><strong>Hover-over Insights:</strong> Mousing over any segment reveals the crime type, the year, the number of incidents, and its percentage of the total for that level.</li>
+          <li><strong>Root Navigation:</strong> Users can click the center of the sunburst to return to the top-level view.</li>
+        </ul>
+        <div id="plotly-chart-2-container" class="plotly-container mt-4">
+          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
+            Placeholder for Interactive Sunburst Chart
+          </div>
         </div>
-        <p class="text-xs text-slate-500 mt-2 text-center" id="chart-description">Click buttons to show/hide crime categories. Data is illustrative; see full report for official figures.</p>
-      </div>
+      </section>
 
-    </div>
+      <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-navy mb-3">Visualization 3: Interactive Treemap of Crime Distribution by Neighborhood</h2>
+        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To visualize the concentration of crime across Albany's neighborhoods in a way that allows for easy comparison of volume. This replaces the standard bar chart with a more engaging and spatially efficient format, helping to pinpoint areas for targeted interventions under the "Economic Diversification" pillar.</p>
+        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> A bar chart is effective for comparing values, but a treemap excels at showing part-to-whole relationships and relative magnitudes within a constrained space. It immediately draws the eye to the largest contributors (West Hill, Pine Hills). Critically, this format also effectively visualizes the scale of the "Unknown/Not in NEU Zone" data category, highlighting a significant data limitation that must be addressed for precise geographic analysis. The interactivity adds layers of data (yearly breakdowns) not possible in a static chart.</p>
+        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
+          <li><strong>Proportional Sizing:</strong> Each neighborhood is represented by a rectangle, with its area directly proportional to its total crime count from 2021-2024.</li>
+          <li><strong>Hover-over Details:</strong> Mousing over a neighborhood reveals its total crime count and the breakdown of crimes for each year (2021-2024).</li>
+          <li><strong>Color-Coding:</strong> Rectangles are color-coded to provide an additional layer of information, such as the year with the highest number of reported crimes for that neighborhood.</li>
+        </ul>
+        <div id="plotly-chart-3-container" class="plotly-container mt-4">
+          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
+            Placeholder for Interactive Treemap Chart
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-navy mb-3">Visualization 4: Sankey Diagram of Case Resolution Flow (2024)</h2>
+        <p class="text-sm text-slate-600 mb-1"><strong>Objective:</strong> To illustrate the flow of criminal cases through the justice system for the year 2024, from the total number of reported crimes to arrests and final case dispositions (open vs. closed). This provides a powerful, intuitive representation of the case attrition rate, directly addressing the report's call for improved transparency and oversight and supporting the "Civic Accountability & Transparency" pillar.</p>
+        <p class="text-sm text-slate-600"><strong>Methodological Rationale:</strong> Quantifying case resolution simply as a percentage (e.g., "45% of cases remained open") lacks impact. A Sankey diagram is an advanced visualization specifically designed to depict flows and their magnitudes between nodes. It makes the "funnel" effect of the justice system immediately apparent, showing how a large number of initial crimes narrows down to a smaller number of arrests and closed cases. This provides a clear, data-driven narrative about systemic efficiency and potential bottlenecks.</p>
+        <ul class="list-disc list-inside text-sm text-slate-600 mb-4">
+          <li><strong>Flow Highlighting:</strong> Mousing over a flow (link) or a category (node) highlights the entire pathway, showing the magnitude of cases moving from one stage to the next.</li>
+          <li><strong>Detailed Tooltips:</strong> Hovering provides the exact number of cases in each flow.</li>
+        </ul>
+        <div id="plotly-chart-4-container" class="plotly-container mt-4">
+          <div class="flex items-center justify-center h-full bg-gray-50 text-gray-500">
+            Placeholder for Sankey Diagram
+          </div>
+        </div>
+      </section>
+
   </main>
 
   <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
@@ -111,111 +141,5 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    let crimeChart;
-
-    // --- Chart Data ---
-    // NOTE: This data is illustrative. Replace with your actual data.
-    const crimeData = {
-      labels: ['2021', '2022', '2023', '2024'],
-      datasets: [
-        {
-          label: 'Homicide',
-          data: [12, 15, 13, 11],
-          backgroundColor: 'rgba(239, 68, 68, 0.8)', // crime-homicide
-          borderColor: 'rgba(239, 68, 68, 1)',
-          borderWidth: 1,
-        },
-        {
-          label: 'Rape',
-          data: [45, 48, 55, 65],
-          backgroundColor: 'rgba(249, 115, 22, 0.8)', // crime-rape
-          borderColor: 'rgba(249, 115, 22, 1)',
-          borderWidth: 1,
-        },
-        {
-          label: 'Robbery',
-          data: [300, 320, 310, 290],
-          backgroundColor: 'rgba(234, 179, 8, 0.8)', // crime-robbery
-          borderColor: 'rgba(234, 179, 8, 1)',
-          borderWidth: 1,
-        },
-        {
-          label: 'Aggravated Assault',
-          data: [543, 583, 572, 554],
-          backgroundColor: 'rgba(132, 204, 22, 0.8)', // crime-assault
-          borderColor: 'rgba(132, 204, 22, 1)',
-          borderWidth: 1,
-        }
-      ]
-    };
-
-    // --- Chart Configuration ---
-    const chartConfig = {
-      type: 'bar',
-      data: crimeData,
-      options: {
-        scales: {
-          x: {
-            stacked: true,
-            title: { display: true, text: 'Year', color: '#1e3a8a', font: { size: 14 } },
-            ticks: { color: '#1e3a8a' },
-            grid: { display: false }
-          },
-          y: {
-            stacked: true,
-            beginAtZero: true,
-            title: { display: true, text: 'Number of Incidents', color: '#1e3a8a', font: { size: 14 } },
-            ticks: { color: '#1e3a8a' }
-          }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-            backgroundColor: '#1e3a8a',
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          mode: 'index',
-          intersect: false,
-        },
-        animation: {
-            duration: 500
-        }
-      }
-    };
-    
-    // --- Initialize Chart ---
-    document.addEventListener('DOMContentLoaded', () => {
-      const ctx = document.getElementById('project-chart').getContext('2d');
-      crimeChart = new Chart(ctx, chartConfig);
-    });
-
-    // --- Interactivity Function ---
-    function toggleDataset(index) {
-      if (!crimeChart) return;
-      
-      const isVisible = crimeChart.isDatasetVisible(index);
-      crimeChart.setDatasetVisibility(index, !isVisible);
-      crimeChart.update();
-
-      // Toggle active class on button
-      const button = document.querySelector(`button[data-dataset='${index}']`);
-      if (button) {
-          if (!isVisible) {
-              button.classList.add('active');
-              button.style.opacity = 1;
-          } else {
-              button.classList.remove('active');
-              button.style.opacity = 0.5;
-          }
-      }
-    }
-  </script>
 </body>
 </html>
