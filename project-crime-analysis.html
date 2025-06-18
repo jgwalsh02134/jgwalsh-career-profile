@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project: Crime Analysis Report - James Gregory Walsh</title>
-  <meta name="description" content="Detailed analysis of crime trends in Albany, NY (2021-2024), focusing on violent crimes, neighborhood distribution, and police response." />
+  <title>Project: Interactive Crime Analysis - James Gregory Walsh</title>
+  <meta name="description" content="Interactive analysis of crime trends in Albany, NY (2021-2024), allowing users to explore data on homicide, rape, robbery, and assault." />
   <meta name="robots" content="index, follow" />
 
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
@@ -26,7 +26,11 @@
         extend: {
           colors: {
             'navy': '#1e3a8a',
-            'sage': '#4b6e5d'
+            'sage': '#4b6e5d',
+            'crime-homicide': '#ef4444', // red-500
+            'crime-rape': '#f97316',     // orange-500
+            'crime-robbery': '#eab308',  // yellow-500
+            'crime-assault': '#84cc16', // lime-500
           },
           animation: {
             'fade-in': 'fadeIn 1s ease-out',
@@ -49,42 +53,50 @@
   <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
 
   <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
-    <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
-      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
-        <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
-        <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
-        <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy">Projects</a>
-        <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
-      </nav>
-    </div>
+      <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+        <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
+          <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
+          <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
+          <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy">Projects</a>
+          <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+        </nav>
+      </div>
   </header>
 
   <main id="main-content" class="max-w-4xl mx-auto py-16 sm:py-24 px-4 flex-grow w-full">
     <div class="animate-fade-in">
       <a href="projects.html" class="text-sage hover:text-navy font-medium mb-8 inline-block">&larr; Back to All Projects</a>
       
-      <h1 class="text-3xl sm:text-4xl font-bold text-navy">Crime Analysis Report: Albany, NY (2021-2024)</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold text-navy">Interactive Crime Analysis: Albany, NY (2021-2024)</h1>
       <p class="text-md text-gray-500 mt-2">Date: March 21, 2025</p>
 
       <div class="mt-8 space-y-6 text-slate-700 text-lg leading-relaxed">
         <p>
-          This report analyzes crime trends in Albany, New York, from 2021 to 2024, using data obtained through a Freedom of Information Law (FOIL) request from the Albany Police Department. The analysis focuses on total crimes, violent crime categories, neighborhood distribution, case resolution rates, and police response times. 
+          This report analyzes crime trends in Albany, New York, from 2021 to 2024, using data obtained through a Freedom of Information Law (FOIL) request. Findings reveal a peak in total crimes in 2023, a significant increase in rape cases in 2024, and other key public safety trends. 
         </p>
         <p>
-          Findings reveal a peak in total crimes in 2023, a significant increase in rape cases in 2024, concentrated crime in specific neighborhoods, a high rate of unresolved cases, and variable police response times.
+          The interactive chart below allows for a granular exploration of Part I Violent Crimes. Use the buttons to toggle categories and compare trends over the four-year period.
         </p>
         <a href="https://www.albany.watch/reports/Crime-Analysis-Report.pdf" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 px-8 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage">
             View Full Report (PDF)
         </a>
       </div>
 
-      <div class="mt-12 bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold text-navy mb-4 text-center">Part I Violent Crimes (2021-2024)</h2>
-        <div class="chart-container" style="height:300px" role="img" aria-label="Bar chart illustrating Part I Violent Crimes in Albany from 2021-2024">
+      <div class="mt-12 bg-white p-4 sm:p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold text-navy mb-4 text-center">Interactive: Part I Violent Crimes (2021-2024)</h2>
+        
+        <div id="chart-controls" class="flex flex-wrap justify-center gap-2 mb-4">
+            <button onclick="toggleDataset(0)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-homicide text-white" data-dataset="0">Homicide</button>
+            <button onclick="toggleDataset(1)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-rape text-white" data-dataset="1">Rape</button>
+            <button onclick="toggleDataset(2)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-robbery text-white" data-dataset="2">Robbery</button>
+            <button onclick="toggleDataset(3)" class="active px-3 py-1 text-sm font-medium rounded-full bg-crime-assault text-white" data-dataset="3">Agg. Assault</button>
+        </div>
+
+        <div class="chart-container" style="height:350px" role="img" aria-label="Interactive bar chart of Violent Crimes in Albany from 2021-2024">
             <canvas id="project-chart"></canvas>
         </div>
-        <p class="text-sm text-slate-600 mt-2 text-center" id="chart-description">Chart illustrating annual trends in Part I Violent Crimes in Albany from 2021-2024.</p>
+        <p class="text-xs text-slate-500 mt-2 text-center" id="chart-description">Click buttons to show/hide crime categories. Data is illustrative; see full report for official figures.</p>
       </div>
 
     </div>
@@ -101,46 +113,109 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+    let crimeChart;
+
+    // --- Chart Data ---
+    // NOTE: This data is illustrative. Replace with your actual data.
+    const crimeData = {
+      labels: ['2021', '2022', '2023', '2024'],
+      datasets: [
+        {
+          label: 'Homicide',
+          data: [12, 15, 13, 11],
+          backgroundColor: 'rgba(239, 68, 68, 0.8)', // crime-homicide
+          borderColor: 'rgba(239, 68, 68, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Rape',
+          data: [45, 48, 55, 65],
+          backgroundColor: 'rgba(249, 115, 22, 0.8)', // crime-rape
+          borderColor: 'rgba(249, 115, 22, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Robbery',
+          data: [300, 320, 310, 290],
+          backgroundColor: 'rgba(234, 179, 8, 0.8)', // crime-robbery
+          borderColor: 'rgba(234, 179, 8, 1)',
+          borderWidth: 1,
+        },
+        {
+          label: 'Aggravated Assault',
+          data: [543, 583, 572, 554],
+          backgroundColor: 'rgba(132, 204, 22, 0.8)', // crime-assault
+          borderColor: 'rgba(132, 204, 22, 1)',
+          borderWidth: 1,
+        }
+      ]
+    };
+
+    // --- Chart Configuration ---
+    const chartConfig = {
+      type: 'bar',
+      data: crimeData,
+      options: {
+        scales: {
+          x: {
+            stacked: true,
+            title: { display: true, text: 'Year', color: '#1e3a8a', font: { size: 14 } },
+            ticks: { color: '#1e3a8a' },
+            grid: { display: false }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            title: { display: true, text: 'Number of Incidents', color: '#1e3a8a', font: { size: 14 } },
+            ticks: { color: '#1e3a8a' }
+          }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            backgroundColor: '#1e3a8a',
+          },
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        animation: {
+            duration: 500
+        }
+      }
+    };
+    
+    // --- Initialize Chart ---
     document.addEventListener('DOMContentLoaded', () => {
       const ctx = document.getElementById('project-chart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['2021', '2022', '2023', '2024'],
-          datasets: [{
-            label: 'Total Part I Violent Crimes',
-            data: [900, 966, 950, 920],
-            backgroundColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d'],
-            borderColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d'],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: 'Number of Incidents', color: '#1e3a8a', font: { size: 14 } },
-              ticks: { color: '#1e3a8a' }
-            },
-            x: {
-              title: { display: true, text: 'Year', color: '#1e3a8a', font: { size: 14 } },
-              ticks: { color: '#1e3a8a' }
-            }
-          },
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: '#4b6e5d',
-              titleColor: '#ffffff',
-              bodyColor: '#ffffff',
-            },
-            title: { display: false }
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-        }
-      });
+      crimeChart = new Chart(ctx, chartConfig);
     });
+
+    // --- Interactivity Function ---
+    function toggleDataset(index) {
+      if (!crimeChart) return;
+      
+      const isVisible = crimeChart.isDatasetVisible(index);
+      crimeChart.setDatasetVisibility(index, !isVisible);
+      crimeChart.update();
+
+      // Toggle active class on button
+      const button = document.querySelector(`button[data-dataset='${index}']`);
+      if (button) {
+          if (!isVisible) {
+              button.classList.add('active');
+              button.style.opacity = 1;
+          } else {
+              button.classList.remove('active');
+              button.style.opacity = 0.5;
+          }
+      }
+    }
   </script>
 </body>
 </html>
