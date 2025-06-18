@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0.00 0.00 922.00 935.00" width="922.00" height="935.00">
-<g stroke-width="2.00" fill="none" stroke-linecap="butt">
-<path stroke="#17262a" stroke-opacity="0.600" vector-effect="non-scaling-stroke" d="
+<svg width="922" height="935" viewBox="0 0 922 935" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g stroke-width="2" fill="none" stroke-linecap="butt">
+<path stroke="#17262a" stroke-opacity="0.6" vector-effect="non-scaling-stroke" d="
   M 190.72 113.74
   C 147.87 146.20 111.93 185.04 82.88 230.25"
 />
