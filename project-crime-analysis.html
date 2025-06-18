@@ -1,49 +1,40 @@
-You are absolutely correct, and my apologies for that critical oversight. In the process of refactoring the file, I failed to include the most important part: the actual JavaScript data objects for the charts. The `Plotly.newPlot()` functions were being called with undefined variables, which is why nothing appeared.
-
-I have corrected this error. The `data1`, `layout1`, `data2`, etc., variables are now properly defined within the consolidated script at the bottom of the page. I have also restored the missing "Reset View" buttons for the other charts.
-
-This single, complete file should now render correctly.
-
-### **Corrected `project-crime-analysis.html`**
-
-```html
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project: Advanced Crime Analysis - James Gregory Walsh</title>
-  <meta name="description" content="An advanced, interactive dashboard analyzing Albany, NY crime data (2021-2024) using time-series, hierarchical, and flow visualizations." />
-  <meta name="robots" content="index, follow" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project: Advanced Crime Analysis - James Gregory Walsh</title>
+  <meta name="description" content="An advanced, interactive dashboard analyzing Albany, NY crime data (2021-2024) using time-series, hierarchical, and flow visualizations." />
+  <meta name="robots" content="index, follow" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-  <link rel="manifest" href="assets/favicon/site.webmanifest">
-  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-    <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'navy': '#1e3a8a',
-            'sage': '#4b6e5d'
-          }
-        },
-        fontFamily: {
-          sans: ['Inter', 'sans-serif'],
-        },
-      }
-    }
-  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy': '#1e3a8a',
+            'sage': '#4b6e5d'
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+        },
+      }
+    }
+  </script>
   <style>
     .plotly-container {
       width: 100%;
@@ -55,166 +46,179 @@ This single, complete file should now render correctly.
       position: relative;
     }
     .table-container {
-        max-height: 300px;
-        overflow-y: auto;
+      max-height: 300px;
+      overflow-y: auto;
     }
-  </style>
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
 
-  <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
-      <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
-        <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
-          <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
-          <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
-          <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy">Projects</a>
-          <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
-        </nav>
-      </div>
-  </header>
+  <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
+        <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
+        <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
+        <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy">Projects</a>
+        <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-  <main id="main-content" class="max-w-5xl mx-auto py-12 sm:py-20 px-4 flex-grow w-full">
-      <a href="projects.html" class="text-sage hover:text-navy font-medium mb-8 inline-block">&larr; Back to All Projects</a>
-      <h1 class="text-3xl sm:text-4xl font-bold text-navy text-center">Advanced Analysis of Albany Crime Data (2021-2024)</h1>
-      <p class="text-lg text-slate-600 mt-4 text-center max-w-3xl mx-auto">
-          An interactive dashboard exploring crime trends, compositions, and system flows through a series of advanced data visualizations.
-      </p>
+  <main id="main-content" class="max-w-5xl mx-auto py-12 sm:py-20 px-4 flex-grow w-full">
+    <a href="projects.html" class="text-sage hover:text-navy font-medium mb-8 inline-block">← Back to All Projects</a>
+    <h1 class="text-3xl sm:text-4xl font-bold text-navy text-center">Advanced Analysis of Albany Crime Data (2021-2024)</h1>
+    <p class="text-lg text-slate-600 mt-4 text-center max-w-3xl mx-auto">
+      An interactive dashboard exploring crime trends, compositions, and system flows through a series of advanced data visualizations.
+    </p>
 
-      <section class="mt-16 bg-white p-6 rounded-lg shadow-lg">
-        <div class="flex justify-between items-center mb-3">
-          <h2 class="text-2xl font-bold text-navy">Visualization 1: Monthly Crimes and Arrests</h2>
-          <button onclick="Plotly.relayout('chart1', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+    <section class="mt-16 bg-white p-6 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-2xl font-bold text-navy">Visualization 1: Monthly Crimes and Arrests</h2>
+        <button onclick="Plotly.relayout('chart1', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+      </div>
+      <div class="plotly-container mt-4">
+        <div id="chart1" style="height:100%; width:100%;"></div>
+      </div>
+      <details class="mt-2">
+        <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
+        <div class="mt-2 table-container border rounded-md">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-100 sticky top-0">
+              <tr><th class="p-2 font-semibold">Date</th><th class="p-2 font-semibold">Total Crimes</th><th class="p-2 font-semibold">Total Arrests</th></tr>
+            </thead>
+            <tbody id="table1-body"></tbody>
+          </table>
         </div>
-        <div class="plotly-container mt-4">
-            <div id="chart1" style="height:100%; width:100%;"></div>
-        </div>
-        <details class="mt-2">
-            <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
-            <div class="mt-2 table-container border rounded-md">
-                <table class="min-w-full text-sm text-left"><thead class="bg-gray-100 sticky top-0"><tr><th class="p-2 font-semibold">Date</th><th class="p-2 font-semibold">Total Crimes</th><th class="p-2 font-semibold">Total Arrests</th></tr></thead><tbody id="table1-body"></tbody></table>
-            </div>
-        </details>
-      </section>
+      </details>
+    </section>
 
-      <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
-        <div class="flex justify-between items-center mb-3">
-          <h2 class="text-2xl font-bold text-navy">Visualization 2: Violent Crime Composition</h2>
-          <button onclick="Plotly.relayout('chart2', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+    <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-2xl font-bold text-navy">Visualization 2: Violent Crime Composition</h2>
+        <button onclick="Plotly.relayout('chart2', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+      </div>
+      <div class="plotly-container mt-4">
+        <div id="chart2" style="height:100%; width:100%;"></div>
+      </div>
+      <details class="mt-2">
+        <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
+        <div class="mt-2 table-container border rounded-md">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-100 sticky top-0">
+              <tr><th class="p-2 font-semibold">Year</th><th class="p-2 font-semibold">Crime Type</th><th class="p-2 font-semibold">Incidents</th></tr>
+            </thead>
+            <tbody id="table2-body"></tbody>
+          </table>
         </div>
-        <div class="plotly-container mt-4">
-             <div id="chart2" style="height:100%; width:100%;"></div>
-        </div>
-        <details class="mt-2">
-            <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
-            <div class="mt-2 table-container border rounded-md">
-                <table class="min-w-full text-sm text-left"><thead class="bg-gray-100 sticky top-0"><tr><th class="p-2 font-semibold">Year</th><th class="p-2 font-semibold">Crime Type</th><th class="p-2 font-semibold">Incidents</th></tr></thead><tbody id="table2-body"></tbody></table>
-            </div>
-        </details>
-      </section>
+      </details>
+    </section>
 
-      <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
-        <div class="flex justify-between items-center mb-3">
-          <h2 class="text-2xl font-bold text-navy">Visualization 3: Crime Distribution by Neighborhood</h2>
-          <button onclick="Plotly.relayout('chart3', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+    <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-2xl font-bold text-navy">Visualization 3: Crime Distribution by Neighborhood</h2>
+        <button onclick="Plotly.relayout('chart3', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+      </div>
+      <div class="plotly-container mt-4">
+        <div id="chart3" style="height:100%; width:100%;"></div>
+      </div>
+      <details class="mt-2">
+        <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
+        <div class="mt-2 table-container border rounded-md">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-100 sticky top-0">
+              <tr><th class="p-2 font-semibold">Neighborhood</th><th class="p-2 font-semibold">Total Crimes (2021-24)</th></tr>
+            </thead>
+            <tbody id="table3-body"></tbody>
+          </table>
         </div>
-        <div class="plotly-container mt-4">
-            <div id="chart3" style="height:100%; width:100%;"></div>
-        </div>
-        <details class="mt-2">
-            <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
-            <div class="mt-2 table-container border rounded-md">
-                <table class="min-w-full text-sm text-left"><thead class="bg-gray-100 sticky top-0"><tr><th class="p-2 font-semibold">Neighborhood</th><th class="p-2 font-semibold">Total Crimes (2021-24)</th></tr></thead><tbody id="table3-body"></tbody></table>
-            </div>
-        </details>
-      </section>
+      </details>
+    </section>
 
-      <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
-        <div class="flex justify-between items-center mb-3">
-          <h2 class="text-2xl font-bold text-navy">Visualization 4: Case Resolution Flow (2024)</h2>
-           <button onclick="Plotly.relayout('chart4', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+    <section class="mt-12 bg-white p-6 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-2xl font-bold text-navy">Visualization 4: Case Resolution Flow (2024)</h2>
+        <button onclick="Plotly.relayout('chart4', {'xaxis.autorange': true, 'yaxis.autorange': true});" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-1 px-3 rounded-full">Reset View</button>
+      </div>
+      <div class="plotly-container mt-4">
+        <div id="chart4" style="height:100%; width:100%;"></div>
+      </div>
+      <details class="mt-2">
+        <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
+        <div class="mt-2 table-container border rounded-md">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-100 sticky top-0">
+              <tr><th class="p-2 font-semibold">Flow Source</th><th class="p-2 font-semibold">Flow Target</th><th class="p-2 font-semibold">Number of Cases</th></tr>
+            </thead>
+            <tbody id="table4-body"></tbody>
+          </table>
         </div>
-        <div class="plotly-container mt-4">
-             <div id="chart4" style="height:100%; width:100%;"></div>
-        </div>
-        <details class="mt-2">
-            <summary class="text-sm text-gray-600 cursor-pointer hover:text-navy">View Data Table</summary>
-            <div class="mt-2 table-container border rounded-md">
-                <table class="min-w-full text-sm text-left"><thead class="bg-gray-100 sticky top-0"><tr><th class="p-2 font-semibold">Flow Source</th><th class="p-2 font-semibold">Flow Target</th><th class="p-2 font-semibold">Number of Cases</th></tr></thead><tbody id="table4-body"></tbody></table>
-            </div>
-        </details>
-      </section>
+      </details>
+    </section>
 
-  </main>
+  </main>
 
-  <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
-    <div class="max-w-4xl mx-auto text-center space-y-4">
-      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
-      <div class="flex justify-center items-center gap-2">
-        <span>Albany, NY</span><span>·</span><a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage">jgwalsh@proton.me</a>
-      </div>
-    </div>
-  </footer>
+  <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
+    <div class="max-w-4xl mx-auto text-center space-y-4">
+      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div class="flex justify-center items-center gap-2">
+        <span>Albany, NY</span><span>·</span><a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage">jgwalsh@proton.me</a>
+      </div>
+    </div>
+  </footer>
 
-  <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
-  
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      
-      // --- Data and Layout Objects for all charts ---
-      // This is the data that was missing in the previous version.
-      
-      const data1 = [{"line":{"color":"royalblue","width":2},"marker":{"size":4},"mode":"lines+markers","name":"Total Crimes","type":"scatter","x":["2021-01-31T00:00:00","2021-02-28T00:00:00","2021-03-31T00:00:00","2021-04-30T00:00:00","2021-05-31T00:00:00","2021-06-30T00:00:00","2021-07-31T00:00:00","2021-08-31T00:00:00","2021-09-30T00:00:00","2021-10-31T00:00:00","2021-11-30T00:00:00","2021-12-31T00:00:00","2022-01-31T00:00:00","2022-02-28T00:00:00","2022-03-31T00:00:00","2022-04-30T00:00:00","2022-05-31T00:00:00","2022-06-30T00:00:00","2022-07-31T00:00:00","2022-08-31T00:00:00","2022-09-30T00:00:00","2022-10-31T00:00:00","2022-11-30T00:00:00","2022-12-31T00:00:00","2023-01-31T00:00:00","2023-02-28T00:00:00","2023-03-31T00:00:00","2023-04-30T00:00:00","2023-05-31T00:00:00","2023-06-30T00:00:00","2023-07-31T00:00:00","2023-08-31T00:00:00","2023-09-30T00:00:00","2023-10-31T00:00:00","2023-11-30T00:00:00","2023-12-31T00:00:00","2024-01-31T00:00:00","2024-02-29T00:00:00","2024-03-31T00:00:00","2024-04-30T00:00:00","2024-05-31T00:00:00","2024-06-30T00:00:00","2024-07-31T00:00:00","2024-08-31T00:00:00","2024-09-30T00:00:00","2024-10-31T00:00:00","2024-11-30T00:00:00","2024-12-31T00:00:00"],"y":[495,586,575,634,654,713,791,775,775,803,731,732,719,660,690,743,915,773,959,939,785,864,735,765,784,720,717,802,833,786,888,892,860,848,755,698,644,653,682,707,848,746,781,764,712,666,562,656]},{"line":{"color":"green","dash":"dash","width":2},"marker":{"size":4},"mode":"lines+markers","name":"Total Arrests","type":"scatter","x":["2021-01-31T00:00:00","2021-02-28T00:00:00","2021-03-31T00:00:00","2021-04-30T00:00:00","2021-05-31T00:00:00","2021-06-30T00:00:00","2021-07-31T00:00:00","2021-08-31T00:00:00","2021-09-30T00:00:00","2021-10-31T00:00:00","2021-11-30T00:00:00","2021-12-31T00:00:00","2022-01-31T00:00:00","2022-02-28T00:00:00","2022-03-31T00:00:00","2022-04-30T00:00:00","2022-05-31T00:00:00","2022-06-30T00:00:00","2022-07-31T00:00:00","2022-08-31T00:00:00","2022-09-30T00:00:00","2022-10-31T00:00:00","2022-11-30T00:00:00","2022-12-31T00:00:00","2023-01-31T00:00:00","2023-02-28T00:00:00","2023-03-31T00:00:00","2023-04-30T00:00:00","2023-05-31T00:00:00","2023-06-30T00:00:00","2023-07-31T00:00:00","2023-08-31T00:00:00","2023-09-30T00:00:00","2023-10-31T00:00:00","2023-11-30T00:00:00","2023-12-31T00:00:00","2024-01-31T00:00:00","2024-02-29T00:00:00","2024-03-31T00:00:00","2024-04-30T00:00:00","2024-05-31T00:00:00","2024-06-30T00:00:00","2024-07-31T00:00:00","2024-08-31T00:00:00","2024-09-30T00:00:00","2024-10-31T00:00:00","2024-11-30T00:00:00","2024-12-31T00:00:00"],"y":[115,124,144,111,145,179,147,204,240,181,155,114,151,126,140,165,153,162,160,191,190,190,118,123,141,149,151,171,163,196,162,194,173,176,182,139,191,188,182,171,201,189,216,190,179,175,123,145]}];
-      const layout1 = {"font":{"color":"black","family":"Arial, sans-serif","size":12},"legend":{"title":{"text":"Metric"}},"plot_bgcolor":"white","xaxis":{"gridcolor":"lightgrey","showgrid":true,"title":{"text":"Month"}},"yaxis":{"gridcolor":"lightgrey","showgrid":true,"title":{"text":"Number of Incidents"}}, margin: { l: 50, r: 25, b: 40, t: 10 }};
-      
-      const data2 = [{"type":"sunburst","colorway":["black","skyblue","goldenrod","firebrick","lightgrey"],"ids":["Part I Violent Crimes-2021-Murder","Part I Violent Crimes-2021-Rape","Part I Violent Crimes-2021-Robbery","Part I Violent Crimes-2021-Aggravated Assault","Part I Violent Crimes-2022-Murder","Part I Violent Crimes-2022-Rape","Part I Violent Crimes-2022-Robbery","Part I Violent Crimes-2022-Aggravated Assault","Part I Violent Crimes-2023-Murder","Part I Violent Crimes-2023-Rape","Part I Violent Crimes-2023-Robbery","Part I Violent Crimes-2023-Aggravated Assault","Part I Violent Crimes-2024-Murder","Part I Violent Crimes-2024-Rape","Part I Violent Crimes-2024-Robbery","Part I Violent Crimes-2024-Aggravated Assault","Part I Violent Crimes-2021","Part I Violent Crimes-2022","Part I Violent Crimes-2023","Part I Violent Crimes-2024","Part I Violent Crimes"],"labels":["Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","2021","2022","2023","2024","Part I Violent Crimes"],"parents":["Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes","Part I Violent Crimes","Part I Violent Crimes","Part I Violent Crimes",""],"values":[18,56,183,640,19,75,249,628,20,62,251,611,13,91,237,588,897,971,944,929,3741]}];
-      const layout2 = {"font":{"color":"black","family":"Arial, sans-serif","size":12},"margin":{"b":25,"l":25,"r":25,"t":10}};
+    // --- Data and Layout Objects for all charts ---
+    const data1 = [{"line":{"color":"royalblue","width":2},"marker":{"size":4},"mode":"lines+markers","name":"Total Crimes","type":"scatter","x":["2021-01-31T00:00:00","2021-02-28T00:00:00","2021-03-31T00:00:00","2021-04-30T00:00:00","2021-05-31T00:00:00","2021-06-30T00:00:00","2021-07-31T00:00:00","2021-08-31T00:00:00","2021-09-30T00:00:00","2021-10-31T00:00:00","2021-11-30T00:00:00","2021-12-31T00:00:00","2022-01-31T00:00:00","2022-02-28T00:00:00","2022-03-31T00:00:00","2022-04-30T00:00:00","2022-05-31T00:00:00","2022-06-30T00:00:00","2022-07-31T00:00:00","2022-08-31T00:00:00","2022-09-30T00:00:00","2022-10-31T00:00:00","2022-11-30T00:00:00","2022-12-31T00:00:00","2023-01-31T00:00:00","2023-02-28T00:00:00","2023-03-31T00:00:00","2023-04-30T00:00:00","2023-05-31T00:00:00","2023-06-30T00:00:00","2023-07-31T00:00:00","2023-08-31T00:00:00","2023-09-30T00:00:00","2023-10-31T00:00:00","2023-11-30T00:00:00","2023-12-31T00:00:00","2024-01-31T00:00:00","2024-02-29T00:00:00","2024-03-31T00:00:00","2024-04-30T00:00:00","2024-05-31T00:00:00","2024-06-30T00:00:00","2024-07-31T00:00:00","2024-08-31T00:00:00","2024-09-30T00:00:00","2024-10-31T00:00:00","2024-11-30T00:00:00","2024-12-31T00:00:00"],"y":[495,586,575,634,654,713,791,775,775,803,731,732,719,660,690,743,915,773,959,939,785,864,735,765,784,720,717,802,833,786,888,892,860,848,755,698,644,653,682,707,848,746,781,764,712,666,562,656]},{"line":{"color":"green","dash":"dash","width":2},"marker":{"size":4},"mode":"lines+markers","name":"Total Arrests","type":"scatter","x":["2021-01-31T00:00:00","2021-02-28T00:00:00","2021-03-31T00:00:00","2021-04-30T00:00:00","2021-05-31T00:00:00","2021-06-30T00:00:00","2021-07-31T00:00:00","2021-08-31T00:00:00","2021-09-30T00:00:00","2021-10-31T00:00:00","2021-11-30T00:00:00","2021-12-31T00:00:00","2022-01-31T00:00:00","2022-02-28T00:00:00","2022-03-31T00:00:00","2022-04-30T00:00:00","2022-05-31T00:00:00","2022-06-30T00:00:00","2022-07-31T00:00:00","2022-08-31T00:00:00","2022-09-30T00:00:00","2022-10-31T00:00:00","2022-11-30T00:00:00","2022-12-31T00:00:00","2023-01-31T00:00:00","2023-02-28T00:00:00","2023-03-31T00:00:00","2023-04-30T00:00:00","2023-05-31T00:00:00","2023-06-30T00:00:00","2023-07-31T00:00:00","2023-08-31T00:00:00","2023-09-30T00:00:00","2023-10-31T00:00:00","2023-11-30T00:00:00","2023-12-31T00:00:00","2024-01-31T00:00:00","2024-02-29T00:00:00","2024-03-31T00:00:00","2024-04-30T00:00:00","2024-05-31T00:00:00","2024-06-30T00:00:00","2024-07-31T00:00:00","2024-08-31T00:00:00","2024-09-30T00:00:00","2024-10-31T00:00:00","2024-11-30T00:00:00","2024-12-31T00:00:00"],"y":[115,124,144,111,145,179,147,204,240,181,155,114,151,126,140,165,153,162,160,191,190,190,118,123,141,149,151,171,163,196,162,194,173,176,182,139,191,188,182,171,201,189,216,190,179,175,123,145]}];
+    const layout1 = {"font":{"color":"black","family":"Arial, sans-serif","size":12},"legend":{"title":{"text":"Metric"}},"plot_bgcolor":"white","xaxis":{"gridcolor":"lightgrey","showgrid":true,"title":{"text":"Month"}},"yaxis":{"gridcolor":"lightgrey","showgrid":true,"title":{"text":"Number of Incidents"}}, margin: { l: 50, r: 25, b: 40, t: 10 }};
+    
+    const data2 = [{"type":"sunburst","colorway":["black","skyblue","goldenrod","firebrick","lightgrey"],"ids":["Part I Violent Crimes-2021-Murder","Part I Violent Crimes-2021-Rape","Part I Violent Crimes-2021-Robbery","Part I Violent Crimes-2021-Aggravated Assault","Part I Violent Crimes-2022-Murder","Part I Violent Crimes-2022-Rape","Part I Violent Crimes-2022-Robbery","Part I Violent Crimes-2022-Aggravated Assault","Part I Violent Crimes-2023-Murder","Part I Violent Crimes-2023-Rape","Part I Violent Crimes-2023-Robbery","Part I Violent Crimes-2023-Aggravated Assault","Part I Violent Crimes-2024-Murder","Part I Violent Crimes-2024-Rape","Part I Violent Crimes-2024-Robbery","Part I Violent Crimes-2024-Aggravated Assault","Part I Violent Crimes-2021","Part I Violent Crimes-2022","Part I Violent Crimes-2023","Part I Violent Crimes-2024","Part I Violent Crimes"],"labels":["Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","Murder","Rape","Robbery","Aggravated Assault","2021","2022","2023","2024","Part I Violent Crimes"],"parents":["Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2021","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2022","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2023","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes-2024","Part I Violent Crimes","Part I Violent Crimes","Part I Violent Crimes","Part I Violent Crimes",""],"values":[18,56,183,640,19,75,249,628,20,62,251,611,13,91,237,588,897,971,944,929,3741]}];
+    const layout2 = {"font":{"color":"black","family":"Arial, sans-serif","size":12},"margin":{"b":25,"l":25,"r":25,"t":10}};
 
-      const data3 = [{"type":"treemap","colorway":["#fee08b","#fc8d59","#d53e4f","#9e0142"],"customdata":[["2703","2980","3519","2584"],["1019","1187","979","988"],["934","1007","1156","870"],["673","795","675","661"],["426","523","453","576"],["376","427","434","402"],["231","307","279","307"],["302","346","226","238"],["229","266","189","225"],["125","260","226","206"],["185","207","135","144"],["116","142","146","139"],["119","121","155","147"],["110","131","118","129"],["107","141","105","121"],["109","125","137","91"],["77","77","132","105"],["79","113","91","114"],["98","97","104","90"],["99","87","83","78"],["54","81","87","74"],["40","53","87","65"],["35","42","40","46"],["18","28","26","20"]],"hovertemplate":"<b>%{label}</b><br>Total Crimes (2021-24): %{value}<br>2021: %{customdata[0]}<br>2022: %{customdata[1]}<br>2023: %{customdata[2]}<br>2024: %{customdata[3]}<extra></extra>","ids":["All Neighborhoods-Unknown/Not in NEU Zone","All Neighborhoods-West Hill","All Neighborhoods-Pine Hills","All Neighborhoods-South End","All Neighborhoods-Arbor Hill Concerned Citizens","All Neighborhoods-Delaware Area","All Neighborhoods-Downtown","All Neighborhoods-N. Albany/Shaker Park","All Neighborhoods-Sheridan Hollow","All Neighborhoods-Pine Bush","All Neighborhoods-Mansion","All Neighborhoods-Helderberg","All Neighborhoods-Woodlawn","All Neighborhoods-Second Avenue","All Neighborhoods-Washington Square","All Neighborhoods-Ten Broeck Triangle","All Neighborhoods-Eagle Hill","All Neighborhoods-Washington Park","All Neighborhoods-Historic Pastures Homeowners Association","All Neighborhoods-Melrose","All Neighborhoods-Whitehall","All Neighborhoods-Buckingham Lake","All Neighborhoods-Port of Albany","All Neighborhoods-Normanskill Area"],"labels":["Unknown/Not in NEU Zone","West Hill","Pine Hills","South End","Arbor Hill Concerned Citizens","Delaware Area","Downtown","N. Albany/Shaker Park","Sheridan Hollow","Pine Bush","Mansion","Helderberg","Woodlawn","Second Avenue","Washington Square","Ten Broeck Triangle","Eagle Hill","Washington Park","Historic Pastures Homeowners Association","Melrose","Whitehall","Buckingham Lake","Port of Albany","Normanskill Area"],"parents":["All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods"],"values":[11786,4173,3967,2804,1978,1639,1124,1112,909,817,671,543,542,488,474,462,391,397,389,347,296,245,163,92],"marker":{"colors":["#d53e4f","#fc8d59","#d53e4f","#fc8d59","#fc8d59","#d53e4f","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#fc8d59","#fee08b","#d53e4f","#d53e4f","#d53e4f","#fee08b","#fee08b"]}}];
-      const layout3 = {"title":{"text":"<i>Color Indicates Peak Crime Year</i>"},"font":{"color":"black","family":"Arial, sans-serif","size":12},"margin":{"b":25,"l":25,"r":25,"t":10}};
+    const data3 = [{"type":"treemap","colorway":["#fee08b","#fc8d59","#d53e4f","#9e0142"],"customdata":[["2703","2980","3519","2584"],["1019","1187","979","988"],["934","1007","1156","870"],["673","795","675","661"],["426","523","453","576"],["376","427","434","402"],["231","307","279","307"],["302","346","226","238"],["229","266","189","225"],["125","260","226","206"],["185","207","135","144"],["116","142","146","139"],["119","121","155","147"],["110","131","118","129"],["107","141","105","121"],["109","125","137","91"],["77","77","132","105"],["79","113","91","114"],["98","97","104","90"],["99","87","83","78"],["54","81","87","74"],["40","53","87","65"],["35","42","40","46"],["18","28","26","20"]],"hovertemplate":"<b>%{label}</b><br>Total Crimes (2021-24): %{value}<br>2021: %{customdata[0]}<br>2022: %{customdata[1]}<br>2023: %{customdata[2]}<br>2024: %{customdata[3]}<extra></extra>","ids":["All Neighborhoods-Unknown/Not in NEU Zone","All Neighborhoods-West Hill","All Neighborhoods-Pine Hills","All Neighborhoods-South End","All Neighborhoods-Arbor Hill Concerned Citizens","All Neighborhoods-Delaware Area","All Neighborhoods-Downtown","All Neighborhoods-N. Albany/Shaker Park","All Neighborhoods-Sheridan Hollow","All Neighborhoods-Pine Bush","All Neighborhoods-Mansion","All Neighborhoods-Helderberg","All Neighborhoods-Woodlawn","All Neighborhoods-Second Avenue","All Neighborhoods-Washington Square","All Neighborhoods-Ten Broeck Triangle","All Neighborhoods-Eagle Hill","All Neighborhoods-Washington Park","All Neighborhoods-Historic Pastures Homeowners Association","All Neighborhoods-Melrose","All Neighborhoods-Whitehall","All Neighborhoods-Buckingham Lake","All Neighborhoods-Port of Albany","All Neighborhoods-Normanskill Area"],"labels":["Unknown/Not in NEU Zone","West Hill","Pine Hills","South End","Arbor Hill Concerned Citizens","Delaware Area","Downtown","N. Albany/Shaker Park","Sheridan Hollow","Pine Bush","Mansion","Helderberg","Woodlawn","Second Avenue","Washington Square","Ten Broeck Triangle","Eagle Hill","Washington Park","Historic Pastures Homeowners Association","Melrose","Whitehall","Buckingham Lake","Port of Albany","Normanskill Area"],"parents":["All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods"],"values":[11786,4173,3967,2804,1978,1639,1124,1112,909,817,671,543,542,488,474,462,391,397,389,347,296,245,163,92],"marker":{"colors":["#d53e4f","#fc8d59","#d53e4f","#fc8d59","#fc8d59","#d53e4f","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#fc8d59","#fee08b","#d53e4f","#d53e4f","#d53e4f","#fee08b","#fee08b"]}}];
+    const layout3 = {"title":{"text":"<i>Color Indicates Peak Crime Year</i>"},"font":{"color":"black","family":"Arial, sans-serif","size":12},"margin":{"b":25,"l":25,"r":25,"t":10}};
 
-      const data4 = [{"type":"sankey","link":{"source":[0,0,1,2],"target":[1,2,3,4],"value":[2150,6270,4677,3743]},"node":{"color":"royalblue","label":["Total Reported Crimes (2024)","Arrest Made","No Arrest Made","Case Closed","Case Remained Open"],"line":{"color":"black","width":0.5},"pad":15,"thickness":20}}];
-      const layout4 = {"font":{"family":"Arial, sans-serif","size":10}, "margin": {"t":10, "b":10}};
+    const data4 = [{"type":"sankey","link":{"source":[0,0,1,2],"target":[1,2,3,4],"value":[2150,6270,4677,3743]},"node":{"color":"royalblue","label":["Total Reported Crimes (2024)","Arrest Made","No Arrest Made","Case Closed","Case Remained Open"],"line":{"color":"black","width":0.5},"pad":15,"thickness":20}}];
+    const layout4 = {"font":{"family":"Arial, sans-serif","size":10}, "margin": {"t":10, "b":10}};
 
-      const config = {responsive: true};
+    const config = {responsive: true};
 
-      // --- Plotting and Table Generation ---
+    // --- Plotting and Table Generation ---
 
-      Plotly.newPlot('chart1', data1, layout1, config);
-      const table1Body = document.getElementById('table1-body');
-      data1[0].x.forEach((date, i) => {
-          let row = `<tr class="border-b"><td class="p-2">${new Date(date).toLocaleDateString('en-US', {year: 'numeric', month: 'short'})}</td><td class="p-2">${data1[0].y[i]}</td><td class="p-2">${data1[1].y[i]}</td></tr>`;
-          table1Body.innerHTML += row;
-      });
+    Plotly.newPlot('chart1', data1, layout1, config);
+    const table1Body = document.getElementById('table1-body');
+    data1[0].x.forEach((date, i) => {
+        let row = `<tr class="border-b"><td class="p-2">${new Date(date).toLocaleDateString('en-US', {year: 'numeric', month: 'short'})}</td><td class="p-2">${data1[0].y[i]}</td><td class="p-2">${data1[1].y[i]}</td></tr>`;
+        table1Body.innerHTML += row;
+    });
 
-      Plotly.newPlot('chart2', data2, layout2, config);
-      const table2Body = document.getElementById('table2-body');
-      const sunburstData = { '2021': [18, 56, 183, 640], '2022': [19, 75, 249, 628], '2023': [20, 62, 251, 611], '2024': [13, 91, 237, 588]};
-      const crimeTypes = ['Murder', 'Rape', 'Robbery', 'Aggravated Assault'];
-      for (const year in sunburstData) {
-          sunburstData[year].forEach((val, i) => {
-              let row = `<tr class="border-b"><td class="p-2">${year}</td><td class="p-2">${crimeTypes[i]}</td><td class="p-2">${val}</td></tr>`;
-              table2Body.innerHTML += row;
-          });
-      }
+    Plotly.newPlot('chart2', data2, layout2, config);
+    const table2Body = document.getElementById('table2-body');
+    const sunburstData = { '2021': [18, 56, 183, 640], '2022': [19, 75, 249, 628], '2023': [20, 62, 251, 611], '2024': [13, 91, 237, 588]};
+    const crimeTypes = ['Murder', 'Rape', 'Robbery', 'Aggravated Assault'];
+    for (const year in sunburstData) {
+        sunburstData[year].forEach((val, i) => {
+            let row = `<tr class="border-b"><td class="p-2">${year}</td><td class="p-2">${crimeTypes[i]}</td><td class="p-2">${val}</td></tr>`;
+            table2Body.innerHTML += row;
+        });
+    }
 
-      Plotly.newPlot('chart3', data3, layout3, config);
-      const table3Body = document.getElementById('table3-body');
-      data3[0].labels.forEach((label, i) => {
-          let row = `<tr class="border-b"><td class="p-2">${label}</td><td class="p-2">${data3[0].values[i]}</td></tr>`;
-          table3Body.innerHTML += row;
-      });
-      
-      Plotly.newPlot('chart4', data4, layout4, config);
-      const table4Body = document.getElementById('table4-body');
-      const sankeyData = data4[0];
-      sankeyData.link.source.forEach((sourceIndex, i) => {
-          let row = `<tr class="border-b"><td class="p-2">${sankeyData.node.label[sourceIndex]}</td><td class="p-2">${sankeyData.node.label[sankeyData.link.target[i]]}</td><td class="p-2">${sankeyData.link.value[i]}</td></tr>`;
-          table4Body.innerHTML += row;
-      });
+    Plotly.newPlot('chart3', data3, layout3, config);
+    const table3Body = document.getElementById('table3-body');
+    data3[0].labels.forEach((label, i) => {
+        let row = `<tr class="border-b"><td class="p-2">${label}</td><td class="p-2">${data3[0].values[i]}</td></tr>`;
+        table3Body.innerHTML += row;
+    });
+    
+    Plotly.newPlot('chart4', data4, layout4, config);
+    const table4Body = document.getElementById('table4-body');
+    const sankeyData = data4[0];
+    sankeyData.link.source.forEach((sourceIndex, i) => {
+        let row = `<tr class="border-b"><td class="p-2">${sankeyData.node.label[sourceIndex]}</td><td class="p-2">${sankeyData.node.label[sankeyData.link.target[i]]}</td><td class="p-2">${sankeyData.link.value[i]}</td></tr>`;
+        table4Body.innerHTML += row;
     });
   </script>
 </body>
 </html>
-```
