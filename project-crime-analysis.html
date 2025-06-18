@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project: Crime Analysis Report - James Gregory Walsh</title>
+  <meta name="description" content="Detailed analysis of crime trends in Albany, NY (2021-2024), focusing on violent crimes, neighborhood distribution, and police response." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicon/site.webmanifest">
+  <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'navy': '#1e3a8a',
+            'sage': '#4b6e5d'
+          },
+          animation: {
+            'fade-in': 'fadeIn 1s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+        },
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
+
+  <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
+        <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
+        <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
+        <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy">Projects</a>
+        <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="max-w-4xl mx-auto py-16 sm:py-24 px-4 flex-grow w-full">
+    <div class="animate-fade-in">
+      <a href="projects.html" class="text-sage hover:text-navy font-medium mb-8 inline-block">&larr; Back to All Projects</a>
+      
+      <h1 class="text-3xl sm:text-4xl font-bold text-navy">Crime Analysis Report: Albany, NY (2021-2024)</h1>
+      <p class="text-md text-gray-500 mt-2">Date: March 21, 2025</p>
+
+      <div class="mt-8 space-y-6 text-slate-700 text-lg leading-relaxed">
+        <p>
+          This report analyzes crime trends in Albany, New York, from 2021 to 2024, using data obtained through a Freedom of Information Law (FOIL) request from the Albany Police Department. The analysis focuses on total crimes, violent crime categories, neighborhood distribution, case resolution rates, and police response times. 
+        </p>
+        <p>
+          Findings reveal a peak in total crimes in 2023, a significant increase in rape cases in 2024, concentrated crime in specific neighborhoods, a high rate of unresolved cases, and variable police response times.
+        </p>
+        <a href="https://www.albany.watch/reports/Crime-Analysis-Report.pdf" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 px-8 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage">
+            View Full Report (PDF)
+        </a>
+      </div>
+
+      <div class="mt-12 bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-bold text-navy mb-4 text-center">Part I Violent Crimes (2021-2024)</h2>
+        <div class="chart-container" style="height:300px" role="img" aria-label="Bar chart illustrating Part I Violent Crimes in Albany from 2021-2024">
+            <canvas id="project-chart"></canvas>
+        </div>
+        <p class="text-sm text-slate-600 mt-2 text-center" id="chart-description">Chart illustrating annual trends in Part I Violent Crimes in Albany from 2021-2024.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
+    <div class="max-w-4xl mx-auto text-center space-y-4">
+      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div class="flex justify-center items-center gap-2">
+        <span>Albany, NY</span><span>·</span><a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage">jgwalsh@proton.me</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('project-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['2021', '2022', '2023', '2024'],
+          datasets: [{
+            label: 'Total Part I Violent Crimes',
+            data: [900, 966, 950, 920],
+            backgroundColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d'],
+            borderColor: ['#1e3a8a', '#4b6e5d', '#1e3a8a', '#4b6e5d'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: 'Number of Incidents', color: '#1e3a8a', font: { size: 14 } },
+              ticks: { color: '#1e3a8a' }
+            },
+            x: {
+              title: { display: true, text: 'Year', color: '#1e3a8a', font: { size: 14 } },
+              ticks: { color: '#1e3a8a' }
+            }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#4b6e5d',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff',
+            },
+            title: { display: false }
+          },
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      });
+    });
+  </script>
+</body>
+</html>
