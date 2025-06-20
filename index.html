@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>James Gregory Walsh – Behavioral Science & Public Service</title>
-  <meta name="description" content="Psychology graduate with extensive clinical experience in the mental health field, poised to apply behavioral analysis and strategic insights to new challenges." />
+  <title>James Gregory Walsh – Behavioral Science & Data Analysis</title>
+  <meta name="description" content="Psychology graduate with extensive clinical and statistical experience, applying behavioral analysis and data-driven insights to challenges in public and private sectors." />
   <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="mental health, crisis intervention, behavioral analysis, psychology, public service, data analysis, clinical experience" />
-  <meta property="og:title" content="James Gregory Walsh – Behavioral Science & Public Service" />
-  <meta property="og:description" content="Psychology graduate with extensive clinical experience in the mental health field, poised to apply behavioral analysis and strategic insights to new challenges." />
+  <meta name="keywords" content="mental health, crisis intervention, behavioral analysis, psychology, public service, data analysis, statistics, clinical experience, DSM-5, ICD-10, cyberpsychology" />
+  <meta property="og:title" content="James Gregory Walsh – Behavioral Science & Data Analysis" />
+  <meta property="og:description" content="Psychology graduate applying behavioral analysis and data-driven insights to new challenges." />
   <meta property="og:url" content="https://jgwalsh.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://placehold.co/1200x630/1e3a8a/ffffff?text=J.G.W." />
+  <meta property="og:image" content="https://placehold.co/1200x630/4f46e5/ffffff?text=J.G.W." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://placehold.co/1200x630/1e3a8a/ffffff?text=J.G.W." />
+  <meta name="twitter:image" content="https://placehold.co/1200x630/4f46e5/ffffff?text=J.G.W." />
 
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
@@ -32,7 +32,7 @@
       "@context": "http://schema.org",
       "@type": "Person",
       "name": "James Gregory Walsh",
-      "jobTitle": "Behavioral Science Practitioner",
+      "jobTitle": "Behavioral Science & Data Analyst",
       "email": "mailto:jgwalsh@proton.me",
       "url": "https://jgwalsh.com",
       "address": {
@@ -53,22 +53,13 @@
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            'navy': '#1e3a8a',
-            'sage': '#4b6e5d'
-          },
           animation: {
             'fade-in': 'fadeIn 1s ease-out',
-            'scale-hover': 'scaleHover 0.2s ease-in-out'
           },
           keyframes: {
             fadeIn: {
               '0%': { opacity: '0', transform: 'translateY(10px)' },
               '100%': { opacity: '1', transform: 'translateY(0)' }
-            },
-            scaleHover: {
-              '0%': { transform: 'scale(1)' },
-              '100%': { transform: 'scale(1.1)' }
             }
           }
         },
@@ -79,90 +70,57 @@
     }
   </script>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
+<body class="bg-slate-50 text-slate-700 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-indigo-600 focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
 
-  <header class="bg-gray-50 shadow-sm sticky top-0 w-full z-50">
+  <header class="bg-slate-50/80 backdrop-blur-sm shadow-sm sticky top-0 w-full z-50">
     <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+      <a href="index.html" class="text-2xl font-semibold text-indigo-600">James Gregory Walsh</a>
       <div class="sm:hidden">
-        <button onclick="toggleMenu()" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false">
+        <button onclick="toggleMenu()" class="text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
           <span class="sr-only">Toggle menu</span>
         </button>
       </div>
-      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
-        <a href="about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
-        <a href="resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
-        <a href="projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Projects</a>
-        <a href="contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+      <nav class="hidden sm:flex space-x-6 text-sm" role="navigation" aria-label="Main navigation">
+        <a href="about.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">About</a>
+        <a href="resume.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Résumé</a>
+        <a href="projects.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Projects</a>
+        <a href="contact.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Contact</a>
       </nav>
     </div>
-    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" role="navigation" aria-label="Mobile navigation">
-      <a href="about.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
-      <a href="resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
-      <a href="projects.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Projects</a>
-      <a href="contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4" role="navigation" aria-label="Mobile navigation">
+      <a href="about.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">About</a>
+      <a href="resume.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Résumé</a>
+      <a href="projects.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Projects</a>
+      <a href="contact.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Contact</a>
     </div>
   </header>
 
   <main id="main-content" class="flex-grow">
-    <section id="hero" class="text-center py-20 sm:py-28 px-4">
+    
+    <section id="hero" aria-labelledby="hero-heading" class="text-center py-20 sm:py-28 px-4">
       <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-navy animate-fade-in">Psychology Graduate & Mental Health Specialist</h1>
-        <p class="text-lg text-slate-700 mb-10 max-w-2xl mx-auto animate-fade-in">
-          As a psychology graduate with extensive clinical experience in the mental health field, I am dedicated to integrity and mission-driven service. My background in crisis intervention and behavioral analysis makes me poised to enhance organizational impact, research, and strategic initiatives across diverse sectors.
+        <h1 id="hero-heading" class="text-3xl sm:text-4xl font-bold mb-6 text-indigo-600 animate-fade-in">Psychology Graduate & Mental Health Specialist</h1>
+        <p class="text-lg text-slate-600 mb-10 max-w-2xl mx-auto animate-fade-in">
+          A dedicated professional leveraging a background in behavioral science, statistical analysis, and data-driven insights to enhance organizational strategy, safety, and operational integrity in both public and private sectors.
         </p>
         <div class="flex flex-wrap justify-center items-center gap-4 animate-fade-in">
-          <a href="resume.html" class="w-full sm:w-auto px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-sage">View Résumé</a>
-          <a href="contact.html" class="w-full sm:w-auto px-6 py-3 border border-navy text-navy rounded-lg hover:bg-navy/5 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-sage">Get in Touch</a>
-          <a href="assets/J. Gregory Walsh.vcf" download="J. Gregory Walsh.vcf" class="w-full sm:w-auto px-6 py-3 border border-sage text-sage rounded-lg hover:bg-sage/10 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-sage">Add to Contacts</a>
-        </div>
-        <div class="mt-8 flex flex-col items-center gap-4">
-          <img src="https://placehold.co/96x96/ffffff/1e3a8a?text=QR" alt="QR code linking to J. Gregory Walsh's professional profile" class="w-24 h-24 animate-scale-hover" aria-describedby="qr-description" loading="lazy">
-          <p id="qr-description" class="text-sm text-slate-600">Scan to visit my profile or download contact details.</p>
+          <a href="resume.html" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">View Résumé</a>
+          <a href="contact.html" class="w-full sm:w-auto px-6 py-3 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">Get in Touch</a>
+          <a href="assets/J. Gregory Walsh.vcf" download="J. Gregory Walsh.vcf" class="w-full sm:w-auto px-6 py-3 border border-teal-500 text-teal-600 rounded-lg hover-bg-teal-100 transition-colors text-center font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">Add to Contacts</a>
         </div>
       </div>
     </section>
 
-    <section id="featured-project" aria-labelledby="featured-project-heading" class="bg-white py-16 px-4">
-      <div class="max-w-6xl mx-auto text-center">
-        <h2 id="featured-project-heading" class="text-3xl sm:text-4xl font-bold mb-10 text-navy animate-fade-in">Featured Projects</h2>
-        <div class="grid md:grid-cols-2 gap-10 text-left">
-          
-          <div class="bg-slate-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
-            <h3 class="text-xl font-semibold text-gray-800">Crime Analysis Report: Albany, NY (2021-2024)</h3>
-            <p class="text-sm text-gray-500 mb-4">Date: March 21, 2025</p>
-            <p class="text-slate-700 mb-6 flex-grow">
-              This report analyzes crime trends in Albany, New York, from 2021 to 2024, using data from a FOIL request to the Albany Police Department. The analysis covers total crimes, violent crime categories, neighborhood distribution, case resolution rates, and police response times. Key findings include a 2023 peak in total crimes, a rise in specific violent offenses in 2024, and high rates of unresolved cases in certain areas.
-            </p>
-            <div class="chart-container mb-6" role="img" aria-label="Bar chart illustrating Part I Violent Crimes in Albany from 2021-2024">
-              <canvas id="project-chart" style="max-height: 250px;"></canvas>
-            </div>
-            <div class="mt-auto pt-4">
-              <a href="project-crime-analysis.html" class="inline-block w-full text-center px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage mb-2">View Project Details</a>
-              <a href="https://www.albany.watch/reports/Crime-Analysis-Report.pdf" target="_blank" rel="noopener noreferrer" class="inline-block w-full text-center px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/80 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage">View Full Report (PDF)</a>
-            </div>
-          </div>
-    
-          <div class="bg-slate-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
-            <h3 class="text-xl font-semibold text-gray-800">Personal Career Profile Website</h3>
-            <p class="text-sm text-gray-500 mb-4">Technology: HTML, Tailwind CSS, Cloudflare</p>
-            <p class="text-slate-700 mb-6 flex-grow">
-              Developed a personal career profile website to showcase skills and experience in behavioral science and public service. The site is built with semantic HTML and Tailwind CSS, and hosted on Cloudflare Pages. It features a fully responsive design, is optimized for SEO and accessibility (WCAG 2.1 AA), and serves as a central hub for professional inquiries.
-            </p>
-            <img src="https://placehold.co/600x400/1e3a8a/ffffff?text=jgwalsh.com" alt="Screenshot of the jgwalsh.com homepage" class="rounded-lg mb-6">
-            <div class="mt-auto pt-4">
-              <a href="https://github.com/jgwalsh02134/jgwalsh-career-profile" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full text-center px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-sage">
-                <img src="https://iconsusa.org/assets/icons_copy/github.svg" alt="GitHub" class="w-5 h-5 mr-2" />
-                <span>View on GitHub</span>
-              </a>
-            </div>
-          </div>
-    
-        </div>
-      </div>
-    </section>
+    <section id="competencies" aria-labelledby="competencies-heading" class="bg-white py-16 px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 id="competencies-heading" class="text-3xl font-bold text-indigo-600 mb-8 text-center">Core Competencies</h2>
+        <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
+            <ul class="space-y-4 text-slate-600">
+                <li class="flex items-start">
+                    <svg class="w-6 h-6 text-teal-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" strokeLinejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9...
+
   </main>
 
   <footer class="bg-gray-100 text-sm text-gray-600 border-t pt-8 pb-6 px-4 mt-auto">
