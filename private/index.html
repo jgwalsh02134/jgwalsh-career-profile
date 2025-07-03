@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Private Dashboard – J. Gregory Walsh</title>
   <script>
-    // Parse email from the Access JWT
     function getEmailFromJwt() {
       const jwt = document.cookie
         .split('; ')
@@ -39,10 +38,6 @@
       </section>
 
       <section class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <a href="/private/resume.html" class="block bg-white border rounded-lg p-4 hover:shadow">
-          <h3 class="font-semibold">Private Résumé</h3>
-          <p class="text-sm text-gray-500">PDF and annotated résumé with internal notes</p>
-        </a>
         <a href="/private/notes.html" class="block bg-white border rounded-lg p-4 hover:shadow">
           <h3 class="font-semibold">Secure Notes</h3>
           <p class="text-sm text-gray-500">View personal notes or upload private markdown</p>
@@ -50,6 +45,10 @@
         <a href="/private/caselog.html" class="block bg-white border rounded-lg p-4 hover:shadow">
           <h3 class="font-semibold">Case Log</h3>
           <p class="text-sm text-gray-500">Track your working files, findings, and drafts</p>
+        </a>
+        <a href="/private/applications.html" class="block bg-white border rounded-lg p-4 hover:shadow">
+          <h3 class="font-semibold">Application Materials</h3>
+          <p class="text-sm text-gray-500">Store and organize tailored documents for role submissions</p>
         </a>
         <a href="https://dash.cloudflare.com/logout" class="block bg-white border rounded-lg p-4 hover:shadow">
           <h3 class="font-semibold text-red-600">Logout</h3>
