@@ -30,6 +30,13 @@
       <button type="submit" class="bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900">Save Note</button>
       <p class="text-xs text-slate-500">Notes are saved to secure Cloudflare KV storage. Session required.</p>
     </form>
+    <!-- Saved Notes Display -->
+    <section class="mt-10 border-t pt-6">
+      <h2 class="text-lg font-serif font-semibold mb-3 text-slate-800">Saved Notes</h2>
+      <div id="notesList" class="space-y-4 text-sm text-slate-700">
+        <p>Loading saved notes…</p>
+      </div>
+    </section>
 
     <footer class="mt-6 text-sm text-slate-600">
       <a href="/private/index.html" class="text-blue-700 hover:underline">&larr; Return to dashboard</a>
@@ -80,7 +87,38 @@
       }
     });
 
+    async function loadSavedNotes() {
+      const container = document.getElementById('notesList');
+      container.innerHTML = '';
+
+      try {
+        const response = await fetch("https://notes-worker.jgregorywalsh.workers.dev/notes");
+        if (!response.ok) throw new Error("Failed to load");
+
+        const notes = await response.json();
+        if (!Array.isArray(notes) || notes.length === 0) {
+          container.innerHTML = '<p class="text-slate-500">No saved notes found.</p>';
+          return;
+        }
+
+        notes.forEach(({ title, body, timestamp }) => {
+          const div = document.createElement('div');
+          div.className = 'border border-slate-300 rounded p-4 bg-white shadow-sm';
+          div.innerHTML = `
+            <h3 class="font-semibold text-slate-900">${title}</h3>
+            <p class="text-xs text-slate-400 mb-2">${new Date(timestamp).toLocaleString()}</p>
+            <p>${body}</p>
+          `;
+          container.appendChild(div);
+        });
+
+      } catch (err) {
+        container.innerHTML = `<p class="text-red-500">Error loading notes.</p>`;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', setUserEmail);
+    document.addEventListener('DOMContentLoaded', loadSavedNotes);
   </script>
 </body>
 </html>
