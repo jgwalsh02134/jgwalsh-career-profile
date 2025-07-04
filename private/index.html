@@ -4,64 +4,105 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Private Dashboard – J. Gregory Walsh</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
   <script>
-    function getEmailFromJwt() {
+    // Decode JWT from Cloudflare Access
+    function parseJwtPayload(jwt) {
+      try {
+        const payload = jwt.split('.')[1];
+        return JSON.parse(atob(payload));
+      } catch {
+        return null;
+      }
+    }
+
+    function updateUserSessionInfo() {
       const jwt = document.cookie
         .split('; ')
         .find(row => row.startsWith('CF_Authorization='))
         ?.split('=')[1];
-      if (!jwt) return 'Authenticated user';
-      try {
-        const payload = JSON.parse(atob(jwt.split('.')[1]));
-        return payload.email || payload.sub || 'Authenticated user';
-      } catch {
-        return 'Authenticated user';
+
+      if (!jwt) return;
+
+      const payload = parseJwtPayload(jwt);
+      if (!payload) return;
+
+      document.getElementById('userEmail').textContent = payload.email || 'Authenticated user';
+      document.getElementById('sessionStart').textContent = new Date(payload.iat * 1000).toLocaleString();
+      document.getElementById('sessionEnd').textContent = new Date(payload.exp * 1000).toLocaleString();
+
+      // Live countdown
+      const countdown = document.getElementById('sessionCountdown');
+      function updateCountdown() {
+        const now = Date.now();
+        const secondsLeft = Math.floor((payload.exp * 1000 - now) / 1000);
+        if (secondsLeft <= 0) {
+          countdown.textContent = "Session expired.";
+          return;
+        }
+        const hrs = Math.floor(secondsLeft / 3600);
+        const mins = Math.floor((secondsLeft % 3600) / 60);
+        const secs = secondsLeft % 60;
+        countdown.textContent = `${hrs}h ${mins}m ${secs}s`;
+        requestAnimationFrame(updateCountdown);
       }
+      updateCountdown();
     }
+
+    function detectClientInfo() {
+      document.getElementById('clientIP').textContent = 'Detecting via edge…';
+      document.getElementById('clientUA').textContent = navigator.userAgent;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('userEmail').textContent = getEmailFromJwt();
+      updateUserSessionInfo();
+      detectClientInfo();
     });
   </script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans antialiased">
-  <div class="max-w-4xl mx-auto p-8">
-    <header class="mb-10 border-b pb-4">
-      <h1 class="text-3xl font-serif font-semibold text-black mb-1">Private Administrative Dashboard</h1>
-      <p class="text-sm text-gray-600">Access granted to: <span id="userEmail" class="font-medium text-gray-800">Loading…</span></p>
+  <div class="max-w-4xl mx-auto px-4 py-6">
+    <header class="mb-6 border-b pb-4">
+      <h1 class="text-3xl font-serif font-semibold text-black">Private Administrative Dashboard</h1>
+      <div class="text-sm text-gray-700 mt-2 space-y-1">
+        <p><strong>User:</strong> <span id="userEmail" class="text-gray-900">Loading…</span></p>
+        <p><strong>IP Address:</strong> <span id="clientIP">Detecting…</span></p>
+        <p><strong>Browser:</strong> <span id="clientUA">Detecting…</span></p>
+        <p><strong>Session started:</strong> <span id="sessionStart">–</span></p>
+        <p><strong>Session ends:</strong> <span id="sessionEnd">–</span></p>
+        <p><strong>Time remaining:</strong> <span id="sessionCountdown" class="font-mono text-blue-700">–</span></p>
+      </div>
     </header>
 
-    <section class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+    <main class="grid grid-cols-1 sm:grid-cols-2 gap-6">
       <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
-        <h2 class="text-lg font-semibold mb-1">Secure Notes</h2>
-        <p class="text-sm text-gray-600 mb-2">View private markdown entries or personal reflections.</p>
+        <h2 class="text-lg font-serif font-semibold mb-1">Secure Notes</h2>
+        <p class="text-sm text-gray-600 mb-2">View private markdown entries or internal notes.</p>
         <a href="/private/notes.html" class="text-blue-700 text-sm font-medium underline">Open notes</a>
       </div>
 
       <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
-        <h2 class="text-lg font-semibold mb-1">Case Log</h2>
+        <h2 class="text-lg font-serif font-semibold mb-1">Case Log</h2>
         <p class="text-sm text-gray-600 mb-2">Track internal observations, research, or field notes.</p>
         <a href="/private/caselog.html" class="text-blue-700 text-sm font-medium underline">Open log</a>
       </div>
 
       <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
-        <h2 class="text-lg font-semibold mb-1">Application Materials</h2>
-        <p class="text-sm text-gray-600 mb-2">Tailored cover letters, supplemental documents, and role-specific materials.</p>
+        <h2 class="text-lg font-serif font-semibold mb-1">Application Materials</h2>
+        <p class="text-sm text-gray-600 mb-2">Tailored cover letters, SF-85/86 responses, and supporting documents.</p>
         <a href="/private/applications.html" class="text-blue-700 text-sm font-medium underline">View materials</a>
       </div>
 
       <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
-        <h2 class="text-lg font-semibold mb-1 text-red-700">Secure Documents</h2>
-        <p class="text-sm text-gray-600 mb-2">Access sensitive documents such as scanned IDs, SSN card, and verification records.</p>
+        <h2 class="text-lg font-serif font-semibold text-red-700 mb-1">Secure Documents</h2>
+        <p class="text-sm text-gray-600 mb-2">Access scanned IDs, SSN card, and verified identity records.</p>
         <a href="/private/docs/index.html" class="text-red-700 text-sm font-medium underline">View documents</a>
       </div>
-    </section>
+    </main>
 
-    <footer class="mt-12 pt-4 border-t text-sm text-gray-500">
-      <p>This dashboard is protected by Cloudflare Zero Trust. Sessions expire after 12 hours of inactivity.</p>
-      <p class="mt-1">
-        <a href="https://dash.cloudflare.com/logout" class="underline text-gray-600">Sign out</a>
-      </p>
+    <footer class="mt-10 pt-4 border-t text-sm text-gray-500">
+      <p>This interface is protected by Cloudflare Zero Trust. Sessions expire automatically after 12 hours.</p>
+      <p><a href="https://dash.cloudflare.com/logout" class="underline text-gray-600">Log out</a></p>
     </footer>
   </div>
 </body>
