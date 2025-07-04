@@ -24,38 +24,45 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
-  <div class="max-w-3xl mx-auto p-8">
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">Private Dashboard</h1>
+<body class="bg-gray-100 text-gray-900 font-sans antialiased">
+  <div class="max-w-4xl mx-auto p-8">
+    <header class="mb-10 border-b pb-4">
+      <h1 class="text-3xl font-serif font-semibold text-black mb-1">Private Administrative Dashboard</h1>
       <p class="text-sm text-gray-600">Access granted to: <span id="userEmail" class="font-medium text-gray-800">Loading…</span></p>
     </header>
 
-    <main class="space-y-6">
-      <section class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-xl font-semibold mb-2">Welcome</h2>
-        <p>This area is secured by Cloudflare Access. Only authenticated users may view and interact with the tools below.</p>
-      </section>
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+      <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
+        <h2 class="text-lg font-semibold mb-1">Secure Notes</h2>
+        <p class="text-sm text-gray-600 mb-2">View private markdown entries or personal reflections.</p>
+        <a href="/private/notes.html" class="text-blue-700 text-sm font-medium underline">Open notes</a>
+      </div>
 
-      <section class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <a href="/private/notes.html" class="block bg-white border rounded-lg p-4 hover:shadow">
-          <h3 class="font-semibold">Secure Notes</h3>
-          <p class="text-sm text-gray-500">View personal notes or upload private markdown</p>
-        </a>
-        <a href="/private/caselog.html" class="block bg-white border rounded-lg p-4 hover:shadow">
-          <h3 class="font-semibold">Case Log</h3>
-          <p class="text-sm text-gray-500">Track your working files, findings, and drafts</p>
-        </a>
-        <a href="/private/applications.html" class="block bg-white border rounded-lg p-4 hover:shadow">
-          <h3 class="font-semibold">Application Materials</h3>
-          <p class="text-sm text-gray-500">Store and organize tailored documents for role submissions</p>
-        </a>
-        <a href="https://dash.cloudflare.com/logout" class="block bg-white border rounded-lg p-4 hover:shadow">
-          <h3 class="font-semibold text-red-600">Logout</h3>
-          <p class="text-sm text-gray-500">Clear your Cloudflare Access session</p>
-        </a>
-      </section>
-    </main>
+      <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
+        <h2 class="text-lg font-semibold mb-1">Case Log</h2>
+        <p class="text-sm text-gray-600 mb-2">Track internal observations, research, or field notes.</p>
+        <a href="/private/caselog.html" class="text-blue-700 text-sm font-medium underline">Open log</a>
+      </div>
+
+      <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
+        <h2 class="text-lg font-semibold mb-1">Application Materials</h2>
+        <p class="text-sm text-gray-600 mb-2">Tailored cover letters, supplemental documents, and role-specific materials.</p>
+        <a href="/private/applications.html" class="text-blue-700 text-sm font-medium underline">View materials</a>
+      </div>
+
+      <div class="bg-white border border-gray-300 rounded-md p-5 shadow-sm">
+        <h2 class="text-lg font-semibold mb-1 text-red-700">Secure Documents</h2>
+        <p class="text-sm text-gray-600 mb-2">Access sensitive documents such as scanned IDs, SSN card, and verification records.</p>
+        <a href="/private/docs/index.html" class="text-red-700 text-sm font-medium underline">View documents</a>
+      </div>
+    </section>
+
+    <footer class="mt-12 pt-4 border-t text-sm text-gray-500">
+      <p>This dashboard is protected by Cloudflare Zero Trust. Sessions expire after 12 hours of inactivity.</p>
+      <p class="mt-1">
+        <a href="https://dash.cloudflare.com/logout" class="underline text-gray-600">Sign out</a>
+      </p>
+    </footer>
   </div>
 </body>
 </html>
