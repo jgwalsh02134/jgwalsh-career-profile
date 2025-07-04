@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Secure Notes – J. Gregory Walsh</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
     .font-serif { font-family: 'DM Serif Display', serif; }
     pre { white-space: pre-wrap; word-break: break-word; }
+    .note-preview { display: none; padding: 1rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; margin-top: 1rem; }
   </style>
 </head>
 <body class="text-slate-800">
@@ -24,6 +26,10 @@
         <h2 class="text-lg font-semibold font-serif mb-4 text-slate-800">New Note</h2>
         <input id="noteTitle" class="w-full mb-3 border border-slate-300 rounded p-2 text-sm" type="text" placeholder="Title">
         <textarea id="noteBody" class="w-full border border-slate-300 rounded p-2 text-sm font-mono text-slate-800 h-32" placeholder="Body..."></textarea>
+        <div class="mt-2">
+          <label class="text-sm"><input type="checkbox" id="togglePreview" onchange="togglePreview()" /> Show Preview</label>
+        </div>
+        <div id="previewPanel" class="note-preview"></div>
         <button onclick="saveNote()" class="mt-3 bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900">Save Note</button>
         <p class="mt-2 text-xs text-slate-500">Notes are saved to secure Cloudflare KV storage. Session required.</p>
       </section>
@@ -46,36 +52,67 @@
     let prevCursors = [];
     let notes = [];
 
-    async function saveNote() {
-      const title = document.getElementById('noteTitle').value;
-      const body = document.getElementById('noteBody').value;
-      if (!title || !body) return alert("Both title and body are required.");
+    const titleInput = document.getElementById('noteTitle');
+    const bodyInput = document.getElementById('noteBody');
+    const previewPanel = document.getElementById('previewPanel');
+    const togglePreviewBox = document.getElementById('togglePreview');
 
-      const res = await fetch("https://notes-worker.jgregorywalsh.workers.dev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, body })
-      });
-
-      if (res.ok) {
-        document.getElementById('noteTitle').value = '';
-        document.getElementById('noteBody').value = '';
-        cursor = null; prevCursors = []; await loadNotes();
+    function togglePreview() {
+      if (togglePreviewBox.checked) {
+        previewPanel.style.display = 'block';
+        previewPanel.innerHTML = marked.parse(bodyInput.value);
       } else {
-        alert("Error saving note.");
+        previewPanel.style.display = 'none';
       }
     }
 
-    async function deleteNote(key) {
-      const confirmed = confirm("Are you sure you want to delete this note?");
-      if (!confirmed) return;
+    bodyInput.addEventListener('input', () => {
+      if (togglePreviewBox.checked) {
+        previewPanel.innerHTML = marked.parse(bodyInput.value);
+      }
+      localStorage.setItem('noteDraftBody', bodyInput.value);
+    });
 
-      const res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev?key=${encodeURIComponent(key)}`, {
-        method: "DELETE"
+    titleInput.addEventListener('input', () => {
+      localStorage.setItem('noteDraftTitle', titleInput.value);
+    });
+
+    function saveNote() {
+      const title = titleInput.value.trim();
+      const body = bodyInput.value.trim();
+      if (!title || !body) return alert("Both title and body are required.");
+
+      fetch("https://notes-worker.jgregorywalsh.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, body })
+      }).then(res => {
+        if (res.ok) {
+          titleInput.value = '';
+          bodyInput.value = '';
+          localStorage.removeItem('noteDraftTitle');
+          localStorage.removeItem('noteDraftBody');
+          loadNotes();
+        } else {
+          alert("Error saving note.");
+        }
       });
+    }
 
-      if (res.ok) loadNotes();
-      else alert("Error deleting note.");
+    function deleteNote(key) {
+      if (!confirm("Delete this note?")) return;
+      fetch(`https://notes-worker.jgregorywalsh.workers.dev?key=${encodeURIComponent(key)}`, {
+        method: "DELETE"
+      }).then(res => {
+        if (res.ok) loadNotes();
+        else alert("Delete failed.");
+      });
+    }
+
+    function duplicateNote(title, body) {
+      titleInput.value = title + " (copy)";
+      bodyInput.value = body;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderNotes() {
@@ -90,23 +127,17 @@
       }
 
       for (const note of filtered) {
-        const date = new Date(note.timestamp);
-        const options = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-          timeZone: 'UTC',
-          timeZoneName: 'short'
-        };
-        const formatted = date.toLocaleString('en-US', options);
         const div = document.createElement('div');
         div.className = 'bg-white border border-slate-200 rounded p-4 shadow-sm relative';
-        div.innerHTML = `<strong>${note.title}</strong><p class="text-sm mt-1">${note.body}</p>
-          <p class="text-xs mt-2 text-slate-500">${formatted}</p>
-          <button onclick="deleteNote('${note.key}')" class="absolute top-2 right-3 text-xs text-red-600 hover:underline">Delete</button>`;
+        div.innerHTML = `
+          <strong>${note.title}</strong>
+          <p class="text-sm mt-1">${note.body}</p>
+          <p class="text-xs mt-2 text-slate-500">${new Date(note.timestamp || Date.now()).toLocaleString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'UTC', timeZoneName: 'short'})}</p>
+          <div class="absolute top-2 right-3 space-x-2">
+            <button onclick="duplicateNote('${note.title}', '${note.body.replace(/'/g, "\'") || ''}')" class="text-xs text-blue-600 hover:underline">Duplicate</button>
+            <button onclick="deleteNote('${note.key}')" class="text-xs text-red-600 hover:underline">Delete</button>
+          </div>`;
         container.appendChild(div);
       }
     }
@@ -132,7 +163,7 @@
       document.getElementById('nextBtn').disabled = !data.cursor;
     }
 
-    async function setUser() {
+    function setUser() {
       const jwt = document.cookie.split('; ').find(r => r.startsWith('CF_Authorization='))?.split('=')[1];
       if (!jwt) return;
       try {
@@ -143,6 +174,10 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       setUser();
+      const savedTitle = localStorage.getItem('noteDraftTitle');
+      const savedBody = localStorage.getItem('noteDraftBody');
+      if (savedTitle) document.getElementById('noteTitle').value = savedTitle;
+      if (savedBody) document.getElementById('noteBody').value = savedBody;
       loadNotes();
     });
   </script>
