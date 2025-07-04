@@ -90,10 +90,22 @@
       }
 
       for (const note of filtered) {
+        const date = new Date(note.timestamp);
+        const options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+          timeZone: 'UTC',
+          timeZoneName: 'short'
+        };
+        const formatted = date.toLocaleString('en-US', options);
         const div = document.createElement('div');
         div.className = 'bg-white border border-slate-200 rounded p-4 shadow-sm relative';
         div.innerHTML = `<strong>${note.title}</strong><p class="text-sm mt-1">${note.body}</p>
-          <p class="text-xs mt-2 text-slate-500">${note.timestamp || ''}</p>
+          <p class="text-xs mt-2 text-slate-500">${formatted}</p>
           <button onclick="deleteNote('${note.key}')" class="absolute top-2 right-3 text-xs text-red-600 hover:underline">Delete</button>`;
         container.appendChild(div);
       }
