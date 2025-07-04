@@ -6,180 +6,119 @@
   <title>Secure Notes – J. Gregory Walsh</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
-    .font-serif { font-family: 'DM Serif Display', serif; }
-    pre { white-space: pre-wrap; word-break: break-word; }
-    .note-preview { display: none; padding: 1rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 0.375rem; margin-top: 1rem; }
+    .note-preview code { background-color: #f3f4f6; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+    .note-preview table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .note-preview th, .note-preview td { border: 1px solid #d1d5db; padding: 0.5rem; }
+    .note-preview th { background-color: #f3f4f6; text-align: left; }
+    .collapsible { cursor: pointer; }
   </style>
 </head>
 <body class="text-slate-800">
-  <div class="max-w-2xl mx-auto px-6 py-10">
+  <div class="max-w-3xl mx-auto px-6 py-10">
     <header class="mb-8">
-      <h1 class="text-3xl font-serif font-bold text-slate-900 mb-2">Secure Notes</h1>
-      <p class="text-sm text-slate-700">Access granted to <code id="userEmail">authenticated user</code></p>
+      <h1 class="text-3xl font-semibold text-slate-900">Secure Notes</h1>
+      <p class="text-sm text-slate-600">Access granted to <code id="userEmail">...</code></p>
     </header>
 
     <main>
       <section class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-8">
-        <h2 class="text-lg font-semibold font-serif mb-4 text-slate-800">New Note</h2>
-        <input id="noteTitle" class="w-full mb-3 border border-slate-300 rounded p-2 text-sm" type="text" placeholder="Title">
-        <textarea id="noteBody" class="w-full border border-slate-300 rounded p-2 text-sm font-mono text-slate-800 h-32" placeholder="Body..."></textarea>
-        <div class="mt-2">
-          <label class="text-sm"><input type="checkbox" id="togglePreview" onchange="togglePreview()" /> Show Preview</label>
+        <h2 class="text-lg font-semibold mb-4">New Note</h2>
+        <input id="noteTitle" type="text" placeholder="Title" class="w-full border border-slate-300 rounded p-2 mb-2" />
+        <textarea id="noteBody" placeholder="Body..." class="w-full border border-slate-300 rounded p-2 mb-2 h-32"></textarea>
+        <div class="mb-2">
+          <button onclick="togglePreview()" class="text-sm text-blue-600 hover:underline">↕ Show Preview</button>
         </div>
-        <div id="previewPanel" class="note-preview"></div>
-        <button onclick="saveNote()" class="mt-3 bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900">Save Note</button>
-        <p class="mt-2 text-xs text-slate-500">Notes are saved to secure Cloudflare KV storage. Session required.</p>
+        <div id="preview" class="note-preview prose prose-slate hidden border p-3 bg-slate-50 rounded"></div>
+        <button onclick="saveNote()" class="bg-slate-800 text-white px-4 py-2 rounded">Save Note</button>
+        <p class="text-xs text-slate-500 mt-2">Notes are saved to secure Cloudflare KV storage. Session required.</p>
       </section>
 
-      <section class="mb-6">
-        <input id="searchInput" class="w-full mb-4 border border-slate-300 rounded p-2 text-sm" type="text" placeholder="Search notes..." oninput="renderNotes()">
-        <div id="notesList" class="space-y-4"></div>
-        <div class="mt-4 flex justify-between">
-          <button id="prevBtn" onclick="loadNotes(true)" class="text-sm text-blue-700 hover:underline" disabled>&larr; Previous</button>
-          <button id="nextBtn" onclick="loadNotes()" class="text-sm text-blue-700 hover:underline" disabled>Next &rarr;</button>
-        </div>
-      </section>
+      <input type="text" id="searchInput" placeholder="Search notes..." class="mb-4 w-full border border-slate-300 rounded p-2" oninput="filterNotes()" />
 
-      <a href="/private/index.html" class="text-blue-700 text-sm hover:underline">&larr; Return to dashboard</a>
+      <section id="notesContainer" class="space-y-4"></section>
+
+      <section class="text-sm text-slate-600 border-t pt-6 mt-8">
+        <a href="/private/index.html" class="text-blue-700 hover:underline font-medium">← Return to dashboard</a>
+      </section>
     </main>
   </div>
 
   <script>
-    let cursor = null;
-    let prevCursors = [];
-    let notes = [];
+    const endpoint = 'https://notes-worker.jgregorywalsh.workers.dev';
 
-    const titleInput = document.getElementById('noteTitle');
-    const bodyInput = document.getElementById('noteBody');
-    const previewPanel = document.getElementById('previewPanel');
-    const togglePreviewBox = document.getElementById('togglePreview');
-
-    function togglePreview() {
-      if (togglePreviewBox.checked) {
-        previewPanel.style.display = 'block';
-        previewPanel.innerHTML = marked.parse(bodyInput.value);
-      } else {
-        previewPanel.style.display = 'none';
-      }
-    }
-
-    bodyInput.addEventListener('input', () => {
-      if (togglePreviewBox.checked) {
-        previewPanel.innerHTML = marked.parse(bodyInput.value);
-      }
-      localStorage.setItem('noteDraftBody', bodyInput.value);
-    });
-
-    titleInput.addEventListener('input', () => {
-      localStorage.setItem('noteDraftTitle', titleInput.value);
-    });
-
-    function saveNote() {
-      const title = titleInput.value.trim();
-      const body = bodyInput.value.trim();
-      if (!title || !body) return alert("Both title and body are required.");
-
-      fetch("https://notes-worker.jgregorywalsh.workers.dev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, body })
-      }).then(res => {
-        if (res.ok) {
-          titleInput.value = '';
-          bodyInput.value = '';
-          localStorage.removeItem('noteDraftTitle');
-          localStorage.removeItem('noteDraftBody');
-          loadNotes();
-        } else {
-          alert("Error saving note.");
-        }
-      });
-    }
-
-    function deleteNote(key) {
-      if (!confirm("Delete this note?")) return;
-      fetch(`https://notes-worker.jgregorywalsh.workers.dev?key=${encodeURIComponent(key)}`, {
-        method: "DELETE"
-      }).then(res => {
-        if (res.ok) loadNotes();
-        else alert("Delete failed.");
-      });
-    }
-
-    function duplicateNote(title, body) {
-      titleInput.value = title + " (copy)";
-      bodyInput.value = body;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function renderNotes() {
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      const container = document.getElementById('notesList');
-      container.innerHTML = '';
-      const filtered = notes.filter(n => n.title.toLowerCase().includes(query) || n.body.toLowerCase().includes(query));
-
-      if (!filtered.length) {
-        container.innerHTML = '<p class="text-sm text-red-600">No matching notes found.</p>';
-        return;
-      }
-
-      for (const note of filtered) {
-        const div = document.createElement('div');
-        div.className = 'bg-white border border-slate-200 rounded p-4 shadow-sm relative';
-        div.innerHTML = `
-          <strong>${note.title}</strong>
-          <p class="text-sm mt-1">${note.body}</p>
-          <p class="text-xs mt-2 text-slate-500">${new Date(note.timestamp || Date.now()).toLocaleString('en-US', {
-            year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'UTC', timeZoneName: 'short'})}</p>
-          <div class="absolute top-2 right-3 space-x-2">
-            <button onclick="duplicateNote('${note.title}', '${note.body.replace(/'/g, "\'") || ''}')" class="text-xs text-blue-600 hover:underline">Duplicate</button>
-            <button onclick="deleteNote('${note.key}')" class="text-xs text-red-600 hover:underline">Delete</button>
-          </div>`;
-        container.appendChild(div);
-      }
-    }
-
-    async function loadNotes(prev = false) {
-      const endpoint = `https://notes-worker.jgregorywalsh.workers.dev?limit=10${cursor && !prev ? `&cursor=${cursor}` : ''}`;
-      const res = await fetch(endpoint);
-
-      if (!res.ok) {
-        document.getElementById('notesList').innerHTML = '<p class="text-red-600">Error loading notes.</p>';
-        return;
-      }
-
-      const data = await res.json();
-      notes = data.notes;
-      renderNotes();
-
-      if (prev && prevCursors.length > 1) prevCursors.pop();
-      if (!prev) prevCursors.push(cursor);
-
-      cursor = data.cursor;
-      document.getElementById('prevBtn').disabled = prevCursors.length <= 1;
-      document.getElementById('nextBtn').disabled = !data.cursor;
+    function parseJwtPayload(jwt) {
+      try {
+        const payload = jwt.split('.')[1];
+        const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+        return JSON.parse(decodedPayload);
+      } catch { return null; }
     }
 
     function setUser() {
-      const jwt = document.cookie.split('; ').find(r => r.startsWith('CF_Authorization='))?.split('=')[1];
+      const jwt = document.cookie.split('; ').find(row => row.startsWith('CF_Authorization='))?.split('=')[1];
       if (!jwt) return;
-      try {
-        const payload = JSON.parse(atob(jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-        document.getElementById('userEmail').textContent = payload.email;
-      } catch {}
+      const payload = parseJwtPayload(jwt);
+      document.getElementById('userEmail').textContent = payload?.email || 'Authenticated user';
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      setUser();
-      const savedTitle = localStorage.getItem('noteDraftTitle');
-      const savedBody = localStorage.getItem('noteDraftBody');
-      if (savedTitle) document.getElementById('noteTitle').value = savedTitle;
-      if (savedBody) document.getElementById('noteBody').value = savedBody;
-      loadNotes();
-    });
-  </script>
-</body>
-</html>
+    function togglePreview() {
+      const body = document.getElementById('noteBody').value;
+      const preview = document.getElementById('preview');
+      preview.innerHTML = marked.parse(body);
+      preview.classList.toggle('hidden');
+    }
+
+    async function saveNote() {
+      const title = document.getElementById('noteTitle').value;
+      const body = document.getElementById('noteBody').value;
+      if (!title || !body) return alert("Both fields required.");
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, body })
+      });
+
+      if (res.ok) {
+        document.getElementById('noteTitle').value = '';
+        document.getElementById('noteBody').value = '';
+        loadNotes();
+      } else {
+        alert("Error saving note.");
+      }
+    }
+
+    async function loadNotes() {
+      const container = document.getElementById('notesContainer');
+      container.innerHTML = '<p class="text-slate-500 text-sm">Loading…</p>';
+      try {
+        const res = await fetch(endpoint);
+        const json = await res.json();
+        if (!Array.isArray(json.notes)) throw new Error();
+
+        window.allNotes = json.notes;
+        displayNotes(json.notes);
+      } catch {
+        container.innerHTML = '<p class="text-red-600 text-sm">Error loading notes.</p>';
+      }
+    }
+
+    function displayNotes(notes) {
+      const container = document.getElementById('notesContainer');
+      container.innerHTML = '';
+
+      notes.forEach(({ title, body, timestamp, id }) => {
+        const note = document.createElement('div');
+        note.className = "bg-white border border-slate-200 rounded p-4 shadow-sm";
+        const dateStr = new Date(timestamp).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' });
+
+        note.innerHTML = `
+          <h3 class="font-semibold text-slate-900">${title}</h3>
+          <div class="text-slate-600 text-sm mb-2">${dateStr}</div>
+          <div class="prose prose-sm prose-slate">${marked.parse(body)}</div>
+          <div class="mt-3 flex gap-4">
+            <button onclick="deleteNote('${id}')" class="text-red-600 text-xs font-medium hover:underline">Delete</button>
+            <button onclick="duplicateNote('${title.replace(/'/g, "&#39;")}', 
