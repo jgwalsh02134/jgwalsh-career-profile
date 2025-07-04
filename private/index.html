@@ -6,7 +6,6 @@
   <title>Private Dashboard – J. Gregory Walsh</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
   <script>
-    // Decode JWT from Cloudflare Access
     function parseJwtPayload(jwt) {
       try {
         const payload = jwt.split('.')[1];
@@ -21,23 +20,21 @@
         .split('; ')
         .find(row => row.startsWith('CF_Authorization='))
         ?.split('=')[1];
-
       if (!jwt) return;
 
       const payload = parseJwtPayload(jwt);
       if (!payload) return;
 
-      document.getElementById('userEmail').textContent = payload.email || 'Authenticated user';
+      document.getElementById('userEmail').textContent = '@' + (payload.email || 'unknown');
       document.getElementById('sessionStart').textContent = new Date(payload.iat * 1000).toLocaleString();
       document.getElementById('sessionEnd').textContent = new Date(payload.exp * 1000).toLocaleString();
 
-      // Live countdown
       const countdown = document.getElementById('sessionCountdown');
       function updateCountdown() {
         const now = Date.now();
         const secondsLeft = Math.floor((payload.exp * 1000 - now) / 1000);
         if (secondsLeft <= 0) {
-          countdown.textContent = "Session expired.";
+          countdown.textContent = 'Session expired.';
           return;
         }
         const hrs = Math.floor(secondsLeft / 3600);
@@ -50,8 +47,15 @@
     }
 
     function detectClientInfo() {
-      document.getElementById('clientIP').textContent = 'Detecting via edge…';
       document.getElementById('clientUA').textContent = navigator.userAgent;
+      fetch("https://www.cloudflare.com/cdn-cgi/trace")
+        .then(res => res.text())
+        .then(text => {
+          const ip = text.match(/ip=([^\n]+)/)?.[1];
+          if (ip) {
+            document.getElementById('clientIP').textContent = ip;
+          }
+        });
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -62,15 +66,15 @@
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans antialiased">
   <div class="max-w-4xl mx-auto px-4 py-6">
-    <header class="mb-6 border-b pb-4">
-      <h1 class="text-3xl font-serif font-semibold text-black">Private Administrative Dashboard</h1>
-      <div class="text-sm text-gray-700 mt-2 space-y-1">
-        <p><strong>User:</strong> <span id="userEmail" class="text-gray-900">Loading…</span></p>
-        <p><strong>IP Address:</strong> <span id="clientIP">Detecting…</span></p>
-        <p><strong>Browser:</strong> <span id="clientUA">Detecting…</span></p>
-        <p><strong>Session started:</strong> <span id="sessionStart">–</span></p>
-        <p><strong>Session ends:</strong> <span id="sessionEnd">–</span></p>
-        <p><strong>Time remaining:</strong> <span id="sessionCountdown" class="font-mono text-blue-700">–</span></p>
+    <header class="mb-6 border-b border-gray-300 pb-4">
+      <h1 class="text-3xl font-serif font-bold text-black mb-3">Private Administrative Dashboard</h1>
+      <div class="bg-slate-100 p-4 rounded-md text-sm font-mono space-y-1 text-gray-800">
+        <div><span class="font-bold text-black">User:</span> <span id="userEmail" class="text-blue-800">@loading</span></div>
+        <div><span class="font-bold text-black">IP Address:</span> <span id="clientIP" class="text-slate-700">Detecting…</span></div>
+        <div><span class="font-bold text-black">Browser:</span> <span id="clientUA" class="text-slate-700">Detecting…</span></div>
+        <div><span class="font-bold text-black">Session start:</span> <span id="sessionStart" class="text-slate-700">—</span></div>
+        <div><span class="font-bold text-black">Session end:</span> <span id="sessionEnd" class="text-slate-700">—</span></div>
+        <div><span class="font-bold text-black">Time remaining:</span> <span id="sessionCountdown" class="text-green-700">—</span></div>
       </div>
     </header>
 
@@ -100,9 +104,19 @@
       </div>
     </main>
 
-    <footer class="mt-10 pt-4 border-t text-sm text-gray-500">
-      <p>This interface is protected by Cloudflare Zero Trust. Sessions expire automatically after 12 hours.</p>
-      <p><a href="https://dash.cloudflare.com/logout" class="underline text-gray-600">Log out</a></p>
+    <footer class="mt-10 pt-6 border-t border-gray-300 text-sm text-gray-600">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+        <div>
+          <p class="mb-1">This interface is protected by <strong>Cloudflare Zero Trust</strong>.</p>
+          <p>Access is limited by email and identity verification. Sessions expire after 12 hours.</p>
+        </div>
+        <div class="sm:text-right">
+          <p>
+            <a href="https://dash.cloudflare.com/logout" class="text-blue-700 underline hover:text-blue-900">Log out</a>
+          </p>
+          <p class="text-xs mt-1 text-gray-400">Last updated: July 2025</p>
+        </div>
+      </div>
     </footer>
   </div>
 </body>
