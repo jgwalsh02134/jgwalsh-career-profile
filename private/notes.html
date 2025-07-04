@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Notes – J. Gregory Walsh</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+    .font-serif { font-family: 'DM Serif Display', serif; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .blinking-cursor { animation: blink 1s step-start infinite; font-weight: bold; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+  <script>
+    function parseJwtPayload(jwt) {
+      try {
+        const payload = jwt.split('.')[1];
+        const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+        return JSON.parse(decodedPayload);
+      } catch { return null; }
+    }
+    function setUser() {
+      const jwt = document.cookie.split('; ').find(row => row.startsWith('CF_Authorization='))?.split('=')[1];
+      if (!jwt) return;
+      const payload = parseJwtPayload(jwt);
+      document.getElementById('userEmail').textContent = payload?.email || 'Authenticated user';
+    }
+    document.addEventListener('DOMContentLoaded', setUser);
+  </script>
+</head>
+<body class="text-slate-800">
+  <div class="max-w-3xl mx-auto px-6 py-10">
+    <header class="mb-8">
+      <h1 class="text-3xl font-serif font-bold text-slate-900 mb-2">Secure Notes</h1>
+      <p class="text-sm text-slate-700">Access granted to <code id="userEmail">...</code></p>
+    </header>
+
+    <main>
+      <section class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-8">
+        <h2 class="text-lg font-semibold font-serif mb-4 text-slate-800">Current Draft</h2>
+        <textarea class="w-full border border-slate-300 rounded p-3 text-sm font-mono text-slate-800 h-64" placeholder="Write your internal notes or markdown here..."></textarea>
+        <p class="mt-3 text-xs text-slate-500">These notes are local only unless integrated with Workers or remote storage.</p>
+      </section>
+
+      <section class="text-sm text-slate-600 border-t pt-6">
+        <a href="/private/index.html" class="text-blue-700 hover:underline font-medium">&larr; Return to dashboard</a>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
