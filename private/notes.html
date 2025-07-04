@@ -36,7 +36,7 @@
     }
 
     async function fetchNotes() {
-      const res = await fetch('/api/notes');
+      const res = await fetch('https://notes-worker.jgregorywalsh.workers.dev');
       const notes = await res.json();
       const container = document.getElementById('notesList');
       container.innerHTML = '';
@@ -54,7 +54,7 @@
       const body = document.getElementById('noteBody').value.trim();
       if (!title || !body) return;
 
-      await fetch('/api/notes', {
+      await fetch('https://notes-worker.jgregorywalsh.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, body })
