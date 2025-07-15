@@ -39,8 +39,8 @@
       location.reload(); // Reload to reflect unauthenticated state without 404
     }
 
-    // Force HTTPS (may not apply in preview environments)
-    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && !location.hostname.includes('preview')) {
+    // Force HTTPS to ensure secure communication (allow localhost and preview modes)
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && !location.hostname.includes('preview')) {
       location.href = 'https://' + location.hostname + location.pathname + location.search + location.hash;
     }
 
