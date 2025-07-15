@@ -28,6 +28,7 @@
           <input id="agencyRole" type="text" placeholder="Agency / Role (e.g. FBI, USMS)" class="border border-slate-300 rounded px-3 py-2 text-sm w-full" required />
         </div>
         <input id="submissionDate" type="date" class="border border-slate-300 rounded px-3 py-2 text-sm w-full" required />
+        <input id="docLink" type="url" placeholder="Optional link to hosted file or document (https://...)" class="border border-slate-300 rounded px-3 py-2 text-sm w-full" />
         <textarea id="comments" placeholder="Optional comments or markdown-formatted notes..." class="w-full border border-slate-300 rounded px-3 py-2 text-sm font-mono" rows="4"></textarea>
         <button type="submit" class="mt-2 bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900 text-sm">Add Record</button>
       </form>
@@ -61,37 +62,51 @@
       document.getElementById('userEmail').textContent = payload?.email || '[unauthenticated]';
     }
 
+    function renderRecords() {
+      const container = document.getElementById('applicationsList');
+      container.innerHTML = '';
+      const records = JSON.parse(localStorage.getItem('appRecords') || '[]');
+      records.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+      records.forEach((rec, idx) => {
+        const div = document.createElement('div');
+        div.className = 'border border-slate-200 rounded p-4 bg-white shadow-sm';
+        div.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-semibold text-slate-900 mb-1">${rec.docType}</h3>
+              <p class="text-sm text-slate-600 mb-1">${rec.agencyRole} &middot; <span class="text-xs text-slate-500">${rec.submissionDate}</span></p>
+              ${rec.docLink ? `<p class="text-sm text-blue-600"><a href="${rec.docLink}" target="_blank" rel="noopener">View Document</a></p>` : ''}
+              <div class="prose prose-sm text-slate-700 mt-2">${marked.parse(rec.comments || '')}</div>
+            </div>
+            <button onclick="deleteRecord(${idx})" class="text-sm text-red-600 hover:underline">Delete</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function deleteRecord(index) {
+      const records = JSON.parse(localStorage.getItem('appRecords') || '[]');
+      records.splice(index, 1);
+      localStorage.setItem('appRecords', JSON.stringify(records));
+      renderRecords();
+    }
+
     document.getElementById('applicationForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const docType = document.getElementById('docType').value.trim();
       const agencyRole = document.getElementById('agencyRole').value.trim();
       const submissionDate = document.getElementById('submissionDate').value;
+      const docLink = document.getElementById('docLink').value.trim();
       const comments = document.getElementById('comments').value.trim();
 
-      const entry = { docType, agencyRole, submissionDate, comments, timestamp: new Date().toISOString() };
+      const entry = { docType, agencyRole, submissionDate, docLink, comments, timestamp: new Date().toISOString() };
       const records = JSON.parse(localStorage.getItem('appRecords') || '[]');
       records.push(entry);
       localStorage.setItem('appRecords', JSON.stringify(records));
       this.reset();
       renderRecords();
     });
-
-    function renderRecords() {
-      const container = document.getElementById('applicationsList');
-      container.innerHTML = '';
-      const records = JSON.parse(localStorage.getItem('appRecords') || '[]');
-      records.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
-      records.forEach(rec => {
-        const div = document.createElement('div');
-        div.className = 'border border-slate-200 rounded p-4 bg-white shadow-sm';
-        div.innerHTML = `
-          <h3 class="font-semibold text-slate-900 mb-1">${rec.docType}</h3>
-          <p class="text-sm text-slate-600 mb-1">${rec.agencyRole} &middot; <span class="text-xs text-slate-500">${rec.submissionDate}</span></p>
-          <div class="prose prose-sm text-slate-700">${marked.parse(rec.comments || '')}</div>
-        `;
-        container.appendChild(div);
-      });
-    }
 
     document.addEventListener('DOMContentLoaded', () => {
       loadUser();
