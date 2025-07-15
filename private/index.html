@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Private Administrative Dashboard</title>
   <meta http-equiv="Cache-Control" content="no-store"/>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; script-src 'self' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com https://unpkg.com; connect-src 'self' https://www.cloudflare.com; img-src 'self' data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.tailwindcss.com https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com https://unpkg.com; connect-src 'self' https://www.cloudflare.com; img-src 'self' data:; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com" defer></script>
-
+  <!-- FilePond CSS -->
+  <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
-
   <!-- Custom Styles -->
   <style>
     body {
@@ -31,95 +31,11 @@
       font-weight: bold;
     }
   </style>
-
-  <!-- Session Scripts -->
-  <script>
-    function parseJwtPayload(jwt) {
-      try {
-        const payload = jwt.split('.')[1];
-        const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-        return JSON.parse(decodedPayload);
-      } catch {
-        return null;
-      }
-    }
-
-    function updateUserSessionInfo() {
-      const userEl = document.getElementById('userEmail');
-      if (!userEl) return;
-      const jwt = document.cookie.split('; ').find(row => row.startsWith('CF_Authorization='))?.split('=')[1];
-      if (!jwt) {
-        window.location.replace('/login.html');
-        return;
-      }
-
-      const payload = parseJwtPayload(jwt);
-      if (!payload) return;
-
-      userEl.textContent = payload.email || 'unknown';
-      document.getElementById('sessionStart').textContent = new Date(payload.iat * 1000).toLocaleString();
-      document.getElementById('sessionEnd').textContent = new Date(payload.exp * 1000).toLocaleString();
-
-      const countdownEl = document.getElementById('sessionCountdown');
-      function updateCountdown() {
-        const now = Date.now();
-        const secondsLeft = Math.floor((payload.exp * 1000 - now) / 1000);
-
-        if (secondsLeft <= 0) {
-          countdownEl.textContent = 'Session Expired';
-          countdownEl.classList.remove('text-green-400', 'text-yellow-400');
-          countdownEl.classList.add('text-red-400');
-          window.location.replace('https://dash.cloudflare.com/logout');
-          return;
-        }
-
-        if (secondsLeft < 300) {
-          countdownEl.classList.replace('text-green-400', 'text-yellow-400');
-        }
-
-        const hrs = String(Math.floor(secondsLeft / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, '0');
-        const secs = String(secondsLeft % 60).padStart(2, '0');
-
-        countdownEl.textContent = `${hrs}:${mins}:${secs}`;
-        requestAnimationFrame(updateCountdown);
-      }
-      updateCountdown();
-    }
-
-    function detectClientInfo() {
-      document.getElementById('clientBrowser').textContent = navigator.userAgent;
-      fetch("https://www.cloudflare.com/cdn-cgi/trace")
-        .then(res => res.text())
-        .then(text => {
-          const ip = text.match(/ip=([^\n]+)/)?.[1];
-          document.getElementById('clientIP').textContent = ip || 'Unavailable';
-        }).catch(() => {
-          document.getElementById('clientIP').textContent = 'Unavailable';
-        });
-    }
-
-    function warnIfInsecure() {
-      const banner = document.getElementById('insecureWarning');
-      if (location.protocol !== 'https:' && banner) {
-        banner.classList.remove('hidden');
-        location.replace('https://' + location.host + location.pathname + location.search);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      updateUserSessionInfo();
-      detectClientInfo();
-      warnIfInsecure();
-    });
-  </script>
 </head>
-
 <body class="text-slate-800">
   <div id="insecureWarning" class="hidden bg-red-600 text-white text-sm font-semibold px-4 py-3 text-center shadow-lg mb-6">
     ⚠️ Warning: This session is not secured with HTTPS. Do not view or upload sensitive information.
   </div>
-
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
     <!-- Header -->
     <header class="mb-10 border-b-2 border-slate-200 pb-8">
@@ -161,6 +77,12 @@
       </div>
     </main>
 
+    <!-- FilePond Uploader -->
+    <section class="mt-8">
+      <h2 class="text-xl font-serif font-bold mb-4 text-slate-900">Upload Secure Documents</h2>
+      <input type="file" id="fileUpload" class="filepond" name="filepond" multiple />
+    </section>
+
     <!-- Footer -->
     <footer class="mt-12 pt-6 pb-6 px-6 bg-white border-t-4 border-slate-800 rounded-lg shadow-md">
       <div class="flex flex-col md:flex-row justify-between gap-6">
@@ -176,5 +98,100 @@
       </div>
     </footer>
   </div>
+
+  <!-- External Scripts -->
+  <script src="https://unpkg.com/filepond/dist/filepond.min.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Enforce HTTPS
+      if (location.protocol !== 'https:') {
+        window.location.href = 'https://' + location.host + location.pathname + location.search;
+        return;
+      }
+      // Parse JWT
+      function parseJwtPayload(token) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          return JSON.parse(jsonPayload);
+        } catch (e) {
+          return null;
+        }
+      }
+      // Session Validation
+      const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('CF_Authorization='));
+      const jwt = jwtCookie?.split('=')[1];
+      if (!jwt) {
+        window.location.replace('/login.html');
+        return;
+      }
+      const payload = parseJwtPayload(jwt);
+      if (!payload) {
+        window.location.replace('/login.html');
+        return;
+      }
+      const now = Math.floor(Date.now() / 1000);
+      if (payload.exp < now) {
+        window.location.replace('https://dash.cloudflare.com/logout');
+        return;
+      }
+      // Update UI with Session Info
+      const userEl = document.getElementById('userEmail');
+      if (userEl) userEl.textContent = payload.email || 'unknown';
+      const startEl = document.getElementById('sessionStart');
+      if (startEl) startEl.textContent = new Date(payload.iat * 1000).toLocaleString();
+      const endEl = document.getElementById('sessionEnd');
+      if (endEl) endEl.textContent = new Date(payload.exp * 1000).toLocaleString();
+      const countdownEl = document.getElementById('sessionCountdown');
+      function updateCountdown() {
+        if (!countdownEl) return;
+        const millisLeft = payload.exp * 1000 - Date.now();
+        if (millisLeft <= 0) {
+          countdownEl.textContent = 'Session Expired';
+          countdownEl.classList.remove('text-green-400', 'text-yellow-400');
+          countdownEl.classList.add('text-red-400');
+          window.location.replace('https://dash.cloudflare.com/logout');
+          return;
+        }
+        const hrs = String(Math.floor(millisLeft / 3600000)).padStart(2, '0');
+        const mins = String(Math.floor((millisLeft % 3600000) / 60000)).padStart(2, '0');
+        const secs = String(Math.floor((millisLeft % 60000) / 1000)).padStart(2, '0');
+        countdownEl.textContent = `${hrs}:${mins}:${secs}`;
+        if (millisLeft < 300000) {
+          countdownEl.classList.replace('text-green-400', 'text-yellow-400');
+        }
+        requestAnimationFrame(updateCountdown);
+      }
+      updateCountdown();
+      // Client Info
+      const ipEl = document.getElementById('clientIP');
+      const browserEl = document.getElementById('clientBrowser');
+      if (browserEl) browserEl.textContent = navigator.userAgent;
+      fetch('https://www.cloudflare.com/cdn-cgi/trace', {cache: 'no-store'})
+        .then(res => res.text())
+        .then(text => {
+          const match = text.match(/ip=([^\n]+)/);
+          if (ipEl) ipEl.textContent = match ? match[1] : 'Unavailable';
+        })
+        .catch(() => {
+          if (ipEl) ipEl.textContent = 'Unavailable';
+        });
+      // Initialize FilePond
+      if (window.FilePond) {
+        FilePond.create(document.querySelector('#fileUpload'), {
+          server: {
+            process: '/upload',
+            revert: '/upload/revert',
+            headers: {
+              'Authorization': 'Bearer ' + jwt
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
