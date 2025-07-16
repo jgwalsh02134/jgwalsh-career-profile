@@ -7,6 +7,8 @@
 
   <!-- Content Security Policy (CSP) -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com 'unsafe-inline'; style-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com 'unsafe-inline'; font-src https://fonts.gstatic.com; connect-src 'self' https://www.cloudflare.com; img-src 'self' data:;" />
+  <!-- Security headers -->
+  <meta http-equiv="Cache-Control" content="no-store" />
 
   <!-- Tailwind CSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
@@ -20,63 +22,13 @@
   <link href="https://unpkg.com/filepond@^4/dist/filepond.min.css" rel="stylesheet" />
 
   <!-- Early security checks (HTTPS redirect, JWT validation, expiration check) -->
-  <script>
-    function parseJwtPayload(jwt) {
-      try {
-        const payload = jwt.split('.')[1];
-        const decodedPayload = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-        return JSON.parse(decodedPayload);
-      } catch {
-        return null;
-      }
-    }
-
-    function logout() {
-      document.cookie = 'CF_Authorization=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; SameSite=Strict';
-      // For production, use: location.href = 'https://{your-team-name}.cloudflareaccess.com/cdn-cgi/access/logout';
-      // In preview mode, avoid redirect to prevent 404; just reload or show message
-      console.log('Logout triggered - in preview mode, not redirecting');
-      location.reload(); // Reload to reflect unauthenticated state without 404
-    }
-
-    // Force HTTPS to ensure secure communication (allow localhost and preview modes)
-    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && !location.hostname.includes('preview')) {
-      location.href = 'https://' + location.hostname + location.pathname + location.search + location.hash;
-    }
-
-    // Check for valid JWT and expiration - in preview, skip redirect and use mock data if needed
-    const isPreviewMode = location.hostname === 'localhost' || location.hostname.includes('preview') || location.hostname === ''; // Adjust for Grok Studio preview
-    const cookies = document.cookie.split('; ');
-    const authCookie = cookies.find(row => row.startsWith('CF_Authorization='));
-    const jwt = authCookie ? authCookie.split('=')[1] : null;
-
-    if (!jwt) {
-      if (!isPreviewMode) {
-        logout();
-      } else {
-        console.log('Preview mode: No JWT found, proceeding without auth');
-        // Optional: Set mock user info for preview
-        document.addEventListener('DOMContentLoaded', () => {
-          const userEl = document.getElementById('userEmail');
-          if (userEl) userEl.textContent = 'preview@example.com';
-          const startEl = document.getElementById('sessionStart');
-          if (startEl) startEl.textContent = new Date().toLocaleString();
-          const endEl = document.getElementById('sessionEnd');
-          if (endEl) endEl.textContent = new Date(Date.now() + 3600000).toLocaleString(); // 1 hour from now
-          const countdownEl = document.getElementById('sessionCountdown');
-          if (countdownEl) countdownEl.textContent = 'Preview Mode';
-        });
-      }
-    } else {
-      const payload = parseJwtPayload(jwt);
-      if (!payload || (payload.exp * 1000 < Date.now())) {
-        if (!isPreviewMode) {
-          logout();
-        } else {
-          console.log('Preview mode: Invalid/expired JWT, proceeding anyway');
-        }
-      }
-    }
+  <script defer>
+    function getCookie(name){ const v='; '+document.cookie; const p=v.split('; '+name+'='); return p.length===2?p.pop().split(';').shift():null; }
+    function decodeJWT(t){ try{const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(atob(b));}catch{return null;} }
+    function logout(){ document.cookie='CF_Authorization=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;secure;SameSite=Strict'; location.href='/logout'; }
+    if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'&&!location.hostname.includes('preview')) location.href='https://'+location.host+location.pathname+location.search;
+    const _t=getCookie('CF_Authorization'),_p=_t&&decodeJWT(_t);
+    if(!_p||_p.exp*1000<Date.now()) logout();
   </script>
 
   <style>
@@ -173,63 +125,38 @@
     </footer>
   </div>
 
-  <!-- FilePond Plugins Scripts (moved to end for non-blocking load) -->
+  <!-- FilePond and Plugin Scripts -->
   <script src="https://unpkg.com/filepond@^4/dist/filepond.min.js" defer></script>
   <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js" defer></script>
   <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js" defer></script>
-
-  <!-- Session and FilePond -->
-  <script>
-    function updateUserSessionInfo() {
-      const jwt = document.cookie.split('; ').find(row => row.startsWith('CF_Authorization='))?.split('=')[1];
-      const userEl = document.getElementById('userEmail');
-      if (!jwt || !userEl) {
-        if (userEl) userEl.textContent = 'Not Authenticated';
-        return;
-      }
-      const payload = parseJwtPayload(jwt);
-      if (!payload) return;
-      document.getElementById('userEmail')?.textContent = payload.email || 'unknown';
-      document.getElementById('sessionStart')?.textContent = new Date(payload.iat * 1000).toLocaleString();
-      document.getElementById('sessionEnd')?.textContent = new Date(payload.exp * 1000).toLocaleString();
-      const countdownEl = document.getElementById('sessionCountdown');
-      if (!countdownEl) return;
-      function updateCountdown() {
-        const now = Date.now();
-        const secondsLeft = Math.floor((payload.exp * 1000 - now) / 1000);
-        if (secondsLeft <= 0) {
-          countdownEl.textContent = 'Session Expired';
-          return;
-        }
-        if (secondsLeft < 300) countdownEl.classList.replace('text-green-400', 'text-yellow-400');
-        const hrs = String(Math.floor(secondsLeft / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, '0');
-        const secs = String(secondsLeft % 60).padStart(2, '0');
-        countdownEl.textContent = `${hrs}:${mins}:${secs}`;
-        requestAnimationFrame(updateCountdown);
-      }
-      updateCountdown();
-    }
-
-    function detectClientInfo() {
-      const ipEl = document.getElementById('clientIP');
-      const browserEl = document.getElementById('clientBrowser');
-      if (!browserEl) return;
-      browserEl.textContent = navigator.userAgent || 'Unknown';
-      if (!ipEl) return;
-      fetch("https://www.cloudflare.com/cdn-cgi/trace")
-        .then(res => res.text())
-        .then(text => {
-          const ipMatch = text.match(/ip=([^\n]+)/);
-          ipEl.textContent = (ipMatch ? ipMatch[1] : 'Unavailable');
-        })
-        .catch(() => {
-          ipEl.textContent = 'Unavailable';
-        });
-    }
-
+  <!-- Initialization Script -->
+  <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-      if (typeof FilePond !== 'undefined' && FilePondPluginFileValidateType && FilePondPluginFileValidateSize) {
+      const token = getCookie('CF_Authorization');
+      const payload = token && decodeJWT(token);
+      // Update session info
+      document.getElementById('userEmail').textContent = payload?.email || 'Unknown';
+      document.getElementById('sessionStart').textContent = new Date(payload.iat * 1000).toLocaleString();
+      document.getElementById('sessionEnd').textContent = new Date(payload.exp * 1000).toLocaleString();
+      // Countdown
+      const countdownEl = document.getElementById('sessionCountdown');
+      (function update(){ const now=Date.now()/1000; const left=Math.floor(payload.exp - now);
+        if(left<=0){ countdownEl.textContent='Session Expired'; logout(); return; }
+        if(left<300) countdownEl.classList.replace('text-green-400','text-yellow-400');
+        const hrs = String(Math.floor(left / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((left % 3600) / 60)).padStart(2, '0');
+        const secs = String(left % 60).padStart(2, '0');
+        countdownEl.textContent = `${hrs}:${mins}:${secs}`;
+        requestAnimationFrame(update);
+      })();
+      // Client info
+      document.getElementById('clientBrowser').textContent = navigator.userAgent;
+      fetch('https://www.cloudflare.com/cdn-cgi/trace',{cache:'no-store'})
+        .then(r=>r.text()).then(t=>{
+          const ipMatch = t.match(/ip=([^\n]+)/); document.getElementById('clientIP').textContent = (ipMatch ? ipMatch[1] : 'Unavailable');
+        }).catch(()=>document.getElementById('clientIP').textContent='Unavailable');
+      // FilePond init
+      if(window.FilePond && window.FilePondPluginFileValidateType && window.FilePondPluginFileValidateSize) {
         FilePond.registerPlugin(FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
         const pondElement = document.querySelector('.filepond');
         if (pondElement) {
@@ -243,12 +170,7 @@
         } else {
           console.warn('FilePond element not found.');
         }
-      } else {
-        console.warn('FilePond or plugins not loaded.');
       }
-
-      updateUserSessionInfo();
-      detectClientInfo();
     });
   </script>
 </body>
