@@ -1,9 +1,17 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "cloudflare-worker",
+	"name": "validate",
 	"main": "src/index.js",
 	"compatibility_date": "2025-07-17",
 	"observability": {
 	  "enabled": true
+	},
+	"env": {
+	  "production": {
+	    "routes": [
+	      "https://jgwalsh.com/dashboard/api/validate"
+	    ],
+	    "zone_id": "c4a2c0e9d1f6a5b6d8e8a49d5f6b9e7c"
+	  }
 	}
   }
