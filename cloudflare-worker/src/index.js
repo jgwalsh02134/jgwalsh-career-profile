@@ -14,14 +14,24 @@ export default {
   
 		const now = Date.now();
 		if (decoded.exp * 1000 < now) {
-		  return new Response("Session expired", { status: 403 });
+		  return new Response(JSON.stringify({
+			status: "expired",
+			reason: "Token has expired",
+			exp: new Date(decoded.exp * 1000).toISOString()
+		  }), {
+			status: 403,
+			headers: { "Content-Type": "application/json" }
+		  });
 		}
   
 		return new Response(JSON.stringify({
+		  status: "valid",
 		  email: decoded.email || "unknown",
 		  iat: new Date(decoded.iat * 1000).toISOString(),
 		  exp: new Date(decoded.exp * 1000).toISOString(),
-		  remaining: Math.floor((decoded.exp * 1000 - now) / 1000)
+		  remaining: Math.floor((decoded.exp * 1000 - now) / 1000),
+		  aud: decoded.aud || null,
+		  iss: decoded.iss || null
 		}), {
 		  headers: { "Content-Type": "application/json" }
 		});
