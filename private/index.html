@@ -132,23 +132,42 @@
   <!-- Initialization Script -->
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
-      const token = getCookie('CF_Authorization');
-      const payload = token && decodeJWT(token);
-      // Update session info
-      document.getElementById('userEmail').textContent = payload?.email || 'Unknown';
-      document.getElementById('sessionStart').textContent = new Date(payload.iat * 1000).toLocaleString();
-      document.getElementById('sessionEnd').textContent = new Date(payload.exp * 1000).toLocaleString();
-      // Countdown
-      const countdownEl = document.getElementById('sessionCountdown');
-      (function update(){ const now=Date.now()/1000; const left=Math.floor(payload.exp - now);
-        if(left<=0){ countdownEl.textContent='Session Expired'; logout(); return; }
-        if(left<300) countdownEl.classList.replace('text-green-400','text-yellow-400');
-        const hrs = String(Math.floor(left / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((left % 3600) / 60)).padStart(2, '0');
-        const secs = String(left % 60).padStart(2, '0');
-        countdownEl.textContent = `${hrs}:${mins}:${secs}`;
-        requestAnimationFrame(update);
-      })();
+      fetch('/dashboard/api/validate')
+        .then(res => {
+          if (!res.ok) throw new Error("Invalid session");
+          return res.json();
+        })
+        .then(data => {
+          if (data.status === 'valid') {
+            document.getElementById('userEmail').textContent = data.email || 'Unknown';
+            document.getElementById('sessionStart').textContent = new Date(data.iat).toLocaleString();
+            document.getElementById('sessionEnd').textContent = new Date(data.exp).toLocaleString();
+
+            const countdownEl = document.getElementById('sessionCountdown');
+            let secondsLeft = data.remaining;
+
+            function updateCountdown() {
+              if (secondsLeft <= 0) {
+                countdownEl.textContent = "Session Expired";
+                countdownEl.classList.replace("text-green-400", "text-red-500");
+                logout();
+                return;
+              }
+              if (secondsLeft < 300) countdownEl.classList.replace("text-green-400", "text-yellow-400");
+              const hrs = String(Math.floor(secondsLeft / 3600)).padStart(2, '0');
+              const mins = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, '0');
+              const secs = String(secondsLeft % 60).padStart(2, '0');
+              countdownEl.textContent = `${hrs}:${mins}:${secs}`;
+              secondsLeft--;
+              setTimeout(updateCountdown, 1000);
+            }
+
+            updateCountdown();
+          } else {
+            logout();
+          }
+        })
+        .catch(() => logout());
       // Client info
       document.getElementById('clientBrowser').textContent = navigator.userAgent;
       fetch('https://www.cloudflare.com/cdn-cgi/trace',{cache:'no-store'})
