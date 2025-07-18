@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Distribution by Neighborhood - Optimized</title>
+    
+    <!-- Preconnect to CDN -->
+    <link rel="preconnect" href="https://cdn.plot.ly">
+    <link rel="dns-prefetch" href="https://cdn.plot.ly">
+    
+    <style>
+        /* Critical inline styles for above-the-fold content */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #666;
+        }
+        .plotly-container {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .plotly-container.loaded {
+            opacity: 1;
+        }
+        #treemap-viz {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="plotly-container" id="plotly-container">
+        <div class="loading" id="loading-indicator">
+            Loading visualization...
+        </div>
+        <div id="treemap-viz" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Configuration and data extracted from original file
+        const plotlyConfig = {
+            divId: "treemap-viz",
+            data: [{
+                branchvalues: "total",
+                customdata: [
+                    ["(?)","(?)","(?)","(?)","(?)"],
+                    ["99","87","83","78","2021"],
+                    ["18","28","26","20","2022"],
+                    ["107","141","105","121","2022"],
+                    ["185","207","135","144","2022"],
+                    ["125","260","226","206","2022"],
+                    ["229","266","189","225","2022"],
+                    ["1019","1187","979","988","2022"],
+                    ["231","307","279","307","2022"],
+                    ["673","795","675","661","2022"],
+                    ["302","346","226","238","2022"],
+                    ["110","131","118","129","2022"],
+                    ["2703","2980","3519","2584","2023"],
+                    ["109","125","137","91","2023"],
+                    ["77","77","132","105","2023"],
+                    ["116","142","146","139","2023"],
+                    ["98","97","104","90","2023"],
+                    ["376","427","434","402","2023"],
+                    ["54","81","87","74","2023"],
+                    ["40","53","87","65","2023"],
+                    ["934","1007","1156","870","2023"],
+                    ["119","121","155","147","2023"],
+                    ["426","523","453","576","2024"],
+                    ["35","42","40","46","2024"],
+                    ["79","113","91","114","2024"]
+                ],
+                domain: {x: [0.0, 1.0], y: [0.0, 1.0]},
+                hovertemplate: "<b>%{label}</b><br>Total Crimes (2021-24): %{value}<br>2021: %{customdata[0]}<br>2022: %{customdata[1]}<br>2023: %{customdata[2]}<br>2024: %{customdata[3]}<extra></extra>",
+                ids: ["All Neighborhoods","All Neighborhoods/Melrose","All Neighborhoods/Normanskill Area","All Neighborhoods/Washington Square","All Neighborhoods/Mansion","All Neighborhoods/Pine Bush","All Neighborhoods/Sheridan Hollow","All Neighborhoods/West Hill","All Neighborhoods/Downtown","All Neighborhoods/South End","All Neighborhoods/N. Albany/Shaker Park","All Neighborhoods/Second Avenue","All Neighborhoods/Unknown/Not in NEU Zone","All Neighborhoods/Ten Broeck Triangle","All Neighborhoods/Eagle Hill","All Neighborhoods/Helderberg","All Neighborhoods/Historic Pastures Homeowners Association","All Neighborhoods/Delaware Area","All Neighborhoods/Whitehall","All Neighborhoods/Buckingham Lake","All Neighborhoods/Pine Hills","All Neighborhoods/Woodlawn","All Neighborhoods/Arbor Hill Concerned Citizens","All Neighborhoods/Port of Albany","All Neighborhoods/Washington Park"],
+                labels: ["All Neighborhoods","Melrose","Normanskill Area","Washington Square","Mansion","Pine Bush","Sheridan Hollow","West Hill","Downtown","South End","N. Albany/Shaker Park","Second Avenue","Unknown/Not in NEU Zone","Ten Broeck Triangle","Eagle Hill","Helderberg","Historic Pastures Homeowners Association","Delaware Area","Whitehall","Buckingham Lake","Pine Hills","Woodlawn","Arbor Hill Concerned Citizens","Port of Albany","Washington Park"],
+                marker: {
+                    colors: ["#FFA15A","#fee08b","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#fc8d59","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#d53e4f","#9e0142","#9e0142","#9e0142"]
+                },
+                name: "",
+                parents: ["","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods","All Neighborhoods"],
+                values: [12400, 552, 443, 471, 671, 817, 909, 4173, 1124, 2804, 1112, 488, 10291, 462, 391, 543, 389, 1639, 296, 245, 3967, 542, 1978, 163, 397],
+                type: "treemap"
+            }],
+            layout: {
+                template: {
+                    data: {
+                        treemap: [{
+                            type: "treemap",
+                            marker: {
+                                line: {
+                                    color: "#E5ECF6",
+                                    width: 0.5
+                                }
+                            }
+                        }]
+                    },
+                    layout: {
+                        colorway: ["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],
+                        font: {
+                            color: "#2a3f5f"
+                        },
+                        paper_bgcolor: "white",
+                        plot_bgcolor: "#E5ECF6"
+                    }
+                },
+                legend: {
+                    tracegroupgap: 0
+                },
+                margin: {t: 60, l: 25, r: 25, b: 25},
+                title: {
+                    text: "<b>Crime Distribution by Neighborhood (2021-2024)</b><br><i>Color Indicates Peak Crime Year</i>"
+                },
+                font: {
+                    family: "Arial, sans-serif",
+                    size: 12,
+                    color: "black"
+                }
+            }
+        };
+
+        // Lazy loading implementation
+        let plotlyLoaded = false;
+        let plotlyLoadPromise = null;
+
+        function loadPlotly() {
+            if (plotlyLoaded) return Promise.resolve();
+            if (plotlyLoadPromise) return plotlyLoadPromise;
+
+            plotlyLoadPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.plot.ly/plotly-2.35.2.min.js';
+                script.async = true;
+                script.defer = true;
+                
+                script.onload = () => {
+                    plotlyLoaded = true;
+                    resolve();
+                };
+                
+                script.onerror = () => {
+                    reject(new Error('Failed to load Plotly'));
+                };
+                
+                document.head.appendChild(script);
+            });
+
+            return plotlyLoadPromise;
+        }
+
+        function renderVisualization() {
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const vizContainer = document.getElementById('treemap-viz');
+            const plotlyContainer = document.getElementById('plotly-container');
+
+            loadPlotly()
+                .then(() => {
+                    // Hide loading indicator and show visualization container
+                    loadingIndicator.style.display = 'none';
+                    vizContainer.style.display = 'block';
+                    
+                    // Render the plot
+                    Plotly.newPlot(plotlyConfig.divId, plotlyConfig.data, plotlyConfig.layout, {
+                        responsive: true,
+                        displayModeBar: true,
+                        displaylogo: false,
+                        modeBarButtonsToRemove: ['sendDataToCloud']
+                    });
+                    
+                    // Fade in the visualization
+                    plotlyContainer.classList.add('loaded');
+                })
+                .catch(error => {
+                    console.error('Error loading visualization:', error);
+                    loadingIndicator.textContent = 'Error loading visualization. Please refresh the page.';
+                });
+        }
+
+        // Check if the page is visible before loading
+        if (document.visibilityState === 'visible') {
+            // Use Intersection Observer for truly lazy loading
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            renderVisualization();
+                            observer.disconnect();
+                        }
+                    });
+                }, {
+                    rootMargin: '50px'
+                });
+
+                observer.observe(document.getElementById('plotly-container'));
+            } else {
+                // Fallback for browsers without Intersection Observer
+                setTimeout(renderVisualization, 100);
+            }
+        } else {
+            // Wait for the page to become visible
+            document.addEventListener('visibilitychange', function onVisibilityChange() {
+                if (document.visibilityState === 'visible') {
+                    renderVisualization();
+                    document.removeEventListener('visibilitychange', onVisibilityChange);
+                }
+            });
+        }
+
+        // Add error tracking
+        window.addEventListener('error', (e) => {
+            if (e.filename && e.filename.includes('plotly')) {
+                console.error('Plotly error:', e);
+                // Could send to error tracking service
+            }
+        });
+    </script>
+</body>
+</html>
