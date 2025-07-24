@@ -1,5 +1,22 @@
 export default {
   async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.pathname === '/api/upload' && request.method === 'POST') {
+      const userEmail = request.headers.get('cf-access-authenticated-user-email');
+      if (!userEmail) {
+        return new Response('Unauthorized', { status: 401 });
+      }
+      const formData = await request.formData();
+      const file = formData.get('file');
+      if (!(file instanceof File)) {
+        return new Response('No file provided', { status: 400 });
+      }
+      console.log(`Received file ${file.name} (${file.size} bytes) from ${userEmail}`);
+      return new Response(JSON.stringify({ success: true, fileName: file.name }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
     const cookie = request.headers.get("cookie") || "";
     const match = cookie.match(/CF_Authorization=([^;]+)/);
 

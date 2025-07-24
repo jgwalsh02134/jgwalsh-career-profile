@@ -544,30 +544,40 @@
       // Upload functionality
       const uploadZone = document.getElementById('uploadZone');
       const fileInput = document.getElementById('fileInput');
-
+      const uploadFile = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+        if (res.ok) {
+          console.log('Uploaded successfully:', file.name);
+        } else {
+          console.error('Upload failed:', file.name);
+        }
+      };
       uploadZone.addEventListener('click', () => fileInput.click());
-      
       uploadZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadZone.classList.add('dragging');
       });
-
       uploadZone.addEventListener('dragleave', () => {
         uploadZone.classList.remove('dragging');
       });
-
       uploadZone.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadZone.classList.remove('dragging');
         // Handle file upload
         const files = e.dataTransfer.files;
         console.log('Files dropped:', files);
+        Array.from(files).forEach(uploadFile);
       });
-
       fileInput.addEventListener('change', (e) => {
         // Handle file selection
         const files = e.target.files;
         console.log('Files selected:', files);
+        Array.from(files).forEach(uploadFile);
       });
     });
   </script>
