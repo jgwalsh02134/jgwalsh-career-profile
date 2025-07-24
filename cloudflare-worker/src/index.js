@@ -11,8 +11,11 @@ export default {
       if (!(file instanceof File)) {
         return new Response('No file provided', { status: 400 });
       }
-      console.log(`Received file ${file.name} (${file.size} bytes) from ${userEmail}`);
-      return new Response(JSON.stringify({ success: true, fileName: file.name }), {
+      // Replace logging with R2 persistence
+      const arrayBuffer = await file.arrayBuffer();
+      const key = `${Date.now()}-${file.name}`;
+      await env.UPLOADS.put(key, arrayBuffer, { httpMetadata: { contentType: file.type } });
+      return new Response(JSON.stringify({ success: true, fileName: file.name, key }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });

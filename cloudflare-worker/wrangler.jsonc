@@ -2,6 +2,12 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "validate",
 	"main": "src/index.js",
+	"r2_buckets": [
+	  {
+	    "binding": "UPLOADS",
+	    "bucket_name": "jgwalsh-com"
+	  }
+	],
 	"compatibility_date": "2025-07-17",
 	"observability": {
 	  "enabled": true
@@ -9,7 +15,8 @@
 	"env": {
 	  "production": {
 	    "routes": [
-	      "https://jgwalsh.com/dashboard/api/validate"
+	      "https://jgwalsh.com/dashboard/api/validate",
+	      "https://jgwalsh.com/api/upload"
 	    ]
 	  }
 	}
