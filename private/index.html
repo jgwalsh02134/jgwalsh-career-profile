@@ -244,13 +244,12 @@
     // ('encryption.js') and the Cloudflare upload worker must be deployed.
     
     document.addEventListener('DOMContentLoaded', () => {
-      const jwtToken = getCookie('CF_Authorization');
-      const payload = jwtToken && decodeJWT(jwtToken);
-
-      if (!payload || payload.exp * 1000 < Date.now()) {
+      // Validate authentication before initializing
+      if (!validateAuthCookie()) {
         logout();
         return;
       }
+      const payload = decodeJWT(getCookie('CF_Authorization'));
 
       // Update UI with session data
       document.getElementById('userEmail').textContent = payload.email || 'Authenticated User';
