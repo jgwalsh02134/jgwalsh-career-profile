@@ -340,6 +340,20 @@
       }
     });
 
+    // JWT expiration check before any API request
+    (function() {
+      const originalFetch = window.fetch;
+      window.fetch = async function(input, init) {
+        const jwt = getCookie('CF_Authorization');
+        const payload = jwt && decodeJWT(jwt);
+        if (!payload || payload.exp * 1000 < Date.now()) {
+          logout();
+          return Promise.reject(new Error('Session expired'));
+        }
+        return originalFetch(input, init);
+      };
+    })();
+
     // --- Global Helper Functions ---
     function navigateTo(path) {
         const urlField = document.querySelector('.url-field');
