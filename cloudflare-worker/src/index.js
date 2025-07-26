@@ -8,14 +8,19 @@ export default {
       }
       const formData = await request.formData();
       const file = formData.get('file');
-      if (!(file instanceof File)) {
-        return new Response('No file provided', { status: 400 });
+      const iv = formData.get('iv');
+      const originalFileName = formData.get('originalFileName');
+      if (!(file instanceof File) || !iv || !originalFileName) {
+        return new Response('Missing file, IV, or original file name', { status: 400 });
       }
-      // Replace logging with R2 persistence
+      // Store encrypted blob in R2 with metadata
       const arrayBuffer = await file.arrayBuffer();
-      const key = `${Date.now()}-${file.name}`;
-      await env.UPLOADS.put(key, arrayBuffer, { httpMetadata: { contentType: file.type } });
-      return new Response(JSON.stringify({ success: true, fileName: file.name, key }), {
+      const key = `${Date.now()}-${originalFileName}`;
+      await env.UPLOADS.put(key, arrayBuffer, {
+        httpMetadata: { contentType: file.type },
+        customMetadata: { iv, originalFileName }
+      });
+      return new Response(JSON.stringify({ success: true, originalFileName, key }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
