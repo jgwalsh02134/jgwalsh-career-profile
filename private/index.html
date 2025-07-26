@@ -20,8 +20,8 @@
         // Clear authentication cookie
         document.cookie = 'CF_Authorization=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/; Secure; SameSite=Strict';
         // Clear storage
-        localStorage.clear();
         sessionStorage.clear();
+        localStorage.clear();
         // Redirect to logout page
         window.location.href = '/logout.html';
       } catch (err) {
