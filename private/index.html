@@ -378,6 +378,19 @@
       return p.length === 2 ? p.pop().split(';').shift() : null;
     }
 
+    /**
+     * Validate the Cloudflare CF_Authorization JWT cookie.
+     * @returns {boolean} True if the cookie exists, is valid, and not expired.
+     */
+    function validateAuthCookie() {
+      const jwt = getCookie('CF_Authorization');
+      if (!jwt) return false;
+      const payload = decodeJWT(jwt);
+      if (!payload) return false;
+      if (payload.exp * 1000 < Date.now()) return false;
+      return true;
+    }
+
   </script>
 </body>
 </html>
