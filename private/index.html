@@ -5,29 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Private Dashboard - WorldWideWeb Interface</title>
   <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://www.cloudflare.com; img-src 'self' data:;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' https://www.cloudflare.com; img-src 'self' data:;" />
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <meta name="robots" content="noindex, nofollow">
 
-  <!-- Early security checks -->
+  <!-- Early security check for HTTPS -->
   <script>
-    function getCookie(name){ const v='; '+document.cookie; const p=v.split('; '+name+'='); return p.length===2?p.pop().split(';').shift():null; }
-    function decodeJWT(t){ try{const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(atob(b));}catch{return null;} }
-    function logout() {
-      alert("Logging out...");
-      console.log("LOGOUT FUNCTION CALLED");
-      document.cookie = 'CF_Authorization=; path=/; domain=' + location.hostname + '; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      sessionStorage.clear();
-      localStorage.clear();
-      window.location.href = '/logout.html';
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && !location.hostname.includes('preview')) {
+      location.href = 'https:' + location.host + location.pathname + location.search;
     }
-    if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'&&!location.hostname.includes('preview')) location.href='https://'+location.host+location.pathname+location.search;
-    // (JWT expiration check moved into DOMContentLoaded below)
   </script>
 
   <style>
+    /* --- Base & Fonts --- */
     @font-face {
       font-family: 'Helvetica';
       src: local('Helvetica'), local('Arial');
@@ -41,6 +33,9 @@
       line-height: 1.4;
       min-height: 100vh;
     }
+    .hidden { display: none !important; }
+
+    /* --- Window & Chrome --- */
     .window {
       background: #d0d0d0;
       border: 2px solid #000;
@@ -58,6 +53,7 @@
       align-items: center;
       justify-content: space-between;
       color: #fff;
+      user-select: none;
     }
     .titlebar-title { font-weight: bold; font-size: 13px; }
     .titlebar-buttons { display: flex; gap: 4px; }
@@ -85,6 +81,12 @@
       flex: 1; padding: 4px; border: 1px solid #000; background: #fff;
       font-family: monospace; font-size: 11px; min-width: 200px;
     }
+    .statusbar {
+      background: #d0d0d0; border-top: 1px solid #000; padding: 4px 8px;
+      display: flex; justify-content: space-between; font-size: 11px; flex-wrap: wrap; gap: 8px;
+    }
+
+    /* --- Content & Modules --- */
     .content {
       flex: 1; background: #fff; padding: 20px; overflow-y: auto;
       border: 1px solid #808080; margin: 8px;
@@ -93,43 +95,59 @@
     h2 { font-size: 18px; font-weight: bold; margin: 20px 0 12px 0; text-decoration: underline; }
     h3 { font-size: 14px; font-weight: bold; margin: 16px 0 8px 0; }
     p { margin-bottom: 12px; }
+    ul { margin-left: 20px; margin-bottom: 12px; }
+    li { margin-bottom: 4px; }
     .hyperlink { color: #0000FF; text-decoration: underline; cursor: pointer; }
     .hyperlink:hover { background: #0000FF; color: #fff; }
     .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
     .module { border: 1px solid #000; padding: 16px; background: #f0f0f0; }
-    .terminal { background: #000; color: #00FF00; font-family: monospace; padding: 10px; border: 1px solid #808080; }
-    ul { margin-left: 20px; margin-bottom: 12px; }
-    li { margin-bottom: 4px; }
-    .statusbar {
-      background: #d0d0d0; border-top: 1px solid #000; padding: 4px 8px;
-      display: flex; justify-content: space-between; font-size: 11px; flex-wrap: wrap; gap: 8px;
-    }
+    .terminal { background: #000; color: #00FF00; font-family: monospace; padding: 10px; border: 1px solid #808080; white-space: pre-wrap; line-height: 1.5; }
+
+    /* --- File Upload --- */
     .upload-zone { border: 2px dashed #808080; padding: 20px; text-align: center; cursor: pointer; background: #f8f8f8; }
     .upload-zone.dragging { border-color: #000; background: #e0e0e0; }
-    .blink { animation: blink 1s infinite; }
-    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    .upload-zone.disabled { opacity: 0.5; pointer-events: none; }
     .upload-progress-container .upload-item {
-      border: 1px solid #808080;
-      background: #000;
-      color: #00FF00;
-      font-family: monospace;
-      padding: 8px;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      border: 1px solid #808080; background: #000; color: #00FF00;
+      font-family: monospace; padding: 8px; margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .upload-item .file-name { flex: 1; }
+    .upload-item .file-name { flex: 1; word-break: break-all; }
     .upload-item .file-status { margin: 0 8px; }
     .clear-btn {
-      background: #d0d0d0;
-      border: 1px solid #000;
-      font-family: monospace;
-      cursor: pointer;
-      padding: 2px 6px;
-      margin-top: 8px;
+      background: #d0d0d0; border: 1px solid #000; font-family: monospace;
+      cursor: pointer; padding: 2px 6px; margin-top: 8px;
     }
-    .upload-zone.disabled { opacity: 0.5; pointer-events: none; }
+
+    /* --- Utilities --- */
+    .blink { animation: blink 1s infinite; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+    /* --- Custom Modal --- */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 1000;
+    }
+    .modal-window {
+        background: #d0d0d0;
+        border: 2px solid #000;
+        box-shadow: inset 2px 2px 0 #fff, inset -2px -2px 0 #808080, 4px 4px 8px rgba(0,0,0,0.5);
+        min-width: 300px;
+        max-width: 90%;
+    }
+    .modal-titlebar {
+        background: linear-gradient(to bottom, #808080 0%, #a0a0a0 100%);
+        border-bottom: 1px solid #000;
+        padding: 4px 8px;
+        color: #000;
+        font-weight: bold;
+    }
+    .modal-content { padding: 20px; }
+    .modal-buttons { text-align: center; padding: 10px; }
+
+    /* --- Responsive --- */
     @media (max-width: 768px) {
       body { background: #d0d0d0; }
       .window { margin: 0; border: none; box-shadow: none; min-height: 100vh; }
@@ -151,18 +169,18 @@
     </div>
 
     <div class="menubar" id="menubar">
-      <div class="menu-item" onclick="navigateTo('/private/index.html')">Dashboard</div>
-      <div class="menu-item" onclick="navigateTo('/private/docs/index.html')">Documents</div>
-      <div class="menu-item" onclick="navigateTo('/private/notes.html')">Notes</div>
-      <div class="menu-item" onclick="navigateTo('/private/applications.html')">Applications</div>
-      <div class="menu-item" onclick="logout()">Logout</div>
+      <div class="menu-item" onclick="App.ui.navigateTo('/private/index.html')">Dashboard</div>
+      <div class="menu-item" onclick="App.ui.navigateTo('/private/docs/index.html')">Documents</div>
+      <div class="menu-item" onclick="App.ui.navigateTo('/private/notes.html')">Notes</div>
+      <div class="menu-item" onclick="App.ui.navigateTo('/private/applications.html')">Applications</div>
+      <div class="menu-item" onclick="App.session.logout()">Logout</div>
     </div>
 
     <div class="navbar">
       <div class="nav-buttons">
         <button class="nav-button" onclick="window.history.back()">Back</button>
         <button class="nav-button" onclick="window.history.forward()">Forward</button>
-        <button class="nav-button" onclick="navigateTo('/private/index.html')">Home</button>
+        <button class="nav-button" onclick="App.ui.navigateTo('/private/index.html')">Home</button>
         <button class="nav-button" onclick="window.location.reload()">Reload</button>
       </div>
       <input type="text" class="url-field" value="https://jgwalsh.com/private/index.html" readonly>
@@ -174,45 +192,39 @@
 
       <h2>Session Monitor</h2>
       <div class="module terminal">
-        <p>$ cloudflare access validate</p>
-        <p>> Identity: <span id="terminalEmail"></span></p>
-        <p>> Provider: Cloudflare Zero Trust</p>
-        <p>> Auth Level: HIGH</p>
-        <p>> MFA Status: VERIFIED</p>
-        <p>> IP Address: <span id="userIP"></span></p>
-        <p>> Expires In: <span id="sessionTimer" style="font-weight:bold;"></span><span class="blink">_</span></p>
+        <div>$ cflare session --validate</div>
+        <div>&gt; Identity...: <span id="terminalEmail"></span></div>
+        <div>&gt; IP Address.: <span id="userIP"></span></div>
+        <div>&gt; Expires In.: <span id="sessionTimer" style="font-weight:bold;"></span><span class="blink">_</span></div>
       </div>
 
       <h2>Quick Stats</h2>
       <div class="module-grid">
         <div class="module">
           <h3>Documents</h3>
-          <p>Total: <span id="docTotal"></span></p>
-          <p>Added this week: 3</p>
+          <p>Total: <span id="docTotal">Fetching...</span></p>
         </div>
         <div class="module">
           <h3>Notes</h3>
-          <p>Total: <span id="notesTotal"></span></p>
-          <p>Last updated: Today</p>
+          <p>Total: <span id="notesTotal">Fetching...</span></p>
         </div>
         <div class="module">
           <h3>Applications</h3>
-          <p>Total: <span id="appsTotal"></span></p>
-          <p>Pending review: <span id="appsPending"></span></p>
+          <p>Total: <span id="appsTotal">Fetching...</span></p>
         </div>
         <div class="module">
           <h3>Storage Used</h3>
-          <p id="storageUsed"></p>
+          <p id="storageUsed">Fetching...</p>
         </div>
       </div>
 
       <h2>Navigation</h2>
       <p>Select a module to manage your private records and applications.</p>
       <ul>
-        <li><span class="hyperlink" onclick="navigateTo('/private/notes.html')">Secure Notes</span>: Private markdown entries and documentation.</li>
-        <li><span class="hyperlink" onclick="navigateTo('/private/docs/index.html')">Secure Documents</span>: Identity records & sensitive files (AES-256 Encrypted).</li>
-        <li><span class="hyperlink" onclick="navigateTo('/private/applications.html')">Application Tracker</span>: Federal forms & job submissions.</li>
-        <li><span class="hyperlink" onclick="navigateTo('/private/caselog.html')">Case Log</span>: Investigation notes & field records.</li>
+        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/notes.html')">Secure Notes</span>: Private markdown entries and documentation.</li>
+        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/docs/index.html')">Secure Documents</span>: Identity records & sensitive files (AES-256 Encrypted).</li>
+        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/applications.html')">Application Tracker</span>: Federal forms & job submissions.</li>
+        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/caselog.html')">Case Log</span>: Investigation notes & field records.</li>
       </ul>
 
       <h2>File Upload</h2>
@@ -235,7 +247,6 @@
           <li>Application updated: FBI Special Agent (3 days ago)</li>
         </ul>
       </div>
-
     </div>
 
     <div class="statusbar">
@@ -251,227 +262,341 @@
     </div>
   </div>
 
+  <!-- Custom Modal Structure -->
+  <div id="customModal" class="modal-overlay hidden">
+      <div class="modal-window">
+          <div id="modalTitle" class="modal-titlebar">Notification</div>
+          <div class="modal-content">
+              <p id="modalMessage"></p>
+          </div>
+          <div class="modal-buttons">
+              <button id="modalCloseBtn" class="nav-button">OK</button>
+          </div>
+      </div>
+  </div>
+
   <!-- Encryption script would be linked here -->
   <script src="/assets/js/encryption.js" defer></script>
   
   <script>
-    // --- Security & Session Management ---
-    // NOTE: For this to be fully functional, the client-side encryption script
-    // ('encryption.js') and the Cloudflare upload worker must be deployed.
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      // Moved JWT expiration check into DOMContentLoaded
-      const _t = getCookie('CF_Authorization'), _p = _t && decodeJWT(_t);
-      if (!_p || _p.exp * 1000 < Date.now()) {
-        logout();
-        return;
-      }
-      // Validate authentication before initializing
-      if (!validateAuthCookie()) {
-        logout();
-        return;
-      }
-      const payload = decodeJWT(getCookie('CF_Authorization'));
-
-      // Update UI with session data
-      document.getElementById('userEmail').textContent = payload.email || 'Authenticated User';
-      document.getElementById('terminalEmail').textContent = payload.email || 'Authenticated User';
-      // Quick Stats dynamic update (mock data)
-      const stats = {
-        documents: 24,
-        notes: 47,
-        applications: 8,
-        pendingApplications: 2,
-        storage: { used: 1.2, total: 5.0 }
-      };
-      document.getElementById('docTotal').textContent = stats.documents;
-      document.getElementById('notesTotal').textContent = stats.notes;
-      document.getElementById('appsTotal').textContent = stats.applications;
-      document.getElementById('appsPending').textContent = stats.pendingApplications;
-      const percent = Math.round((stats.storage.used / stats.storage.total) * 100);
-      document.getElementById('storageUsed').textContent = `${stats.storage.used} GB / ${stats.storage.total} GB (${percent}%)`;
-      
-      // Session countdown timer
-      const timerEl = document.getElementById('sessionTimer');
-      function updateTimer() {
-        let remaining = Math.floor((payload.exp * 1000 - Date.now()) / 1000);
-        if (remaining <= 0) {
-          timerEl.textContent = "EXPIRED";
-          setTimeout(logout, 1000);
-          return;
-        }
-        const hrs = String(Math.floor(remaining / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((remaining % 3600) / 60)).padStart(2, '0');
-        const secs = String(remaining % 60).padStart(2, '0');
-        timerEl.textContent = `${hrs}:${mins}:${secs}`;
-      }
-      setInterval(updateTimer, 1000);
-      updateTimer();
-
-      // Get client IP
-      fetch('https://www.cloudflare.com/cdn-cgi/trace')
-        .then(r => r.text())
-        .then(t => {
-          const ipMatch = t.match(/ip=([^\n]+)/);
-          if (ipMatch) document.getElementById('userIP').textContent = ipMatch[1];
-        }).catch(() => {
-            document.getElementById('userIP').textContent = 'Unavailable';
-        });
-
-      // --- File Upload Functionality ---
-      const uploadZone = document.getElementById('uploadZone');
-      const fileInput = document.getElementById('fileInput');
-      const progressContainer = document.getElementById('uploadProgressContainer');
-      const clearAllBtn = document.getElementById('clearAllBtn');
-
-      // File upload setup
-      if (!window.cryptoManager) {
-        alert('Cryptography module not loaded; uploads disabled.');
-        uploadZone.classList.add('disabled');
-        fileInput.disabled = true;
-      }
-      uploadZone.addEventListener('click', () => fileInput.click());
-      fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
-      uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragging'); });
-      uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragging'));
-      uploadZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadZone.classList.remove('dragging');
-        if (!fileInput.disabled) handleFiles(e.dataTransfer.files);
-      });
-      clearAllBtn.addEventListener('click', () => { progressContainer.innerHTML = ''; });
-
-      // Validation and upload functions
-      function validateFile(file) {
-        const maxSize = 5 * 1024 * 1024;
-        const allowedTypes = [
+    // --- Application Namespace ---
+    // Encapsulates all logic to avoid polluting the global scope.
+    const App = {
+      // --- Configuration ---
+      config: {
+        maxFileSize: 5 * 1024 * 1024, // 5MB
+        allowedFileTypes: [
           'application/pdf',
           'application/msword',
           'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'image/jpeg',
           'image/png'
-        ];
-        if (file.size > maxSize) return `"${file.name}" exceeds 5MB limit.`;
-        if (!allowedTypes.includes(file.type)) return `"${file.name}" type not allowed.`;
-        return null;
-      }
-
-      function createProgressIndicator(fileId, fileName) {
-        const item = document.createElement('div');
-        item.className = 'upload-item';
-        item.id = fileId;
-        item.innerHTML = `
-          <span class="file-name">${fileName}</span>
-          <span class="file-status">Initialized</span>
-        `;
-        const clearBtn = document.createElement('button');
-        clearBtn.textContent = 'Clear';
-        clearBtn.className = 'clear-btn';
-        clearBtn.onclick = () => item.remove();
-        item.appendChild(clearBtn);
-        progressContainer.appendChild(item);
-      }
-
-      function updateProgress(fileId, status) {
-        const item = document.getElementById(fileId);
-        if (item) {
-          const statusSpan = item.querySelector('.file-status');
-          if (statusSpan) statusSpan.textContent = status;
+        ],
+        elements: {
+            userEmail: document.getElementById('userEmail'),
+            terminalEmail: document.getElementById('terminalEmail'),
+            userIP: document.getElementById('userIP'),
+            sessionTimer: document.getElementById('sessionTimer'),
+            docTotal: document.getElementById('docTotal'),
+            notesTotal: document.getElementById('notesTotal'),
+            appsTotal: document.getElementById('appsTotal'),
+            storageUsed: document.getElementById('storageUsed'),
+            uploadZone: document.getElementById('uploadZone'),
+            fileInput: document.getElementById('fileInput'),
+            progressContainer: document.getElementById('uploadProgressContainer'),
+            clearAllBtn: document.getElementById('clearAllBtn'),
+            urlField: document.querySelector('.url-field'),
+            modal: document.getElementById('customModal'),
+            modalTitle: document.getElementById('modalTitle'),
+            modalMessage: document.getElementById('modalMessage'),
+            modalCloseBtn: document.getElementById('modalCloseBtn'),
         }
-      }
+      },
 
-      async function encryptAndUploadFile(file, fileId) {
-        const error = validateFile(file);
-        if (error) { updateProgress(fileId, error); return; }
-        updateProgress(fileId, 'Encrypting...');
-        await window.cryptoManager.getKey();
-        const { ciphertext, iv } = await window.cryptoManager.encryptFile(file);
-        updateProgress(fileId, 'Uploading...');
-        try {
-          const encryptedBlob = new Blob([ciphertext], { type: 'application/octet-stream' });
-          const formData = new FormData();
-          formData.append('file', encryptedBlob, `${file.name}.encrypted`);
-          formData.append('iv', btoa(String.fromCharCode.apply(null, iv)));
-          formData.append('originalFileName', file.name);
-          const jwt = getCookie('CF_Authorization');
-          const response = await fetch('/api/upload', {
-            method: 'POST',
-            headers: { 'cf-access-jwt-assertion': jwt },
-            body: formData
+      // --- Session Management Module ---
+      session: {
+        payload: null,
+        init() {
+          const jwt = this.getCookie('CF_Authorization');
+          this.payload = this.decodeJWT(jwt);
+
+          if (!this.isValid()) {
+            console.log("Initial session check failed. Redirecting to logout.");
+            this.performRedirectToLogout();
+            return false;
+          }
+          
+          this.interceptFetch();
+          return true;
+        },
+        isValid() {
+          return this.payload && this.payload.exp * 1000 > Date.now();
+        },
+        getCookie(name) {
+          const v = '; ' + document.cookie;
+          const p = v.split('; ' + name + '=');
+          return p.length === 2 ? p.pop().split(';').shift() : null;
+        },
+        decodeJWT(token) {
+          if (!token) return null;
+          try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(atob(base64));
+          } catch {
+            return null;
+          }
+        },
+        logout() {
+          const message = "You are being logged out of your secure session.";
+          console.log("Logout initiated:", message);
+          App.ui.showModal("Logout", message, () => {
+              this.performRedirectToLogout();
           });
-          if (!response.ok) throw new Error(await response.text());
-          updateProgress(fileId, 'Success');
-        } catch (e) {
-          updateProgress(fileId, `Error: ${e.message}`);
+        },
+        performRedirectToLogout() {
+            document.cookie = 'CF_Authorization=; path=/; domain=' + location.hostname + '; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/cdn-cgi/access/logout';
+        },
+        interceptFetch() {
+            const originalFetch = window.fetch;
+            window.fetch = async (input, init) => {
+                if (!this.isValid()) {
+                    this.logout();
+                    return Promise.reject(new Error('Session expired'));
+                }
+                // Add JWT to all API calls automatically
+                const newInit = { ...init };
+                newInit.headers = { ...newInit.headers, 'cf-access-jwt-assertion': this.getCookie('CF_Authorization') };
+                return originalFetch(input, newInit);
+            };
         }
-      }
+      },
 
-      function handleFiles(files) {
-        if (typeof window.cryptoManager === 'undefined') {
-          console.warn("CryptoManager not loaded");
-          alert("Secure upload temporarily unavailable. Please reload or contact support.");
-          return;
+      // --- UI Module ---
+      ui: {
+        init() {
+          this.populateSessionInfo();
+          this.fetchAndPopulateStats(); // <-- Changed from mock data
+          this.startSessionTimer();
+          this.fetchClientIP();
+          this.setupEventListeners();
+        },
+        setupEventListeners() {
+            const { modalCloseBtn, modal } = App.config.elements;
+            modalCloseBtn.addEventListener('click', () => this.hideModal());
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) this.hideModal();
+            });
+        },
+        populateSessionInfo() {
+          const { userEmail, terminalEmail } = App.config.elements;
+          const email = App.session.payload.email || 'Authenticated User';
+          userEmail.textContent = email;
+          terminalEmail.textContent = email;
+        },
+        populateStats(stats) {
+            const { docTotal, notesTotal, appsTotal, storageUsed } = App.config.elements;
+            docTotal.textContent = stats.documents ?? 'N/A';
+            notesTotal.textContent = stats.notes ?? 'N/A';
+            appsTotal.textContent = stats.applications ?? 'N/A';
+            
+            if (stats.storage && stats.storage.usedBytes) {
+                const usedGB = (stats.storage.usedBytes / (1024 * 1024 * 1024)).toFixed(2);
+                storageUsed.textContent = `${usedGB} GB Used`;
+            } else {
+                storageUsed.textContent = 'N/A';
+            }
+        },
+        async fetchAndPopulateStats() {
+            // This function fetches live data from a backend worker.
+            // You will need to create a Cloudflare Worker at the '/api/stats' endpoint
+            // that returns a JSON object like:
+            // {
+            //   "documents": 150,
+            //   "notes": 32,
+            //   "applications": 5,
+            //   "storage": { "usedBytes": 1288490188 }
+            // }
+            try {
+                const response = await fetch('/api/stats');
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.statusText}`);
+                }
+                const stats = await response.json();
+                this.populateStats(stats);
+            } catch (error) {
+                console.error("Failed to fetch stats:", error);
+                this.populateStats({ documents: 'Error', notes: 'Error', applications: 'Error', storage: {} });
+            }
+        },
+        startSessionTimer() {
+          const { sessionTimer } = App.config.elements;
+          const update = () => {
+            let remaining = Math.floor((App.session.payload.exp * 1000 - Date.now()) / 1000);
+            if (remaining <= 0) {
+              sessionTimer.textContent = "EXPIRED";
+              clearInterval(timerInterval);
+              App.session.logout();
+              return;
+            }
+            const hrs = String(Math.floor(remaining / 3600)).padStart(2, '0');
+            const mins = String(Math.floor((remaining % 3600) / 60)).padStart(2, '0');
+            const secs = String(remaining % 60).padStart(2, '0');
+            sessionTimer.textContent = `${hrs}:${mins}:${secs}`;
+          };
+          const timerInterval = setInterval(update, 1000);
+          update();
+        },
+        fetchClientIP() {
+          fetch('https://www.cloudflare.com/cdn-cgi/trace')
+            .then(r => r.text())
+            .then(t => {
+              const ipMatch = t.match(/ip=([^\n]+)/);
+              if (ipMatch) App.config.elements.userIP.textContent = ipMatch[1];
+            }).catch(() => {
+              App.config.elements.userIP.textContent = 'Unavailable';
+            });
+        },
+        navigateTo(path) {
+            App.config.elements.urlField.value = 'https://jgwalsh.com' + path;
+            window.location.href = path;
+        },
+        showModal(title, message, onClose) {
+            let { modal, modalTitle, modalMessage, modalCloseBtn } = App.config.elements;
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            const newCloseBtn = modalCloseBtn.cloneNode(true);
+            modalCloseBtn.parentNode.replaceChild(newCloseBtn, modalCloseBtn);
+            App.config.elements.modalCloseBtn = newCloseBtn;
+
+            const closeAction = () => {
+                this.hideModal();
+                if (onClose && typeof onClose === 'function') {
+                    onClose();
+                }
+            };
+            newCloseBtn.addEventListener('click', closeAction);
+            
+            modal.classList.remove('hidden');
+        },
+        hideModal() {
+            App.config.elements.modal.classList.add('hidden');
         }
-        progressContainer.innerHTML = ''; // Clear previous
-        Array.from(files).forEach(file => {
-          const fileId = `upload-${Date.now()}-${Math.random()}`;
-          createProgressIndicator(fileId, file.name);
-          encryptAndUploadFile(file, fileId);
+      },
+
+      // --- Upload Module ---
+      upload: {
+        init() {
+          const checkCrypto = () => {
+            if (typeof window.cryptoManager !== 'undefined') {
+                this.setupEventListeners();
+            } else {
+                setTimeout(checkCrypto, 100);
+            }
+          };
+          checkCrypto();
+        },
+        setupEventListeners() {
+          const { uploadZone, fileInput, clearAllBtn } = App.config.elements;
+          uploadZone.addEventListener('click', () => fileInput.click());
+          fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
+          uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragging'); });
+          uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragging'));
+          uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragging');
+            if (!uploadZone.classList.contains('disabled')) this.handleFiles(e.dataTransfer.files);
+          });
+          clearAllBtn.addEventListener('click', () => { App.config.elements.progressContainer.innerHTML = ''; });
+        },
+        validateFile(file) {
+          if (file.size > App.config.maxFileSize) return `"${file.name}" exceeds 5MB limit.`;
+          if (!App.config.allowedFileTypes.includes(file.type)) return `"${file.name}" type not allowed.`;
+          return null;
+        },
+        createProgressIndicator(fileId, fileName) {
+          const item = document.createElement('div');
+          item.className = 'upload-item';
+          item.id = fileId;
+          item.innerHTML = `
+            <span class="file-name">${fileName}</span>
+            <span class="file-status">Initialized</span>
+          `;
+          const clearBtn = document.createElement('button');
+          clearBtn.textContent = 'Clear';
+          clearBtn.className = 'clear-btn';
+          clearBtn.style.marginLeft = '8px';
+          clearBtn.onclick = () => item.remove();
+          item.appendChild(clearBtn);
+          App.config.elements.progressContainer.appendChild(item);
+        },
+        updateProgress(fileId, status) {
+          const item = document.getElementById(fileId);
+          if (item) {
+            const statusSpan = item.querySelector('.file-status');
+            if (statusSpan) statusSpan.textContent = status;
+          }
+        },
+        async encryptAndUpload(file, fileId) {
+          const error = this.validateFile(file);
+          if (error) { this.updateProgress(fileId, error); return; }
+
+          try {
+            this.updateProgress(fileId, 'Encrypting...');
+            await window.cryptoManager.getKey();
+            const { ciphertext, iv } = await window.cryptoManager.encryptFile(file);
+            
+            this.updateProgress(fileId, 'Uploading...');
+            const encryptedBlob = new Blob([ciphertext], { type: 'application/octet-stream' });
+            const formData = new FormData();
+            formData.append('file', encryptedBlob, `${file.name}.encrypted`);
+            formData.append('iv', btoa(String.fromCharCode.apply(null, iv)));
+            formData.append('originalFileName', file.name);
+
+            // No need to manually add JWT header, fetch interceptor does it
+            const response = await fetch('/api/upload', {
+              method: 'POST',
+              body: formData
+            });
+
+            if (!response.ok) throw new Error(await response.text());
+            this.updateProgress(fileId, 'Success');
+          } catch (e) {
+            console.error("Upload failed:", e);
+            this.updateProgress(fileId, `Error: ${e.message}`);
+          }
+        },
+        handleFiles(files) {
+          if (typeof window.cryptoManager === 'undefined') {
+            App.ui.showModal("Upload Error", "The secure upload module is not ready. Please try again in a moment.");
+            return;
+          }
+          App.config.elements.progressContainer.innerHTML = '';
+          Array.from(files).forEach(file => {
+            const fileId = `upload-${Date.now()}-${Math.random()}`;
+            this.createProgressIndicator(fileId, file.name);
+            this.encryptAndUpload(file, fileId);
+          });
+        }
+      },
+
+      // --- Main Initializer ---
+      init() {
+        document.addEventListener('DOMContentLoaded', () => {
+          if (this.session.init()) {
+            this.ui.init();
+            this.upload.init();
+          }
         });
       }
-    });
+    };
 
-    // JWT expiration check before any API request
-    (function() {
-      const originalFetch = window.fetch;
-      window.fetch = async function(input, init) {
-        const jwt = getCookie('CF_Authorization');
-        const payload = jwt && decodeJWT(jwt);
-        if (!payload || payload.exp * 1000 < Date.now()) {
-          logout();
-          return Promise.reject(new Error('Session expired'));
-        }
-        return originalFetch(input, init);
-      };
-    })();
-
-    // --- Global Helper Functions ---
-    function navigateTo(path) {
-        const urlField = document.querySelector('.url-field');
-        const domain = 'https://jgwalsh.com';
-        urlField.value = domain + path;
-        window.location.href = path;
-    }
-
-    function decodeJWT(token) {
-      try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        return JSON.parse(atob(base64));
-      } catch {
-        return null;
-      }
-    }
-
-    function getCookie(name) {
-      const v = '; ' + document.cookie;
-      const p = v.split('; ' + name + '=');
-      return p.length === 2 ? p.pop().split(';').shift() : null;
-    }
-
-    /**
-     * Validate the Cloudflare CF_Authorization JWT cookie.
-     * @returns {boolean} True if the cookie exists, is valid, and not expired.
-     */
-    function validateAuthCookie() {
-      const jwt = getCookie('CF_Authorization');
-      if (!jwt) return false;
-      const payload = decodeJWT(jwt);
-      if (!payload) return false;
-      if (payload.exp * 1000 < Date.now()) return false;
-      return true;
-    }
-
+    // --- Start the Application ---
+    App.init();
   </script>
 </body>
 </html>
