@@ -2,29 +2,39 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "validate",
 	"main": "api/activity.js",
-	"r2_buckets": [
-	  {
-	    "binding": "UPLOADS",
-	    "bucket_name": "jgwalsh-com"
-	  }
-	],
 	"compatibility_date": "2025-07-17",
-	"observability": {
-	  "enabled": true
-	},
 	"kv_namespaces": [
 	  {
-	    "binding": "PRIVATE_ACTIVITY",
-	    "id": "YOUR_KV_ID",
-	    "preview_id": "YOUR_PREVIEW_KV_ID"
+		"binding": "PRIVATE_ACTIVITY",
+		"id": "d14bb0ed1d6f45f4a5c27e542cd7cbf1",
+		"preview_id": "8713dab167324acaaf810f0e2a653322"
+	  }
+	],
+	"r2_buckets": [
+	  {
+		"binding": "UPLOADS",
+		"bucket_name": "jgwalsh-com"
 	  }
 	],
 	"env": {
 	  "production": {
-	    "routes": [
-	      "https://jgwalsh.com/dashboard/api/validate",
-	      "https://jgwalsh.com/api/upload"
-	    ]
+		"kv_namespaces": [
+		  {
+			"binding": "PRIVATE_ACTIVITY",
+			"id": "d14bb0ed1d6f45f4a5c27e542cd7cbf1",
+			"preview_id": "8713dab167324acaaf810f0e2a653322"
+		  }
+		],
+		"r2_buckets": [
+		  {
+			"binding": "UPLOADS",
+			"bucket_name": "jgwalsh-com"
+		  }
+		],
+		"routes": [
+		  "https://jgwalsh.com/api/activity",
+		  "https://jgwalsh.com/api/upload"
+		]
 	  }
 	}
   }
