@@ -407,6 +407,11 @@
       }
 
       function handleFiles(files) {
+        if (typeof window.cryptoManager === 'undefined') {
+          console.warn("CryptoManager not loaded");
+          alert("Secure upload temporarily unavailable. Please reload or contact support.");
+          return;
+        }
         progressContainer.innerHTML = ''; // Clear previous
         Array.from(files).forEach(file => {
           const fileId = `upload-${Date.now()}-${Math.random()}`;
