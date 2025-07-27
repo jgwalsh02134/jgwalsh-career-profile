@@ -169,18 +169,18 @@
     </div>
 
     <div class="menubar" id="menubar">
-      <div class="menu-item" onclick="App.ui.navigateTo('/private/index.html')">Dashboard</div>
-      <div class="menu-item" onclick="App.ui.navigateTo('/private/docs/index.html')">Documents</div>
-      <div class="menu-item" onclick="App.ui.navigateTo('/private/notes.html')">Notes</div>
-      <div class="menu-item" onclick="App.ui.navigateTo('/private/applications.html')">Applications</div>
-      <div class="menu-item" onclick="App.session.logout()">Logout</div>
+      <div class="menu-item nav-link" data-path="/private/index.html">Dashboard</div>
+      <div class="menu-item nav-link" data-path="/private/docs/index.html">Documents</div>
+      <div class="menu-item nav-link" data-path="/private/notes.html">Notes</div>
+      <div class="menu-item nav-link" data-path="/private/applications.html">Applications</div>
+      <div id="logoutBtn" class="menu-item">Logout</div>
     </div>
 
     <div class="navbar">
       <div class="nav-buttons">
         <button class="nav-button" onclick="window.history.back()">Back</button>
         <button class="nav-button" onclick="window.history.forward()">Forward</button>
-        <button class="nav-button" onclick="App.ui.navigateTo('/private/index.html')">Home</button>
+        <button class="nav-button nav-link" data-path="/private/index.html">Home</button>
         <button class="nav-button" onclick="window.location.reload()">Reload</button>
       </div>
       <input type="text" class="url-field" value="https://jgwalsh.com/private/index.html" readonly>
@@ -221,10 +221,10 @@
       <h2>Navigation</h2>
       <p>Select a module to manage your private records and applications.</p>
       <ul>
-        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/notes.html')">Secure Notes</span>: Private markdown entries and documentation.</li>
-        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/docs/index.html')">Secure Documents</span>: Identity records & sensitive files (AES-256 Encrypted).</li>
-        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/applications.html')">Application Tracker</span>: Federal forms & job submissions.</li>
-        <li><span class="hyperlink" onclick="App.ui.navigateTo('/private/caselog.html')">Case Log</span>: Investigation notes & field records.</li>
+        <li><span class="hyperlink nav-link" data-path="/private/notes.html">Secure Notes</span>: Private markdown entries and documentation.</li>
+        <li><span class="hyperlink nav-link" data-path="/private/docs/index.html">Secure Documents</span>: Identity records & sensitive files (AES-256 Encrypted).</li>
+        <li><span class="hyperlink nav-link" data-path="/private/applications.html">Application Tracker</span>: Federal forms & job submissions.</li>
+        <li><span class="hyperlink nav-link" data-path="/private/caselog.html">Case Log</span>: Investigation notes & field records.</li>
       </ul>
 
       <h2>File Upload</h2>
@@ -310,6 +310,7 @@
             modalTitle: document.getElementById('modalTitle'),
             modalMessage: document.getElementById('modalMessage'),
             modalCloseBtn: document.getElementById('modalCloseBtn'),
+            logoutBtn: document.getElementById('logoutBtn'),
         }
       },
 
@@ -379,17 +380,34 @@
       ui: {
         init() {
           this.populateSessionInfo();
-          this.fetchAndPopulateStats(); // <-- Changed from mock data
+          this.fetchAndPopulateStats();
           this.startSessionTimer();
           this.fetchClientIP();
           this.setupEventListeners();
         },
         setupEventListeners() {
-            const { modalCloseBtn, modal } = App.config.elements;
+            const { modalCloseBtn, modal, logoutBtn } = App.config.elements;
+            
+            // Modal listeners
             modalCloseBtn.addEventListener('click', () => this.hideModal());
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) this.hideModal();
             });
+
+            // Navigation link listeners
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const path = e.currentTarget.dataset.path;
+                    if (path) {
+                        this.navigateTo(path);
+                    }
+                });
+            });
+
+            // Logout button listener
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => App.session.logout());
+            }
         },
         populateSessionInfo() {
           const { userEmail, terminalEmail } = App.config.elements;
@@ -411,15 +429,6 @@
             }
         },
         async fetchAndPopulateStats() {
-            // This function fetches live data from a backend worker.
-            // You will need to create a Cloudflare Worker at the '/api/stats' endpoint
-            // that returns a JSON object like:
-            // {
-            //   "documents": 150,
-            //   "notes": 32,
-            //   "applications": 5,
-            //   "storage": { "usedBytes": 1288490188 }
-            // }
             try {
                 const response = await fetch('/api/stats');
                 if (!response.ok) {
@@ -557,7 +566,6 @@
             formData.append('iv', btoa(String.fromCharCode.apply(null, iv)));
             formData.append('originalFileName', file.name);
 
-            // No need to manually add JWT header, fetch interceptor does it
             const response = await fetch('/api/upload', {
               method: 'POST',
               body: formData
