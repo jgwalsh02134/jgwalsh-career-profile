@@ -165,22 +165,22 @@
       <div class="module-grid">
         <div class="module">
           <h3>Documents</h3>
-          <p>Total: 24</p>
+          <p>Total: <span id="docTotal"></span></p>
           <p>Added this week: 3</p>
         </div>
         <div class="module">
           <h3>Notes</h3>
-          <p>Total: 47</p>
+          <p>Total: <span id="notesTotal"></span></p>
           <p>Last updated: Today</p>
         </div>
         <div class="module">
           <h3>Applications</h3>
-          <p>Total: 8</p>
-          <p>Pending review: 2</p>
+          <p>Total: <span id="appsTotal"></span></p>
+          <p>Pending review: <span id="appsPending"></span></p>
         </div>
         <div class="module">
           <h3>Storage Used</h3>
-          <p>1.2 GB / 5.0 GB (24%)</p>
+          <p id="storageUsed"></p>
         </div>
       </div>
 
@@ -253,6 +253,20 @@
       // Update UI with session data
       document.getElementById('userEmail').textContent = payload.email || 'Authenticated User';
       document.getElementById('terminalEmail').textContent = payload.email || 'Authenticated User';
+      // Quick Stats dynamic update (mock data)
+      const stats = {
+        documents: 24,
+        notes: 47,
+        applications: 8,
+        pendingApplications: 2,
+        storage: { used: 1.2, total: 5.0 }
+      };
+      document.getElementById('docTotal').textContent = stats.documents;
+      document.getElementById('notesTotal').textContent = stats.notes;
+      document.getElementById('appsTotal').textContent = stats.applications;
+      document.getElementById('appsPending').textContent = stats.pendingApplications;
+      const percent = Math.round((stats.storage.used / stats.storage.total) * 100);
+      document.getElementById('storageUsed').textContent = `${stats.storage.used} GB / ${stats.storage.total} GB (${percent}%)`;
       
       // Session countdown timer
       const timerEl = document.getElementById('sessionTimer');
