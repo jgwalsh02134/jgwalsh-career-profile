@@ -54,10 +54,8 @@
 
       <h2>Recent Activity</h2>
       <div class="module">
-        <ul>
-          <li>Document uploaded: passport_scan.pdf (2 hours ago)</li>
-          <li>Note created: Security clearance timeline (Yesterday)</li>
-          <li>Application updated: FBI Special Agent (3 days ago)</li>
+        <ul id="recentActivityList">
+          <!-- Activity items will be dynamically loaded here -->
         </ul>
       </div>
     </div>
@@ -76,6 +74,33 @@
   </div>
 
   <script>
+    // Recent Activity Loader
+    async function loadRecentActivity() {
+      const list = document.getElementById('recentActivityList');
+      if (!list) return;
+      list.innerHTML = '<li>Loading recent activity...</li>';
+      try {
+        const resp = await fetch('/api/activity');
+        if (!resp.ok) throw new Error('Failed to fetch activity');
+        const data = await resp.json();
+        const activities = Array.isArray(data.activities) ? data.activities : [];
+        if (!activities.length) {
+          list.innerHTML = '<li>No recent activity.</li>';
+          return;
+        }
+        list.innerHTML = '';
+        activities.forEach(act => {
+          const li = document.createElement('li');
+          li.textContent = `${act.type}: ${act.title} (${act.timestamp})`;
+          list.appendChild(li);
+        });
+      } catch (e) {
+        list.innerHTML = '<li>Error loading activity.</li>';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      loadRecentActivity();
+    });
     // Session Monitor Logic
     function getCookie(name) {
       const v = "; " + document.cookie;
