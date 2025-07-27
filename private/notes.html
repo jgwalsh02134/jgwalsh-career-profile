@@ -17,16 +17,16 @@
   <div class="max-w-2xl mx-auto px-6 py-12">
     <h1 class="text-3xl font-serif font-bold text-slate-900 mb-2">Secure Notes</h1>
     <p class="text-sm text-slate-600 mb-6">Access granted to <code id="userEmail">. . .</code></p>
+    <p id="sessionMessage" class="text-sm text-red-600 mb-6 hidden">Notes are saved to secure Cloudflare KV storage. Session required.</p>
 
     <!-- New Note Form -->
-    <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
+    <div id="newNoteForm" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
       <h2 class="font-semibold mb-2">New Note</h2>
       <input id="noteTitle" class="w-full border border-slate-300 rounded px-3 py-2 mb-2 text-sm" placeholder="Title" />
       <textarea id="noteBody" class="w-full border border-slate-300 rounded px-3 py-2 text-sm h-32" placeholder="Body..."></textarea>
       <button id="togglePreview" class="mt-2 text-xs text-blue-700 hover:underline">↕ Show Preview</button>
       <div id="previewPanel" class="preview-area hidden text-slate-700 prose prose-sm"></div>
       <button id="saveNote" class="mt-4 bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900 text-sm">Save Note</button>
-      <p class="text-xs text-slate-500 mt-2">Notes are saved to secure Cloudflare KV storage. Session required.</p>
     </div>
 
     <!-- Search Input -->
@@ -66,6 +66,11 @@
       if (payload?.email) emailSpan.textContent = payload.email;
     }
 
+    function getJwt() {
+      const cookie = document.cookie.split('; ').find(c => c.startsWith('CF_Authorization='));
+      return cookie ? cookie.split('=')[1] : null;
+    }
+
     // Toggle markdown preview
     previewBtn.addEventListener('click', () => {
       previewPanel.classList.toggle('hidden');
@@ -77,11 +82,18 @@
     document.getElementById('saveNote').addEventListener('click', async () => {
       const title = document.getElementById('noteTitle').value.trim();
       const body = bodyInput.value.trim();
+      const jwt = getJwt();
+      if (!jwt) return alert('Session expired. Please re-authenticate.');
+      const payload = parseJwtPayload(jwt);
+      if (!payload || payload.exp * 1000 < Date.now()) return alert('Session expired. Please re-authenticate.');
       if (!title || !body) return alert('Both title and body are required.');
 
       const res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'cf-access-jwt-assertion': jwt
+        },
         body: JSON.stringify({ title, body })
       });
       if (res.ok) location.reload();
@@ -142,6 +154,14 @@
 
     // Init
     updateUserEmail();
+    const jwt = getJwt();
+    const payload = parseJwtPayload(jwt);
+    const newNoteForm = document.getElementById('newNoteForm');
+    const sessionMessage = document.getElementById('sessionMessage');
+    if (!jwt || !payload || payload.exp * 1000 < Date.now()) {
+      newNoteForm.style.display = 'none';
+      sessionMessage.classList.remove('hidden');
+    }
     loadNotes();
   </script>
 </body>
