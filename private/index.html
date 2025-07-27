@@ -16,22 +16,15 @@
     function getCookie(name){ const v='; '+document.cookie; const p=v.split('; '+name+'='); return p.length===2?p.pop().split(';').shift():null; }
     function decodeJWT(t){ try{const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(atob(b));}catch{return null;} }
     function logout() {
-      try {
-        // Clear authentication cookie
-        document.cookie = 'CF_Authorization=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/; Secure; SameSite=Strict';
-        // Clear storage
-        sessionStorage.clear();
-        localStorage.clear();
-        // Redirect to logout page
-        window.location.href = '/logout.html';
-      } catch (err) {
-        console.error('Logout error:', err);
-        alert('An error occurred during logout.');
-      }
+      alert("Logging out...");
+      console.log("LOGOUT FUNCTION CALLED");
+      document.cookie = 'CF_Authorization=; path=/; domain=' + location.hostname + '; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location.href = '/logout.html';
     }
     if(location.protocol!=='https:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'&&!location.hostname.includes('preview')) location.href='https://'+location.host+location.pathname+location.search;
-    const _t=getCookie('CF_Authorization'),_p=_t&&decodeJWT(_t);
-    if(!_p||_p.exp*1000<Date.now()) logout();
+    // (JWT expiration check moved into DOMContentLoaded below)
   </script>
 
   <style>
@@ -244,6 +237,12 @@
     // ('encryption.js') and the Cloudflare upload worker must be deployed.
     
     document.addEventListener('DOMContentLoaded', () => {
+      // Moved JWT expiration check into DOMContentLoaded
+      const _t = getCookie('CF_Authorization'), _p = _t && decodeJWT(_t);
+      if (!_p || _p.exp * 1000 < Date.now()) {
+        logout();
+        return;
+      }
       // Validate authentication before initializing
       if (!validateAuthCookie()) {
         logout();
