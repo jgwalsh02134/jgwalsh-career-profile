@@ -108,6 +108,28 @@
     .upload-zone.dragging { border-color: #000; background: #e0e0e0; }
     .blink { animation: blink 1s infinite; }
     @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    .upload-progress-container .upload-item {
+      border: 1px solid #808080;
+      background: #000;
+      color: #00FF00;
+      font-family: monospace;
+      padding: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .upload-item .file-name { flex: 1; }
+    .upload-item .file-status { margin: 0 8px; }
+    .clear-btn {
+      background: #d0d0d0;
+      border: 1px solid #000;
+      font-family: monospace;
+      cursor: pointer;
+      padding: 2px 6px;
+      margin-top: 8px;
+    }
+    .upload-zone.disabled { opacity: 0.5; pointer-events: none; }
     @media (max-width: 768px) {
       body { background: #d0d0d0; }
       .window { margin: 0; border: none; box-shadow: none; min-height: 100vh; }
@@ -194,14 +216,15 @@
       </ul>
 
       <h2>File Upload</h2>
-      <div class="module">
+      <div class="module" id="file-upload-module">
         <h3>Quick Upload</h3>
         <div id="uploadZone" class="upload-zone">
           <p>Drop files here or click to browse</p>
-          <p style="font-size: 10px;">PDF, DOC, Images (Max 5MB)</p>
+          <p style="font-size: 10px;">PDF, DOC, DOCX, JPG, PNG (Max 5MB)</p>
         </div>
         <input type="file" id="fileInput" class="hidden" multiple />
-        <div id="uploadProgressContainer" style="margin-top: 10px; font-size: 11px;"></div>
+        <button id="clearAllBtn" class="clear-btn">Clear All</button>
+        <div id="uploadProgressContainer" class="upload-progress-container"></div>
       </div>
       
       <h2>Recent Activity</h2>
@@ -299,7 +322,14 @@
       const uploadZone = document.getElementById('uploadZone');
       const fileInput = document.getElementById('fileInput');
       const progressContainer = document.getElementById('uploadProgressContainer');
+      const clearAllBtn = document.getElementById('clearAllBtn');
 
+      // File upload setup
+      if (!window.cryptoManager) {
+        alert('Cryptography module not loaded; uploads disabled.');
+        uploadZone.classList.add('disabled');
+        fileInput.disabled = true;
+      }
       uploadZone.addEventListener('click', () => fileInput.click());
       fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
       uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragging'); });
@@ -307,61 +337,82 @@
       uploadZone.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadZone.classList.remove('dragging');
-        handleFiles(e.dataTransfer.files);
+        if (!fileInput.disabled) handleFiles(e.dataTransfer.files);
       });
+      clearAllBtn.addEventListener('click', () => { progressContainer.innerHTML = ''; });
 
-      async function handleFiles(files) {
-        if (!files.length) return;
-        if (typeof window.cryptoManager === 'undefined') {
-            alert('Cryptography module not loaded. Uploads are disabled.');
-            return;
-        }
-        await window.cryptoManager.getKey();
-        for (const file of files) {
-            const fileId = `file-${Date.now()}-${Math.random()}`;
-            createProgressIndicator(fileId, file.name);
-            processSingleFile(file, fileId);
+      // Validation and upload functions
+      function validateFile(file) {
+        const maxSize = 5 * 1024 * 1024;
+        const allowedTypes = [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'image/jpeg',
+          'image/png'
+        ];
+        if (file.size > maxSize) return `"${file.name}" exceeds 5MB limit.`;
+        if (!allowedTypes.includes(file.type)) return `"${file.name}" type not allowed.`;
+        return null;
+      }
+
+      function createProgressIndicator(fileId, fileName) {
+        const item = document.createElement('div');
+        item.className = 'upload-item';
+        item.id = fileId;
+        item.innerHTML = `
+          <span class="file-name">${fileName}</span>
+          <span class="file-status">Initialized</span>
+        `;
+        const clearBtn = document.createElement('button');
+        clearBtn.textContent = 'Clear';
+        clearBtn.className = 'clear-btn';
+        clearBtn.onclick = () => item.remove();
+        item.appendChild(clearBtn);
+        progressContainer.appendChild(item);
+      }
+
+      function updateProgress(fileId, status) {
+        const item = document.getElementById(fileId);
+        if (item) {
+          const statusSpan = item.querySelector('.file-status');
+          if (statusSpan) statusSpan.textContent = status;
         }
       }
 
-      async function processSingleFile(file, fileId) {
+      async function encryptAndUploadFile(file, fileId) {
+        const error = validateFile(file);
+        if (error) { updateProgress(fileId, error); return; }
+        updateProgress(fileId, 'Encrypting...');
+        await window.cryptoManager.getKey();
+        const { ciphertext, iv } = await window.cryptoManager.encryptFile(file);
+        updateProgress(fileId, 'Uploading...');
         try {
-          updateProgress(fileId, `Encrypting “${file.name}”...`);
-          const { ciphertext, iv } = await window.cryptoManager.encryptFile(file);
           const encryptedBlob = new Blob([ciphertext], { type: 'application/octet-stream' });
           const formData = new FormData();
           formData.append('file', encryptedBlob, `${file.name}.encrypted`);
           formData.append('iv', btoa(String.fromCharCode.apply(null, iv)));
           formData.append('originalFileName', file.name);
-          
-          updateProgress(fileId, `Uploading “${file.name}”...`);
           const jwt = getCookie('CF_Authorization');
-          if (!jwt) throw new Error('Auth token not found.');
-
           const response = await fetch('/api/upload', {
             method: 'POST',
             headers: { 'cf-access-jwt-assertion': jwt },
-            body: formData,
+            body: formData
           });
-
-          if (!response.ok) throw new Error(`Server error: ${await response.text()}`);
-          
-          updateProgress(fileId, `Success: “${file.name}” uploaded securely.`);
+          if (!response.ok) throw new Error(await response.text());
+          updateProgress(fileId, 'Success');
         } catch (e) {
           updateProgress(fileId, `Error: ${e.message}`);
         }
       }
 
-      function createProgressIndicator(fileId, fileName) {
-        const p = document.createElement('p');
-        p.id = fileId;
-        p.textContent = `Initializing upload for “${fileName}”...`;
-        progressContainer.appendChild(p);
-      }
-
-      function updateProgress(fileId, message) {
-        const p = document.getElementById(fileId);
-        if (p) p.textContent = message;
+      function handleFiles(files) {
+        progressContainer.innerHTML = ''; // Clear previous
+        Array.from(files).forEach(file => {
+          const fileId = `upload-${Date.now()}-${Math.random()}`;
+          createProgressIndicator(fileId, file.name);
+          encryptAndUploadFile(file, fileId);
+        });
       }
     });
 
