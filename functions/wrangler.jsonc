@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "validate",
-	"main": "src/index.js",
+	"main": "api/activity.js",
 	"r2_buckets": [
 	  {
 	    "binding": "UPLOADS",
