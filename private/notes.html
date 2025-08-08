@@ -1,168 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Secure Notes – J. Gregory Walsh</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
-    .font-serif { font-family: 'DM Serif Display', serif; }
-    .preview-area { @apply p-4 border border-slate-200 rounded bg-white mt-4 text-sm; }
-  </style>
-</head>
-<body class="text-slate-800">
-  <div class="max-w-2xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-serif font-bold text-slate-900 mb-2">Secure Notes</h1>
-    <p class="text-sm text-slate-600 mb-6">Access granted to <code id="userEmail">. . .</code></p>
-    <p id="sessionMessage" class="text-sm text-red-600 mb-6 hidden">Notes are saved to secure Cloudflare KV storage. Session required.</p>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Notes — WorldWideWeb Interface</title>
 
-    <!-- New Note Form -->
-    <div id="newNoteForm" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm mb-6">
-      <h2 class="font-semibold mb-2">New Note</h2>
-      <input id="noteTitle" class="w-full border border-slate-300 rounded px-3 py-2 mb-2 text-sm" placeholder="Title" />
-      <textarea id="noteBody" class="w-full border border-slate-300 rounded px-3 py-2 text-sm h-32" placeholder="Body..."></textarea>
-      <button id="togglePreview" class="mt-2 text-xs text-blue-700 hover:underline">↕ Show Preview</button>
-      <div id="previewPanel" class="preview-area hidden text-slate-700 prose prose-sm"></div>
-      <button id="saveNote" class="mt-4 bg-slate-800 text-white px-4 py-2 rounded hover:bg-slate-900 text-sm">Save Note</button>
+  <!-- DEV: Loosen CSP during local testing (no nonce). PROD: enable the commented block below and ensure a Worker injects {{NONCE}} -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 connect-src 'self' https://notes-worker.jgregorywalsh.workers.dev https://www.cloudflare.com;
+                 img-src      'self' data:;
+                 font-src     'self';
+                 style-src    'self' 'unsafe-inline';
+                 script-src   'self' 'unsafe-inline';
+                 frame-ancestors 'none';">
+
+  <!-- PRODUCTION CSP (enable for deploy):
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 connect-src 'self' https://notes-worker.jgregorywalsh.workers.dev https://www.cloudflare.com;
+                 img-src      'self' data:;
+                 font-src     'self';
+                 style-src    'self' 'unsafe-inline';
+                 script-src   'self' 'nonce-{{NONCE}}';
+                 frame-ancestors 'none';">
+  -->
+
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
+  <meta http-equiv="Pragma"        content="no-cache">
+  <meta http-equiv="Expires"       content="0">
+  <meta name="robots"              content="noindex, nofollow">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="/assets/favicon/favicon.ico">
+</head>
+<body>
+  <div class="window">
+
+    <!-- Titlebar -->
+    <div class="titlebar">
+      <span class="titlebar-title">Secure Notes</span>
+      <div class="titlebar-buttons">
+        <button class="titlebar-button" type="button" aria-label="Minimise">—</button>
+        <button class="titlebar-button" type="button" aria-label="Maximise">□</button>
+        <button class="titlebar-button" type="button" aria-label="Close">✕</button>
+      </div>
     </div>
 
-    <!-- Search Input -->
-    <input type="text" id="searchInput" placeholder="Search notes..." class="w-full border border-slate-300 rounded px-3 py-2 text-sm mb-4"/>
+    <!-- Menubar -->
+    <nav class="menubar" role="navigation">
+      <a class="menu-item" href="/private/index.html">Dashboard</a>
+      <a class="menu-item" href="/private/docs/index.html">Documents</a>
+      <a class="menu-item" href="/private/notes.html" aria-current="page">Notes</a>
+      <a class="menu-item" href="/private/applications.html">Applications</a>
+      <a class="menu-item" href="/cdn-cgi/access/logout" id="logoutBtn">Logout</a>
+    </nav>
 
-    <!-- Notes List -->
-    <div id="notesList" class="space-y-4"></div>
+    <!-- Retro toolbar -->
+    <div class="navbar">
+      <div class="nav-buttons">
+        <button class="nav-button" type="button" id="btnBack">Back</button>
+        <button class="nav-button" type="button" id="btnFwd">Forward</button>
+        <button class="nav-button" type="button" id="btnHome">Home</button>
+        <button class="nav-button" type="button" id="btnReload">Reload</button>
+      </div>
+      <input type="text" class="url-field" value="https://jgwalsh.com/private/notes" readonly>
+    </div>
 
-    <p class="text-sm mt-8">
-      <a href="/private/index.html" class="text-blue-700 hover:underline text-sm">&larr; Return to dashboard</a>
-    </p>
+    <!-- Content -->
+    <main class="content">
+      <h1>Secure Notes</h1>
+      <p>Access granted to <strong id="userEmail">…</strong></p>
+      <p id="sessionMessage" class="hidden">Notes are saved to secure Cloudflare KV storage. Session required.</p>
+
+      <!-- Terminal status -->
+      <div class="module terminal mb-6" role="log" aria-live="polite">
+        <div>&gt; Identity: <span id="terminalEmail"></span></div>
+        <div>&gt; IP Address: <span id="userIP"></span></div>
+      </div>
+
+      <!-- New Note -->
+      <div id="newNoteForm" class="module">
+        <h3>New Note</h3>
+        <p><input id="noteTitle" class="url-field" placeholder="Title"></p>
+        <p><textarea id="noteBody" class="url-field" style="height:120px;" placeholder="Body..."></textarea></p>
+        <button id="togglePreview" class="nav-button" type="button">↕ Show Preview</button>
+        <div id="previewPanel" class="module hidden" style="margin-top:10px;"></div>
+        <p><button id="saveNote" class="nav-button" type="button" style="margin-top:10px;">Save Note</button></p>
+      </div>
+
+      <!-- Search -->
+      <h2>Search</h2>
+      <p><input type="text" id="searchInput" class="url-field" placeholder="Search notes…"></p>
+
+      <!-- Notes list -->
+      <h2>Notes</h2>
+      <div id="notesList" class="module"></div>
+
+      <p style="margin-top:16px;">
+        <a class="hyperlink" href="/private/index.html">← Return to dashboard</a>
+      </p>
+    </main>
+
+    <!-- Status bar -->
+    <footer class="statusbar">
+      <span style="display:flex;align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="13" viewBox="0 0 19 13" style="margin-right:8px;">
+          <path fill="#B22234" d="M0 0h19v13H0z"/>
+          <path fill="#FFF" d="M0 1h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0z"/>
+          <path fill="#3C3B6E" d="M0 0h9v7H0z"/>
+        </svg>
+        Protected by Cloudflare Zero Trust | AES-256 Encryption
+      </span>
+      <span class="blink">SECURE SESSION</span>
+    </footer>
   </div>
 
-  <script>
-    const emailSpan = document.getElementById('userEmail');
-    const previewBtn = document.getElementById('togglePreview');
-    const previewPanel = document.getElementById('previewPanel');
-    const bodyInput = document.getElementById('noteBody');
-    const searchInput = document.getElementById('searchInput');
-    const notesList = document.getElementById('notesList');
+  <!-- Optional local Marked (no CDN). Put file at /private/assets/js/marked.min.js -->
+  <script src="assets/js/marked.min.js" defer></script>
 
-    // Decode CF_Authorization JWT
-    function parseJwtPayload(jwt) {
-      try {
-        const base64 = jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-        const json = atob(base64);
-        return JSON.parse(json);
-      } catch { return null; }
-    }
+  <!-- DEV: no nonce. PROD: restore nonce="{{NONCE}}" and enable the production CSP above. -->
+  <script defer>
+  // ——— Helpers ———
+  const $ = s => document.querySelector(s);
+  const getCookie = n => document.cookie.split('; ').find(c => c.startsWith(n+'='))?.split('=')[1] ?? null;
+  const decodeJWT = t => { try { const [,p]=t.split('.'); return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));} catch { return null; } };
+  const safeHTML = (md) => (window.marked ? marked.parse(md) : md.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])));
 
-    // Get auth user
-    function updateUserEmail() {
-      const cookie = document.cookie.split('; ').find(c => c.startsWith('CF_Authorization='));
-      if (!cookie) return;
-      const jwt = cookie.split('=')[1];
-      const payload = parseJwtPayload(jwt);
-      if (payload?.email) emailSpan.textContent = payload.email;
-    }
+  // ——— Identity & IP ———
+  function renderIdentity() {
+    const jwt = getCookie('CF_Authorization');
+    const payload = decodeJWT(jwt || '');
+    const email = payload?.email || 'Authenticated User';
+    $('#userEmail').textContent = email;
+    $('#terminalEmail').textContent = email;
+  }
+  async function fetchIP() {
+    try {
+      const txt = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(r=>r.text());
+      $('#userIP').textContent = txt.match(/ip=([^\n]+)/)?.[1] ?? 'Unavailable';
+    } catch { $('#userIP').textContent = 'Unavailable'; }
+  }
 
-    function getJwt() {
-      const cookie = document.cookie.split('; ').find(c => c.startsWith('CF_Authorization='));
-      return cookie ? cookie.split('=')[1] : null;
-    }
+  // ——— Markdown preview ———
+  const previewBtn = $('#togglePreview');
+  const previewPanel = $('#previewPanel');
+  const bodyInput = $('#noteBody');
+  previewBtn.addEventListener('click', () => {
+    const hidden = previewPanel.classList.toggle('hidden');
+    previewBtn.textContent = hidden ? '↕ Show Preview' : '↕ Hide Preview';
+    if (!hidden) previewPanel.innerHTML = safeHTML(bodyInput.value);
+  });
 
-    // Toggle markdown preview
-    previewBtn.addEventListener('click', () => {
-      previewPanel.classList.toggle('hidden');
-      previewBtn.textContent = previewPanel.classList.contains('hidden') ? '↕ Show Preview' : '↕ Hide Preview';
-      previewPanel.innerHTML = marked.parse(bodyInput.value);
-    });
+  // ——— JWT helpers ———
+  const getJwt = () => getCookie('CF_Authorization');
+  const sessionValid = () => {
+    const jwt = getJwt(); if (!jwt) return false;
+    const p = decodeJWT(jwt); return !!p && p.exp*1000 > Date.now();
+  };
 
-    // Save note
-    document.getElementById('saveNote').addEventListener('click', async () => {
-      const title = document.getElementById('noteTitle').value.trim();
-      const body = bodyInput.value.trim();
-      const jwt = getJwt();
-      if (!jwt) return alert('Session expired. Please re-authenticate.');
-      const payload = parseJwtPayload(jwt);
-      if (!payload || payload.exp * 1000 < Date.now()) return alert('Session expired. Please re-authenticate.');
-      if (!title || !body) return alert('Both title and body are required.');
+  // ——— Notes API ———
+  async function saveNote() {
+    const title = $('#noteTitle').value.trim();
+    const body  = $('#noteBody').value.trim();
+    if (!sessionValid()) return alert('Session expired. Please re-authenticate.');
+    if (!title || !body)  return alert('Both title and body are required.');
 
-      const res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'cf-access-jwt-assertion': jwt
-        },
-        body: JSON.stringify({ title, body })
-      });
-      if (res.ok) location.reload();
-      else alert('Error saving note.');
-    });
-
-    // Render one note
-    function renderNote(note) {
-      const div = document.createElement('div');
-      div.className = 'bg-white border border-slate-200 rounded p-4 shadow-sm';
-      div.innerHTML = `
-        <h3 class="font-semibold mb-1">${note.title}</h3>
-        <div class="text-sm text-slate-600 prose prose-sm">${marked.parse(note.body)}</div>
-        <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
-          <span>${new Date(note.timestamp).toLocaleString()}</span>
-          <div class="space-x-2">
-            <button class="text-red-600 hover:underline" onclick="deleteNote('${note.key}')">Delete</button>
-            <button class="text-blue-600 hover:underline" onclick="duplicateNote(${encodeURIComponent(JSON.stringify(note))})">Duplicate</button>
-          </div>
-        </div>`;
-      return div;
-    }
-
-    // Load notes
-    async function loadNotes() {
-      const res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/');
-      const data = await res.json();
-      const allNotes = data.notes || [];
-
-      const render = () => {
-        const search = searchInput.value.toLowerCase();
-        notesList.innerHTML = '';
-        allNotes.filter(n => n.title.toLowerCase().includes(search) || n.body.toLowerCase().includes(search))
-          .forEach(n => notesList.appendChild(renderNote(n)));
-      };
-      searchInput.addEventListener('input', render);
-      render();
-    }
-
-    // Delete note
-    async function deleteNote(key) {
-      if (!confirm('Delete this note?')) return;
-      const res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${key}`, { method: 'DELETE' });
-      if (res.ok) location.reload();
-      else alert('Error deleting note.');
-    }
-
-    // Duplicate note
-    function duplicateNote(encoded) {
-      const note = JSON.parse(decodeURIComponent(encoded));
-      document.getElementById('noteTitle').value = `(copy) ${note.title}`;
-      document.getElementById('noteBody').value = note.body;
-      previewPanel.innerHTML = '';
-      previewPanel.classList.add('hidden');
-      previewBtn.textContent = '↕ Show Preview';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Init
-    updateUserEmail();
     const jwt = getJwt();
-    const payload = parseJwtPayload(jwt);
-    const newNoteForm = document.getElementById('newNoteForm');
-    const sessionMessage = document.getElementById('sessionMessage');
-    if (!jwt || !payload || payload.exp * 1000 < Date.now()) {
-      newNoteForm.style.display = 'none';
-      sessionMessage.classList.remove('hidden');
+    const res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'cf-access-jwt-assertion': jwt },
+      body: JSON.stringify({ title, body })
+    });
+    if (res.ok) location.reload(); else alert('Error saving note.');
+  }
+  $('#saveNote').addEventListener('click', saveNote);
+
+  function fmtDate(ts) {
+    if (!ts) return '';
+    const d = isNaN(+ts) ? new Date(ts) : new Date(Number(ts));
+    return isNaN(d.getTime()) ? String(ts) : d.toLocaleString();
+  }
+
+  function renderNoteCard(note) {
+    const div = document.createElement('div');
+    div.className = 'module';
+    const when = fmtDate(note.timestamp);
+    div.innerHTML = `
+      <h3>${note.title || '(untitled)'}</h3>
+      <div class="mb-6">${safeHTML(note.body || '')}</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;">
+        <span>${when || ''}</span>
+        <span>
+          <button class="hyperlink" onclick="deleteNote('${note.key}')">Delete</button>
+          &nbsp;|&nbsp;
+          <button class="hyperlink" onclick='duplicateNote(${JSON.stringify(JSON.stringify(note))})'>Duplicate</button>
+        </span>
+      </div>`;
+    return div;
+  }
+
+  async function loadNotes() {
+    try {
+      const res  = await fetch('https://notes-worker.jgregorywalsh.workers.dev/');
+      const data = await res.json();
+      const all  = Array.isArray(data.notes) ? data.notes : [];
+      const render = () => {
+        const q = ($('#searchInput').value || '').toLowerCase();
+        $('#notesList').innerHTML = '';
+        all.filter(n => (n.title||'').toLowerCase().includes(q) || (n.body||'').toLowerCase().includes(q))
+           .forEach(n => $('#notesList').appendChild(renderNoteCard(n)));
+      };
+      $('#searchInput').addEventListener('input', render);
+      render();
+    } catch {
+      $('#notesList').innerHTML = '<p>Error loading notes.</p>';
     }
+  }
+
+  window.deleteNote = async (key) => {
+    if (!confirm('Delete this note?')) return;
+    const res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE' });
+    if (res.ok) location.reload(); else alert('Error deleting note.');
+  };
+
+  window.duplicateNote = (encodedJSON) => {
+    const note = JSON.parse(encodedJSON);
+    $('#noteTitle').value = `(copy) ${note.title || ''}`;
+    $('#noteBody').value  = note.body || '';
+    previewPanel.innerHTML = '';
+    previewPanel.classList.add('hidden');
+    previewBtn.textContent = '↕ Show Preview';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ——— Nav & session state ———
+  const nav = {
+    back: ()=>history.back(),
+    fwd: ()=>history.forward(),
+    home: ()=>location.assign('/private/index.html'),
+    reload: ()=>location.reload(),
+  };
+  $('#btnBack').addEventListener('click', nav.back);
+  $('#btnFwd').addEventListener('click', nav.fwd);
+  $('#btnHome').addEventListener('click', nav.home);
+  $('#btnReload').addEventListener('click', nav.reload);
+  $('#logoutBtn').addEventListener('click', e => { e.preventDefault(); document.cookie='CF_Authorization=; Max-Age=0; path=/; secure; samesite=lax'; location.href='/cdn-cgi/access/logout?returnTo=/'; });
+
+  (function init(){
+    renderIdentity();
+    fetchIP();
+    if (!sessionValid()) { $('#newNoteForm').style.display='none'; $('#sessionMessage').classList.remove('hidden'); }
     loadNotes();
+  })();
   </script>
 </body>
 </html>
