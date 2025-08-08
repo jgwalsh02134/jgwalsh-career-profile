@@ -128,6 +128,8 @@
 
   <!-- Optional local Marked (no CDN). Put file at /private/assets/js/marked.min.js -->
   <script src="assets/js/marked.min.js" defer></script>
+  <!-- Local DOMPurify for sanitizing rendered markdown -->
+  <script src="assets/js/dompurify.min.js" defer></script>
 
   <!-- DEV: no nonce. PROD: restore nonce="{{NONCE}}" and enable the production CSP above. -->
   <script defer>
@@ -135,7 +137,35 @@
   const $ = s => document.querySelector(s);
   const getCookie = n => document.cookie.split('; ').find(c => c.startsWith(n+'='))?.split('=')[1] ?? null;
   const decodeJWT = t => { try { const [,p]=t.split('.'); return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));} catch { return null; } };
-  const safeHTML = (md) => (window.marked ? marked.parse(md) : md.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])));
+  // Drop raw HTML rendering in Marked (belt-and-suspenders)
+  if (window.marked) {
+    marked.use({ renderer: { html() { return ''; } } });
+  }
+
+  // Render markdown -> sanitize -> HTML string
+  function safeMarkdownToHTML(md) {
+    const html = (window.marked
+      ? marked.parse(md, { mangle: false, headerIds: false, gfm: true, breaks: false })
+      : String(md).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))
+    );
+    const clean = (window.DOMPurify
+      ? DOMPurify.sanitize(html, {
+          FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'link', 'meta'],
+          FORBID_ATTR: ['on*'],
+          ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|\/|#)/i
+        })
+      : html
+    );
+    return clean;
+  }
+
+  // Harden anchors inside a container
+  function hardenAnchors(container) {
+    container.querySelectorAll('a').forEach(a => {
+      a.setAttribute('rel', 'noopener noreferrer nofollow');
+      // a.setAttribute('target', '_blank'); // enable if desired
+    });
+  }
 
   // ——— Identity & IP ———
   function renderIdentity() {
@@ -159,7 +189,10 @@
   previewBtn.addEventListener('click', () => {
     const hidden = previewPanel.classList.toggle('hidden');
     previewBtn.textContent = hidden ? '↕ Show Preview' : '↕ Hide Preview';
-    if (!hidden) previewPanel.innerHTML = safeHTML(bodyInput.value);
+    if (!hidden) {
+      previewPanel.innerHTML = safeMarkdownToHTML(bodyInput.value);
+      hardenAnchors(previewPanel);
+    }
   });
 
   // ——— JWT helpers ———
@@ -198,7 +231,7 @@
     const when = fmtDate(note.timestamp);
     div.innerHTML = `
       <h3>${note.title || '(untitled)'}</h3>
-      <div class="mb-6">${safeHTML(note.body || '')}</div>
+      <div class="mb-6">${safeMarkdownToHTML(note.body || '')}</div>
       <div style="display:flex;justify-content:space-between;font-size:11px;">
         <span>${when || ''}</span>
         <span>
@@ -209,6 +242,7 @@
           <button class="hyperlink" onclick='duplicateNote(${JSON.stringify(JSON.stringify(note))})'>Duplicate</button>
         </span>
       </div>`;
+    hardenAnchors(div);
     return div;
   }
 
@@ -260,7 +294,8 @@
     const note = JSON.parse(encodedJSON);
     viewerTitle.textContent = note.title || '(untitled)';
     viewerTime.textContent = fmtDate(note.timestamp) || '';
-    viewerBody.innerHTML = safeHTML(note.body || '');
+    viewerBody.innerHTML = safeMarkdownToHTML(note.body || '');
+    hardenAnchors(viewerBody);
     showViewer();
   };
 
