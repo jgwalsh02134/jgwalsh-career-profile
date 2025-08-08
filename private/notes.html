@@ -97,6 +97,16 @@
       <h2>Notes</h2>
       <div id="notesList" class="module"></div>
 
+      <!-- Note Viewer (modal) -->
+      <div id="noteViewer" class="hidden" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" style="position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1000;">
+        <div class="module" style="position:relative;max-width:760px;width:92%;max-height:80vh;overflow:auto;">
+          <button id="viewerClose" class="titlebar-button" type="button" aria-label="Close" style="position:absolute;top:8px;right:8px;">✕</button>
+          <h3 id="viewerTitle" style="margin-right:36px;"></h3>
+          <div id="viewerTime" style="font-size:11px;color:#666;margin:-6px 0 10px 0;"></div>
+          <div id="viewerBody" class="mb-6"></div>
+        </div>
+      </div>
+
       <p style="margin-top:16px;">
         <a class="hyperlink" href="/private/index.html">← Return to dashboard</a>
       </p>
@@ -192,6 +202,8 @@
       <div style="display:flex;justify-content:space-between;font-size:11px;">
         <span>${when || ''}</span>
         <span>
+          <button class="hyperlink" onclick='viewNote(${JSON.stringify(JSON.stringify(note))})'>View</button>
+          &nbsp;|&nbsp;
           <button class="hyperlink" onclick="deleteNote('${note.key}')">Delete</button>
           &nbsp;|&nbsp;
           <button class="hyperlink" onclick='duplicateNote(${JSON.stringify(JSON.stringify(note))})'>Duplicate</button>
@@ -233,6 +245,32 @@
     previewBtn.textContent = '↕ Show Preview';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // View note (modal)
+  const viewer = $('#noteViewer');
+  const viewerTitle = $('#viewerTitle');
+  const viewerBody = $('#viewerBody');
+  const viewerTime = $('#viewerTime');
+  const viewerClose = $('#viewerClose');
+
+  function showViewer() { viewer.classList.remove('hidden'); }
+  function hideViewer() { viewer.classList.add('hidden'); }
+
+  window.viewNote = (encodedJSON) => {
+    const note = JSON.parse(encodedJSON);
+    viewerTitle.textContent = note.title || '(untitled)';
+    viewerTime.textContent = fmtDate(note.timestamp) || '';
+    viewerBody.innerHTML = safeHTML(note.body || '');
+    showViewer();
+  };
+
+  viewer.addEventListener('click', (e) => {
+    if (e.target === viewer) hideViewer();
+  });
+  viewerClose.addEventListener('click', hideViewer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !viewer.classList.contains('hidden')) hideViewer();
+  });
 
   // ——— Nav & session state ———
   const nav = {
