@@ -221,17 +221,21 @@
     };
 
     async function tryPost(url) {
-      const res = await fetch(url, { method: 'POST', headers, body: payload });
-      if (res.ok) return { ok: true };
-      const text = await res.text().catch(() => '');
-      return { ok: false, status: res.status, text };
+      try {
+        const res = await fetch(url, { method: 'POST', headers, body: payload });
+        if (res.ok) return { ok: true };
+        const text = await res.text().catch(() => '');
+        return { ok: false, status: res.status, text };
+      } catch (err) {
+        return { ok: false, error: err?.message || String(err) };
+      }
     }
 
     try {
-      let out = await tryPost('/api/notes');
-      if (!out.ok) {
-        out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/');
-      }
+      const isFile = location.protocol === 'file:';
+      let out = isFile ? await tryPost('https://notes-worker.jgregorywalsh.workers.dev/')
+                       : await tryPost('/api/notes');
+      if (!out.ok) out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/');
       if (!out.ok) {
         // Fallback to a common alt route
         out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/notes');
@@ -239,7 +243,8 @@
       if (out.ok) {
         location.reload();
       } else {
-        alert(`Error saving note (status ${out.status || 'n/a'}).` + (out.text ? `\n\n${out.text}` : ''));
+        const details = out.text || out.error || '';
+        alert(`Error saving note (status ${out.status || 'n/a'}).` + (details ? `\n\n${details}` : ''));
       }
     } catch (e) {
       alert(`Network error while saving note. ${e?.message || e}`);
@@ -278,16 +283,18 @@
 
   async function loadNotes() {
     try {
-      let res  = await fetch('/api/notes');
-      if (!res.ok) {
-        // Fallback to external worker
-        res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/');
-        if (!res.ok) {
-          // Fallback to /notes if root is not a list endpoint
-          res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/notes');
+      const isFile = location.protocol === 'file:';
+      let res;
+      try {
+        res = isFile ? null : await fetch('/api/notes');
+      } catch { res = null; }
+      if (!res || !res.ok) {
+        try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/'); } catch { res = null; }
+        if (!res || !res.ok) {
+          try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/notes'); } catch { res = null; }
         }
       }
-      const data = await res.json().catch(() => ({}));
+      const data = res ? await res.json().catch(() => ({})) : {};
       const raw  = Array.isArray(data.notes) ? data.notes : [];
       const all  = raw.map(n => ({
         ...n,
@@ -311,15 +318,16 @@
     if (!confirm('Delete this note?')) return;
     const jwt = getJwt();
     const headers = jwt ? { 'cf-access-jwt-assertion': jwt, 'Authorization': `Bearer ${jwt}` } : {};
-    let res = await fetch(`/api/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers });
-    if (!res.ok) {
-      // Fallbacks to external worker conventions
-      res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers });
-      if (!res.ok) {
-        res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/${encodeURIComponent(key)}`, { method:'DELETE', headers });
+    const isFile = location.protocol === 'file:';
+    let res = null;
+    try { res = isFile ? null : await fetch(`/api/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
+    if (!res || !res.ok) {
+      try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
+      if (!res || !res.ok) {
+        try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
       }
     }
-    if (res.ok) location.reload(); else alert(`Error deleting note (status ${res.status}).`);
+    if (res && res.ok) location.reload(); else alert(`Error deleting note${res ? ` (status ${res.status})` : ''}.`);
   };
 
   window.duplicateNote = (encodedJSON) => {
