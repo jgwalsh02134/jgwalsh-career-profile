@@ -210,12 +210,42 @@
     if (!title || !body)  return alert('Both title and body are required.');
 
     const jwt = getJwt();
-    const res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/', {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json', 'cf-access-jwt-assertion': jwt },
-      body: JSON.stringify({ title, body })
-    });
-    if (res.ok) location.reload(); else alert('Error saving note.');
+    const saveBtn = $('#saveNote');
+    saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+    const payload = JSON.stringify({ title, body });
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'cf-access-jwt-assertion': jwt,
+      'Authorization': `Bearer ${jwt}`
+    };
+
+    async function tryPost(url) {
+      const res = await fetch(url, { method: 'POST', headers, body: payload });
+      if (res.ok) return { ok: true };
+      const text = await res.text().catch(() => '');
+      return { ok: false, status: res.status, text };
+    }
+
+    try {
+      let out = await tryPost('/api/notes');
+      if (!out.ok) {
+        out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/');
+      }
+      if (!out.ok) {
+        // Fallback to a common alt route
+        out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/notes');
+      }
+      if (out.ok) {
+        location.reload();
+      } else {
+        alert(`Error saving note (status ${out.status || 'n/a'}).` + (out.text ? `\n\n${out.text}` : ''));
+      }
+    } catch (e) {
+      alert(`Network error while saving note. ${e?.message || e}`);
+    } finally {
+      saveBtn.disabled = false; saveBtn.textContent = 'Save Note';
+    }
   }
   $('#saveNote').addEventListener('click', saveNote);
 
@@ -248,9 +278,22 @@
 
   async function loadNotes() {
     try {
-      const res  = await fetch('https://notes-worker.jgregorywalsh.workers.dev/');
-      const data = await res.json();
-      const all  = Array.isArray(data.notes) ? data.notes : [];
+      let res  = await fetch('/api/notes');
+      if (!res.ok) {
+        // Fallback to external worker
+        res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/');
+        if (!res.ok) {
+          // Fallback to /notes if root is not a list endpoint
+          res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/notes');
+        }
+      }
+      const data = await res.json().catch(() => ({}));
+      const raw  = Array.isArray(data.notes) ? data.notes : [];
+      const all  = raw.map(n => ({
+        ...n,
+        key: n.key || n.id || n.noteId || n._id || '',
+        timestamp: n.timestamp || n.time || n.createdAt || n.updatedAt || Date.now()
+      }));
       const render = () => {
         const q = ($('#searchInput').value || '').toLowerCase();
         $('#notesList').innerHTML = '';
@@ -266,8 +309,17 @@
 
   window.deleteNote = async (key) => {
     if (!confirm('Delete this note?')) return;
-    const res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE' });
-    if (res.ok) location.reload(); else alert('Error deleting note.');
+    const jwt = getJwt();
+    const headers = jwt ? { 'cf-access-jwt-assertion': jwt, 'Authorization': `Bearer ${jwt}` } : {};
+    let res = await fetch(`/api/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers });
+    if (!res.ok) {
+      // Fallbacks to external worker conventions
+      res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers });
+      if (!res.ok) {
+        res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/${encodeURIComponent(key)}`, { method:'DELETE', headers });
+      }
+    }
+    if (res.ok) location.reload(); else alert(`Error deleting note (status ${res.status}).`);
   };
 
   window.duplicateNote = (encodedJSON) => {
