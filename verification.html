@@ -50,6 +50,7 @@
       font-family: "IBM Plex Mono", "Courier New", monospace;
       background: #e6e6e6;
       color: #000;
+      line-height: 1.45;
     }
     .window {
       max-width: 720px;
@@ -64,6 +65,10 @@
       padding: 6px 10px;
       font-weight: bold;
       font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
     .content {
       padding: 1.25rem 1.5rem;
@@ -73,11 +78,14 @@
       border-collapse: collapse;
       margin: 1rem 0;
       font-size: 0.9rem;
+      table-layout: fixed; /* improves small-screen fit */
     }
     th, td {
       border: 1px solid #999;
       padding: 6px 8px;
       text-align: left;
+      vertical-align: top;
+      word-break: break-word;
     }
     th { background: #d9d9d9; }
     caption {
@@ -92,6 +100,34 @@
       margin-top: 2rem;
       font-size: 0.75rem;
       text-align: center;
+    }
+
+    /* Media & embeds */
+    img { max-width: 100%; height: auto; }
+    .LI-profile-badge { max-width: 100%; }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      body { font-size: 15px; }
+      .window {
+        margin: 0.75rem;
+        box-shadow: 3px 3px 0 #999;
+      }
+      .title-bar {
+        font-size: 0.85rem;
+        padding: 6px 8px;
+      }
+      .title-bar img { width: 20px; height: 20px; }
+      .content { padding: 1rem; }
+      table { font-size: 0.85rem; }
+      th, td { padding: 6px; }
+      figcaption { font-size: 0.75rem; }
+    }
+
+    @media (min-width: 481px) and (max-width: 1024px) {
+      body { font-size: 16px; }
+      .window { margin: 1.25rem; }
+      .content { padding: 1.25rem; }
     }
   </style>
 </head>
