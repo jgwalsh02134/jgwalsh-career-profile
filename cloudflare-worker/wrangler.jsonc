@@ -23,7 +23,8 @@
 	  "production": {
 	    "routes": [
 	      "https://jgwalsh.com/dashboard/api/validate",
-	      "https://jgwalsh.com/api/upload"
+	      "https://jgwalsh.com/api/upload",
+	      "https://jgwalsh.com/api/notes*"
 	    ]
 	  }
 	}
