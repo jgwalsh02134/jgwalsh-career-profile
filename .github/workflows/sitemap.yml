@@ -22,7 +22,6 @@ jobs:
         with:
           base-url: https://jgwalsh.com
           include-html: true
-          additional-sitemaps: ""
           sitemap-path: sitemap.xml
 
       - name: Commit sitemap.xml
