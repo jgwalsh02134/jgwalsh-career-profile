@@ -1,4 +1,3 @@
-// === PROJECT CARD RENDER (BEGIN) ===
 async function renderProjectsGrid() {
   const grid = document.getElementById('projects-grid');
   if (!grid) return;
@@ -8,10 +7,10 @@ async function renderProjectsGrid() {
     const items = await res.json();
 
     grid.innerHTML = '';
-    (items || []).forEach(item => {
+    items.forEach(item => {
       const card = document.createElement('article');
       card.className = 'card';
-      const tags = (item.tags || []).map(t => `<span class="muted" style="font-size:12px;margin-right:8px;">#${t}</span>`).join('');
+      const tags = (item.tags || []).map(t => `<span class="tag">#${t}</span>`).join('');
       card.innerHTML = `
         <h3>${item.title}</h3>
         <p class="muted">${item.description || ''}</p>
@@ -20,11 +19,10 @@ async function renderProjectsGrid() {
       `;
       grid.appendChild(card);
     });
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error(err);
     grid.innerHTML = '<p class="muted">Could not load projects.</p>';
   }
 }
-// === PROJECT CARD RENDER (END) ===
 
 document.addEventListener('DOMContentLoaded', renderProjectsGrid);
