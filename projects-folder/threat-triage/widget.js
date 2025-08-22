@@ -174,49 +174,54 @@ function buildRecommendations(flags, band, rubric, protHits){
 }
 
 function buildReportMarkdown(text, totals, sub, flags, conf, damp, rec, caseMeta){
-  const immed = flags.timeSpecific ? "Near-term (≤72h) cues present" : "Immediacy unclear from text";
-  const drivers = []
-    .concat(sub.btam.hits.length? ["BTAM: "+sub.btam.hits.join(', ')] : [])
-    .concat(sub.trap18.hits.length? ["TRAP-18: "+sub.trap18.hits.join(', ')] : [])
-    .concat(sub.hcr20.hits.length? ["HCR-20 context: "+sub.hcr20.hits.join(', ')] : [])
-    .concat(sub.lenses.hits.length? ["Lexical aggression: "+sub.lenses.hits.join(', ')] : [])
-    .concat(sub.protective.hits.length? ["Protective factors: "+sub.protective.hits.join(', ')] : []);
-  const protectiveNarr = sub.protective.hits.length? "Protective lexical signals ("+sub.protective.hits.join(', ')+") may mitigate escalation if actively engaged." : "No clear protective lexical signals detected.";
-  const riskInterp = totals.band.label+" band derives from additive indicators with dampener adjustments. This is a deterministic lexical screen; it does not infer motive, capability depth, or clinical state.";
-  const recBlock = (title, arr)=>['**'+title+'**'].concat(arr.length? arr.map(x=>'- '+x):['- None identified.']).join('\n');
-  const caseHeader = caseMeta && caseMeta.label ? `**Case:** ${caseMeta.label}` : '';
-  return [
-caseHeader,
-"## Executive Summary",
-`**Band:** ${totals.band.label}  |  **Score:** ${totals.score}  |  **Confidence:** ${conf.label}`,
-`**Immediacy:** ${immed}`,
-"",
-"### Risk Formulation (Structured Professional Judgment Alignment)",
-"- **Observable drivers:** "+(drivers.length? drivers.join(' | '):'None detected.'),
-`- **Dampeners applied:** ${damp.applied.length? damp.applied.join(', '):'none'}.`,
-"- **Interpretation:** "+riskInterp,
-"- **Protective context:** "+protectiveNarr,
-"",
-"### Recommended Actions",
-recBlock('Immediate', rec.immediate),
-"",
-recBlock('Near Term', rec.near_term),
-"",
-recBlock('Follow Up', rec.follow_up),
-"",
-"### Detailed Indicator Accounting",
-`- BTAM core (${sub.btam.score}): ${sub.btam.hits.join(', ')||'none'}`,
-`- TRAP-18 subset (${sub.trap18.score}): ${sub.trap18.hits.join(', ')||'none'}`,
-`- HCR-20 context (${sub.hcr20.score}): ${sub.hcr20.hits.join(', ')||'none'}`,
-`- Lexical aggression (${sub.lenses.score}): ${sub.lenses.hits.join(', ')||'none'}`,
-`- Protective (${sub.protective.score}): ${sub.protective.hits.join(', ')||'none'}`,
-"",
-"### Narrative Provided",
-"> "+text.replace(/\n+/g,' ').trim(),
-"",
-"### Transparency & Limitations",
-"Deterministic pattern match; no machine learning, no external data enrichment. Absence of hits ≠ absence of risk. All outputs require qualified human evaluation before action."
-  ].join('\n');
+  const container = document.createElement('div');
+  if(caseMeta && caseMeta.label){
+    const h = document.createElement('h4');
+    h.textContent = `Case: ${caseMeta.label}`;
+    container.appendChild(h);
+  }
+  const ex = document.createElement('div');
+  ex.innerHTML = `
+    <h4>Executive Summary</h4>
+    <p><strong>Band:</strong> ${totals.band.label} &nbsp; | &nbsp; 
+       <strong>Score:</strong> ${totals.score} &nbsp; | &nbsp; 
+       <strong>Confidence:</strong> ${conf.label}</p>
+    <p><strong>Immediacy:</strong> ${flags.timeSpecific ? "Near-term (≤72h) cues present" : "Immediacy unclear from text"}.</p>
+    <p>This assessment synthesizes multiple validated domains (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues). 
+       Signals are <em>indicators</em>, not proof. Human review required.</p>`;
+  container.appendChild(ex);
+  const rf = document.createElement('div');
+  rf.innerHTML = `
+    <h4>Risk Formulation</h4>
+    <ul>
+      <li><strong>BTAM Indicators:</strong> ${sub.btam.hits.length ? sub.btam.hits.join(', ') : 'None'}</li>
+      <li><strong>TRAP-18 Behaviors:</strong> ${sub.trap18.hits.length ? sub.trap18.hits.join(', ') : 'None'}</li>
+      <li><strong>HCR-20 Contextual:</strong> ${sub.hcr20.hits.length ? sub.hcr20.hits.join(', ') : 'None'}</li>
+      <li><strong>Lexical Aggression:</strong> ${sub.lenses.hits.length ? sub.lenses.hits.join(', ') : 'None'}</li>
+      <li><strong>Protective Factors:</strong> ${sub.protective.hits.length ? sub.protective.hits.join(', ') : 'None'}</li>
+    </ul>
+    <p><strong>Dampeners Applied:</strong> ${damp.applied.length ? damp.applied.join(', ') : 'None'}.</p>`;
+  container.appendChild(rf);
+  const rec = document.createElement('div');
+  rec.innerHTML = `
+    <h4>Recommended Actions</h4>
+    <h5>Immediate (now)</h5>
+    <ul>${(rec.immediate||[]).map(x=>`<li>${x}</li>`).join('')}</ul>
+    <h5>Next 24–72 Hours</h5>
+    <ul>${(rec.near_term||[]).map(x=>`<li>${x}</li>`).join('')}</ul>
+    <h5>Follow-up</h5>
+    <ul>${(rec.follow_up||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;
+  container.appendChild(rec);
+  const dd = document.createElement('div');
+  dd.innerHTML = `
+    <h4>Do / Don't Guidance</h4>
+    <ul>
+      <li><strong>Do:</strong> preserve evidence, document rationale and limits, escalate per policy when Elevated/Critical.</li>
+      <li><strong>Don't:</strong> treat signals as proof, profile based on text alone, or ignore negation/sarcasm cues.</li>
+    </ul>`;
+  container.appendChild(dd);
+  return container;
+}
 }
 
 function buildCalcTrace(text, results){
@@ -248,7 +253,8 @@ function renderResults(full, rubric){
   document.getElementById('hcrScore').textContent=sub.hcr20.score; renderList(document.getElementById('hcrHits'), sub.hcr20.hits);
   document.getElementById('lensScore').textContent=sub.lenses.score; renderList(document.getElementById('lensHits'), sub.lenses.hits);
   document.getElementById('protScore').textContent=sub.protective.score; renderList(document.getElementById('protHits'), sub.protective.hits);
-  document.getElementById('reportText').textContent=report;
+  const reportHost=document.getElementById('reportText');
+  if(reportHost){ reportHost.innerHTML=''; reportHost.appendChild(report.cloneNode(true)); }
   document.getElementById('calcTrace').textContent=trace;
   const showRubric=document.getElementById('showRubric').checked; const rc=document.getElementById('rubricCard'); rc.style.display=showRubric?'block':'none'; if(showRubric) rc.textContent=JSON.stringify(rubric,null,2);
 }
@@ -270,7 +276,7 @@ function aggregate(text, rubric){
   const conf = confidenceFrom(text, sub, dampen);
   const rec = buildRecommendations(flags, totals.band, rubric, protective.hits);
   const caseMeta = __selectedCaseKey__ ? { key: __selectedCaseKey__, label: CASE_LABELS[__selectedCaseKey__] } : null;
-  const report = buildReportMarkdown(text, totals, sub, flags, conf, dampen, rec, caseMeta);
+  const report = buildReportHTML(caseMeta?caseMeta.label:null, totals, sub, flags, conf, dampen, rec);
   const trace = buildCalcTrace(text, {sub, totals, dampen, flags, conf, rec});
   return { totals, sub, dampen, flags, conf, rec, report, trace, case: caseMeta };
 }
