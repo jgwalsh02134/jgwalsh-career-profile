@@ -1,14 +1,15 @@
 // Canonicalize text to avoid Unicode pitfalls (smart quotes, dashes, accents)
-// Threat Triage widget — force-run reliability version (force-run-1)
-const __TT_VERSION__ = 'force-run-1';
+// Threat Triage widget — fix-bind version (fix-bind-1)
+const __TT_VERSION__ = 'fix-bind-1';
 console.debug('[TT] widget version', __TT_VERSION__);
 
-// ---- Diagnostics helpers ----
-function ttSetStatus(s){ const el = document.getElementById('tt-status'); if(el) el.textContent = s; }
-function ttSetErr(e){ const el = document.getElementById('tt-err'); if(el) el.textContent = e ? String(e) : '—'; }
-function ttLog(...a){ console.log('[TT]', ...a); }
+// ===== DIAGNOSTICS =====
+function ttStatus(s){ const el=document.getElementById('tt-status'); if(el) el.textContent=s; }
+function ttErr(e){ const el=document.getElementById('tt-err'); if(el) el.textContent=e?String(e):'—'; }
+function log(...a){ console.log('[TT]', ...a); }
 
 // Ensure report container exists
+// ===== ALWAYS-RENDER FALLBACK REPORT =====
 function ensureReportExecutive(){
   let el = document.getElementById('reportExecutive');
   if(!el){
@@ -21,81 +22,97 @@ function ensureReportExecutive(){
   }
   return el;
 }
-
-function renderDeterministicFallback(traceMatches){
+function renderDeterministicFallback(matches){
   const exec = ensureReportExecutive();
-  const items = (traceMatches||[]).map(m =>
-    `<li><strong>${m.indicator}</strong> — matched “${m.pattern}”</li>`
-  ).join('') || '<li>No indicators fired.</li>';
+  const items = (matches||[]).map(m=>`<li><strong>${m.indicator}</strong> — “${m.pattern}”</li>`).join('') || '<li>No indicators detected.</li>';
   exec.innerHTML = `
     <div class="card">
       <h4>Comprehensive Report (Deterministic)</h4>
-      <p>This explanation is generated without AI and describes why each indicator contributed to the score.</p>
+      <p>Why each indicator contributed (fallback view).</p>
       <ul>${items}</ul>
-    </div>
-  `;
+    </div>`;
 }
 
+// ===== CASE SELECT (populate textarea immediately) =====
 function wireCaseSelect(){
   const sel = document.getElementById('caseSelect');
   const ta  = document.getElementById('narrative');
-  if(!sel || !ta){ ttLog('caseSelect or narrative missing'); return; }
+  if(!sel || !ta){ log('missing caseSelect or narrative'); return; }
   sel.addEventListener('change', () => {
     const opt = sel.options[sel.selectedIndex];
-    const text = opt?.getAttribute?.('data-text');
+    const text = opt?.getAttribute?.('data-text') || (window.CASE_EXAMPLES?.[sel.value]) || '';
     if(text){ ta.value = text; }
-    const ra = document.getElementById('resultsArea');
-    if(ra) ra.style.display = 'none';
+    const ra = document.getElementById('resultsArea'); if(ra) ra.style.display='none';
   });
 }
 
-let __TT_RUBRIC__ = null;
+// ===== RUBRIC (idempotent load) =====
+let __RUBRIC__ = null;
 async function loadRubricOnce(){
-  if(__TT_RUBRIC__) return __TT_RUBRIC__;
-  const r = await fetch('./rubric.json?v=force-run-1', {cache:'no-store'}).catch(()=>null);
+  if(__RUBRIC__) return __RUBRIC__;
+  const r = await fetch('./rubric.json?v=fix-bind-1', {cache:'no-store'}).catch(()=>null);
   if(!r || !r.ok) throw new Error('rubric load failed');
-  __TT_RUBRIC__ = await r.json();
-  return __TT_RUBRIC__;
+  __RUBRIC__ = await r.json();
+  return __RUBRIC__;
 }
 
-async function runTriageOnce(){
-  ttSetStatus('running'); ttSetErr('');
-  const ta = document.getElementById('narrative');
-  const txt = ta ? (ta.value || '') : '';
-  try{
-    const rubric = await loadRubricOnce();
-    if(typeof aggregate !== 'function' || typeof render !== 'function'){
-      throw new Error('aggregate/render not found; ensure they are defined above');
+// Provide a thin alias to existing renderResults (expected name 'render' by glue code)
+if (typeof render === 'undefined') {
+  function render(r, rubric, txt){
+    // renderResults signature: (result, rubric, rawText, caseName)
+    if (typeof renderResults === 'function') {
+      renderResults(r, rubric, txt, r?.case?.label || '');
     }
-    const result = aggregate(txt, rubric);
-    render(result, rubric, txt, result?.case?.label || '');
-    const matches = (result.trace && result.trace.matches) || [];
-    renderDeterministicFallback(matches); // always show something
-    ttSetStatus('ok');
-  } catch(e){
-    ttSetStatus('error'); ttSetErr(e.message || String(e));
-    console.error('[TT] run error', e);
   }
 }
 
-function bindRunButton(){
-  const btn = document.getElementById('run');
-  if(!btn){ ttLog('#run missing'); return; }
-  if(!window.__TT_RUN_BOUND__){
-    btn.addEventListener('click', runTriageOnce);
-    window.__TT_RUN_BOUND__ = true;
-    ttLog('Run bound');
+// ===== RUN ONCE (guarantee rubric load, call aggregate/render, then fallback) =====
+async function runTriageOnce(){
+  ttStatus('running'); ttErr('');
+  try{
+    const ta = document.getElementById('narrative');
+    const txt = ta ? (ta.value || '') : '';
+    const rubric = await loadRubricOnce();
+
+    if(typeof aggregate !== 'function' || typeof render !== 'function'){
+      throw new Error('aggregate/render not defined');
+    }
+    const result = aggregate(txt, rubric);    // scorer
+    render(result, rubric, txt);               // renderer updates UI
+    const matches = (result.trace && result.trace.matches) || [];
+    renderDeterministicFallback(matches);      // ensure report never blank
+    ttStatus('ok');
+  }catch(e){
+    console.error('[TT] run error', e);
+    ttStatus('error'); ttErr(e.message||String(e));
+  }
+}
+
+// ===== BUTTONS (bind regardless of DOM timing, and idempotent) =====
+function bindButtons(){
+  const runBtn = document.getElementById('run');
+  const clearBtn = document.getElementById('clearText') || document.querySelector('button#clear, button[data-action="clear"]');
+
+  if(runBtn && !runBtn.__ttBound){ runBtn.addEventListener('click', runTriageOnce); runBtn.__ttBound=true; log('Run bound'); }
+  if(clearBtn && !clearBtn.__ttBound){
+    clearBtn.addEventListener('click', ()=>{
+      const ta = document.getElementById('narrative'); if(ta) ta.value='';
+      const ra = document.getElementById('resultsArea'); if(ra) ra.style.display='none';
+      ensureReportExecutive().innerHTML='';
+      ttStatus('idle'); ttErr('');
+    });
+    clearBtn.__ttBound=true; log('Clear bound');
   }
 }
 
 (function boot(){
   const start = ()=>{ try{
       wireCaseSelect();
-      bindRunButton();
-      ttLog('boot ok');
-    }catch(e){ console.error('[TT] boot error', e); ttSetErr(e.message || String(e)); }
+      bindButtons();
+      log('booted');
+    }catch(e){ console.error('[TT] boot error', e); ttErr(e.message||String(e)); }
   };
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
 
@@ -104,8 +121,8 @@ window.ttSmoke = function(){
   const info = {
     version: __TT_VERSION__,
     hasRunBtn: !!document.getElementById('run'),
-    runBound: !!window.__TT_RUN_BOUND__,
-    rubricLoaded: !!__TT_RUBRIC__,
+    runBound: !!document.getElementById('run')?.__ttBound,
+    rubricLoaded: !!__RUBRIC__,
     lastTriage: !!window.__lastTriage__
   };
   try { document.getElementById('run')?.click(); info.clickDispatched=true; } catch(e){ info.clickError=String(e); }
