@@ -327,6 +327,48 @@ function buildCalcTrace(text, results, matches){
     setOne('protExplain', aiJson.rationales?.protective);
   }
   
+// New comprehensive report renderer (AI or deterministic fallback)
+function renderComprehensiveReport({deterministic, ai}) {
+  const exec = document.getElementById('reportExecutive');
+  if (!exec) return;
+
+  if (ai) {
+    exec.innerHTML = `
+      <div class="card">
+        <h4>Executive Summary (AI-assist)</h4>
+        <p>${ai.executive || "No executive summary."}</p>
+      </div>
+      <div class="card">
+        <h4>Indicator Rationales</h4>
+        <ul>
+          <li><strong>BTAM:</strong> ${ai.rationales?.btam || "None detected"}</li>
+          <li><strong>TRAP-18:</strong> ${ai.rationales?.trap18 || "None detected"}</li>
+          <li><strong>HCR-20:</strong> ${ai.rationales?.hcr20 || "None detected"}</li>
+          <li><strong>Lexical:</strong> ${ai.rationales?.lexical || "None detected"}</li>
+          <li><strong>Protective:</strong> ${ai.rationales?.protective || "None detected"}</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Recommended Actions</h4>
+        <h5>Immediate</h5><ul>${(ai.plan?.immediate||[]).map(x=>`<li>${x}</li>`).join("")}</ul>
+        <h5>Next 24–72h</h5><ul>${(ai.plan?.next_24_72||[]).map(x=>`<li>${x}</li>`).join("")}</ul>
+        <h5>Follow-up</h5><ul>${(ai.plan?.follow_up||[]).map(x=>`<li>${x}</li>`).join("")}</ul>
+        ${ai.caveats?.length ? `<p class="note"><strong>Caveats:</strong> ${ai.caveats.join(" • ")}</p>` : ""}
+      </div>
+    `;
+  } else {
+    exec.innerHTML = `
+      <div class="card">
+        <h4>Comprehensive Report (Deterministic)</h4>
+        <p>This report explains why each indicator was scored, based only on matched text patterns.</p>
+        <ul>
+          ${(deterministic||[]).map(x => `<li><strong>${x.indicator}</strong> — matched "${x.pattern}" → score +${x.weight}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
+}
+  
 // --- Aggregate scoring (restored) ---
 function aggregate(text, rubric){
   const btam = findHitsBoundaryAware(text, rubric.btam_core, rubric.dampening.negation_cues, 18);
@@ -382,20 +424,7 @@ function renderResults(result, rubric, rawText, caseName){
   if(nvc) nvc.style.display='block';
 
   // Executive + actions (deterministic baseline)
-  const execWrap=document.getElementById('reportExecutive');
-  if(execWrap){
-    const execFrag=buildExecutiveHTML(caseName, result.totals, result.flags, result.conf);
-    const actionsCard=document.createElement('div');
-    actionsCard.className='card';
-    const planList=arr=> (arr&&arr.length? arr.map(x=>`<li>${escapeHtml(x)}</li>`).join('') : '<li>None.</li>');
-    actionsCard.innerHTML=`<h4 style="margin:0 0 6px;">Recommended Actions</h4>
-      <h5>Immediate</h5><ul>${planList(result.rec.immediate)}</ul>
-      <h5>Next 24–72h</h5><ul>${planList(result.rec.near_term)}</ul>
-      <h5>Follow-up</h5><ul>${planList(result.rec.follow_up)}</ul>`;
-    execWrap.innerHTML='';
-    execWrap.appendChild(execFrag);
-    execWrap.appendChild(actionsCard);
-  }
+  // (Executive & actions now rendered via renderComprehensiveReport after scoring)
   // Domain explains default (one bullet summarizing hits list)
   const setExplain=(id, hitsArr, label)=>{
     const el=document.getElementById(id);
@@ -502,28 +531,30 @@ function main(){
   const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
   const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
   renderResults(full, rubric, inputText, caseName);
-      // AI assist (optional) - spinner then async call
+      // Comprehensive report (AI assist or deterministic fallback)
+      const result = full; const { totals, sub, dampen } = full;
       (async () => {
         const aiToggle = document.getElementById('aiAssist');
-        if (!aiToggle || !aiToggle.checked) return;
-        const execWrap = document.getElementById('reportExecutive');
-        const prevHTML = execWrap ? execWrap.innerHTML : '';
-        if (execWrap) execWrap.innerHTML = prevHTML + '<div class="note">Generating AI explanation…</div>';
-        const subs = {
-          btam:   { score: full.sub.btam.score,   hits: full.sub.btam.hits },
-          trap18: { score: full.sub.trap18.score, hits: full.sub.trap18.hits },
-          hcr20:  { score: full.sub.hcr20.score,  hits: full.sub.hcr20.hits },
-          lexical:{ score: full.sub.lenses.score, hits: full.sub.lenses.hits },
-          protective: { score: full.sub.protective.score, hits: full.sub.protective.hits }
-        };
-        const ai = await fetchAIExplain(
-          inputText,
-          full.totals.band,
-          subs,
-          (full.trace?.matches) || [],
-          full.dampen?.applied || []
-        );
-        renderAIIntoReport(ai);
+        const deterministicHits = result.trace?.matches || [];
+
+        if (aiToggle && aiToggle.checked) {
+          const ai = await fetchAIExplain(
+            inputText,
+            totals.band,
+            {
+              btam: sub.btam,
+              trap18: sub.trap18,
+              hcr20: sub.hcr20,
+              lexical: sub.lenses,
+              protective: sub.protective
+            },
+            deterministicHits,
+            dampen.applied || []
+          );
+          renderComprehensiveReport({deterministic: deterministicHits, ai});
+        } else {
+          renderComprehensiveReport({deterministic: deterministicHits});
+        }
       })();
       window.__lastTriage__={
         ...window.__lastTriage__,
