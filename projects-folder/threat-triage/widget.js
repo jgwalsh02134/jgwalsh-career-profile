@@ -261,6 +261,38 @@ function populateRationaleList(rawText, result, rubric){
   if(!items.length){ const li=document.createElement('li'); li.textContent='No indicators fired.'; items.push(li);} items.forEach(li=>ol.appendChild(li));
 }
 
+// --- AI Assist Helpers ---
+async function fetchAIExplain(narrative, band, subscores, hits, dampeners){
+  try{
+    const res=await fetch('/api/triage-explain',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ narrative, band, subscores, hits, dampeners })});
+    if(!res.ok) return null; return await res.json();
+  }catch{ return null; }
+}
+
+function renderAIIntoReport(ai){
+  if(!ai) return;
+  const exec=document.getElementById('reportExecutive');
+  if(exec){
+    const planHtml=arr=> (arr&&arr.length? arr.map(x=>`<li>${escapeHtml(x)}</li>`).join('') : '<li>None.</li>');
+    exec.innerHTML=`<div class="card"><h4 style="margin:0 0 6px;">Executive Summary (AI-assist)</h4><p>${escapeHtml((ai.executive||'').trim())}</p></div>
+    <div class="card"><h4 style="margin:0 0 6px;">Recommended Actions</h4>
+    <h5>Immediate</h5><ul>${planHtml(ai.plan?.immediate)}</ul>
+    <h5>Next 24–72h</h5><ul>${planHtml(ai.plan?.next_24_72)}</ul>
+    <h5>Follow-up</h5><ul>${planHtml(ai.plan?.follow_up)}</ul></div>`;
+  }
+  const setOne=(id,text)=>{ const el=document.getElementById(id); if(el) el.innerHTML=`<li>${escapeHtml((text||'').trim()||'None.')}</li>`; };
+  setOne('btamExplain', ai.rationales?.btam);
+  setOne('trapExplain', ai.rationales?.trap18);
+  setOne('hcrExplain', ai.rationales?.hcr20);
+  setOne('lexExplain', ai.rationales?.lexical);
+  setOne('protExplain', ai.rationales?.protective);
+  if(ai.caveats && ai.caveats.length){
+    const followLists = exec ? exec.querySelectorAll('ul') : [];
+    const last = followLists[followLists.length-1];
+    if(last){ last.insertAdjacentHTML('afterend', `<p class="note" style="margin-top:6px;"><strong>Caveats:</strong> ${ai.caveats.map(c=>escapeHtml(c)).join(' • ')}</p>`); }
+  }
+}
+
 function buildCalcTrace(text, results, matches){
   const {sub, totals, dampen, flags, conf, rec} = results;
   return { lines:[
@@ -396,6 +428,19 @@ function main(){
   const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
   const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
   renderResults(full, rubric, inputText, caseName);
+      // Optional AI assist
+      (async()=>{
+        const enabled=document.getElementById('aiAssist')?.checked; if(!enabled) return;
+        const subs={
+          btam:{score:full.sub.btam.score,hits:full.sub.btam.hits},
+          trap18:{score:full.sub.trap18.score,hits:full.sub.trap18.hits},
+          hcr20:{score:full.sub.hcr20.score,hits:full.sub.hcr20.hits},
+          lexical:{score:full.sub.lenses.score,hits:full.sub.lenses.hits},
+          protective:{score:full.sub.protective.score,hits:full.sub.protective.hits}
+        };
+        const ai=await fetchAIExplain(inputText, full.totals.band, subs, (full.trace?.matches)||[], full.dampen.applied||[]);
+        renderAIIntoReport(ai);
+      })();
       window.__lastTriage__={
         ...window.__lastTriage__,
         rubricVersion: rubric.version,
