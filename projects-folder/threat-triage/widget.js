@@ -261,38 +261,6 @@ function populateRationaleList(rawText, result, rubric){
   if(!items.length){ const li=document.createElement('li'); li.textContent='No indicators fired.'; items.push(li);} items.forEach(li=>ol.appendChild(li));
 }
 
-// --- AI Assist Helpers ---
-async function fetchAIExplain(narrative, band, subscores, hits, dampeners){
-  try{
-    const res=await fetch('/api/triage-explain',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ narrative, band, subscores, hits, dampeners })});
-    if(!res.ok) return null; return await res.json();
-  }catch{ return null; }
-}
-
-function renderAIIntoReport(ai){
-  if(!ai) return;
-  const exec=document.getElementById('reportExecutive');
-  if(exec){
-    const planHtml=arr=> (arr&&arr.length? arr.map(x=>`<li>${escapeHtml(x)}</li>`).join('') : '<li>None.</li>');
-    exec.innerHTML=`<div class="card"><h4 style="margin:0 0 6px;">Executive Summary (AI-assist)</h4><p>${escapeHtml((ai.executive||'').trim())}</p></div>
-    <div class="card"><h4 style="margin:0 0 6px;">Recommended Actions</h4>
-    <h5>Immediate</h5><ul>${planHtml(ai.plan?.immediate)}</ul>
-    <h5>Next 24–72h</h5><ul>${planHtml(ai.plan?.next_24_72)}</ul>
-    <h5>Follow-up</h5><ul>${planHtml(ai.plan?.follow_up)}</ul></div>`;
-  }
-  const setOne=(id,text)=>{ const el=document.getElementById(id); if(el) el.innerHTML=`<li>${escapeHtml((text||'').trim()||'None.')}</li>`; };
-  setOne('btamExplain', ai.rationales?.btam);
-  setOne('trapExplain', ai.rationales?.trap18);
-  setOne('hcrExplain', ai.rationales?.hcr20);
-  setOne('lexExplain', ai.rationales?.lexical);
-  setOne('protExplain', ai.rationales?.protective);
-  if(ai.caveats && ai.caveats.length){
-    const followLists = exec ? exec.querySelectorAll('ul') : [];
-    const last = followLists[followLists.length-1];
-    if(last){ last.insertAdjacentHTML('afterend', `<p class="note" style="margin-top:6px;"><strong>Caveats:</strong> ${ai.caveats.map(c=>escapeHtml(c)).join(' • ')}</p>`); }
-  }
-}
-
 function buildCalcTrace(text, results, matches){
   const {sub, totals, dampen, flags, conf, rec} = results;
   return { lines:[
@@ -308,37 +276,66 @@ function buildCalcTrace(text, results, matches){
     {metric:'recCounts', immediate:rec.immediate.length, near:rec.near_term.length, follow:rec.follow_up.length}
   ], matches};
 }
+  // --- AI Assist Helpers (new spec) ---
+  async function fetchAIExplain(narrative, band, subscores, hits, dampeners) {
+    try {
+      const res = await fetch('/api/triage-explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ narrative, band, subscores, hits, dampeners })
+      });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch {
+      return null;
+    }
+  }
 
-function renderResults(full, rubric, rawText, caseName){
-  const {totals, sub, dampen, trace} = full;
-  document.getElementById('resultsArea').style.display='grid';
-  const scoreEl=document.getElementById('scoreBand'); scoreEl.textContent=`Overall: ${totals.score} (${totals.band.label})`; scoreEl.className=bandClass(totals.band.label);
-  document.getElementById('summary').innerHTML=`<p><strong>Assessment:</strong> ${totals.band.label}. Deterministic screen; human review required.</p><p class="note">Full narrative report below.</p>`;
-  document.getElementById('dampenNote').textContent=dampen.applied.length?`Dampeners: ${dampen.applied.join(', ')}`:'Dampeners: none';
-  document.getElementById('btamScore').textContent=sub.btam.score; renderList(document.getElementById('btamHits'), sub.btam.hits);
-  document.getElementById('trapScore').textContent=sub.trap18.score; renderList(document.getElementById('trapHits'), sub.trap18.hits);
-  document.getElementById('hcrScore').textContent=sub.hcr20.score; renderList(document.getElementById('hcrHits'), sub.hcr20.hits);
-  document.getElementById('lensScore').textContent=sub.lenses.score; renderList(document.getElementById('lensHits'), sub.lenses.hits);
-  document.getElementById('protScore').textContent=sub.protective.score; renderList(document.getElementById('protHits'), sub.protective.hits);
-  const nvCard=document.getElementById('narrativeViewCard'); const nv=document.getElementById('narrativeView'); if(nvCard && nv){ nv.innerHTML=renderHighlightedNarrative(rawText, trace.matches||[]); nvCard.style.display='block'; }
-  const exec=document.getElementById('reportExecutive'); if(exec){ exec.innerHTML=''; exec.appendChild(buildExecutiveHTML(caseName, totals, full.flags, full.conf)); }
-  writeDomainExplain('btamExplain', sub.btam.hits); writeDomainExplain('trapExplain', sub.trap18.hits); writeDomainExplain('hcrExplain', sub.hcr20.hits); writeDomainExplain('lexExplain', sub.lenses.hits); writeDomainExplain('protExplain', sub.protective.hits);
-  populateRationaleList(rawText, full, rubric);
-  [['btamHits'],['trapHits'],['hcrHits'],['lensHits'],['protHits']].forEach(([listId])=>{ const list=document.getElementById(listId); if(!list) return; Array.from(list.querySelectorAll('li')).forEach(li=>{ if(li.textContent!=='None'){ li.style.cursor='pointer'; li.title='Jump to highlight'; li.addEventListener('click',()=>jumpToIndicator(li.textContent.trim())); }}); });
-  const traceEl=document.getElementById('calcTrace'); if(traceEl) traceEl.textContent=JSON.stringify(trace,null,2);
-  const showRubric=document.getElementById('showRubric').checked; const rc=document.getElementById('rubricCard'); rc.style.display=showRubric?'block':'none'; if(showRubric) rc.textContent=JSON.stringify(rubric,null,2);
-}
+  function planListHtml(arr) {
+    return (arr || []).map(x => `<li>${x}</li>`).join('') || '<li>None.</li>';
+  }
 
+  function renderAIIntoReport(aiJson) {
+    if (!aiJson) return;
+
+    // Executive + actions
+    const exec = document.getElementById('reportExecutive');
+    if (exec) {
+      exec.innerHTML = `
+        <div class="card">
+          <h4 style="margin:0 0 6px;">Executive Summary (AI-assist)</h4>
+          <p>${(aiJson.executive || '').trim()}</p>
+        </div>
+        <div class="card">
+          <h4 style="margin:0 0 6px;">Recommended Actions</h4>
+          <h5>Immediate</h5><ul>${planListHtml(aiJson.plan?.immediate)}</ul>
+          <h5>Next 24–72 hours</h5><ul>${planListHtml(aiJson.plan?.next_24_72)}</ul>
+          <h5>Follow-up</h5><ul>${planListHtml(aiJson.plan?.follow_up)}</ul>
+        </div>
+      `;
+    }
+
+    // Domain rationales (single bullet)
+    const setOne = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = `<li>${(text || 'None.').trim()}</li>`;
+    };
+    setOne('btamExplain', aiJson.rationales?.btam);
+    setOne('trapExplain', aiJson.rationales?.trap18);
+    setOne('hcrExplain',  aiJson.rationales?.hcr20);
+    setOne('lexExplain',  aiJson.rationales?.lexical);
+    setOne('protExplain', aiJson.rationales?.protective);
+  }
+  
+// --- Aggregate scoring (restored) ---
 function aggregate(text, rubric){
-  const negList = (rubric.dampeners && rubric.dampeners.negation_cues) || [];
-  const windowChars = 14;
-  const btam = findHitsBoundaryAware(text, rubric.btam_core, negList, windowChars);
-  const trap = findHitsBoundaryAware(text, rubric.trap18_subset, negList, windowChars);
-  const hcr  = findHitsBoundaryAware(text, rubric.hcr20_context, negList, windowChars);
-  const lenses = scoreLexical(text, rubric.lenses_lexical||{categories:[]}, negList, windowChars);
-  const protective = scoreProtective(text, rubric.protective_lexical||{categories:[]}, negList, windowChars);
-  const base = btam.score + trap.score + hcr.score + lenses.score; // protective not added; subtract protective later
-  const dampen = applyDampeners(text, base, rubric.dampeners||{});
+  const btam = findHitsBoundaryAware(text, rubric.btam_core, rubric.dampening.negation_cues, 18);
+  const trap = findHitsBoundaryAware(text, rubric.trap18_subset, rubric.dampening.negation_cues, 18);
+  const hcr  = findHitsBoundaryAware(text, rubric.hcr20_context, rubric.dampening.negation_cues, 18);
+  const lenses = scoreLexical(text, rubric.lenses_lexical, rubric.dampening.negation_cues, 18);
+  const protective = scoreProtective(text, rubric.protective_lexical, rubric.dampening.negation_cues, 18);
+  const baseTotal = btam.score + trap.score + hcr.score + lenses.score;
+  const dampen = applyDampeners(text, baseTotal, rubric.dampening);
   const adjusted = Math.max(0, dampen.score - protective.score); // protective reduces
   const totals = { score: adjusted, band: pickBand(adjusted, rubric.bands) };
   const sub = { btam, trap18:trap, hcr20:hcr, lenses, protective };
@@ -350,6 +347,83 @@ function aggregate(text, rubric){
   const trace=buildCalcTrace(text,{sub, totals, dampen, flags, conf, rec}, allMatches);
   return { totals, sub, dampen, flags, conf, rec, trace, case: caseMeta };
 }
+
+// --- Render results into DOM (restored) ---
+function renderResults(result, rubric, rawText, caseName){
+  if(!result) return;
+  const area=document.getElementById('resultsArea'); if(area) area.style.display='grid';
+  const scoreBand=document.getElementById('scoreBand'); if(scoreBand){ scoreBand.textContent=`Overall: ${result.totals.band.label} (${result.totals.score})`; scoreBand.className = 'badge ' + bandClass(result.totals.band.label); }
+  const summary=document.getElementById('summary');
+  if(summary){
+    const f=result.flags;
+    summary.innerHTML=`<p style="margin:0 0 6px;">Detected signals across domains. <strong>${result.totals.band.label}</strong> band with score <strong>${result.totals.score}</strong> (confidence ${result.conf.label}).</p>
+    <p class="note" style="margin:0;">Direct:${f.direct?'✔️':'—'} Means:${f.means?'✔️':'—'} Time:${f.timeSpecific?'✔️':'—'} Leakage:${f.leakage?'✔️':'—'} Fixation:${f.fixation?'✔️':'—'}</p>`;
+  }
+  const dampNote=document.getElementById('dampenNote'); if(dampNote){
+    dampNote.textContent = result.dampen.applied.length ? `Dampeners applied: ${result.dampen.applied.join(', ')}.` : '';
+  }
+  // Subscore table
+  const sub=result.sub;
+  document.getElementById('btamScore').textContent=sub.btam.score;
+  document.getElementById('trapScore').textContent=sub.trap18.score;
+  document.getElementById('hcrScore').textContent=sub.hcr20.score;
+  document.getElementById('lensScore').textContent=sub.lenses.score;
+  document.getElementById('protScore').textContent=sub.protective.score;
+  writeDomainExplain('btamHits', sub.btam.hits);
+  writeDomainExplain('trapHits', sub.trap18.hits);
+  writeDomainExplain('hcrHits', sub.hcr20.hits);
+  writeDomainExplain('lensHits', sub.lenses.hits);
+  writeDomainExplain('protHits', sub.protective.hits);
+
+  // Narrative highlights
+  const narrativeHtml = renderHighlightedNarrative(rawText, result.trace.matches);
+  const nv=document.getElementById('narrativeView'); const nvc=document.getElementById('narrativeViewCard');
+  if(nv) nv.innerHTML=narrativeHtml;
+  if(nvc) nvc.style.display='block';
+
+  // Executive + actions (deterministic baseline)
+  const execWrap=document.getElementById('reportExecutive');
+  if(execWrap){
+    const execFrag=buildExecutiveHTML(caseName, result.totals, result.flags, result.conf);
+    const actionsCard=document.createElement('div');
+    actionsCard.className='card';
+    const planList=arr=> (arr&&arr.length? arr.map(x=>`<li>${escapeHtml(x)}</li>`).join('') : '<li>None.</li>');
+    actionsCard.innerHTML=`<h4 style="margin:0 0 6px;">Recommended Actions</h4>
+      <h5>Immediate</h5><ul>${planList(result.rec.immediate)}</ul>
+      <h5>Next 24–72h</h5><ul>${planList(result.rec.near_term)}</ul>
+      <h5>Follow-up</h5><ul>${planList(result.rec.follow_up)}</ul>`;
+    execWrap.innerHTML='';
+    execWrap.appendChild(execFrag);
+    execWrap.appendChild(actionsCard);
+  }
+  // Domain explains default (one bullet summarizing hits list)
+  const setExplain=(id, hitsArr, label)=>{
+    const el=document.getElementById(id);
+    if(el){
+      if(!hitsArr.length){ el.innerHTML='<li>None detected.</li>'; }
+      else { el.innerHTML=`<li>${escapeHtml(hitsArr.join(', '))}</li>`; }
+    }
+  };
+  setExplain('btamExplain', sub.btam.hits);
+  setExplain('trapExplain', sub.trap18.hits);
+  setExplain('hcrExplain', sub.hcr20.hits);
+  setExplain('lexExplain', sub.lenses.hits);
+  setExplain('protExplain', sub.protective.hits);
+
+  // Rationale list (indicator-level detail)
+  populateRationaleList(rawText, result, rubric);
+
+  // Calculation trace
+  const traceEl=document.getElementById('calcTrace');
+  if(traceEl){
+    const lines=result.trace.lines.map(l=>JSON.stringify(l)).join('\n');
+    traceEl.textContent=lines + '\nMatches: ' + result.trace.matches.map(m=>`${m.indicator}:${m.pattern}@${m.index}`).join(' | ');
+  }
+  // Rubric JSON if requested
+  const showRub=document.getElementById('showRubric')?.checked;
+  const rc=document.getElementById('rubricCard'); if(rc){ rc.style.display=showRub?'block':'none'; if(showRub){ rc.textContent=JSON.stringify(rubric,null,2); } }
+}
+// (aggregate & renderResults restored above)
 
 // Built-in quick tests
 const __TT_TESTS__ = [
@@ -424,21 +498,31 @@ function main(){
     function execute(){
       const inputText=(document.getElementById('narrative').value||'').trim();
       if(!inputText){diag.textContent='Enter narrative text.'; return;}
-  const full=aggregate(inputText, rubric);
+      const full=aggregate(inputText, rubric);
   const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
   const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
   renderResults(full, rubric, inputText, caseName);
-      // Optional AI assist
-      (async()=>{
-        const enabled=document.getElementById('aiAssist')?.checked; if(!enabled) return;
-        const subs={
-          btam:{score:full.sub.btam.score,hits:full.sub.btam.hits},
-          trap18:{score:full.sub.trap18.score,hits:full.sub.trap18.hits},
-          hcr20:{score:full.sub.hcr20.score,hits:full.sub.hcr20.hits},
-          lexical:{score:full.sub.lenses.score,hits:full.sub.lenses.hits},
-          protective:{score:full.sub.protective.score,hits:full.sub.protective.hits}
+      // AI assist (optional) - spinner then async call
+      (async () => {
+        const aiToggle = document.getElementById('aiAssist');
+        if (!aiToggle || !aiToggle.checked) return;
+        const execWrap = document.getElementById('reportExecutive');
+        const prevHTML = execWrap ? execWrap.innerHTML : '';
+        if (execWrap) execWrap.innerHTML = prevHTML + '<div class="note">Generating AI explanation…</div>';
+        const subs = {
+          btam:   { score: full.sub.btam.score,   hits: full.sub.btam.hits },
+          trap18: { score: full.sub.trap18.score, hits: full.sub.trap18.hits },
+          hcr20:  { score: full.sub.hcr20.score,  hits: full.sub.hcr20.hits },
+          lexical:{ score: full.sub.lenses.score, hits: full.sub.lenses.hits },
+          protective: { score: full.sub.protective.score, hits: full.sub.protective.hits }
         };
-        const ai=await fetchAIExplain(inputText, full.totals.band, subs, (full.trace?.matches)||[], full.dampen.applied||[]);
+        const ai = await fetchAIExplain(
+          inputText,
+          full.totals.band,
+          subs,
+          (full.trace?.matches) || [],
+          full.dampen?.applied || []
+        );
         renderAIIntoReport(ai);
       })();
       window.__lastTriage__={
