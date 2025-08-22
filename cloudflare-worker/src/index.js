@@ -49,10 +49,12 @@ export default {
     if (url.pathname === '/api/notes' && request.method === 'GET') {
       const email = getUserEmail()
       if (!email) return new Response('Unauthorized', { status: 401 })
+      const kv = env.NOTES_KV || env.PRIVATE_ACTIVITY
+      if (!kv) return new Response('KV binding missing', { status: 500 })
       const prefix = `note:${email}:`
-      const list = await env.PRIVATE_ACTIVITY.list({ prefix })
+      const list = await kv.list({ prefix })
       const notes = await Promise.all(list.keys.map(async (k) => {
-        const val = await env.PRIVATE_ACTIVITY.get(k.name, { type: 'json' })
+        const val = await kv.get(k.name, { type: 'json' })
         return val
       }))
       const filtered = notes.filter(Boolean).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0))
@@ -61,6 +63,8 @@ export default {
     if (url.pathname === '/api/notes' && request.method === 'POST') {
       const email = getUserEmail()
       if (!email) return new Response('Unauthorized', { status: 401 })
+      const kv = env.NOTES_KV || env.PRIVATE_ACTIVITY
+      if (!kv) return new Response('KV binding missing', { status: 500 })
       let body
       try { body = await request.json() } catch { return new Response('Invalid JSON', { status: 400 }) }
       const title = String(body?.title ?? '').trim()
@@ -69,15 +73,17 @@ export default {
       const id = `${Date.now()}-${Math.random().toString(36).slice(2,10)}`
       const note = { id, title, body: content, timestamp: Date.now() }
       const key = `note:${email}:${id}`
-      await env.PRIVATE_ACTIVITY.put(key, JSON.stringify(note))
+      await kv.put(key, JSON.stringify(note))
       return new Response(JSON.stringify({ ok: true, note }), { status: 201, headers: { 'Content-Type': 'application/json' }})
     }
     if (url.pathname.startsWith('/api/notes/') && request.method === 'DELETE') {
       const email = getUserEmail()
       if (!email) return new Response('Unauthorized', { status: 401 })
+      const kv = env.NOTES_KV || env.PRIVATE_ACTIVITY
+      if (!kv) return new Response('KV binding missing', { status: 500 })
       const id = decodeURIComponent(url.pathname.replace('/api/notes/',''))
       const key = `note:${email}:${id}`
-      await env.PRIVATE_ACTIVITY.delete(key)
+      await kv.delete(key)
       return new Response(null, { status: 204 })
     }
 
