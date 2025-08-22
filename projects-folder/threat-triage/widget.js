@@ -343,6 +343,22 @@ function wireCaseSelector(){
   });
 }
 
+// Validation benchmarks runner
+function runBenchmarksUI(rubric){
+  const body=document.getElementById('benchBody'); if(!body) return;
+  body.innerHTML='';
+  BENCHMARKS.forEach(b=>{
+    const r=aggregate(b.text, rubric, b.label, b.key);
+    const actual=r.totals.band.label;
+    const exp=b.expect||'';
+    const pass = !exp || exp===actual;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${escapeHtml(b.label)}</td><td>${escapeHtml(exp)}</td><td>${escapeHtml(actual)}</td><td style="color:${pass?'green':'#b00'}">${pass?'PASS':'MISMATCH'}</td>`;
+    body.appendChild(tr);
+  });
+}
+  copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(document.getElementById('reportText')?.innerText||'').then(()=>diag.textContent='Report copied.'); });
+
 function main(){
   console.debug('[TT] widget boot OK');
   const diag=document.getElementById('diag');
