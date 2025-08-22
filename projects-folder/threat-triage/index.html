@@ -86,6 +86,11 @@
         </label>
         <button id="clearText" class="btn secondary">Clear</button>
       </div>
+      <!-- Diagnostics Bar (added per run reliability spec) -->
+      <div id="tt-diag" class="note" style="margin-top:8px;">
+        <strong>Status:</strong> <span id="tt-status">idle</span> •
+        <strong>Last error:</strong> <span id="tt-err">—</span>
+      </div>
   <button id="ttRunTests" class="btn secondary" style="display:none;">Run Built-in Tests</button>
 
       <div id="resultsArea" class="grid" style="display:none;" aria-live="polite">
@@ -219,7 +224,7 @@
   </main>
 
   <!-- Increment the ?v= parameter (or use a hashed filename) whenever widget.js changes to bust CDN/browser cache -->
-  <script type="module" src="./widget.js?v=2025-08-22-r1" defer></script>
+  <script type="module" src="./widget.js?v=force-run-1" defer></script>
   <script>document.getElementById('printBtn')?.addEventListener('click',()=>window.print());</script>
 </body>
 </html>

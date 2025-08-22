@@ -1,39 +1,111 @@
 // Canonicalize text to avoid Unicode pitfalls (smart quotes, dashes, accents)
-// Threat Triage widget — enhanced with defensive binding & diagnostics (2025-08-22-r1)
-const __TT_VERSION__ = '2025-08-22-r1';
+// Threat Triage widget — force-run reliability version (force-run-1)
+const __TT_VERSION__ = 'force-run-1';
 console.debug('[TT] widget version', __TT_VERSION__);
 
-// Global, safe placeholder until rubric loads
-function runTriageOnce(){
-  console.warn('[TT] runTriageOnce invoked before rubric loaded');
-  const diag=document.getElementById('diag'); if(diag) diag.textContent='Rubric not loaded yet…';
+// ---- Diagnostics helpers ----
+function ttSetStatus(s){ const el = document.getElementById('tt-status'); if(el) el.textContent = s; }
+function ttSetErr(e){ const el = document.getElementById('tt-err'); if(el) el.textContent = e ? String(e) : '—'; }
+function ttLog(...a){ console.log('[TT]', ...a); }
+
+// Ensure report container exists
+function ensureReportExecutive(){
+  let el = document.getElementById('reportExecutive');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'reportExecutive';
+    el.className = 'grid';
+    el.style.gap = '10px';
+    el.style.marginTop = '12px';
+    (document.getElementById('resultsArea') || document.body).appendChild(el);
+  }
+  return el;
 }
 
-function bindRun(){
-  const btn = document.getElementById('run');
-  if(!btn){ console.error('[TT] #run button missing'); return; }
-  if(!window.__runBound__){
-    btn.addEventListener('click', () => {
-      console.log('[TT] Run Triage clicked');
-      try { runTriageOnce(); } catch(e){ console.error('[TT] run error', e); }
-    });
-    window.__runBound__ = true;
-    console.debug('[TT] run handler bound');
+function renderDeterministicFallback(traceMatches){
+  const exec = ensureReportExecutive();
+  const items = (traceMatches||[]).map(m =>
+    `<li><strong>${m.indicator}</strong> — matched “${m.pattern}”</li>`
+  ).join('') || '<li>No indicators fired.</li>';
+  exec.innerHTML = `
+    <div class="card">
+      <h4>Comprehensive Report (Deterministic)</h4>
+      <p>This explanation is generated without AI and describes why each indicator contributed to the score.</p>
+      <ul>${items}</ul>
+    </div>
+  `;
+}
+
+function wireCaseSelect(){
+  const sel = document.getElementById('caseSelect');
+  const ta  = document.getElementById('narrative');
+  if(!sel || !ta){ ttLog('caseSelect or narrative missing'); return; }
+  sel.addEventListener('change', () => {
+    const opt = sel.options[sel.selectedIndex];
+    const text = opt?.getAttribute?.('data-text');
+    if(text){ ta.value = text; }
+    const ra = document.getElementById('resultsArea');
+    if(ra) ra.style.display = 'none';
+  });
+}
+
+let __TT_RUBRIC__ = null;
+async function loadRubricOnce(){
+  if(__TT_RUBRIC__) return __TT_RUBRIC__;
+  const r = await fetch('./rubric.json?v=force-run-1', {cache:'no-store'}).catch(()=>null);
+  if(!r || !r.ok) throw new Error('rubric load failed');
+  __TT_RUBRIC__ = await r.json();
+  return __TT_RUBRIC__;
+}
+
+async function runTriageOnce(){
+  ttSetStatus('running'); ttSetErr('');
+  const ta = document.getElementById('narrative');
+  const txt = ta ? (ta.value || '') : '';
+  try{
+    const rubric = await loadRubricOnce();
+    if(typeof aggregate !== 'function' || typeof render !== 'function'){
+      throw new Error('aggregate/render not found; ensure they are defined above');
+    }
+    const result = aggregate(txt, rubric);
+    render(result, rubric, txt, result?.case?.label || '');
+    const matches = (result.trace && result.trace.matches) || [];
+    renderDeterministicFallback(matches); // always show something
+    ttSetStatus('ok');
+  } catch(e){
+    ttSetStatus('error'); ttSetErr(e.message || String(e));
+    console.error('[TT] run error', e);
   }
 }
 
-// Bind early (in case main() is delayed); main() will NOT add its own listener now.
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', bindRun);
-} else { bindRun(); }
+function bindRunButton(){
+  const btn = document.getElementById('run');
+  if(!btn){ ttLog('#run missing'); return; }
+  if(!window.__TT_RUN_BOUND__){
+    btn.addEventListener('click', runTriageOnce);
+    window.__TT_RUN_BOUND__ = true;
+    ttLog('Run bound');
+  }
+}
+
+(function boot(){
+  const start = ()=>{ try{
+      wireCaseSelect();
+      bindRunButton();
+      ttLog('boot ok');
+    }catch(e){ console.error('[TT] boot error', e); ttSetErr(e.message || String(e)); }
+  };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
 
 // Lightweight smoke test harness callable from console: window.ttSmoke()
 window.ttSmoke = function(){
   const info = {
     version: __TT_VERSION__,
     hasRunBtn: !!document.getElementById('run'),
-    runBound: !!window.__runBound__,
-    rubricLoaded: !!window.__triageRubric__,
+    runBound: !!window.__TT_RUN_BOUND__,
+    rubricLoaded: !!__TT_RUBRIC__,
     lastTriage: !!window.__lastTriage__
   };
   try { document.getElementById('run')?.click(); info.clickDispatched=true; } catch(e){ info.clickError=String(e); }
@@ -652,82 +724,4 @@ function runBenchmarksUI(rubric){
 }
 // stray copy binding removed (handled in main)
 
-function main(){
-  console.debug('[TT] widget boot OK');
-  const diag=document.getElementById('diag');
-  loadRubric().then(rubric=>{
-    // expose for smoke tests / external scripting
-    window.__triageRubric__ = rubric;
-    const runBtn=document.getElementById('run');
-    const clearBtn=document.getElementById('clearText');
-    const copyBtn=document.getElementById('copyReport');
-    const dlBtn=document.getElementById('downloadBtn');
-    const showRubric=document.getElementById('showRubric');
-    wireCaseSelector();
-  runQuickTests(rubric);
-
-    function execute(){
-      console.time('[TT] triage');
-      const inputText=(document.getElementById('narrative').value||'').trim();
-      if(!inputText){diag.textContent='Enter narrative text.'; return;}
-      let full;
-      try {
-        full=aggregate(inputText, rubric);
-      } catch(e){ console.error('[TT] aggregate error', e); diag.textContent='Error during aggregate: '+e; console.timeEnd('[TT] triage'); return; }
-  const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
-  const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
-  renderResults(full, rubric, inputText, caseName);
-      // Updated AI rendering block (always show deterministic fallback first)
-      const result = full; const { totals, sub, dampen } = full;
-      (async () => {
-        const aiToggle = document.getElementById('aiAssist');
-        const traceMatches = (result.trace && result.trace.matches) || [];
-
-        // Always render deterministic fallback so report is never empty
-        renderDeterministicFallback(traceMatches);
-
-        if (!aiToggle || !aiToggle.checked) return; // user did not request AI
-
-        const subs = {
-          btam: sub.btam, trap18: sub.trap18, hcr20: sub.hcr20,
-          lexical: sub.lenses, protective: sub.protective
-        };
-
-        const ai = await fetchAIExplainSafe(
-          inputText,
-          totals.band,
-          subs,
-          traceMatches,
-          dampen.applied || []
-        );
-
-        if (ai) renderAIProse(ai); // overwrite fallback with AI output
-      })();
-      window.__lastTriage__={
-        ...window.__lastTriage__,
-        rubricVersion: rubric.version,
-        ...full,
-        caseName,
-        narrativeChars: inputText.length,
-        timestamp: new Date().toISOString()
-      };
-      diag.textContent=`Processed ${inputText.length} chars; rubric v${rubric.version}`;
-      console.timeEnd('[TT] triage');
-    }
-    // Replace placeholder with real implementation
-    window.runTriageOnce = execute;
-    // Bind (idempotent) in case this is the first successful rubric load
-    bindRun();
-    showRubric.addEventListener('change',()=>{ if(window.__lastTriage__) renderResults(window.__lastTriage__, rubric); });
-    clearBtn.addEventListener('click',()=>{ document.getElementById('narrative').value=''; document.getElementById('resultsArea').style.display='none'; document.getElementById('scoreBand').className='badge'; diag.textContent=''; });
-  copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const raw=document.getElementById('narrative').value||''; const txt=`Case: ${r.caseName||''}\nBand: ${r.totals.band.label} (${r.totals.score})\nIndicators: BTAM(${r.sub.btam.hits.join(',')||'None'}) TRAP(${r.sub.trap18.hits.join(',')||'None'}) HCR(${r.sub.hcr20.hits.join(',')||'None'}) LEX(${r.sub.lenses.hits.join(',')||'None'}) PROT(${r.sub.protective.hits.join(',')||'None'})\nNarrative:\n${raw}`; navigator.clipboard.writeText(txt).then(()=>diag.textContent='Summary copied.'); });
-    dlBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='triage_result.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
-  document.getElementById('ttRunTests')?.addEventListener('click',()=>runQuickTests(rubric));
-  document.getElementById('runBenchmarks')?.addEventListener('click',()=>runBenchmarksUI(rubric));
-  }).catch(e=>{ console.error(e); if(diag) diag.textContent='Rubric load error: '+e; });
-}
-
-// DOMContentLoaded guard (script loaded with defer but keep safety)
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', main);
-} else { main(); }
+// (Removed previous main()/bindRun flow; reliability handled by runTriageOnce + boot())
