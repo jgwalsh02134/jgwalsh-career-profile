@@ -3,7 +3,8 @@ async function renderProjectsGrid() {
   if (!grid) return;
 
   try {
-    const res = await fetch('./projects.json', { cache: 'no-store' });
+  const res = await fetch('/projects-folder/projects.json?v=3', { cache: 'no-store' });
+  if (!res.ok) throw new Error(`HTTP ${res.status} fetching projects.json`);
     const items = await res.json();
 
     grid.innerHTML = '';
