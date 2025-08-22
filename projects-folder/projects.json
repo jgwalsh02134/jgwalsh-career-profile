@@ -1,0 +1,21 @@
+[
+  {
+    "title": "Crime Analysis Report: Albany, NY (2021–2024)",
+    "date": "2025-03-21",
+    "summary": "FOIL-sourced analysis covering total crimes, violent categories, neighborhood distribution, and clearance rates.",
+    "links": [
+      { "label": "View Full Report (PDF)", "href": "/assets/reports/albany-crime-2021-2024.pdf" },
+      { "label": "View Data Visualization", "href": "/interactive_crime_arrest_trends.html" }
+    ],
+    "tags": ["FOIL", "Python", "Visualization"]
+  },
+  {
+    "title": "Psyber Nexus",
+    "date": "Ongoing",
+    "summary": "Research initiative at the intersection of psychology and technology focusing on digital behavior and mental well-being.",
+    "links": [
+      { "label": "Visit Website", "href": "https://psyber.nexus" }
+    ],
+    "tags": ["Research", "Digital Behavior"]
+  }
+]
