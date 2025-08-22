@@ -18,11 +18,10 @@ jobs:
           fetch-depth: 0
 
       - name: Generate sitemap.xml
-        uses: cicirello/generate-sitemap@v4
+        uses: cicirello/generate-sitemap@v1
         with:
           base-url: https://jgwalsh.com
           include-html: true
-          additional-sitemaps: ""
           sitemap-path: sitemap.xml
 
       - name: Commit sitemap.xml
