@@ -81,7 +81,12 @@
         <p class="muted"><a href="/projects-folder/">← Back to Projects</a></p>
         <header class="grid" aria-labelledby="page-title">
           <h1 id="page-title" style="margin:0;">Behavioral Threat Triage</h1>
-          <p class="muted" style="margin-top:-4px;">Deterministic intake using BTAM core indicators, TRAP-18 warning behaviors, HCR-20 context, lexical aggression lenses, and protective factors. Entirely computed from the text. Transparency-first; human review required.</p>
+          <p class="muted">
+      This project simulates the first step a behavioral threat-assessment team would take when a threatening message is received.
+      It scans the text for validated risk factors (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues), assigns a banded risk level,
+      and produces a clear action plan: immediate, next 24–72h, and follow-up steps. The goal is to show how psychology and structured
+      professional judgment can be translated into transparent, auditable decision-support tools for law enforcement and security contexts.
+    </p>
           <div class="row">
             <button id="printBtn" class="btn secondary" aria-label="Print this case study">Print Case Study</button>
             <button id="copyReport" class="btn secondary" aria-label="Copy report (Markdown)">Copy Report</button>
@@ -95,6 +100,14 @@
           <h2 id="demo-title" style="margin:0;">Live Demo (Automatic)</h2>
 
           <label for="narrative"><strong>Enter narrative text</strong> <span class="muted">(3–10 sentences; no PII)</span></label>
+          <label for="caseSelect"><strong>Load Example Case:</strong></label>
+          <select id="caseSelect">
+            <option value="">-- Select a case --</option>
+            <option value="virginia">Virginia School Threat</option>
+            <option value="disability">Student With Disability — Non-Specific Threat</option>
+            <option value="employee">Ex-Employee Lobby Threat</option>
+            <option value="apalachee">Apalachee HS Leakage</option>
+          </select>
           <textarea id="narrative" aria-describedby="narrative-help" placeholder="Example: 'Tomorrow at 8am they will regret it. I bought what I need and I have the keys to get in through the service door. You'll see.'"></textarea>
           <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.</p>
 

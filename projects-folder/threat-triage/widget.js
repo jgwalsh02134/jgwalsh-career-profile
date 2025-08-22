@@ -1,4 +1,10 @@
 function normalize(t){return (t||'').toLowerCase().replace(/\s+/g,' ').trim();}
+const CASE_EXAMPLES = {
+  virginia: "I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.",
+  disability: "I might as well bring something to school. People laugh at me every day. Maybe then they’ll take me seriously.",
+  employee: "At the front desk the terminated employee shouted: 'Tell the CEO he’s a dead man walking. You’ll all regret this.'",
+  apalachee: "Nobody cares now, but they will after tomorrow. I’ll make sure my name is remembered like the others."
+};
 function includesAny(text, patterns){return (patterns||[]).some(p=>text.includes(p));}
 function bandClass(label){const L=label.toLowerCase(); if(L.startsWith('crit')) return 'badge crit'; if(L.startsWith('elev')) return 'badge elev'; if(L.startsWith('mod')) return 'badge mod'; return 'badge low';}
 function clamp(x,min,max){return Math.max(min,Math.min(max,x));}
@@ -195,6 +201,14 @@ async function main(){
   const diag=document.getElementById('diag');
   let rubric; try{rubric=await loadRubric();}catch(e){console.error(e); if(diag) diag.textContent='Rubric load error: '+e; return;}
   const runBtn=document.getElementById('run');
+  const caseSelect = document.getElementById('caseSelect');
+  caseSelect?.addEventListener('change', e=>{
+    const val = e.target.value;
+    if(CASE_EXAMPLES[val]){
+      document.getElementById('narrative').value = CASE_EXAMPLES[val];
+      document.getElementById('resultsArea').style.display='none';
+    }
+  });
   const clearBtn=document.getElementById('clearText');
   const copyBtn=document.getElementById('copyReport');
   const dlBtn=document.getElementById('downloadBtn');
