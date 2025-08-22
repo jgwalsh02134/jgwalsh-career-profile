@@ -1,4 +1,45 @@
 // Canonicalize text to avoid Unicode pitfalls (smart quotes, dashes, accents)
+// Threat Triage widget — enhanced with defensive binding & diagnostics (2025-08-22-r1)
+const __TT_VERSION__ = '2025-08-22-r1';
+console.debug('[TT] widget version', __TT_VERSION__);
+
+// Global, safe placeholder until rubric loads
+function runTriageOnce(){
+  console.warn('[TT] runTriageOnce invoked before rubric loaded');
+  const diag=document.getElementById('diag'); if(diag) diag.textContent='Rubric not loaded yet…';
+}
+
+function bindRun(){
+  const btn = document.getElementById('run');
+  if(!btn){ console.error('[TT] #run button missing'); return; }
+  if(!window.__runBound__){
+    btn.addEventListener('click', () => {
+      console.log('[TT] Run Triage clicked');
+      try { runTriageOnce(); } catch(e){ console.error('[TT] run error', e); }
+    });
+    window.__runBound__ = true;
+    console.debug('[TT] run handler bound');
+  }
+}
+
+// Bind early (in case main() is delayed); main() will NOT add its own listener now.
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', bindRun);
+} else { bindRun(); }
+
+// Lightweight smoke test harness callable from console: window.ttSmoke()
+window.ttSmoke = function(){
+  const info = {
+    version: __TT_VERSION__,
+    hasRunBtn: !!document.getElementById('run'),
+    runBound: !!window.__runBound__,
+    rubricLoaded: !!window.__triageRubric__,
+    lastTriage: !!window.__lastTriage__
+  };
+  try { document.getElementById('run')?.click(); info.clickDispatched=true; } catch(e){ info.clickError=String(e); }
+  console.log('[TT] smoke', info);
+  return info;
+};
 function canonicalize(s) {
   if (!s) return '';
   let t = s.normalize ? s.normalize('NFKD') : s;
@@ -306,10 +347,12 @@ async function fetchAIExplainSafe(narrative, band, subscores, hits, dampeners) {
   const body = JSON.stringify({ narrative, band, subscores, hits, dampeners });
   const headers = { 'Content-Type': 'application/json' };
   try {
+  console.debug('[TT] calling AI (primary endpoint)');
     const r = await fetch('/api/triage-explain', { method:'POST', headers, body });
     if (r.ok) return normalizeAI(await r.json());
   } catch {}
   try {
+  console.debug('[TT] calling AI (origin fallback)');
     const r2 = await fetch(location.origin + '/api/triage-explain', { method:'POST', headers, body });
     if (r2.ok) return normalizeAI(await r2.json());
   } catch {}
@@ -613,6 +656,8 @@ function main(){
   console.debug('[TT] widget boot OK');
   const diag=document.getElementById('diag');
   loadRubric().then(rubric=>{
+    // expose for smoke tests / external scripting
+    window.__triageRubric__ = rubric;
     const runBtn=document.getElementById('run');
     const clearBtn=document.getElementById('clearText');
     const copyBtn=document.getElementById('copyReport');
@@ -622,9 +667,13 @@ function main(){
   runQuickTests(rubric);
 
     function execute(){
+      console.time('[TT] triage');
       const inputText=(document.getElementById('narrative').value||'').trim();
       if(!inputText){diag.textContent='Enter narrative text.'; return;}
-      const full=aggregate(inputText, rubric);
+      let full;
+      try {
+        full=aggregate(inputText, rubric);
+      } catch(e){ console.error('[TT] aggregate error', e); diag.textContent='Error during aggregate: '+e; console.timeEnd('[TT] triage'); return; }
   const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
   const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
   renderResults(full, rubric, inputText, caseName);
@@ -663,9 +712,12 @@ function main(){
         timestamp: new Date().toISOString()
       };
       diag.textContent=`Processed ${inputText.length} chars; rubric v${rubric.version}`;
+      console.timeEnd('[TT] triage');
     }
-
-    runBtn.addEventListener('click', execute);
+    // Replace placeholder with real implementation
+    window.runTriageOnce = execute;
+    // Bind (idempotent) in case this is the first successful rubric load
+    bindRun();
     showRubric.addEventListener('change',()=>{ if(window.__lastTriage__) renderResults(window.__lastTriage__, rubric); });
     clearBtn.addEventListener('click',()=>{ document.getElementById('narrative').value=''; document.getElementById('resultsArea').style.display='none'; document.getElementById('scoreBand').className='badge'; diag.textContent=''; });
   copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const raw=document.getElementById('narrative').value||''; const txt=`Case: ${r.caseName||''}\nBand: ${r.totals.band.label} (${r.totals.score})\nIndicators: BTAM(${r.sub.btam.hits.join(',')||'None'}) TRAP(${r.sub.trap18.hits.join(',')||'None'}) HCR(${r.sub.hcr20.hits.join(',')||'None'}) LEX(${r.sub.lenses.hits.join(',')||'None'}) PROT(${r.sub.protective.hits.join(',')||'None'})\nNarrative:\n${raw}`; navigator.clipboard.writeText(txt).then(()=>diag.textContent='Summary copied.'); });
@@ -678,6 +730,4 @@ function main(){
 // DOMContentLoaded guard (script loaded with defer but keep safety)
 if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded', main);
-} else {
-  main();
-}
+} else { main(); }

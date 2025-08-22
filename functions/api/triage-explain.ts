@@ -4,6 +4,7 @@ type PagesFunction = (ctx: any) => Promise<Response> | Response;
 
 export const onRequestPost: PagesFunction = async ({ request, env }: any) => {
   try {
+  console.log('[triage-explain] POST received');
     const { narrative = "", band = {}, subscores = {}, hits = [], dampeners = [] } =
       await request.json().catch(() => ({}));
 
@@ -52,10 +53,12 @@ export const onRequestPost: PagesFunction = async ({ request, env }: any) => {
     try { json = JSON.parse(content || "{}"); }
     catch { json = { executive: content || "" }; }
 
-    return new Response(JSON.stringify(json), {
+  console.log('[triage-explain] success band=%s chars=%d', band?.label, String(narrative||'').length);
+  return new Response(JSON.stringify(json), {
       headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }
     });
   } catch (e: any) {
+  console.error('[triage-explain] error', e);
     return new Response(JSON.stringify({ error: "server_error", detail: String(e) }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
