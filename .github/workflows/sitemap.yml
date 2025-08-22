@@ -20,7 +20,7 @@ jobs:
       - name: Generate sitemap.xml
         uses: cicirello/generate-sitemap@v1
         with:
-          base-url: https://jgwalsh.com
+          base-url-path: https://jgwalsh.com
           include-html: true
           sitemap-path: sitemap.xml
 
