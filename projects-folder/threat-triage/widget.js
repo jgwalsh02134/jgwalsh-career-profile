@@ -1,143 +1,79 @@
 // Canonicalize text to avoid Unicode pitfalls (smart quotes, dashes, accents)
-// Threat Triage widget — bind-fix version (bind-fix-2)
-const __TT_VERSION__ = 'bind-fix-2';
-console.debug('[TT] widget version', __TT_VERSION__);
+// Threat Triage widget — online-fix-1 bootstrap glue
+// (Scoring & rendering functions below remain unchanged.)
 
-// ===== Diagnostics =====
+function toast(msg){
+  let t = document.getElementById('tt-toast');
+  if(!t){ t=document.createElement('div'); t.id='tt-toast'; t.style.cssText='position:fixed;right:16px;bottom:16px;background:#111;color:#fff;padding:8px 12px;border-radius:8px;z-index:9999;font:13px system-ui'; document.body.appendChild(t); }
+  t.textContent = msg; setTimeout(()=>{ if(t) t.remove(); }, 2000);
+}
+
+console.log('[TT] widget loaded');
+if (document.readyState !== 'loading') toast('triage JS ready');
+else document.addEventListener('DOMContentLoaded', ()=>toast('triage JS ready'));
+
+function ensureIds(){ 
+  ['run','clearText','narrative','caseSelect'].forEach(id=>{
+    if(!document.getElementById(id)) console.error('[TT] Missing element:', id);
+  });
+}
+
 function tt(s){ console.log('[TT]', s); }
 function ttStatus(s){ const el=document.getElementById('tt-status'); if(el) el.textContent=s; }
 function ttErr(e){ const el=document.getElementById('tt-err'); if(el) el.textContent=e?String(e):'—'; }
 
-// Ensure report container exists
-// ===== ALWAYS-RENDER FALLBACK REPORT =====
-function ensureReportExecutive(){
-  let el = document.getElementById('reportExecutive');
-  if(!el){
-    el = document.createElement('div');
-    el.id = 'reportExecutive';
-    el.className = 'grid';
-    el.style.gap = '10px';
-    el.style.marginTop = '12px';
-    (document.getElementById('resultsArea') || document.body).appendChild(el);
-  }
-  return el;
-}
-function renderDeterministicFallback(matches){
-  const exec = ensureReportExecutive();
-  const items = (matches||[]).map(m=>`<li><strong>${m.indicator}</strong> — “${m.pattern}”</li>`).join('') || '<li>No indicators detected.</li>';
-  exec.innerHTML = `
-    <div class="card">
-      <h4>Comprehensive Report (Deterministic)</h4>
-      <p>Why each indicator contributed (fallback view).</p>
-      <ul>${items}</ul>
-    </div>`;
+function bindButtons(){
+  const runBtn = document.getElementById('run');
+  const clrBtn = document.getElementById('clearText');
+  if (runBtn && !runBtn.__tt){ runBtn.addEventListener('click', runTriageOnce); runBtn.__tt=true; console.log('[TT] bound run'); }
+  if (clrBtn && !clrBtn.__tt){ clrBtn.addEventListener('click', ()=>{ const ta=document.getElementById('narrative'); if(ta) ta.value=''; const ra=document.getElementById('resultsArea'); if(ra) ra.style.display='none'; }, { passive:true }); clrBtn.__tt=true; console.log('[TT] bound clear'); }
+  document.addEventListener('click', (ev)=>{ if (ev.target && ev.target.id === 'run') runTriageOnce(); }, { once: true });
 }
 
-// ===== Case selector -> textarea =====
 function wireCaseSelect(){
   const sel = document.getElementById('caseSelect');
   const ta  = document.getElementById('narrative');
-  if(!sel || !ta){ tt('missing caseSelect or narrative'); return; }
-  (function prefill(){
-    const opt = sel.options[sel.selectedIndex];
-    const text = opt?.getAttribute?.('data-text');
-    if(text) ta.value = text;
-  })();
+  if(!sel || !ta){ console.warn('[TT] cannot wire caseSelect'); return; }
+  const opt0 = sel.options[sel.selectedIndex];
+  const t0 = opt0?.getAttribute?.('data-text');
+  if (t0) { ta.value = t0; }
   sel.addEventListener('change', ()=>{
     const opt = sel.options[sel.selectedIndex];
     const text = opt?.getAttribute?.('data-text') || '';
-    if(text){ ta.value = text; }
-    const ra = document.getElementById('resultsArea'); if(ra) ra.style.display = 'none';
-    tt('case loaded');
+    if (text) ta.value = text;
+    const ra = document.getElementById('resultsArea'); if (ra) ra.style.display = 'none';
+    console.log('[TT] loaded example case');
   });
 }
 
-// ===== Idempotent rubric loader =====
-let __RUBRIC__ = null;
+let __RUBRIC__=null;
 async function loadRubricOnce(){
   if(__RUBRIC__) return __RUBRIC__;
-  const r = await fetch('./rubric.json?v=bind-fix-2', {cache:'no-store'}).catch(()=>null);
+  const r = await fetch('./rubric.json?v=online-fix-1',{cache:'no-store'}).catch(()=>null);
   if(!r || !r.ok) throw new Error('rubric load failed');
-  __RUBRIC__ = await r.json(); return __RUBRIC__;
+  __RUBRIC__ = await r.json(); 
+  return __RUBRIC__;
 }
 
-// Provide a thin alias to existing renderResults (expected name 'render' by glue code)
-if (typeof render === 'undefined') {
-  function render(r, rubric, txt){
-    // renderResults signature: (result, rubric, rawText, caseName)
-    if (typeof renderResults === 'function') {
-      renderResults(r, rubric, txt, r?.case?.label || '');
-    }
-  }
-}
-
-// ===== Run once (guarantee rubric -> aggregate -> render) =====
 async function runTriageOnce(){
-  ttStatus('running'); ttErr('');
   try{
-    const ta = document.getElementById('narrative');
-    const txt = ta ? (ta.value || '') : '';
+    const txt = document.getElementById('narrative')?.value || '';
     const rubric = await loadRubricOnce();
-    if(typeof aggregate !== 'function' || typeof render !== 'function'){
-      throw new Error('aggregate/render not defined in widget.js');
-    }
+    if (typeof aggregate !== 'function' || typeof render !== 'function') throw new Error('aggregate/render missing');
     const result = aggregate(txt, rubric);
     render(result, rubric, txt);
-    renderDeterministicFallback((result.trace && result.trace.matches) || []);
-    ttStatus('ok');
-  }catch(e){
-    console.error('[TT] run error', e);
-    ttStatus('error'); ttErr(e.message || String(e));
-  }
-}
-
-// ===== Bind buttons (and delegate as a fallback) =====
-function bindButtons(){
-  const runBtn = document.getElementById('run');
-  const clearBtn = document.getElementById('clearText');
-  if(runBtn && !runBtn.__ttBound){ runBtn.addEventListener('click', runTriageOnce); runBtn.__ttBound=true; tt('Run bound'); }
-  if(clearBtn && !clearBtn.__ttBound){
-    clearBtn.addEventListener('click', ()=>{
-      const ta=document.getElementById('narrative'); if(ta) ta.value='';
-      const ra=document.getElementById('resultsArea'); if(ra) ra.style.display='none';
-      ensureReportExecutive().innerHTML=''; ttStatus('idle'); ttErr('');
-    });
-    clearBtn.__ttBound=true; tt('Clear bound');
-  }
-  document.addEventListener('click', (ev)=>{
-    if(ev.target && ev.target.id==='run') runTriageOnce();
-    if(ev.target && ev.target.id==='clearText'){
-      const ta=document.getElementById('narrative'); if(ta) ta.value='';
-      const ra=document.getElementById('resultsArea'); if(ra) ra.style.display='none';
-      ensureReportExecutive().innerHTML=''; ttStatus('idle'); ttErr('');
-    }
-  }, { once: true });
+    console.log('[TT] triage ok', result?.totals);
+  }catch(e){ console.error('[TT] triage error', e); toast('Run failed: '+ (e?.message||e)); }
 }
 
 (function boot(){
-  const start = ()=>{ try{
-      wireCaseSelect();
-      bindButtons();
-      tt('boot ok');
-    }catch(e){ console.error('[TT] boot error', e); ttErr(e.message||String(e)); }
+  const start = ()=>{ 
+    try { ensureIds(); wireCaseSelect(); bindButtons(); console.log('[TT] boot ok'); }
+    catch(e){ console.error('[TT] boot error', e); toast('Boot error: '+(e?.message||e)); }
   };
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
-
-// Lightweight smoke test harness callable from console: window.ttSmoke()
-window.ttSmoke = function(){
-  const info = {
-    version: __TT_VERSION__,
-    hasRunBtn: !!document.getElementById('run'),
-    runBound: !!document.getElementById('run')?.__ttBound,
-    rubricLoaded: !!__RUBRIC__,
-    lastTriage: !!window.__lastTriage__
-  };
-  try { document.getElementById('run')?.click(); info.clickDispatched=true; } catch(e){ info.clickError=String(e); }
-  console.log('[TT] smoke', info);
-  return info;
-};
 function canonicalize(s) {
   if (!s) return '';
   let t = s.normalize ? s.normalize('NFKD') : s;
