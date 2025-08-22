@@ -2,7 +2,16 @@
   "version": "2.0.0",
   "meta": {
     "name": "Behavioral Threat Triage Rubric",
-    "notes": "Deterministic intake for narrative screening. Signals ≠ proof; human review required."
+    "notes": "Deterministic intake for narrative screening. Signals ≠ proof; human review required.",
+    "sources": [
+      "USSS Averting Targeted School Violence (2021)",
+      "ATAP / Virginia DCJS threat assessment guidelines",
+      "Meloy et al. TRAP-18 framework (subset illustrative)",
+      "Douglas et al. HCR-20 V3 (contextual factors referenced)",
+      "MOAS (Modified Overt Aggression Scale) weighting concept",
+      "AQ (Aggression Questionnaire) mini items (illustrative subset)",
+      "Open-source educational threat assessment training materials"
+    ]
   },
 
   "bands": [
