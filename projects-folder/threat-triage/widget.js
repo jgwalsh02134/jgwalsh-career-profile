@@ -1,4 +1,43 @@
-function normalize(t){return (t||'').toLowerCase().replace(/\s+/g,' ').trim();}
+// Canonicalize text to avoid Unicode pitfalls (smart quotes, dashes, accents)
+function canonicalize(s) {
+  if (!s) return '';
+  let t = s.normalize ? s.normalize('NFKD') : s;
+  t = t.replace(/[\u0300-\u036f]/g, '');          // remove diacritics
+  t = t.replace(/[‘’´`]/g, "'")                    // smart apostrophes -> '
+       .replace(/[“”]/g, '"')                      // smart quotes -> "
+       .replace(/[‐-‒–—―]/g, '-')                  // hyphen/dash variants -> -
+       .replace(/\u00A0/g, ' ');                   // non-breaking space -> space
+  return t;
+}
+
+function normalize(text){
+  return canonicalize(String(text||''))
+    .toLowerCase()
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+// Build boundary-safe regex for a SINGLE TOKEN only
+function wordBoundaryRegexToken(token){
+  const esc = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const startB = /\w/.test(esc[0]) ? '\\b' : '';
+  const endB   = /\w/.test(esc[esc.length-1]) ? '\\b' : '';
+  return new RegExp(`${startB}${esc}${endB}`, 'i');
+}
+
+// Return first index of a pattern in normalized text
+function indexOfPattern(normText, pattern){
+  const p = normalize(pattern);
+  if (!p) return -1;
+  const isMultiWord = /\s/.test(p);
+  if (isMultiWord) {
+    return normText.indexOf(p); // phrase search (no word boundaries)
+  } else {
+    const rx = wordBoundaryRegexToken(p);
+    const m = rx.exec(normText);
+    return m ? m.index : -1;
+  }
+}
 
 // Single source of truth for cases (narratives + labels)
 const CASE_EXAMPLES = {
@@ -24,43 +63,68 @@ async function loadRubric(){
   return res.json();
 }
 
-function findHitsWithPatterns(text, section){
+function findHitsBoundaryAware(text, section, negationList, windowChars){
   const t = normalize(text);
   let score = 0;
-  const hits = [];
+  const hits = new Set();
   const matches = [];
   (section||[]).forEach(ind=>{
     let matched=false;
-    (ind.patterns||[]).forEach(p=>{
-      if(t.includes(p)){ matched=true; matches.push({indicator:ind.name, pattern:p}); }
+    (ind.patterns||[]).forEach(rawP=>{
+      const idx = indexOfPattern(t, rawP);
+      if(idx>=0){
+        const start = Math.max(0, idx - (windowChars||14));
+        const end = Math.min(t.length, idx + (windowChars||14));
+        const span = t.slice(start, end);
+        const neg = (negationList||[]).some(n => span.includes(normalize(n)));
+        if(!neg){ matched=true; matches.push({indicator:ind.name, pattern:normalize(rawP), index:idx}); }
+      }
     });
-    if(matched){ score += (ind.weight||0); hits.push(ind.name); }
+    if(matched){ score += (ind.weight||0); hits.add(ind.name); }
   });
-  return {score, hits, matches};
+  return {score, hits:Array.from(hits), matches};
 }
 
-function scoreLexical(text, lenses){
+function scoreLexical(text, lenses, negationList, windowChars){
   const t = normalize(text);
-  let score = 0, hits=[], matches=[];
+  let score = 0, hits=new Set(), matches=[];
   (lenses.categories||[]).forEach(cat=>{
-    let m=false;
-    (cat.patterns||[]).forEach(p=>{ if(t.includes(p)){ m=true; matches.push({indicator:cat.name, pattern:p}); } });
-    if(m){ score += (cat.weight||0); hits.push(cat.name); }
+    let matched=false;
+    (cat.patterns||[]).forEach(p=>{
+      const idx = indexOfPattern(t, p);
+      if(idx>=0){
+        const start = Math.max(0, idx - (windowChars||14));
+        const end = Math.min(t.length, idx + (windowChars||14));
+        const span = t.slice(start, end);
+        const neg = (negationList||[]).some(n => span.includes(normalize(n)));
+        if(!neg){ matched=true; matches.push({indicator:cat.name, pattern:normalize(p), index:idx}); }
+      }
+    });
+    if(matched){ score += (cat.weight||0); hits.add(cat.name); }
   });
-  const cap = Number(lenses.cap_total||3);
-  return {score: Math.min(cap, Math.round(score*10)/10), hits, matches};
+  const cap = Number((lenses||{}).cap_total||3);
+  return {score: Math.min(cap, Math.round(score*10)/10), hits:Array.from(hits), matches};
 }
 
-function scoreProtective(text, prot){
+function scoreProtective(text, prot, negationList, windowChars){
   const t = normalize(text);
-  let score = 0, hits=[], matches=[];
+  let score = 0, hits=new Set(), matches=[];
   (prot.categories||[]).forEach(cat=>{
-    let m=false;
-    (cat.patterns||[]).forEach(p=>{ if(t.includes(p)){ m=true; matches.push({indicator:cat.name, pattern:p}); }});
-    if(m){ score += (cat.weight||0); hits.push(cat.name); }
+    let matched=false;
+    (cat.patterns||[]).forEach(p=>{
+      const idx = indexOfPattern(t, p);
+      if(idx>=0){
+        const start = Math.max(0, idx - (windowChars||14));
+        const end = Math.min(t.length, idx + (windowChars||14));
+        const span = t.slice(start, end);
+        const neg = (negationList||[]).some(n => span.includes(normalize(n)));
+        if(!neg){ matched=true; matches.push({indicator:cat.name, pattern:normalize(p), index:idx}); }
+      }
+    });
+    if(matched){ score += (cat.weight||0); hits.add(cat.name); }
   });
-  const cap = Number(prot.cap_abs||2);
-  return {score: Math.min(cap, score), hits, matches};
+  const cap = Number((prot||{}).cap_abs||2);
+  return {score: Math.min(cap, score), hits:Array.from(hits), matches};
 }
 
 function applyDampeners(text, base, damp){
@@ -190,11 +254,13 @@ function renderResults(full, rubric){
 }
 
 function aggregate(text, rubric){
-  const btam = findHitsWithPatterns(text, rubric.btam_core);
-  const trap = findHitsWithPatterns(text, rubric.trap18_subset);
-  const hcr  = findHitsWithPatterns(text, rubric.hcr20_context);
-  const lenses = scoreLexical(text, rubric.lenses_lexical||{categories:[]});
-  const protective = scoreProtective(text, rubric.protective_lexical||{categories:[]});
+  const negList = (rubric.dampeners && rubric.dampeners.negation_cues) || [];
+  const windowChars = 14;
+  const btam = findHitsBoundaryAware(text, rubric.btam_core, negList, windowChars);
+  const trap = findHitsBoundaryAware(text, rubric.trap18_subset, negList, windowChars);
+  const hcr  = findHitsBoundaryAware(text, rubric.hcr20_context, negList, windowChars);
+  const lenses = scoreLexical(text, rubric.lenses_lexical||{categories:[]}, negList, windowChars);
+  const protective = scoreProtective(text, rubric.protective_lexical||{categories:[]}, negList, windowChars);
   const base = btam.score + trap.score + hcr.score + lenses.score; // protective not added; subtract protective later
   const dampen = applyDampeners(text, base, rubric.dampeners||{});
   const adjusted = Math.max(0, dampen.score - protective.score); // protective reduces
@@ -207,6 +273,22 @@ function aggregate(text, rubric){
   const report = buildReportMarkdown(text, totals, sub, flags, conf, dampen, rec, caseMeta);
   const trace = buildCalcTrace(text, {sub, totals, dampen, flags, conf, rec});
   return { totals, sub, dampen, flags, conf, rec, report, trace, case: caseMeta };
+}
+
+// Built-in quick tests
+const __TT_TESTS__ = [
+  { name:"Time + grievance (should hit BTAM: time/place & grievance)", text:"I’ll get him back tomorrow. Everyone will see.", expectMin:2 },
+  { name:"Leakage only (BTAM: leakage)", text:"You'll see. Not a joke.", expectMin:1 },
+  { name:"Negated threat (should dampen)", text:"I said I won't do it. I'm joking.", expectMax:2 }
+];
+
+function runQuickTests(rubric){
+  const lines = [];
+  __TT_TESTS__.forEach(tc=>{
+    const r = aggregate(tc.text, rubric);
+    lines.push(`${tc.name} → score ${r.totals.score} | hits: BTAM(${r.sub.btam.hits.join(',')||'-'}) TRAP(${r.sub.trap18.hits.join(',')||'-'})`);
+  });
+  console.debug('[TT] Quick tests:\n' + lines.join('\n'));
 }
 
 function wireCaseSelector(){
@@ -245,6 +327,7 @@ function main(){
     const dlBtn=document.getElementById('downloadBtn');
     const showRubric=document.getElementById('showRubric');
     wireCaseSelector();
+  runQuickTests(rubric);
 
     function execute(){
       const inputText=(document.getElementById('narrative').value||'').trim();
@@ -270,6 +353,7 @@ function main(){
     clearBtn.addEventListener('click',()=>{ document.getElementById('narrative').value=''; document.getElementById('resultsArea').style.display='none'; document.getElementById('scoreBand').className='badge'; diag.textContent=''; });
     copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(r.report).then(()=>diag.textContent='Report copied.'); });
     dlBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='triage_result.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
+  document.getElementById('ttRunTests')?.addEventListener('click',()=>runQuickTests(rubric));
   }).catch(e=>{ console.error(e); if(diag) diag.textContent='Rubric load error: '+e; });
 }
 
