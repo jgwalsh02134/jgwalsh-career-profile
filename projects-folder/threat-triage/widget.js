@@ -53,6 +53,13 @@ const CASE_LABELS = {
   apalachee: "Apalachee HS Leakage"
 };
 let __selectedCaseKey__ = "";
+// Benchmarks for validation mode
+const BENCHMARKS = [
+  { key:'virginia',  label:'Virginia School Threat', text:"I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.", expect:'Elevated' },
+  { key:'employee',  label:'Ex-Employee Lobby Threat', text:"Tell the CEO he’s a dead man walking. You’ll all regret this.", expect:'Elevated' },
+  { key:'disability',label:'Student Disability Non-Specific', text:"I might bring something to school. People laugh at me every day.", expect:'Moderate' },
+  { key:'negated',   label:'Negated/Joking', text:"I said I won’t do it, I’m joking — hypothetical.", expect:'Low' }
+];
 function includesAny(text, patterns){return (patterns||[]).some(p=>text.includes(p));}
 function bandClass(label){const L=label.toLowerCase(); if(L.startsWith('crit')) return 'badge crit'; if(L.startsWith('elev')) return 'badge elev'; if(L.startsWith('mod')) return 'badge mod'; return 'badge low';}
 function clamp(x,min,max){return Math.max(min,Math.min(max,x));}
@@ -212,6 +219,24 @@ function buildReportHTML(caseName, totals, subs, flags, conf, damp, plan){
   return container;
 }
 
+// Escape & highlight helpers
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[m]));}
+function renderHighlightedNarrative(rawText, matches){
+  const text = rawText||'';
+  const sorted=[...(matches||[])].sort((a,b)=>a.index-b.index);
+  const parts=[]; let cursor=0;
+  sorted.forEach(m=>{
+    if(typeof m.index!=='number') return; const i=Math.max(0,m.index);
+    if(i>cursor) parts.push(escapeHtml(text.slice(cursor,i)));
+    const rel=text.slice(i); const spacePos=rel.search(/\s/); const end=spacePos>-1? i+spacePos : i+rel.length;
+    const frag=escapeHtml(text.slice(i,end));
+    parts.push(`<mark data-indicator="${escapeHtml(m.indicator||'')}" style="padding:0 2px;border-radius:4px;">${frag}</mark>`);
+    cursor=end;
+  });
+  parts.push(escapeHtml(text.slice(cursor)));
+  return parts.join('');
+}
+
 function buildCalcTrace(text, results){
   const {sub, totals, dampen, flags, conf, rec} = results;
   const lines = [];
@@ -243,6 +268,13 @@ function renderResults(full, rubric){
   document.getElementById('protScore').textContent=sub.protective.score; renderList(document.getElementById('protHits'), sub.protective.hits);
   const reportHost=document.getElementById('reportText');
   if(reportHost && reportEl){ reportHost.innerHTML=''; reportHost.appendChild(reportEl); }
+  // clickable indicator list to scroll to highlights
+  function scrollToIndicator(name){
+    const first=document.querySelector(`mark[data-indicator="${CSS.escape(name)}"]`);
+    if(first){ first.scrollIntoView({behavior:'smooth', block:'center'}); first.classList.add('pulse'); setTimeout(()=>first.classList.remove('pulse'),1000);} }
+  [['btamHits'],['trapHits'],['hcrHits'],['lensHits'],['protHits']].forEach(([listId])=>{
+    const list=document.getElementById(listId); if(!list) return; Array.from(list.querySelectorAll('li')).forEach(li=>{ if(li.textContent!=='None'){ li.style.cursor='pointer'; li.title='Jump to first highlight'; li.addEventListener('click',()=>scrollToIndicator(li.textContent.trim())); }});
+  });
   document.getElementById('calcTrace').textContent=trace;
   const showRubric=document.getElementById('showRubric').checked; const rc=document.getElementById('rubricCard'); rc.style.display=showRubric?'block':'none'; if(showRubric) rc.textContent=JSON.stringify(rubric,null,2);
 }
@@ -331,6 +363,15 @@ function main(){
       const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
       const reportCaseEl = document.getElementById('reportCase');
       if(reportCaseEl) reportCaseEl.textContent = caseName ? `Case: ${caseName}` : '';
+      // Highlight narrative
+      const nvCard=document.getElementById('narrativeViewCard');
+      const nv=document.getElementById('narrativeView');
+      if(nvCard && nv){
+        // aggregate stored matches inside each sub set -> flatten
+        const allMatches=[...full.sub.btam.matches,...full.sub.trap18.matches,...full.sub.hcr20.matches,...full.sub.lenses.matches,...full.sub.protective.matches];
+        nv.innerHTML = renderHighlightedNarrative(inputText, allMatches) || '<span class="note">No indicators detected.</span>';
+        nvCard.style.display='block';
+      }
       window.__lastTriage__={
         ...window.__lastTriage__,
         rubricVersion: rubric.version,
@@ -348,6 +389,7 @@ function main(){
     copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(r.report).then(()=>diag.textContent='Report copied.'); });
     dlBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='triage_result.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
   document.getElementById('ttRunTests')?.addEventListener('click',()=>runQuickTests(rubric));
+  document.getElementById('runBenchmarks')?.addEventListener('click',()=>runBenchmarksUI(rubric));
   }).catch(e=>{ console.error(e); if(diag) diag.textContent='Rubric load error: '+e; });
 }
 

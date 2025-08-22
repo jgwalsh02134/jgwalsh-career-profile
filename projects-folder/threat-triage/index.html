@@ -69,6 +69,10 @@
       <label for="narrative"><strong>Enter narrative text</strong> <span class="muted">(3–10 sentences; no PII)</span></label>
       <textarea id="narrative" aria-describedby="narrative-help" placeholder="Example: 'Tomorrow at 8am they will regret it. I bought what I need and I have the keys to get in through the service door. You'll see.'"></textarea>
       <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.</p>
+      <div class="card" id="narrativeViewCard" style="display:none;">
+        <h3 style="margin:0 0 6px;">Narrative (Matched Highlights)</h3>
+        <div id="narrativeView" class="note" style="line-height:1.6;"></div>
+      </div>
 
       <div class="row">
         <button id="run" class="btn">Run Triage</button>
@@ -108,6 +112,14 @@
           <div class="note">Automatically generated risk formulation and plan based on all detected variables.</div>
           <div id="reportText" class="grid" style="gap:12px;"></div>
         </div>
+        <div class="card" id="whyMatters">
+          <h3 style="margin:0 0 6px;">Why These Signals Matter</h3>
+          <div class="grid" style="gap:10px;">
+            <div><strong>BTAM</strong>: intake teams look for observable, actionable cues (direct threats, time/place, means). These drive immediate safety steps.</div>
+            <div><strong>TRAP-18</strong>: warning behaviors (fixation, identification, last-resort) mark escalation pathways before violence.</div>
+            <div><strong>HCR-20</strong>: context (history/clinical/risk) explains <em>why now</em> and informs risk management planning.</div>
+          </div>
+        </div>
 
         <div class="card mono" id="rubricCard" style="display:none;"></div>
         <div class="card" id="calcPanel">
@@ -129,6 +141,20 @@
           <p>Virginia DCJS (2014). Threat Assessment in Virginia Schools: Technical Report.</p>
           <p>FBI Law Enforcement Bulletin. Threat Assessment Teams: Workplace & School Violence Prevention.</p>
           <p>HCR-20 (historical/clinical/risk) contextual factors; protective-factor literature.</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel grid" style="margin-top:24px;">
+      <details id="validationBlock">
+        <summary><strong>Validation Mode (built-in examples)</strong></summary>
+        <p class="note">Runs known examples with expected bands to demonstrate reliability. No personal data.</p>
+        <button id="runBenchmarks" class="btn secondary">Run Benchmarks</button>
+        <div class="card" style="margin-top:10px;">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr><th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Case</th><th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Expected</th><th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Actual</th><th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Result</th></tr></thead>
+            <tbody id="benchBody"></tbody>
+          </table>
         </div>
       </details>
     </section>
