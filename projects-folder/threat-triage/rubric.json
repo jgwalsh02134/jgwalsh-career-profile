@@ -1,0 +1,23 @@
+{
+  "version": "1.1.0",
+  "bands": [
+    { "min": 0,  "max": 2,  "label": "Low",      "guidance": ["Log and monitor", "No immediate escalation"] },
+    { "min": 3,  "max": 5,  "label": "Moderate", "guidance": ["Supervisor review", "Check for corroboration"] },
+    { "min": 6,  "max": 9,  "label": "Elevated", "guidance": ["Escalate to duty officer", "Preserve evidence"] },
+    { "min": 10, "max": 99, "label": "Critical", "guidance": ["Immediate escalation", "Safety planning and containment"] }
+  ],
+  "indicators": [
+    { "name": "Direct threat",            "weight": 3, "patterns": ["i will harm", "i'm going to kill", "kill them", "bomb", "shoot", "shooting", "stab"] },
+    { "name": "Weapon reference",         "weight": 2, "patterns": ["gun", "rifle", "knife", "explosive", "ammo", "ammunition"] },
+    { "name": "Specific target",          "weight": 2, "patterns": ["principal", "officer", "my boss", "my teacher", "the school", "the building", "coworker"] },
+    { "name": "Time/place specificity",   "weight": 1, "patterns": ["tomorrow", "friday", "at 8am", "after work", "in the parking lot"] },
+    { "name": "Grievance fixation",       "weight": 1, "patterns": ["they wronged me", "i'll make them pay", "everyone will see", "revenge"] },
+    { "name": "Leakage language",         "weight": 1, "patterns": ["you'll see", "just wait", "not a joke", "this is real"] },
+    { "name": "Leakage behavior hint",    "weight": 1, "patterns": ["bought", "purchased", "packed", "wrote a note", "printed a map"] },
+    { "name": "Ideation markers",         "weight": 1, "patterns": ["fantasize", "imagine the chaos", "plan it out"] },
+    { "name": "Means/access hints",       "weight": 1, "patterns": ["i have access", "i can get in", "badge", "keys", "service door"] },
+    { "name": "Harm to self/others mix",  "weight": 1, "patterns": ["take them with me", "i don't care if i die"] }
+  ],
+  "negation_cues": ["no intention", "won't do it", "not going to", "joking"],
+  "stopwords": ["movie", "metaphor", "joking", "sarcasm", "hypothetical"]
+}

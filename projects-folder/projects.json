@@ -1,7 +1,7 @@
 [
   {
     "title": "Behavioral Threat Triage",
-    "description": "Deterministic intake using a transparent rubric; outputs banded scores with escalation guidance.",
+  "description": "Deterministic rubric for narrative screening; banded scores and escalation guidance with full transparency.",
     "link": "/projects-folder/threat-triage/index.html",
     "tags": ["behavioral","law-enforcement","triage"]
   },
