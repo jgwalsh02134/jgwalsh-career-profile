@@ -1,24 +1,19 @@
 function normalize(t){return (t||'').toLowerCase().replace(/\s+/g,' ').trim();}
-// Example case narratives and labels/notes for UI + report header
+
+// Single source of truth for cases (narratives + labels)
 const CASE_EXAMPLES = {
-  virginia: "I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.",
-  disability: "I might as well bring something to school. People laugh at me every day. Maybe then they’ll take me seriously.",
-  employee: "At the front desk the terminated employee shouted: 'Tell the CEO he’s a dead man walking. You’ll all regret this.'",
+  virginia:  "I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.",
+  disability:"I might as well bring something to school. People laugh at me every day. Maybe then they’ll take me seriously.",
+  employee:  "At the front desk the terminated employee shouted: 'Tell the CEO he’s a dead man walking. You’ll all regret this.'",
   apalachee: "Nobody cares now, but they will after tomorrow. I’ll make sure my name is remembered like the others."
 };
 const CASE_LABELS = {
-  virginia: "Virginia School Threat",
-  disability: "Student With Disability — Non-Specific Threat",
-  employee: "Ex-Employee Lobby Threat",
+  virginia:  "Virginia School Threat",
+  disability:"Student With Disability — Non-Specific Threat",
+  employee:  "Ex-Employee Lobby Threat",
   apalachee: "Apalachee HS Leakage"
 };
-const CASE_NOTES = {
-  virginia: "Modeled after a school-based grievance leak with time reference.",
-  disability: "Illustrates non-specific frustration + identity-based bullying context.",
-  employee: "Represents a workplace termination grievance with direct threat language.",
-  apalachee: "Parallels pre-event leakage referencing public recognition motives."
-};
-let __selectedCaseKey__ = '';
+let __selectedCaseKey__ = "";
 function includesAny(text, patterns){return (patterns||[]).some(p=>text.includes(p));}
 function bandClass(label){const L=label.toLowerCase(); if(L.startsWith('crit')) return 'badge crit'; if(L.startsWith('elev')) return 'badge elev'; if(L.startsWith('mod')) return 'badge mod'; return 'badge low';}
 function clamp(x,min,max){return Math.max(min,Math.min(max,x));}
@@ -214,45 +209,73 @@ function aggregate(text, rubric){
   return { totals, sub, dampen, flags, conf, rec, report, trace, case: caseMeta };
 }
 
-async function main(){
-  const diag=document.getElementById('diag');
-  let rubric; try{rubric=await loadRubric();}catch(e){console.error(e); if(diag) diag.textContent='Rubric load error: '+e; return;}
-  const runBtn=document.getElementById('run');
-  const caseSelect = document.getElementById('caseSelect');
-  const caseNote = document.getElementById('caseNote');
-  caseSelect?.addEventListener('change', e=>{
-    const val = e.target.value;
-    __selectedCaseKey__ = '';
-    if(CASE_EXAMPLES[val]){
-      __selectedCaseKey__ = val;
-      document.getElementById('narrative').value = CASE_EXAMPLES[val];
-      if(caseNote){ caseNote.textContent = CASE_NOTES[val]||''; caseNote.style.display='block'; }
-      document.getElementById('resultsArea').style.display='none';
-      document.getElementById('reportCase')?.setAttribute('style','display:none;');
+function wireCaseSelector(){
+  const sel = document.getElementById('caseSelect');
+  const note = document.getElementById('caseNote');
+  const ta = document.getElementById('narrative');
+  if(!sel || !ta){ console.warn('[TT] caseSelect or narrative missing'); return; }
+  sel.addEventListener('change', (e)=>{
+    const key = e.target.value || "";
+    __selectedCaseKey__ = key;
+    let text = CASE_EXAMPLES[key];
+    if(!text){
+      const opt = sel.options[sel.selectedIndex];
+      text = opt?.getAttribute('data-text') || '';
+    }
+    if(text){
+      ta.value = text;
+      const ra=document.getElementById('resultsArea'); if(ra) ra.style.display='none';
+      if(note) note.textContent = CASE_LABELS[key] ? `Case loaded: ${CASE_LABELS[key]}` : '';
+      ta.focus();
+      console.debug('[TT] Loaded case', key);
     } else {
-      if(caseNote){ caseNote.textContent=''; caseNote.style.display='none'; }
+      if(note) note.textContent='';
+      console.debug('[TT] Cleared case selection');
     }
   });
-  const clearBtn=document.getElementById('clearText');
-  const copyBtn=document.getElementById('copyReport');
-  const dlBtn=document.getElementById('downloadBtn');
-  const showRubric=document.getElementById('showRubric');
-
-  function execute(){
-    const text=(document.getElementById('narrative').value||'').trim();
-    if(!text){diag.textContent='Enter narrative text.'; return;}
-    const full=aggregate(text, rubric);
-  renderResults(full, rubric);
-  const reportCaseEl = document.getElementById('reportCase');
-  if(full.case && reportCaseEl){ reportCaseEl.textContent = 'Case: '+full.case.label; reportCaseEl.style.display='block'; }
-  window.__lastTriage__={rubricVersion:rubric.version, narrativeChars:text.length, caseName: full.case? full.case.label: null, ...full, timestamp:new Date().toISOString()};
-    diag.textContent=`Processed ${text.length} chars; rubric v${rubric.version}`;
-  }
-  runBtn.addEventListener('click', execute);
-  showRubric.addEventListener('change',()=>{ if(window.__lastTriage__) renderResults(window.__lastTriage__, rubric); });
-  clearBtn.addEventListener('click',()=>{ document.getElementById('narrative').value=''; document.getElementById('resultsArea').style.display='none'; document.getElementById('scoreBand').className='badge'; diag.textContent=''; });
-  copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(r.report).then(()=>diag.textContent='Report copied.'); });
-  dlBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='triage_result.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
 }
 
-document.addEventListener('DOMContentLoaded', main);
+function main(){
+  console.debug('[TT] widget boot OK');
+  const diag=document.getElementById('diag');
+  loadRubric().then(rubric=>{
+    const runBtn=document.getElementById('run');
+    const clearBtn=document.getElementById('clearText');
+    const copyBtn=document.getElementById('copyReport');
+    const dlBtn=document.getElementById('downloadBtn');
+    const showRubric=document.getElementById('showRubric');
+    wireCaseSelector();
+
+    function execute(){
+      const inputText=(document.getElementById('narrative').value||'').trim();
+      if(!inputText){diag.textContent='Enter narrative text.'; return;}
+      const full=aggregate(inputText, rubric);
+      renderResults(full, rubric);
+      const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
+      const reportCaseEl = document.getElementById('reportCase');
+      if(reportCaseEl) reportCaseEl.textContent = caseName ? `Case: ${caseName}` : '';
+      window.__lastTriage__={
+        ...window.__lastTriage__,
+        rubricVersion: rubric.version,
+        ...full,
+        caseName,
+        narrativeChars: inputText.length,
+        timestamp: new Date().toISOString()
+      };
+      diag.textContent=`Processed ${inputText.length} chars; rubric v${rubric.version}`;
+    }
+
+    runBtn.addEventListener('click', execute);
+    showRubric.addEventListener('change',()=>{ if(window.__lastTriage__) renderResults(window.__lastTriage__, rubric); });
+    clearBtn.addEventListener('click',()=>{ document.getElementById('narrative').value=''; document.getElementById('resultsArea').style.display='none'; document.getElementById('scoreBand').className='badge'; diag.textContent=''; });
+    copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(r.report).then(()=>diag.textContent='Report copied.'); });
+    dlBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='triage_result.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
+  }).catch(e=>{ console.error(e); if(diag) diag.textContent='Rubric load error: '+e; });
+}
+
+// DOMContentLoaded guard (script loaded with defer but keep safety)
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', main);
+} else {
+  main();
+}
