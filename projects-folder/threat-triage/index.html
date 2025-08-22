@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 24px; }
     .panel { background:#fafafa; border:1px solid #e5e7eb; border-radius:16px; padding:24px; }
     .grid { display:grid; gap:16px; }
+    .cols-2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:16px; }
     .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
     .btn { display:inline-block; padding:10px 16px; border:1px solid #111; border-radius:10px; text-decoration:none; cursor:pointer; background:#111; color:#fff; }
     .btn.secondary { background:#fff; color:#111; }
@@ -18,6 +19,7 @@
     textarea { width:100%; min-height:160px; font:14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:12px; white-space:pre-wrap; }
     #diag { font-size:12px; color:#6b7280; }
+    .note { font-size:12px; color:#6b7280; }
   </style>
 </head>
 <body>
@@ -25,7 +27,7 @@
     <p class="muted"><a href="/projects-folder/">← Back to Projects</a></p>
     <header class="grid" aria-labelledby="page-title">
       <h1 id="page-title" style="margin:0;">Behavioral Threat Triage</h1>
-      <p class="muted" style="margin-top:-4px;">Deterministic (rules-based) intake for short narratives. Transparent rubric, explainable outputs, and ethical guardrails.</p>
+      <p class="muted" style="margin-top:-4px;">Deterministic intake using BTAM core indicators, TRAP-18 warning behaviors, and HCR-20–inspired context. Transparency-first; human review required.</p>
       <div class="row">
         <button id="printBtn" class="btn secondary" aria-label="Print this case study">Print Case Study</button>
         <span id="diag"></span>
@@ -34,10 +36,10 @@
 
     <!-- Demo -->
     <section class="panel grid" id="demo" aria-labelledby="demo-title">
-      <h2 id="demo-title" style="margin:0;">Live Demo (Deterministic)</h2>
+      <h2 id="demo-title" style="margin:0;">Live Demo</h2>
       <label for="narrative"><strong>Paste narrative text</strong> <span class="muted">(3–10 sentences; no PII)</span></label>
       <textarea id="narrative" aria-describedby="narrative-help" placeholder="Example: 'Tomorrow at 8am they will regret it. I have the keys and I'm done being ignored...'"></textarea>
-      <p id="narrative-help" class="muted">This tool performs initial screening only. Results do not imply guilt or intent. Human review required.</p>
+      <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.</p>
 
       <div class="row">
         <button id="run" class="btn">Run Triage</button>
@@ -52,21 +54,78 @@
       <div id="resultsArea" class="grid" style="display:none;">
         <div class="card">
           <h3 style="margin:0 0 6px;">Triage Summary</h3>
-          <div id="scoreBand" class="badge">Score: —</div>
+          <div id="scoreBand" class="badge">Overall: —</div>
           <div id="summary" style="margin-top:10px;"></div>
+          <div id="dampenNote" class="note"></div>
         </div>
 
-        <div class="card" id="signalsCard">
-          <h3 style="margin:0 0 6px;">Signals Detected</h3>
-          <ul id="signals" style="margin:0; padding-left:18px;"></ul>
-        </div>
+        <div class="cols-2">
+          <div class="card">
+            <h3 style="margin-top:0;">BTAM Core <span class="badge" id="btamScore">0</span></h3>
+            <ul id="btamHits" style="margin:0; padding-left:18px;"></ul>
+          </div>
 
-        <div class="card" id="actionsCard">
-          <h3 style="margin:0 0 6px;">Suggested Actions</h3>
-          <ul id="actions" style="margin:0; padding-left:18px;"></ul>
-        </div>
+            <div class="card">
+            <h3 style="margin-top:0;">TRAP-18 Subset <span class="badge" id="trapScore">0</span></h3>
+            <ul id="trapHits" style="margin:0; padding-left:18px;"></ul>
+          </div>
 
-        <div class="card mono" id="rubricCard" style="display:none;"></div>
+          <div class="card">
+            <h3 style="margin-top:0;">HCR-20 Context <span class="badge" id="hcrScore">0</span></h3>
+            <ul id="hcrHits" style="margin:0; padding-left:18px;"></ul>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top:0;">Aggression Lenses</h3>
+            <p class="note">Optional analyst inputs (for illustration only; not derived from the narrative text).</p>
+            <div class="grid" style="gap:8px;">
+              <div>
+                <strong>MOAS rater (0–4):</strong><br />
+                Verbal <input id="moas-verbal" type="number" min="0" max="4" value="0" style="width:56px;" />
+                Objects <input id="moas-objects" type="number" min="0" max="4" value="0" style="width:56px;" />
+                Others <input id="moas-others" type="number" min="0" max="4" value="0" style="width:56px;" />
+                Self <input id="moas-self" type="number" min="0" max="4" value="0" style="width:56px;" />
+                <span class="badge">MOAS: <span id="moasScore">0.0</span></span>
+              </div>
+
+              <div>
+                <strong>Buss–Perry AQ-mini (1–5):</strong>
+                <div class="note">Optional and illustrative only. Do not collect PII.</div>
+                <div>
+                  <label>1) <input type="radio" name="aq1" value="1">1</label>
+                  <label><input type="radio" name="aq1" value="2">2</label>
+                  <label><input type="radio" name="aq1" value="3">3</label>
+                  <label><input type="radio" name="aq1" value="4">4</label>
+                  <label><input type="radio" name="aq1" value="5">5</label>
+                </div>
+                <div>
+                  <label>2) <input type="radio" name="aq2" value="1">1</label>
+                  <label><input type="radio" name="aq2" value="2">2</label>
+                  <label><input type="radio" name="aq2" value="3">3</label>
+                  <label><input type="radio" name="aq2" value="4">4</label>
+                  <label><input type="radio" name="aq2" value="5">5</label>
+                </div>
+                <div>
+                  <label>3) <input type="radio" name="aq3" value="1">1</label>
+                  <label><input type="radio" name="aq3" value="2">2</label>
+                  <label><input type="radio" name="aq3" value="3">3</label>
+                  <label><input type="radio" name="aq3" value="4">4</label>
+                  <label><input type="radio" name="aq3" value="5">5</label>
+                </div>
+                <div>
+                  <label>4) <input type="radio" name="aq4" value="1">1</label>
+                  <label><input type="radio" name="aq4" value="2">2</label>
+                  <label><input type="radio" name="aq4" value="3">3</label>
+                  <label><input type="radio" name="aq4" value="4">4</label>
+                  <label><input type="radio" name="aq4" value="5">5</label>
+                </div>
+                <span class="badge">AQ-mini: <span id="aqScore">0.0</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mono" id="rubricCard" style="display:none;"></div>
+        </div>
       </div>
     </section>
 
@@ -74,52 +133,39 @@
     <section id="case-study" class="panel grid" style="margin-top:24px;">
       <div class="card">
         <h2 style="margin-top:0;">Case Study (STAR)</h2>
-
-        <h3 style="margin-bottom:6px;">Situation</h3>
-        <p style="margin-top:0;">
-          Agencies regularly receive threatening narratives—emails, tips, or social-media posts—that must be triaged quickly.
-          Analysts need a <strong>transparent, repeatable</strong> screening method that avoids over-reliance on intuition or black-box models.
-        </p>
-
-        <h3 style="margin-bottom:6px;">Task</h3>
-        <ul style="margin-top:0;padding-left:18px;">
-          <li>Design a <strong>first-line intake tool</strong> to highlight behavioral indicators.</li>
-          <li>Produce a <strong>banded risk score</strong> (Low/Moderate/Elevated/Critical) with <strong>suggested actions</strong>.</li>
-          <li>Make the process <strong>auditable</strong> and <strong>ethically framed</strong> (no over-claims).</li>
-        </ul>
-
-        <h3 style="margin-bottom:6px;">Action</h3>
-        <ul style="margin-top:0;padding-left:18px;">
-          <li>Built a <strong>deterministic rules engine</strong> (JavaScript + JSON rubric) that normalizes text; scans for indicators (direct threats, weapon references, specific targets, leakage, grievance fixation); and weights them.</li>
-          <li>Versioned <code>rubric.json</code> for transparency; added an <strong>Explainability</strong> toggle to reveal the rubric.</li>
-          <li>Developed a <strong>live demo</strong> that outputs Score &amp; Band, Signals Detected, and Suggested Actions.</li>
-          <li>Validated with a small labeled set; compared rubric to human ratings and measured inter-rater reliability.</li>
-        </ul>
-
-        <h3 style="margin-bottom:6px;">Result</h3>
-        <ul style="margin-top:0;padding-left:18px;">
-          <li>Delivered a <strong>working triage prototype</strong> showing how psychology becomes <strong>structured, auditable intake</strong>.</li>
-          <li>Demonstrated value for federal employers (FBI, HSI, DHS, USSS) with clear limits and escalation guidance.</li>
-          <li><em>Résumé bullet:</em> Designed a behavioral threat triage engine (10+ indicators); achieved <strong>κ ≈ 0.7 inter-rater reliability</strong> on a labeled dataset; published methods and limitations.</li>
-        </ul>
+        <h3>Situation</h3>
+        <p>Agencies receive threatening narratives that require rapid, transparent triage. This prototype structures observable indicators into a defensible first-line screen.</p>
+        <h3>Task</h3>
+        <ul><li>Highlight behavioral indicators</li><li>Produce a banded score with suggested actions</li><li>Keep the process auditable and ethically framed</li></ul>
+        <h3>Action</h3>
+        <ul><li>Implemented deterministic rules (BTAM, TRAP-18 subset, HCR-20 context)</li><li>Explainability toggle to reveal rubric JSON</li><li>Validation plan: inter-rater reliability; small labeled set; perturbation tests</li></ul>
+        <h3>Result</h3>
+        <ul><li>Structured, auditable intake prototype aligned to federal threat-assessment practice</li><li>Clear limits & escalation guidance</li></ul>
       </div>
 
       <div class="card">
         <h3 style="margin-top:0;">Limits & Ethics</h3>
-        <ul style="margin-top:0;padding-left:18px;">
-          <li>Indicators are <em>signals</em>, not proof or diagnosis.</li>
-          <li>Tool supports initial screening only; human review required.</li>
-          <li>Use public/redacted content; avoid PII in demos.</li>
-          <li>Document escalation criteria and preserve context.</li>
+        <ul>
+          <li>Signals are indicators—not proof, diagnosis, or profiling.</li>
+          <li>Human review mandatory. Avoid PII in demos.</li>
+          <li>Use snapshots & versioned rubrics for transparency.</li>
         </ul>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0;">References (for recruiters)</h3>
+        <ul class="note">
+          <li>Behavioral Threat Assessment & Management (BTAM) cross-sector guides and DHS/USSS practice documents.</li>
+          <li>TRAP-18 warning behaviors (fixation, leakage, pathway, identification, novel aggression, energy burst, last resort).</li>
+          <li>HCR-20 (historical/clinical/risk) family of contextual factors used in forensic risk assessment.</li>
+          <li>MOAS and Buss–Perry aggression measures (for illustration only; not diagnostic).</li>
+        </ul>
+        <p class="note">Full citations available upon request; this page operationalizes public concepts into a transparent, deterministic demo.</p>
       </div>
     </section>
   </main>
 
-  <!-- Cache buster for deploys -->
-  <script type="module" src="./widget.js?v=1"></script>
-  <script>
-    document.getElementById('printBtn')?.addEventListener('click', () => window.print());
-  </script>
+  <script type="module" src="./widget.js?v=2"></script>
+  <script>document.getElementById('printBtn')?.addEventListener('click', () => window.print());</script>
 </body>
 </html>

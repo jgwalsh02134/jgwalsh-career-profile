@@ -1,23 +1,65 @@
 {
-  "version": "1.1.0",
+  "version": "2.0.0",
+  "meta": {
+    "name": "Behavioral Threat Triage Rubric",
+    "notes": "Deterministic intake for narrative screening. Signals ≠ proof; human review required."
+  },
+
   "bands": [
-    { "min": 0,  "max": 2,  "label": "Low",      "guidance": ["Log and monitor", "No immediate escalation"] },
-    { "min": 3,  "max": 5,  "label": "Moderate", "guidance": ["Supervisor review", "Check for corroboration"] },
-    { "min": 6,  "max": 9,  "label": "Elevated", "guidance": ["Escalate to duty officer", "Preserve evidence"] },
-    { "min": 10, "max": 99, "label": "Critical", "guidance": ["Immediate escalation", "Safety planning and containment"] }
+    { "min": 0,  "max": 3,  "label": "Low",      "guidance": ["Log and monitor", "No immediate escalation"] },
+    { "min": 4,  "max": 7,  "label": "Moderate", "guidance": ["Supervisor review", "Check for corroboration"] },
+    { "min": 8,  "max": 12, "label": "Elevated", "guidance": ["Escalate to duty officer", "Preserve evidence"] },
+    { "min": 13, "max": 99, "label": "Critical", "guidance": ["Immediate escalation", "Safety planning and containment"] }
   ],
-  "indicators": [
-    { "name": "Direct threat",            "weight": 3, "patterns": ["i will harm", "i'm going to kill", "kill them", "bomb", "shoot", "shooting", "stab"] },
-    { "name": "Weapon reference",         "weight": 2, "patterns": ["gun", "rifle", "knife", "explosive", "ammo", "ammunition"] },
-    { "name": "Specific target",          "weight": 2, "patterns": ["principal", "officer", "my boss", "my teacher", "the school", "the building", "coworker"] },
-    { "name": "Time/place specificity",   "weight": 1, "patterns": ["tomorrow", "friday", "at 8am", "after work", "in the parking lot"] },
-    { "name": "Grievance fixation",       "weight": 1, "patterns": ["they wronged me", "i'll make them pay", "everyone will see", "revenge"] },
-    { "name": "Leakage language",         "weight": 1, "patterns": ["you'll see", "just wait", "not a joke", "this is real"] },
-    { "name": "Leakage behavior hint",    "weight": 1, "patterns": ["bought", "purchased", "packed", "wrote a note", "printed a map"] },
-    { "name": "Ideation markers",         "weight": 1, "patterns": ["fantasize", "imagine the chaos", "plan it out"] },
-    { "name": "Means/access hints",       "weight": 1, "patterns": ["i have access", "i can get in", "badge", "keys", "service door"] },
-    { "name": "Harm to self/others mix",  "weight": 1, "patterns": ["take them with me", "i don't care if i die"] }
+
+  "dampeners": {
+    "negation_cues": ["no intention", "won't do it", "not going to", "joking"],
+    "stopwords":     ["movie", "metaphor", "joking", "sarcasm", "hypothetical"],
+    "max_negation_deduction": 2
+  },
+
+  "btam_core": [
+    { "name": "Direct threat",           "weight": 3, "patterns": ["i will harm", "i'm going to kill", "kill them", "bomb", "shoot", "shooting", "stab"] },
+    { "name": "Weapon reference",        "weight": 2, "patterns": ["gun", "rifle", "knife", "explosive", "ammo", "ammunition"] },
+    { "name": "Specific target",         "weight": 2, "patterns": ["principal", "officer", "my boss", "my teacher", "the school", "the building", "coworker"] },
+    { "name": "Time/place specificity",  "weight": 1, "patterns": ["tomorrow", "friday", "at 8am", "after work", "in the parking lot"] },
+    { "name": "Grievance fixation",      "weight": 1, "patterns": ["they wronged me", "i'll make them pay", "everyone will see", "revenge"] },
+    { "name": "Leakage language",        "weight": 1, "patterns": ["you'll see", "just wait", "not a joke", "this is real"] },
+    { "name": "Pathway hints (behavior)", "weight": 1, "patterns": ["bought", "purchased", "packed", "wrote a note", "printed a map", "scouted"] },
+    { "name": "Means/access hints",      "weight": 1, "patterns": ["i have access", "i can get in", "badge", "keys", "service door"] },
+    { "name": "Self-harm with others",   "weight": 1, "patterns": ["take them with me", "i don't care if i die"] }
   ],
-  "negation_cues": ["no intention", "won't do it", "not going to", "joking"],
-  "stopwords": ["movie", "metaphor", "joking", "sarcasm", "hypothetical"]
+
+  "trap18_subset": [
+    { "name": "Fixation",            "weight": 1, "patterns": ["can't stop thinking", "obsessed", "all i think about", "focus on them"] },
+    { "name": "Identification",      "weight": 1, "patterns": ["i am the avenger", "they'll know my name", "i'll be remembered"] },
+    { "name": "Energy burst",        "weight": 1, "patterns": ["can't sleep", "adrenaline", "rushed to finish"] },
+    { "name": "Novel aggression",    "weight": 1, "patterns": ["first time i hurt", "never done this before but"] },
+    { "name": "Last resort framing", "weight": 1, "patterns": ["no other choice", "last resort", "nothing left"] }
+  ],
+
+  "hcr20_context": [
+    { "name": "History—violence/justice",    "weight": 1, "patterns": ["prior assault", "probation", "restraining order", "parole"] },
+    { "name": "Clinical—disturbance cues",   "weight": 1, "patterns": ["hearing voices", "paranoia", "manic", "can't control anger"] },
+    { "name": "Risk—situational stressors",  "weight": 1, "patterns": ["lost my job", "evicted", "custody battle", "financial ruin"] },
+    { "name": "Risk—lack of supports",       "weight": 1, "patterns": ["no friends", "no family", "no one cares", "alone"] }
+  ],
+
+  "aggression_lenses": {
+    "moas": {
+      "categories": ["verbal", "physical-objects", "physical-others", "self-directed"],
+      "scale": { "min": 0, "max": 4 },
+      "weights": { "verbal": 0.5, "physical-objects": 1, "physical-others": 2, "self-directed": 1 }
+    },
+    "aq_mini": {
+      "items": [
+        "I often feel like hitting back when provoked.",
+        "I lose my temper more than I should.",
+        "I am sometimes so angry that I feel out of control.",
+        "I enjoy arguments or verbal fights."
+      ],
+      "scale": { "min": 1, "max": 5 },
+      "weight": 1
+    }
+  }
 }
