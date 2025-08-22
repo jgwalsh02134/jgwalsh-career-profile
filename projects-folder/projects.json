@@ -17,5 +17,29 @@
       { "label": "Visit Website", "href": "https://psyber.nexus" }
     ],
     "tags": ["Research", "Digital Behavior"]
+  },
+  {
+    "title": "Behavioral Threat Triage",
+    "description": "Deterministic intake using a transparent rubric; outputs banded scores with escalation guidance.",
+    "link": "/projects-folder/threat-triage/index.html",
+    "tags": ["behavioral","law-enforcement","triage"]
+  },
+  {
+    "title": "Deception Signal Explorer",
+    "description": "Compare two statements for linguistic markers and discuss limits and ethical cautions.",
+    "link": "/projects-folder/deception-explorer/index.html",
+    "tags": ["linguistics","analysis","ethics"]
+  },
+  {
+    "title": "City Incident Pulse",
+    "description": "Time-of-day × neighborhood patterns and rolling trends from public incident/311 data.",
+    "link": "/projects-folder/city-incident-pulse/index.html",
+    "tags": ["operations","analytics","public-data"]
+  },
+  {
+    "title": "Interview Strategy Simulator",
+    "description": "Scenario-based interviewing strategy cards: rapport, sequencing, monitoring signs, exit conditions.",
+    "link": "/projects-folder/interview-sim/index.html",
+    "tags": ["interviewing","ethics","training"]
   }
 ]

@@ -11,26 +11,25 @@
     .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     .card h3 { margin-top: 0; }
     .btn { display: inline-block; margin-top: 12px; padding: 10px 16px; background: #111; color: #fff; text-decoration: none; border-radius: 10px; }
+    .muted { color:#555; }
   </style>
 </head>
 <body>
   <main class="container">
     <header>
       <h1>My Projects</h1>
-      <p>Each project demonstrates how psychology and behavioral science can be applied to real-world security, intelligence, and investigative problems.</p>
+      <p class="muted">Browse applied psychology + investigative projects. Click a project to open its case study and demo.</p>
     </header>
 
     <section id="projects-grid" class="grid">
-      <!-- Project cards will load here -->
+      <!-- Cards rendered by scripts.js -->
     </section>
   </main>
 
   <script src="./scripts.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      if (typeof renderProjectsGrid === 'function') {
-        renderProjectsGrid();
-      }
+      if (typeof renderProjectsGrid === 'function') renderProjectsGrid();
     });
   </script>
 </body>
