@@ -37,6 +37,15 @@
     <!-- Demo -->
     <section class="panel grid" id="demo" aria-labelledby="demo-title">
       <h2 id="demo-title" style="margin:0;">Live Demo</h2>
+      <label for="caseSelect"><strong>Load Real Case Example:</strong></label>
+      <select id="caseSelect" aria-label="Select a real case narrative">
+        <option value="">-- Select a case --</option>
+        <option value="virginia">Virginia School Threat</option>
+        <option value="disability">Student With Disability — Non-Specific Threat</option>
+        <option value="employee">Ex-Employee Lobby Threat</option>
+        <option value="apalachee">Apalachee HS Leakage</option>
+      </select>
+
       <label for="narrative"><strong>Paste narrative text</strong> <span class="muted">(3–10 sentences; no PII)</span></label>
       <textarea id="narrative" aria-describedby="narrative-help" placeholder="Example: 'Tomorrow at 8am they will regret it. I have the keys and I'm done being ignored...'"></textarea>
       <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.</p>

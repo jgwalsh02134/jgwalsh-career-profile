@@ -5,6 +5,18 @@ function includesAny(text, patterns) {
   return (patterns || []).some(p => text.includes(p));
 }
 
+// Curated illustrative narratives (public-style paraphrases; no PII)
+const CASE_NARRATIVES = {
+  virginia:
+    "I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.",
+  disability:
+    "I might as well bring something to school. People laugh at me every day. Maybe then they’ll take me seriously.",
+  employee:
+    "At the front desk the terminated employee shouted: 'Tell the CEO he’s a dead man walking. You’ll all regret this.'",
+  apalachee:
+    "Nobody cares now, but they will after tomorrow. I’ll make sure my name is remembered like the others."
+};
+
 async function loadRubric() {
   const res = await fetch('./rubric.json?v=2', { cache: 'no-store' });
   if (!res.ok) throw new Error(`HTTP ${res.status} loading rubric.json`);
@@ -165,6 +177,21 @@ async function main() {
     document.getElementById('narrative').value = '';
     document.getElementById('resultsArea').style.display = 'none';
   });
+
+  // Case selection hookup
+  const caseSelect = document.getElementById('caseSelect');
+  if (caseSelect) {
+    caseSelect.addEventListener('change', (e) => {
+      const key = e.target.value;
+      if (CASE_NARRATIVES[key]) {
+        const ta = document.getElementById('narrative');
+        ta.value = CASE_NARRATIVES[key];
+        const ra = document.getElementById('resultsArea');
+        if (ra) ra.style.display = 'none';
+        ta.focus();
+      }
+    });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', main);
