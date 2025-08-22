@@ -277,30 +277,92 @@ function buildCalcTrace(text, results, matches){
   ], matches};
 }
 
-// === Diagnostics & AI fallback helpers (new) ===
+// === Diagnostics & AI fallback helpers (updated per new spec) ===
 function setDiag({status, ai, err}) {
   if (status !== undefined) { const el = document.getElementById('diagStatus'); if (el) el.textContent = status; }
   if (ai !== undefined)     { const el = document.getElementById('diagAI');     if (el) el.textContent = ai; }
   if (err !== undefined)    { const el = document.getElementById('diagErr');    if (el) el.textContent = err || '—'; }
 }
 
+function toArray(v) {
+  if (Array.isArray(v)) return v;
+  if (v == null) return [];
+  const s = String(v).trim();
+  return s ? [s] : [];
+}
+
+function normalizeAI(ai) {
+  if (!ai || typeof ai !== 'object') return null;
+  ai.plan = ai.plan || {};
+  ai.plan.immediate   = toArray(ai.plan.immediate);
+  ai.plan.next_24_72  = toArray(ai.plan.next_24_72);
+  ai.plan.follow_up   = toArray(ai.plan.follow_up);
+  ai.caveats          = toArray(ai.caveats);
+  ai.rationales = ai.rationales || { btam:'', trap18:'', hcr20:'', lexical:'', protective:'' };
+  return ai;
+}
+
+async function fetchAIExplainSafe(narrative, band, subscores, hits, dampeners) {
+  const body = JSON.stringify({ narrative, band, subscores, hits, dampeners });
+  const headers = { 'Content-Type': 'application/json' };
+  try {
+    const r = await fetch('/api/triage-explain', { method:'POST', headers, body });
+    if (r.ok) return normalizeAI(await r.json());
+  } catch {}
+  try {
+    const r2 = await fetch(location.origin + '/api/triage-explain', { method:'POST', headers, body });
+    if (r2.ok) return normalizeAI(await r2.json());
+  } catch {}
+  return null;
+}
+
+function planListHtml(arr){ return (arr||[]).map(x=>`<li>${x}</li>`).join('') || '<li>None.</li>'; }
+
 function ensureReportExecutive() {
   let el = document.getElementById('reportExecutive');
   if (!el) {
-    const host = document.getElementById('resultsArea') || document.body;
     el = document.createElement('div');
     el.id = 'reportExecutive';
     el.className = 'grid';
     el.style.gap = '10px';
     el.style.marginTop = '12px';
-    host.appendChild(el);
+    (document.getElementById('resultsArea') || document.body).appendChild(el);
   }
   return el;
 }
 
-function renderDeterministicFallback(traceMatches) {
+function renderAIProse(ai) {
   const exec = ensureReportExecutive();
-  const items = (traceMatches || []).map(m =>
+  if (!ai) return false;
+  exec.innerHTML = `
+    <div class="card">
+      <h4 style="margin:0 0 6px;">Executive Summary (AI-assist)</h4>
+      <p>${(ai.executive||'').trim() || 'No executive summary.'}</p>
+    </div>
+    <div class="card">
+      <h4 style="margin:0 0 6px;">Indicator Rationales</h4>
+      <ul>
+        <li><strong>BTAM:</strong> ${ai.rationales.btam || '—'}</li>
+        <li><strong>TRAP-18:</strong> ${ai.rationales.trap18 || '—'}</li>
+        <li><strong>HCR-20:</strong> ${ai.rationales.hcr20 || '—'}</li>
+        <li><strong>Lexical:</strong> ${ai.rationales.lexical || '—'}</li>
+        <li><strong>Protective:</strong> ${ai.rationales.protective || '—'}</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 style="margin:0 0 6px;">Recommended Actions</h4>
+      <h5>Immediate</h5><ul>${planListHtml(ai.plan.immediate)}</ul>
+      <h5>Next 24–72 hours</h5><ul>${planListHtml(ai.plan.next_24_72)}</ul>
+      <h5>Follow-up</h5><ul>${planListHtml(ai.plan.follow_up)}</ul>
+      ${ai.caveats.length ? `<p class="note"><strong>Caveats:</strong> ${ai.caveats.join(' • ')}</p>` : ''}
+    </div>
+  `;
+  return true;
+}
+
+function renderDeterministicFallback(traceMatches){
+  const exec = ensureReportExecutive();
+  const items = (traceMatches||[]).map(m => 
     `<li><strong>${m.indicator}</strong> — matched “${m.pattern}” → weight applied by rubric</li>`
   ).join('') || '<li>No indicators fired.</li>';
   exec.innerHTML = `
@@ -310,51 +372,6 @@ function renderDeterministicFallback(traceMatches) {
       <ul>${items}</ul>
     </div>
   `;
-}
-
-async function fetchAIExplainSafe(narrative, band, subscores, hits, dampeners) {
-  // try relative path first, then absolute
-  const body = JSON.stringify({ narrative, band, subscores, hits, dampeners });
-  const headers = { 'Content-Type': 'application/json' };
-  try {
-    const r1 = await fetch('/api/triage-explain', { method: 'POST', headers, body });
-    if (r1.ok) return await r1.json();
-  } catch (e) { console.debug('[AI] relative fetch failed', e); }
-  try {
-    const r2 = await fetch(location.origin + '/api/triage-explain', { method: 'POST', headers, body });
-    if (r2.ok) return await r2.json();
-  } catch (e) { console.debug('[AI] absolute fetch failed', e); }
-  return null;
-}
-
-function renderAIProse(ai) {
-  const exec = ensureReportExecutive();
-  if (!ai) return false;
-  const plan = (arr)=> (arr||[]).map(x=>`<li>${x}</li>`).join('') || '<li>None.</li>';
-  exec.innerHTML = `
-    <div class="card">
-      <h4>Executive Summary (AI-assist)</h4>
-      <p>${(ai.executive||'No executive summary.').trim()}</p>
-    </div>
-    <div class="card">
-      <h4>Indicator Rationales</h4>
-      <ul>
-        <li><strong>BTAM:</strong> ${ai.rationales?.btam || '—'}</li>
-        <li><strong>TRAP-18:</strong> ${ai.rationales?.trap18 || '—'}</li>
-        <li><strong>HCR-20:</strong> ${ai.rationales?.hcr20 || '—'}</li>
-        <li><strong>Lexical:</strong> ${ai.rationales?.lexical || '—'}</li>
-        <li><strong>Protective:</strong> ${ai.rationales?.protective || '—'}</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h4>Recommended Actions</h4>
-      <h5>Immediate</h5><ul>${plan(ai.plan?.immediate)}</ul>
-      <h5>Next 24–72h</h5><ul>${plan(ai.plan?.next_24_72)}</ul>
-      <h5>Follow-up</h5><ul>${plan(ai.plan?.follow_up)}</ul>
-      ${ai.caveats?.length ? `<p class="note"><strong>Caveats:</strong> ${ai.caveats.join(' • ')}</p>` : ''}
-    </div>
-  `;
-  return true;
 }
   // --- AI Assist Helpers (new spec) ---
   async function fetchAIExplain(narrative, band, subscores, hits, dampeners) {
@@ -611,41 +628,31 @@ function main(){
   const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
   const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
   renderResults(full, rubric, inputText, caseName);
-      // New AI + deterministic fallback execution block
+      // Updated AI rendering block (always show deterministic fallback first)
       const result = full; const { totals, sub, dampen } = full;
       (async () => {
-        try {
-          const aiToggle = document.getElementById('aiAssist');
-          const traceMatches = (result.trace && result.trace.matches) || [];
-          setDiag({ status: 'rendering', ai: aiToggle?.checked ? 'on' : 'off', err: '' });
+        const aiToggle = document.getElementById('aiAssist');
+        const traceMatches = (result.trace && result.trace.matches) || [];
 
-          if (aiToggle && aiToggle.checked) {
-            const subs = {
-              btam: sub.btam, trap18: sub.trap18, hcr20: sub.hcr20,
-              lexical: sub.lenses, protective: sub.protective
-            };
-            const ai = await fetchAIExplainSafe(inputText, totals.band, subs, traceMatches, dampen.applied || []);
-            if (ai && renderAIProse(ai)) {
-              setDiag({ status: 'ok', ai: 'on' }); 
-              return;
-            }
-            // AI failed → deterministic fallback
-            setDiag({ status: 'fallback', ai: 'on', err: 'AI response missing/invalid' });
-            renderDeterministicFallback(traceMatches);
-            return;
-          }
+        // Always render deterministic fallback so report is never empty
+        renderDeterministicFallback(traceMatches);
 
-          // AI not requested → deterministic fallback
-          renderDeterministicFallback(traceMatches);
-          setDiag({ status: 'ok', ai: 'off' });
+        if (!aiToggle || !aiToggle.checked) return; // user did not request AI
 
-        } catch (e) {
-          console.error(e);
-          setDiag({ status: 'error', err: String(e) });
-          // Always show something
-          const traceMatches = (result.trace && result.trace.matches) || [];
-          renderDeterministicFallback(traceMatches);
-        }
+        const subs = {
+          btam: sub.btam, trap18: sub.trap18, hcr20: sub.hcr20,
+          lexical: sub.lenses, protective: sub.protective
+        };
+
+        const ai = await fetchAIExplainSafe(
+          inputText,
+          totals.band,
+          subs,
+          traceMatches,
+          dampen.applied || []
+        );
+
+        if (ai) renderAIProse(ai); // overwrite fallback with AI output
       })();
       window.__lastTriage__={
         ...window.__lastTriage__,
