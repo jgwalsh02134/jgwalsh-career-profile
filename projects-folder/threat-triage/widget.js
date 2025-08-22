@@ -60,6 +60,27 @@ const BENCHMARKS = [
   { key:'disability',label:'Student Disability Non-Specific', text:"I might bring something to school. People laugh at me every day.", expect:'Moderate' },
   { key:'negated',   label:'Negated/Joking', text:"I said I won’t do it, I’m joking — hypothetical.", expect:'Low' }
 ];
+// Rationale dictionary
+const INDICATOR_RATIONALE = {
+  "Direct threat": "Explicit intent to harm elevates risk beyond vague anger.",
+  "Weapon reference": "Mentions of weapons increase capability concerns.",
+  "Specific target": "Naming a person/place increases directionality and planning.",
+  "Time/place specificity": "Specific timing/location suggests imminence.",
+  "Grievance fixation": "Persistent grievance is a common precursor signal.",
+  "Leakage language": "Statements that broadcast intent or seriousness.",
+  "Pathway hints (behavior)": "Behaviors consistent with preparation (e.g., buying gear, scouting).",
+  "Means/access hints": "Indicates access paths or insider capability.",
+  "Self-harm with others": "Mixed ideation can signal desperation/last-resort framing.",
+  "Fixation": "Preoccupation with a target/issue beyond normal concern.",
+  "Identification": "Adopting an avenger/attacker identity indicates escalation.",
+  "Energy burst": "Sudden uptick in activity toward a goal.",
+  "Novel aggression": "Initial acts of aggression can signal crossing a boundary.",
+  "Last resort framing": "All-or-nothing language signals urgency.",
+  "History—violence/justice": "Prior violence/justice contact increases base risk.",
+  "Clinical—disturbance cues": "Active symptoms/agitation may impair judgment.",
+  "Risk—situational stressors": "Acute stressors can precipitate action.",
+  "Risk—lack of supports": "Isolation removes buffers against escalation."
+};
 function includesAny(text, patterns){return (patterns||[]).some(p=>text.includes(p));}
 function bandClass(label){const L=label.toLowerCase(); if(L.startsWith('crit')) return 'badge crit'; if(L.startsWith('elev')) return 'badge elev'; if(L.startsWith('mod')) return 'badge mod'; return 'badge low';}
 function clamp(x,min,max){return Math.max(min,Math.min(max,x));}
@@ -180,44 +201,7 @@ function buildRecommendations(flags, band, rubric, protHits){
   return rec;
 }
 
-function buildReportHTML(caseName, totals, subs, flags, conf, damp, plan){
-  const container = document.createElement('div');
-  if(caseName){ const h=document.createElement('h4'); h.textContent=`Case: ${caseName}`; container.appendChild(h); }
-  const ex=document.createElement('div');
-  ex.innerHTML=`<h4>Executive Summary</h4>
-    <p><strong>Band:</strong> ${totals.band.label} &nbsp; | &nbsp; <strong>Score:</strong> ${totals.score} &nbsp; | &nbsp; <strong>Confidence:</strong> ${conf.label}</p>
-    <p><strong>Immediacy:</strong> ${flags.timeSpecific? 'Near-term (≤72h) cues present':'Immediacy unclear from text'}.</p>
-    <p>This assessment synthesizes multiple validated domains (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues). Signals are <em>indicators</em>, not proof. Human review required.</p>`;
-  container.appendChild(ex);
-  const rf=document.createElement('div');
-  rf.innerHTML=`<h4>Risk Formulation</h4>
-    <ul>
-      <li><strong>BTAM Indicators:</strong> ${subs.btam.hits.length? subs.btam.hits.join(', '):'None'}</li>
-      <li><strong>TRAP-18 Behaviors:</strong> ${subs.trap18.hits.length? subs.trap18.hits.join(', '):'None'}</li>
-      <li><strong>HCR-20 Contextual:</strong> ${subs.hcr20.hits.length? subs.hcr20.hits.join(', '):'None'}</li>
-      <li><strong>Lexical Aggression:</strong> ${subs.lenses.hits.length? subs.lenses.hits.join(', '):'None'}</li>
-      <li><strong>Protective Factors:</strong> ${subs.protective.hits.length? subs.protective.hits.join(', '):'None'}</li>
-    </ul>
-    <p><strong>Dampeners Applied:</strong> ${damp.applied.length? damp.applied.join(', '):'None'}.</p>`;
-  container.appendChild(rf);
-  const recSec=document.createElement('div');
-  recSec.innerHTML=`<h4>Recommended Actions</h4>
-    <h5>Immediate (now)</h5>
-    <ul>${(plan.immediate||[]).map(x=>`<li>${x}</li>`).join('')}</ul>
-    <h5>Next 24–72 Hours</h5>
-    <ul>${(plan.near_term||[]).map(x=>`<li>${x}</li>`).join('')}</ul>
-    <h5>Follow-up</h5>
-    <ul>${(plan.follow_up||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`;
-  container.appendChild(recSec);
-  const dd=document.createElement('div');
-  dd.innerHTML=`<h4>Do / Don't Guidance</h4>
-    <ul>
-      <li><strong>Do:</strong> preserve evidence, document rationale and limits, escalate per policy when Elevated/Critical.</li>
-      <li><strong>Don't:</strong> treat signals as proof, profile based on text alone, or ignore negation/sarcasm cues.</li>
-    </ul>`;
-  container.appendChild(dd);
-  return container;
-}
+// (Old buildReportHTML removed; replaced by executive + domain sections elsewhere)
 
 // Escape & highlight helpers
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;' }[m]));}
@@ -237,28 +221,66 @@ function renderHighlightedNarrative(rawText, matches){
   return parts.join('');
 }
 
-function buildCalcTrace(text, results){
-  const {sub, totals, dampen, flags, conf, rec} = results;
-  const lines = [];
-  lines.push(`Raw text length chars: ${text.length}`);
-  lines.push(`BTAM score: ${sub.btam.score} => ${sub.btam.hits.join(', ')||'none'}`);
-  lines.push(`TRAP-18 score: ${sub.trap18.score} => ${sub.trap18.hits.join(', ')||'none'}`);
-  lines.push(`HCR-20 score: ${sub.hcr20.score} => ${sub.hcr20.hits.join(', ')||'none'}`);
-  lines.push(`Lexical aggression score: ${sub.lenses.score} => ${sub.lenses.hits.join(', ')||'none'}`);
-  lines.push(`Protective score: ${sub.protective.score} => ${sub.protective.hits.join(', ')||'none'}`);
-  lines.push(`Dampeners applied: ${dampen.applied.join(', ')||'none'}; narrative score after dampeners included.`);
-  lines.push(`Total band: ${totals.band.label} (${totals.score}) confidence ${conf.label} (${(conf.value*100).toFixed(0)}%).`);
-  lines.push(`Flags direct:${flags.direct} means:${flags.means} target:${flags.targetSpecific} time:${flags.timeSpecific} leakage:${flags.leakage} fixation:${flags.fixation}`);
-  lines.push('Immediate rec count: '+rec.immediate.length+' Near-term: '+rec.near_term.length+' Follow-up: '+rec.follow_up.length);
-  return lines.join('\n');
+function snippetAt(rawText, index, span=18){
+  if(index<0||!rawText) return '';
+  const start=Math.max(0,index-span), end=Math.min(rawText.length,index+span);
+  let s=rawText.slice(start,end).replace(/\s+/g,' ');
+  if(start>0) s='… '+s; if(end<rawText.length) s=s+' …';
+  return s;
 }
 
-function renderResults(full, rubric){
-  const {totals, sub, dampen, reportEl, trace} = full;
+function jumpToIndicator(name){
+  const el=document.querySelector(`mark[data-indicator="${CSS.escape(name)}"]`);
+  if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); el.classList.add('pulse'); setTimeout(()=>el.classList.remove('pulse'),900);} }
+
+function buildExecutiveHTML(caseName, totals, flags, conf){
+  const wrap=document.createElement('div');
+  wrap.innerHTML=`${caseName?`<div class="note"><strong>Case:</strong> ${escapeHtml(caseName)}</div>`:''}
+  <div class="card"><h4 style="margin:0 0 6px;">Executive Summary</h4>
+  <p><strong>Band:</strong> ${totals.band.label} &nbsp; | &nbsp; <strong>Score:</strong> ${totals.score} &nbsp; | &nbsp; <strong>Confidence:</strong> ${conf.label}</p>
+  <p><strong>Immediacy:</strong> ${flags.timeSpecific? 'Near-term (≤72h) cues present.' : 'Immediacy unclear from text.'}</p>
+  <p>This assessment synthesizes validated domains (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues). Signals are indicators, not proof. Human review required.</p></div>`;
+  return wrap;
+}
+
+function writeDomainExplain(listId, hits){
+  const ul=document.getElementById(listId); if(!ul) return; ul.innerHTML='';
+  if(!hits||!hits.length){ ul.innerHTML='<li>None detected.</li>'; return; }
+  hits.forEach(h=>{ const li=document.createElement('li'); li.textContent=h; li.style.cursor='pointer'; li.title='Click to jump to highlight'; li.addEventListener('click',()=>jumpToIndicator(h)); ul.appendChild(li); });
+}
+
+function populateRationaleList(rawText, result, rubric){
+  const ol=document.getElementById('rationaleList'); if(!ol) return; ol.innerHTML='';
+  const weightMap={};
+  const addW=a=> (a||[]).forEach(ind=>{ weightMap[ind.name]=ind.weight||0; });
+  addW(rubric.btam_core); addW(rubric.trap18_subset); addW(rubric.hcr20_context);
+  (rubric.lenses_lexical?.categories||[]).forEach(c=>{ weightMap[c.name]=c.weight||0; });
+  (rubric.protective_lexical?.categories||[]).forEach(c=>{ weightMap[c.name]=-(c.weight||0); });
+  const matches=(result.trace.matches)||[];
+  const items=matches.map(m=>{ const li=document.createElement('li'); const w=weightMap[m.indicator]??0; const reason=INDICATOR_RATIONALE[m.indicator] || (m.indicator.toLowerCase().includes('protect')?'Protective/supportive language reduces risk.':(m.indicator.toLowerCase().includes('aggression')?'Language consistent with aggression category.':'Matched rubric indicator.')); const snip=snippetAt(rawText,m.index,24); li.innerHTML=`<div><strong>${escapeHtml(m.indicator)}</strong> <span class="note">(weight ${w>=0? '+'+w : w})</span></div><div class="note" style="margin:2px 0 6px;">Reason: ${escapeHtml(reason)}</div><div class="note" style="font-style:italic;">“… ${escapeHtml(snip)} …”</div>`; li.style.cursor='pointer'; li.addEventListener('click',()=>jumpToIndicator(m.indicator)); return li; });
+  if(!items.length){ const li=document.createElement('li'); li.textContent='No indicators fired.'; items.push(li);} items.forEach(li=>ol.appendChild(li));
+}
+
+function buildCalcTrace(text, results, matches){
+  const {sub, totals, dampen, flags, conf, rec} = results;
+  return { lines:[
+    {metric:'chars', value:text.length},
+    {metric:'btam', score:sub.btam.score, hits:sub.btam.hits},
+    {metric:'trap18', score:sub.trap18.score, hits:sub.trap18.hits},
+    {metric:'hcr20', score:sub.hcr20.score, hits:sub.hcr20.hits},
+    {metric:'lexical', score:sub.lenses.score, hits:sub.lenses.hits},
+    {metric:'protective', score:sub.protective.score, hits:sub.protective.hits},
+    {metric:'dampeners', applied:dampen.applied},
+    {metric:'totals', band:totals.band.label, score:totals.score, confidence:conf},
+    {metric:'flags', flags},
+    {metric:'recCounts', immediate:rec.immediate.length, near:rec.near_term.length, follow:rec.follow_up.length}
+  ], matches};
+}
+
+function renderResults(full, rubric, rawText, caseName){
+  const {totals, sub, dampen, trace} = full;
   document.getElementById('resultsArea').style.display='grid';
-  const scoreEl=document.getElementById('scoreBand');
-  scoreEl.textContent=`Overall: ${totals.score} (${totals.band.label})`;
-  scoreEl.className=bandClass(totals.band.label);
+  const scoreEl=document.getElementById('scoreBand'); scoreEl.textContent=`Overall: ${totals.score} (${totals.band.label})`; scoreEl.className=bandClass(totals.band.label);
   document.getElementById('summary').innerHTML=`<p><strong>Assessment:</strong> ${totals.band.label}. Deterministic screen; human review required.</p><p class="note">Full narrative report below.</p>`;
   document.getElementById('dampenNote').textContent=dampen.applied.length?`Dampeners: ${dampen.applied.join(', ')}`:'Dampeners: none';
   document.getElementById('btamScore').textContent=sub.btam.score; renderList(document.getElementById('btamHits'), sub.btam.hits);
@@ -266,16 +288,12 @@ function renderResults(full, rubric){
   document.getElementById('hcrScore').textContent=sub.hcr20.score; renderList(document.getElementById('hcrHits'), sub.hcr20.hits);
   document.getElementById('lensScore').textContent=sub.lenses.score; renderList(document.getElementById('lensHits'), sub.lenses.hits);
   document.getElementById('protScore').textContent=sub.protective.score; renderList(document.getElementById('protHits'), sub.protective.hits);
-  const reportHost=document.getElementById('reportText');
-  if(reportHost && reportEl){ reportHost.innerHTML=''; reportHost.appendChild(reportEl); }
-  // clickable indicator list to scroll to highlights
-  function scrollToIndicator(name){
-    const first=document.querySelector(`mark[data-indicator="${CSS.escape(name)}"]`);
-    if(first){ first.scrollIntoView({behavior:'smooth', block:'center'}); first.classList.add('pulse'); setTimeout(()=>first.classList.remove('pulse'),1000);} }
-  [['btamHits'],['trapHits'],['hcrHits'],['lensHits'],['protHits']].forEach(([listId])=>{
-    const list=document.getElementById(listId); if(!list) return; Array.from(list.querySelectorAll('li')).forEach(li=>{ if(li.textContent!=='None'){ li.style.cursor='pointer'; li.title='Jump to first highlight'; li.addEventListener('click',()=>scrollToIndicator(li.textContent.trim())); }});
-  });
-  document.getElementById('calcTrace').textContent=trace;
+  const nvCard=document.getElementById('narrativeViewCard'); const nv=document.getElementById('narrativeView'); if(nvCard && nv){ nv.innerHTML=renderHighlightedNarrative(rawText, trace.matches||[]); nvCard.style.display='block'; }
+  const exec=document.getElementById('reportExecutive'); if(exec){ exec.innerHTML=''; exec.appendChild(buildExecutiveHTML(caseName, totals, full.flags, full.conf)); }
+  writeDomainExplain('btamExplain', sub.btam.hits); writeDomainExplain('trapExplain', sub.trap18.hits); writeDomainExplain('hcrExplain', sub.hcr20.hits); writeDomainExplain('lexExplain', sub.lenses.hits); writeDomainExplain('protExplain', sub.protective.hits);
+  populateRationaleList(rawText, full, rubric);
+  [['btamHits'],['trapHits'],['hcrHits'],['lensHits'],['protHits']].forEach(([listId])=>{ const list=document.getElementById(listId); if(!list) return; Array.from(list.querySelectorAll('li')).forEach(li=>{ if(li.textContent!=='None'){ li.style.cursor='pointer'; li.title='Jump to highlight'; li.addEventListener('click',()=>jumpToIndicator(li.textContent.trim())); }}); });
+  const traceEl=document.getElementById('calcTrace'); if(traceEl) traceEl.textContent=JSON.stringify(trace,null,2);
   const showRubric=document.getElementById('showRubric').checked; const rc=document.getElementById('rubricCard'); rc.style.display=showRubric?'block':'none'; if(showRubric) rc.textContent=JSON.stringify(rubric,null,2);
 }
 
@@ -296,9 +314,9 @@ function aggregate(text, rubric){
   const conf = confidenceFrom(text, sub, dampen);
   const rec = buildRecommendations(flags, totals.band, rubric, protective.hits);
   const caseMeta = __selectedCaseKey__ ? { key: __selectedCaseKey__, label: CASE_LABELS[__selectedCaseKey__] } : null;
-  const reportEl = buildReportHTML(caseMeta?caseMeta.label:null, totals, sub, flags, conf, dampen, rec);
-  const trace = buildCalcTrace(text, {sub, totals, dampen, flags, conf, rec});
-  return { totals, sub, dampen, flags, conf, rec, reportEl, trace, case: caseMeta };
+  const allMatches=[...btam.matches,...trap.matches,...hcr.matches,...lenses.matches,...protective.matches];
+  const trace=buildCalcTrace(text,{sub, totals, dampen, flags, conf, rec}, allMatches);
+  return { totals, sub, dampen, flags, conf, rec, trace, case: caseMeta };
 }
 
 // Built-in quick tests
@@ -357,7 +375,7 @@ function runBenchmarksUI(rubric){
     body.appendChild(tr);
   });
 }
-  copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(document.getElementById('reportText')?.innerText||'').then(()=>diag.textContent='Report copied.'); });
+// stray copy binding removed (handled in main)
 
 function main(){
   console.debug('[TT] widget boot OK');
@@ -374,20 +392,10 @@ function main(){
     function execute(){
       const inputText=(document.getElementById('narrative').value||'').trim();
       if(!inputText){diag.textContent='Enter narrative text.'; return;}
-      const full=aggregate(inputText, rubric);
-      renderResults(full, rubric);
-      const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
-      const reportCaseEl = document.getElementById('reportCase');
-      if(reportCaseEl) reportCaseEl.textContent = caseName ? `Case: ${caseName}` : '';
-      // Highlight narrative
-      const nvCard=document.getElementById('narrativeViewCard');
-      const nv=document.getElementById('narrativeView');
-      if(nvCard && nv){
-        // aggregate stored matches inside each sub set -> flatten
-        const allMatches=[...full.sub.btam.matches,...full.sub.trap18.matches,...full.sub.hcr20.matches,...full.sub.lenses.matches,...full.sub.protective.matches];
-        nv.innerHTML = renderHighlightedNarrative(inputText, allMatches) || '<span class="note">No indicators detected.</span>';
-        nvCard.style.display='block';
-      }
+  const full=aggregate(inputText, rubric);
+  const caseName = __selectedCaseKey__ ? (CASE_LABELS[__selectedCaseKey__] || __selectedCaseKey__) : '';
+  const reportCaseEl=document.getElementById('reportCase'); if(reportCaseEl) reportCaseEl.textContent=caseName?`Case: ${caseName}`:'';
+  renderResults(full, rubric, inputText, caseName);
       window.__lastTriage__={
         ...window.__lastTriage__,
         rubricVersion: rubric.version,
@@ -402,7 +410,7 @@ function main(){
     runBtn.addEventListener('click', execute);
     showRubric.addEventListener('change',()=>{ if(window.__lastTriage__) renderResults(window.__lastTriage__, rubric); });
     clearBtn.addEventListener('click',()=>{ document.getElementById('narrative').value=''; document.getElementById('resultsArea').style.display='none'; document.getElementById('scoreBand').className='badge'; diag.textContent=''; });
-    copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} navigator.clipboard.writeText(r.report).then(()=>diag.textContent='Report copied.'); });
+  copyBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const raw=document.getElementById('narrative').value||''; const txt=`Case: ${r.caseName||''}\nBand: ${r.totals.band.label} (${r.totals.score})\nIndicators: BTAM(${r.sub.btam.hits.join(',')||'None'}) TRAP(${r.sub.trap18.hits.join(',')||'None'}) HCR(${r.sub.hcr20.hits.join(',')||'None'}) LEX(${r.sub.lenses.hits.join(',')||'None'}) PROT(${r.sub.protective.hits.join(',')||'None'})\nNarrative:\n${raw}`; navigator.clipboard.writeText(txt).then(()=>diag.textContent='Summary copied.'); });
     dlBtn.addEventListener('click',()=>{ const r=window.__lastTriage__; if(!r){diag.textContent='Run first.';return;} const blob=new Blob([JSON.stringify(r,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='triage_result.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
   document.getElementById('ttRunTests')?.addEventListener('click',()=>runQuickTests(rubric));
   document.getElementById('runBenchmarks')?.addEventListener('click',()=>runBenchmarksUI(rubric));

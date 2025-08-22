@@ -108,9 +108,58 @@
 
         <div class="card">
           <h3 style="margin-top:0;">Comprehensive Report</h3>
-          <div id="reportCase" class="note" style="display:none;"></div>
-          <div class="note">Automatically generated risk formulation and plan based on all detected variables.</div>
-          <div id="reportText" class="grid" style="gap:12px;"></div>
+<div class="note">Plain-English explanation of scores and a breakdown of each indicator with highlighted text.</div>
+
+<!-- Narrative with highlights -->
+<div class="card" id="narrativeViewCard" style="margin-top:8px; display:none;">
+  <h4 style="margin:0 0 6px;">Narrative (Matched Highlights)</h4>
+  <div id="narrativeView" style="line-height:1.6;"></div>
+</div>
+
+<!-- Executive summary + recommended actions -->
+<div id="reportExecutive" class="grid" style="gap:10px; margin-top:12px;"></div>
+
+<!-- Domain summaries -->
+<details id="domainBTAM" open style="margin-top:8px;">
+  <summary><strong>BTAM (intake indicators)</strong></summary>
+  <ul id="btamExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+</details>
+
+<details id="domainTRAP" style="margin-top:6px;">
+  <summary><strong>TRAP-18 (warning behaviors)</strong></summary>
+  <ul id="trapExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+</details>
+
+<details id="domainHCR" style="margin-top:6px;">
+  <summary><strong>HCR-20 (contextual factors)</strong></summary>
+  <ul id="hcrExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+</details>
+
+<details id="domainLex" style="margin-top:6px;">
+  <summary><strong>Lexical aggression</strong></summary>
+  <ul id="lexExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+</details>
+
+<details id="domainProt" style="margin-top:6px;">
+  <summary><strong>Protective signals (reduce risk)</strong></summary>
+  <ul id="protExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+</details>
+
+<!-- Indicator rationale list -->
+<div class="card" style="margin-top:12px;">
+  <h4 style="margin:0 0 6px;">Indicator Rationale</h4>
+  <p class="note" style="margin:0 0 8px;">Each item explains why it contributed to the score, shows the exact matched text, and the weight applied.</p>
+  <ol id="rationaleList" style="margin:0 0 0 20px;"></ol>
+</div>
+
+<!-- Diagnostics (keep) -->
+<div class="card" id="calcPanel" style="margin-top:12px;">
+  <details>
+    <summary><strong>Diagnostics: Calculation Trace</strong></summary>
+    <div class="note">Pattern-level matches, arithmetic, dampeners, banding.</div>
+    <pre id="calcTrace" class="mono" style="white-space:pre-wrap;"></pre>
+  </details>
+</div>
         </div>
         <div class="card" id="whyMatters">
           <h3 style="margin:0 0 6px;">Why These Signals Matter</h3>
