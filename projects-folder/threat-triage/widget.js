@@ -1,16 +1,30 @@
 function normalize(t){return (t||'').toLowerCase().replace(/\s+/g,' ').trim();}
+// Example case narratives and labels/notes for UI + report header
 const CASE_EXAMPLES = {
   virginia: "I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.",
   disability: "I might as well bring something to school. People laugh at me every day. Maybe then they’ll take me seriously.",
   employee: "At the front desk the terminated employee shouted: 'Tell the CEO he’s a dead man walking. You’ll all regret this.'",
   apalachee: "Nobody cares now, but they will after tomorrow. I’ll make sure my name is remembered like the others."
 };
+const CASE_LABELS = {
+  virginia: "Virginia School Threat",
+  disability: "Student With Disability — Non-Specific Threat",
+  employee: "Ex-Employee Lobby Threat",
+  apalachee: "Apalachee HS Leakage"
+};
+const CASE_NOTES = {
+  virginia: "Modeled after a school-based grievance leak with time reference.",
+  disability: "Illustrates non-specific frustration + identity-based bullying context.",
+  employee: "Represents a workplace termination grievance with direct threat language.",
+  apalachee: "Parallels pre-event leakage referencing public recognition motives."
+};
+let __selectedCaseKey__ = '';
 function includesAny(text, patterns){return (patterns||[]).some(p=>text.includes(p));}
 function bandClass(label){const L=label.toLowerCase(); if(L.startsWith('crit')) return 'badge crit'; if(L.startsWith('elev')) return 'badge elev'; if(L.startsWith('mod')) return 'badge mod'; return 'badge low';}
 function clamp(x,min,max){return Math.max(min,Math.min(max,x));}
 
 async function loadRubric(){
-  const res = await fetch('./rubric.json?v=5',{cache:'no-store'});
+  const res = await fetch('./rubric.json?v=6',{cache:'no-store'});
   if(!res.ok) throw new Error(`HTTP ${res.status} loading rubric.json`);
   return res.json();
 }
@@ -100,7 +114,7 @@ function buildRecommendations(flags, band, rubric, protHits){
   return rec;
 }
 
-function buildReportMarkdown(text, totals, sub, flags, conf, damp, rec){
+function buildReportMarkdown(text, totals, sub, flags, conf, damp, rec, caseMeta){
   const immed = flags.timeSpecific ? "Near-term (≤72h) cues present" : "Immediacy unclear from text";
   const drivers = []
     .concat(sub.btam.hits.length? ["BTAM: "+sub.btam.hits.join(', ')] : [])
@@ -111,7 +125,9 @@ function buildReportMarkdown(text, totals, sub, flags, conf, damp, rec){
   const protectiveNarr = sub.protective.hits.length? "Protective lexical signals ("+sub.protective.hits.join(', ')+") may mitigate escalation if actively engaged." : "No clear protective lexical signals detected.";
   const riskInterp = totals.band.label+" band derives from additive indicators with dampener adjustments. This is a deterministic lexical screen; it does not infer motive, capability depth, or clinical state.";
   const recBlock = (title, arr)=>['**'+title+'**'].concat(arr.length? arr.map(x=>'- '+x):['- None identified.']).join('\n');
+  const caseHeader = caseMeta && caseMeta.label ? `**Case:** ${caseMeta.label}` : '';
   return [
+caseHeader,
 "## Executive Summary",
 `**Band:** ${totals.band.label}  |  **Score:** ${totals.score}  |  **Confidence:** ${conf.label}`,
 `**Immediacy:** ${immed}`,
@@ -192,9 +208,10 @@ function aggregate(text, rubric){
   const flags = derivedFlags(sub);
   const conf = confidenceFrom(text, sub, dampen);
   const rec = buildRecommendations(flags, totals.band, rubric, protective.hits);
-  const report = buildReportMarkdown(text, totals, sub, flags, conf, dampen, rec);
+  const caseMeta = __selectedCaseKey__ ? { key: __selectedCaseKey__, label: CASE_LABELS[__selectedCaseKey__] } : null;
+  const report = buildReportMarkdown(text, totals, sub, flags, conf, dampen, rec, caseMeta);
   const trace = buildCalcTrace(text, {sub, totals, dampen, flags, conf, rec});
-  return { totals, sub, dampen, flags, conf, rec, report, trace };
+  return { totals, sub, dampen, flags, conf, rec, report, trace, case: caseMeta };
 }
 
 async function main(){
@@ -202,11 +219,18 @@ async function main(){
   let rubric; try{rubric=await loadRubric();}catch(e){console.error(e); if(diag) diag.textContent='Rubric load error: '+e; return;}
   const runBtn=document.getElementById('run');
   const caseSelect = document.getElementById('caseSelect');
+  const caseNote = document.getElementById('caseNote');
   caseSelect?.addEventListener('change', e=>{
     const val = e.target.value;
+    __selectedCaseKey__ = '';
     if(CASE_EXAMPLES[val]){
+      __selectedCaseKey__ = val;
       document.getElementById('narrative').value = CASE_EXAMPLES[val];
+      if(caseNote){ caseNote.textContent = CASE_NOTES[val]||''; caseNote.style.display='block'; }
       document.getElementById('resultsArea').style.display='none';
+      document.getElementById('reportCase')?.setAttribute('style','display:none;');
+    } else {
+      if(caseNote){ caseNote.textContent=''; caseNote.style.display='none'; }
     }
   });
   const clearBtn=document.getElementById('clearText');
@@ -218,8 +242,10 @@ async function main(){
     const text=(document.getElementById('narrative').value||'').trim();
     if(!text){diag.textContent='Enter narrative text.'; return;}
     const full=aggregate(text, rubric);
-    renderResults(full, rubric);
-    window.__lastTriage__={rubricVersion:rubric.version, ...full, timestamp:new Date().toISOString()};
+  renderResults(full, rubric);
+  const reportCaseEl = document.getElementById('reportCase');
+  if(full.case && reportCaseEl){ reportCaseEl.textContent = 'Case: '+full.case.label; reportCaseEl.style.display='block'; }
+  window.__lastTriage__={rubricVersion:rubric.version, narrativeChars:text.length, caseName: full.case? full.case.label: null, ...full, timestamp:new Date().toISOString()};
     diag.textContent=`Processed ${text.length} chars; rubric v${rubric.version}`;
   }
   runBtn.addEventListener('click', execute);

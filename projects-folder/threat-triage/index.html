@@ -6,36 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    :root{
-      --low:#10b981;     /* green */
-      --mod:#f59e0b;     /* amber */
-      --elev:#ef4444;    /* red */
-      --crit:#7f1d1d;    /* deep red */
-      --card:#ffffff;
-      --muted:#6b7280;
-      --border:#e5e7eb;
-      --bg:#fafafa;
-    }
+    :root{ --low:#10b981; --mod:#f59e0b; --elev:#ef4444; --crit:#7f1d1d; --card:#ffffff; --muted:#6b7280; --border:#e5e7eb; --bg:#fafafa; }
     .container{max-width:1000px;margin:0 auto;padding:24px;}
     .panel{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px;}
     .grid{display:grid;gap:16px;}
-    .cols-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
     .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
     .btn{display:inline-block;padding:10px 16px;border:1px solid #111;border-radius:10px;text-decoration:none;cursor:pointer;background:#111;color:#fff;}
     .btn.secondary{background:#fff;color:#111;}
-    .btn.ghost{background:transparent;border:1px dashed var(--border);color:#111;}
     .badge{display:inline-block;padding:4px 10px;border-radius:9999px;border:1px solid var(--border);background:#fff;font-size:12px;}
-    .badge.low{border-color:var(--low);color:var(--low);}
-    .badge.mod{border-color:var(--mod);color:var(--mod);}
-    .badge.elev{border-color:var(--elev);color:var(--elev);}
-    .badge.crit{border-color:var(--crit);color:var(--crit);}
-    .card{border:1px solid var(--border);border-radius:12px;padding:16px;background:var(--card);}
-    .muted{color:var(--muted);}
-    .note{font-size:12px;color:var(--muted);}
+    .badge.low{border-color:var(--low);color:var(--low);} .badge.mod{border-color:var(--mod);color:var(--mod);} .badge.elev{border-color:var(--elev);color:var(--elev);} .badge.crit{border-color:var(--crit);color:var(--crit);} 
+    .card{border:1px solid var(--border);border-radius:12px;padding:16px;background:var(--card);} .muted{color:var(--muted);} .note{font-size:12px;color:var(--muted);} 
     textarea{width:100%;min-height:160px;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:8px 10px;border-top:1px solid var(--border);text-align:left;font-size:14px}
-    th{background:#f8fafc}
+    table{width:100%;border-collapse:collapse} th,td{padding:8px 10px;border-top:1px solid var(--border);text-align:left;font-size:14px} th{background:#f8fafc}
     @media (max-width:520px){ .row{gap:8px} .btn{padding:8px 12px} }
   </style>
 </head>
@@ -44,136 +26,101 @@
     <p class="muted"><a href="/projects-folder/">← Back to Projects</a></p>
     <header class="grid" aria-labelledby="page-title">
       <h1 id="page-title" style="margin:0;">Behavioral Threat Triage</h1>
-      <p class="muted" style="margin-top:-4px;">Deterministic intake using BTAM core indicators, TRAP-18 warning behaviors, and HCR-20 context. Transparency-first; human review required.</p>
+      <p class="muted" id="intro-copy">
+        This project simulates the first step a behavioral threat-assessment team would take when a threatening message is received.
+        It scans the text for validated risk factors (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues), assigns a banded risk level,
+        and produces a clear action plan: immediate, next 24–72h, and follow-up steps. The goal is to show how psychology and structured
+        professional judgment can be translated into transparent, auditable decision-support tools for law enforcement and security contexts.
+      </p>
       <div class="row">
         <button id="printBtn" class="btn secondary" aria-label="Print this case study">Print Case Study</button>
-        <button id="copyBtn" class="btn ghost" aria-label="Copy summary to clipboard">Copy Summary</button>
-        <button id="downloadBtn" class="btn ghost" aria-label="Download JSON result">Download JSON</button>
+        <button id="copyReport" class="btn secondary" aria-label="Copy report (Markdown)">Copy Report</button>
+        <button id="downloadBtn" class="btn secondary" aria-label="Download JSON result">Download JSON</button>
         <span id="diag" class="note" aria-live="polite"></span>
       </div>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <title>Behavioral Threat Triage — Deterministic Intake</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="stylesheet" href="../styles.css" />
-      <style>
-        :root{
-          --low:#10b981; --mod:#f59e0b; --elev:#ef4444; --crit:#7f1d1d;
-          --card:#ffffff; --muted:#6b7280; --border:#e5e7eb; --bg:#fafafa;
-        }
-        .container{max-width:1000px;margin:0 auto;padding:24px;}
-        .panel{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:24px;}
-        .grid{display:grid;gap:16px;}
-        .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
-        .btn{display:inline-block;padding:10px 16px;border:1px solid #111;border-radius:10px;text-decoration:none;cursor:pointer;background:#111;color:#fff;}
-        .btn.secondary{background:#fff;color:#111;}
-        .badge{display:inline-block;padding:4px 10px;border-radius:9999px;border:1px solid var(--border);background:#fff;font-size:12px;}
-        .badge.low{border-color:var(--low);color:var(--low);} .badge.mod{border-color:var(--mod);color:var(--mod);} .badge.elev{border-color:var(--elev);color:var(--elev);} .badge.crit{border-color:var(--crit);color:var(--crit);} 
-        .card{border:1px solid var(--border);border-radius:12px;padding:16px;background:var(--card);} .muted{color:var(--muted);} .note{font-size:12px;color:var(--muted);} 
-        textarea{width:100%;min-height:160px;font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
-        table{width:100%;border-collapse:collapse} th,td{padding:8px 10px;border-top:1px solid var(--border);text-align:left;font-size:14px} th{background:#f8fafc}
-      </style>
-    </head>
-    <body>
-      <main class="container">
-        <p class="muted"><a href="/projects-folder/">← Back to Projects</a></p>
-        <header class="grid" aria-labelledby="page-title">
-          <h1 id="page-title" style="margin:0;">Behavioral Threat Triage</h1>
-          <p class="muted">
-      This project simulates the first step a behavioral threat-assessment team would take when a threatening message is received.
-      It scans the text for validated risk factors (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues), assigns a banded risk level,
-      and produces a clear action plan: immediate, next 24–72h, and follow-up steps. The goal is to show how psychology and structured
-      professional judgment can be translated into transparent, auditable decision-support tools for law enforcement and security contexts.
-    </p>
-          <div class="row">
-            <button id="printBtn" class="btn secondary" aria-label="Print this case study">Print Case Study</button>
-            <button id="copyReport" class="btn secondary" aria-label="Copy report (Markdown)">Copy Report</button>
-            <button id="downloadBtn" class="btn secondary" aria-label="Download JSON result">Download JSON</button>
-            <span id="diag" class="note" aria-live="polite"></span>
-          </div>
-        </header>
+    </header>
 
-        <!-- Demo -->
-        <section class="panel grid" id="demo" aria-labelledby="demo-title">
-          <h2 id="demo-title" style="margin:0;">Live Demo (Automatic)</h2>
+    <!-- Demo -->
+    <section class="panel grid" id="demo" aria-labelledby="demo-title">
+      <h2 id="demo-title" style="margin:0;">Live Demo (Automatic)</h2>
 
-          <label for="narrative"><strong>Enter narrative text</strong> <span class="muted">(3–10 sentences; no PII)</span></label>
-          <label for="caseSelect"><strong>Load Example Case:</strong></label>
-          <select id="caseSelect">
-            <option value="">-- Select a case --</option>
-            <option value="virginia">Virginia School Threat</option>
-            <option value="disability">Student With Disability — Non-Specific Threat</option>
-            <option value="employee">Ex-Employee Lobby Threat</option>
-            <option value="apalachee">Apalachee HS Leakage</option>
-          </select>
-          <textarea id="narrative" aria-describedby="narrative-help" placeholder="Example: 'Tomorrow at 8am they will regret it. I bought what I need and I have the keys to get in through the service door. You'll see.'"></textarea>
-          <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.</p>
+      <label for="caseSelect"><strong>Real-World Example</strong></label>
+      <select id="caseSelect" aria-describedby="caseNote">
+        <option value="">-- Select an example case --</option>
+        <option value="virginia">Virginia School Threat</option>
+        <option value="disability">Student With Disability — Non-Specific Threat</option>
+        <option value="employee">Ex-Employee Lobby Threat</option>
+        <option value="apalachee">Apalachee HS Leakage</option>
+      </select>
+      <p id="caseNote" class="note" style="display:none;"></p>
+      <label for="narrative"><strong>Enter narrative text</strong> <span class="muted">(3–10 sentences; no PII)</span></label>
+      <textarea id="narrative" aria-describedby="narrative-help" placeholder="Example: 'Tomorrow at 8am they will regret it. I bought what I need and I have the keys to get in through the service door. You'll see.'"></textarea>
+      <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.</p>
 
-          <div class="row">
-            <button id="run" class="btn">Run Triage</button>
-            <label class="row" style="gap:6px;">
-              <input type="checkbox" id="showRubric" aria-controls="rubricCard" />
-              <span class="muted">Show rubric JSON</span>
-            </label>
-            <button id="clearText" class="btn secondary">Clear</button>
-          </div>
+      <div class="row">
+        <button id="run" class="btn">Run Triage</button>
+        <label class="row" style="gap:6px;">
+          <input type="checkbox" id="showRubric" aria-controls="rubricCard" />
+          <span class="muted">Show rubric JSON</span>
+        </label>
+        <button id="clearText" class="btn secondary">Clear</button>
+      </div>
 
-          <div id="resultsArea" class="grid" style="display:none;" aria-live="polite">
-            <div class="card">
-              <h3 style="margin:0 0 6px;">Triage Summary</h3>
-                <div id="scoreBand" class="badge">Overall: —</div>
-                <div id="summary" style="margin-top:10px;"></div>
-                <div id="dampenNote" class="note"></div>
-            </div>
+      <div id="resultsArea" class="grid" style="display:none;" aria-live="polite">
+        <div class="card">
+          <h3 style="margin:0 0 6px;">Triage Summary</h3>
+            <div id="scoreBand" class="badge">Overall: —</div>
+            <div id="summary" style="margin-top:10px;"></div>
+            <div id="dampenNote" class="note"></div>
+        </div>
 
-            <div class="card">
-              <h3 style="margin-top:0;">Scores & Indicators</h3>
-              <table aria-label="Subscores and indicator hits">
-                <thead><tr><th>Component</th><th>Score</th><th>Indicators Detected</th></tr></thead>
-                <tbody>
-                  <tr><td>BTAM Core</td><td id="btamScore">0</td><td><ul id="btamHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
-                  <tr><td>TRAP-18 Subset</td><td id="trapScore">0</td><td><ul id="trapHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
-                  <tr><td>HCR-20 Context</td><td id="hcrScore">0</td><td><ul id="hcrHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
-                  <tr><td>Lexical Aggression</td><td id="lensScore">0</td><td><ul id="lensHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
-                  <tr><td>Protective Factors</td><td id="protScore">0</td><td><ul id="protHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
-                </tbody>
-              </table>
-            </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Scores & Indicators</h3>
+          <table aria-label="Subscores and indicator hits">
+            <thead><tr><th>Component</th><th>Score</th><th>Indicators Detected</th></tr></thead>
+            <tbody>
+              <tr><td>BTAM Core</td><td id="btamScore">0</td><td><ul id="btamHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
+              <tr><td>TRAP-18 Subset</td><td id="trapScore">0</td><td><ul id="trapHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
+              <tr><td>HCR-20 Context</td><td id="hcrScore">0</td><td><ul id="hcrHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
+              <tr><td>Lexical Aggression</td><td id="lensScore">0</td><td><ul id="lensHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
+              <tr><td>Protective Factors</td><td id="protScore">0</td><td><ul id="protHits" class="note" style="margin:0;padding-left:18px;"></ul></td></tr>
+            </tbody>
+          </table>
+        </div>
 
-            <div class="card">
-              <h3 style="margin-top:0;">Comprehensive Report</h3>
-              <div class="note">Automatically generated risk formulation and plan based on all detected variables.</div>
-              <pre id="reportText" class="mono" style="white-space:pre-wrap;"></pre>
-            </div>
+        <div class="card">
+          <h3 style="margin-top:0;">Comprehensive Report</h3>
+          <div id="reportCase" class="note" style="display:none;"></div>
+          <div class="note">Automatically generated risk formulation and plan based on all detected variables.</div>
+          <pre id="reportText" class="mono" style="white-space:pre-wrap;"></pre>
+        </div>
 
-            <div class="card mono" id="rubricCard" style="display:none;"></div>
-            <div class="card" id="calcPanel">
-              <details>
-                <summary><strong>Diagnostics: Calculation Trace</strong></summary>
-                <div class="note">Pattern-level matches, arithmetic, dampeners, banding.</div>
-                <pre id="calcTrace" class="mono" style="white-space:pre-wrap;"></pre>
-              </details>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel grid" style="margin-top:24px;">
+        <div class="card mono" id="rubricCard" style="display:none;"></div>
+        <div class="card" id="calcPanel">
           <details>
-            <summary><strong>Sources & References (APA)</strong></summary>
-            <div class="card note">
-              <p>Meloy, J. R., Hoffmann, J., Roshdi, K., & Guldimann, A. (2011). The role of warning behaviors in threat assessment: An exploration and typology.</p>
-              <p>U.S. Secret Service & DHS. Behavioral Threat Assessment & Management (BTAM) guides.</p>
-              <p>Virginia DCJS (2014). Threat Assessment in Virginia Schools: Technical Report.</p>
-              <p>FBI Law Enforcement Bulletin. Threat Assessment Teams: Workplace & School Violence Prevention.</p>
-              <p>HCR-20 (historical/clinical/risk) contextual factors; protective-factor literature.</p>
-            </div>
+            <summary><strong>Diagnostics: Calculation Trace</strong></summary>
+            <div class="note">Pattern-level matches, arithmetic, dampeners, banding.</div>
+            <pre id="calcTrace" class="mono" style="white-space:pre-wrap;"></pre>
           </details>
-        </section>
-      </main>
+        </div>
+      </div>
+    </section>
 
-      <script type="module" src="./widget.js?v=5"></script>
-      <script>document.getElementById('printBtn')?.addEventListener('click',()=>window.print());</script>
-    </body>
-    </html>
+    <section class="panel grid" style="margin-top:24px;">
+      <details>
+        <summary><strong>Sources & References (APA)</strong></summary>
+        <div class="card note">
+          <p>Meloy, J. R., Hoffmann, J., Roshdi, K., & Guldimann, A. (2011). The role of warning behaviors in threat assessment: An exploration and typology.</p>
+          <p>U.S. Secret Service & DHS. Behavioral Threat Assessment & Management (BTAM) guides.</p>
+          <p>Virginia DCJS (2014). Threat Assessment in Virginia Schools: Technical Report.</p>
+          <p>FBI Law Enforcement Bulletin. Threat Assessment Teams: Workplace & School Violence Prevention.</p>
+          <p>HCR-20 (historical/clinical/risk) contextual factors; protective-factor literature.</p>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <script type="module" src="./widget.js?v=6"></script>
+  <script>document.getElementById('printBtn')?.addEventListener('click',()=>window.print());</script>
+</body>
+</html>
