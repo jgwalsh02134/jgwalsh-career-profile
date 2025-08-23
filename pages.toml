@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [build]
 command = ""
 directory = "."
@@ -7,7 +6,8 @@ directory = "."
 branch = "main"
 
 [env.preview]
-=======
+branch = ""
+
 # Cloudflare Pages configuration
 
 [build]
@@ -21,15 +21,4 @@ branch = "main"
 
 [env.preview]
 # Disable previews entirely
->>>>>>> ci/sitemap-fix
-branch = ""
-
-[build]
-command = ""
-directory = "."
-
-[env.production]
-branch = "main"
-
-[env.preview]
 branch = ""
