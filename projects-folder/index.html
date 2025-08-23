@@ -15,30 +15,63 @@
     .tag { font-size:12px; color:#6b7280; margin-right:8px; }
     #diag { margin-top:16px; font-size:12px; color:#6b7280; }
     noscript .fallback { margin-top:16px; padding:16px; border:1px solid #e5e7eb; border-radius:12px; }
+
+    /* Retro Windows 95 theme overrides */
+    body.retro-win { background:#008080; font-family: 'MS Sans Serif', 'Tahoma', 'Geneva', sans-serif; margin:0; }
+    body.retro-win .container { padding:32px 24px; }
+    .win95-window { background:#c0c0c0; border:2px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf; border-radius:4px; overflow:hidden; }
+    .win95-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-weight:bold; font-size:14px; padding:4px 8px; display:flex; align-items:center; justify-content:space-between; }
+    .win95-titlebar span { user-select:none; }
+    .win95-titlebar .controls { display:flex; gap:4px; }
+    .win95-titlebar .controls button { width:18px; height:18px; padding:0; font: inherit; background:#c0c0c0; border:1px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf; cursor:pointer; line-height:1; display:flex; align-items:center; justify-content:center; }
+    .win95-titlebar .controls button:active { border:1px solid #404040; border-right-color:#ffffff; border-bottom-color:#ffffff; box-shadow: inset -1px -1px 0 #dfdfdf, inset 1px 1px 0 #000; }
+    .win95-body { padding:20px 24px 28px; }
+    body.retro-win h1 { margin-top:0; font-size:20px; }
+    body.retro-win .card { background:#dfdfdf; border:2px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; border-radius:2px; box-shadow:none; }
+    body.retro-win .btn { background:#c0c0c0; color:#000; border:1px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; border-radius:2px; padding:6px 14px; font-size:13px; box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf; text-decoration:none; }
+    body.retro-win .btn:active { border:1px solid #404040; border-right-color:#ffffff; border-bottom-color:#ffffff; box-shadow: inset -1px -1px 0 #dfdfdf, inset 1px 1px 0 #000; }
+    body.retro-win nav { margin-bottom:12px; }
+    body.retro-win .muted { color:#000; opacity:0.8; }
+    body.retro-win #diag { color:#000; }
+    @media (max-width:640px) { .win95-body { padding:16px 16px 24px; } }
   </style>
 </head>
-<body>
+<body class="retro-win">
   <main class="container">
-    <header>
-      <h1>My Projects</h1>
-      <p class="muted">Browse applied psychology + investigative projects. Click a project to open its case study and demo.</p>
-    </header>
-
-    <section id="projects-grid" class="grid">
-      <!-- Cards will be injected here -->
-    </section>
-    <div id="diag" aria-live="polite"></div>
-    <noscript>
-      <div class="fallback">
-        <p class="muted">JavaScript is disabled. Open projects directly:</p>
-        <ul>
-          <li><a href="/projects-folder/threat-triage/">Behavioral Threat Triage</a></li>
-          <li><a href="/projects-folder/deception-explorer/">Deception Signal Explorer</a></li>
-          <li><a href="/projects-folder/city-incident-pulse/">City Incident Pulse</a></li>
-          <li><a href="/projects-folder/interview-sim/">Interview Strategy Simulator</a></li>
-        </ul>
+    <div class="win95-window" role="group" aria-label="Projects Window">
+      <div class="win95-titlebar"><span>Projects</span>
+        <div class="controls" aria-hidden="true">
+          <button tabindex="-1" aria-label="Minimize">_</button>
+          <button tabindex="-1" aria-label="Maximize">▢</button>
+          <button tabindex="-1" aria-label="Close">×</button>
+        </div>
       </div>
-    </noscript>
+      <div class="win95-body">
+        <nav>
+          <a href="../projects.html" class="btn" aria-label="Back to Projects">← Back</a>
+        </nav>
+        <header>
+          <h1>My Projects</h1>
+          <p class="muted">Browse applied psychology + investigative projects. Click a project to open its case study and demo.</p>
+        </header>
+
+        <section id="projects-grid" class="grid">
+          <!-- Cards will be injected here -->
+        </section>
+        <div id="diag" aria-live="polite"></div>
+        <noscript>
+          <div class="fallback">
+            <p class="muted">JavaScript is disabled. Open projects directly:</p>
+            <ul>
+              <li><a href="/projects-folder/threat-triage/">Behavioral Threat Triage</a></li>
+              <li><a href="/projects-folder/deception-explorer/">Deception Signal Explorer</a></li>
+              <li><a href="/projects-folder/city-incident-pulse/">City Incident Pulse</a></li>
+              <li><a href="/projects-folder/interview-sim/">Interview Strategy Simulator</a></li>
+            </ul>
+          </div>
+        </noscript>
+      </div>
+    </div>
   </main>
 
   <script src="./scripts.js"></script>
