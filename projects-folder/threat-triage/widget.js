@@ -128,6 +128,25 @@ async function runTriageOnce(){
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
+
+// Global inline fallback (for robust HTML onchange binding)
+window.__ttSetFromSelect = function(sel){
+  try{
+    var ta = document.getElementById('narrative');
+    if(!ta || !sel) return;
+    var key = sel.value || "";
+    __selectedCaseKey__ = key;
+    var opt = sel.options && sel.options[sel.selectedIndex];
+    var text = (CASE_EXAMPLES && CASE_EXAMPLES[key]) || (opt && opt.getAttribute && opt.getAttribute('data-text')) || '';
+    if(text){
+      ta.value = text;
+      var ra = document.getElementById('resultsArea'); if(ra) ra.style.display='none';
+      var note = document.getElementById('caseNote'); if(note) note.textContent = (CASE_LABELS && CASE_LABELS[key]) ? ('Case loaded: ' + CASE_LABELS[key]) : '';
+      ta.focus();
+      console.debug('[TT] inline select set', key);
+    }
+  }catch(e){ console.warn('[TT] inline select handler error', e); }
+};
 function canonicalize(s) {
   if (!s) return '';
   let t = s.normalize ? s.normalize('NFKD') : s;
