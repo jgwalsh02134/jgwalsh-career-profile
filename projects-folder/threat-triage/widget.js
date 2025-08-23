@@ -730,6 +730,15 @@ function wireCaseSelector(){
 
   // If a non-empty option is preselected, populate textarea on load
   if (sel.value) setFromSelect();
+
+  // Defensive: global change listener as a fallback
+  document.addEventListener('change', (ev)=>{
+    const t = ev.target;
+    if (t && t.id === 'caseSelect') setFromSelect();
+  });
+
+  // Populate after full load as another safety net
+  window.addEventListener('load', ()=>{ if (sel.value && !ta.value) setFromSelect(); });
 }
 
 // Validation benchmarks runner
