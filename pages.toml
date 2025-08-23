@@ -1,17 +1,14 @@
 # Cloudflare Pages configuration
 
 [build]
+# Change this command and directory to match your framework
 command = "npm run build"
-# or your actual build command, e.g. "astro build" / "next build" / "hugo" / etc.
-directory = "dist"   # change to "build" or "." if your output folder is different
+directory = "dist"
 
 [env.production]
-# This ensures only the main branch deploys to production
+# Only deploy from the main branch
 branch = "main"
 
 [env.preview]
 # Disable previews entirely
 branch = ""
-
-# Optional: if you want staging but not all branches, replace "" with explicit branch
-# branch = "staging"
