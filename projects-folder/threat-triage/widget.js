@@ -116,7 +116,7 @@ function bindButtons(){
   if (showRubricTgl && !showRubricTgl.__tt){ showRubricTgl.addEventListener('change', ()=>{ if(__LAST_RESULT__ && __LAST_RUBRIC__){ // re-run renderResults to update rubric visibility
       renderResults(__LAST_RESULT__, __LAST_RUBRIC__, __LAST_TEXT__);
     } }, { passive:true }); showRubricTgl.__tt=true; console.log('[TT] bound showRubric'); }
-  document.addEventListener('click', (ev)=>{ if (ev.target && ev.target.id === 'run') runTriageOnce(); }, { once: true });
+  // No-op
 }
 
 // Removed older wireCaseSelect in favor of wireCaseSelector()
@@ -126,7 +126,16 @@ async function loadRubricOnce(){
   if(__RUBRIC__) return __RUBRIC__;
   const r = await fetch('./rubric.json?v=online-fix-1',{cache:'no-store'}).catch(()=>null);
   if(!r || !r.ok) throw new Error('rubric load failed');
-  __RUBRIC__ = await r.json(); 
+  __RUBRIC__ = await r.json();
+  try {
+    // Normalize schema differences (dampeners vs dampening)
+    if (!__RUBRIC__.dampening && __RUBRIC__.dampeners) {
+      __RUBRIC__.dampening = __RUBRIC__.dampeners;
+    }
+    __RUBRIC__.dampening = __RUBRIC__.dampening || {};
+    __RUBRIC__.dampening.negation_cues = __RUBRIC__.dampening.negation_cues || [];
+    __RUBRIC__.dampening.stopwords = __RUBRIC__.dampening.stopwords || [];
+  } catch {}
   return __RUBRIC__;
 }
 
@@ -562,9 +571,7 @@ function renderDeterministicFallback(traceMatches){
     }
   }
 
-  function planListHtml(arr) {
-    return (arr || []).map(x => `<li>${x}</li>`).join('') || '<li>None.</li>';
-  }
+  // (duplicate planListHtml removed; using top-level)
 
   function renderAIIntoReport(aiJson) {
     if (!aiJson) return;
