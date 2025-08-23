@@ -98,21 +98,7 @@ function bindButtons(){
   document.addEventListener('click', (ev)=>{ if (ev.target && ev.target.id === 'run') runTriageOnce(); }, { once: true });
 }
 
-function wireCaseSelect(){
-  const sel = document.getElementById('caseSelect');
-  const ta  = document.getElementById('narrative');
-  if(!sel || !ta){ console.warn('[TT] cannot wire caseSelect'); return; }
-  const opt0 = sel.options[sel.selectedIndex];
-  const t0 = opt0?.getAttribute?.('data-text');
-  if (t0) { ta.value = t0; }
-  sel.addEventListener('change', ()=>{
-    const opt = sel.options[sel.selectedIndex];
-    const text = opt?.getAttribute?.('data-text') || '';
-    if (text) ta.value = text;
-    const ra = document.getElementById('resultsArea'); if (ra) ra.style.display = 'none';
-    console.log('[TT] loaded example case');
-  });
-}
+// Removed older wireCaseSelect in favor of wireCaseSelector()
 
 let __RUBRIC__=null;
 async function loadRubricOnce(){
@@ -717,8 +703,9 @@ function wireCaseSelector(){
   const note = document.getElementById('caseNote');
   const ta = document.getElementById('narrative');
   if(!sel || !ta){ console.warn('[TT] caseSelect or narrative missing'); return; }
-  sel.addEventListener('change', (e)=>{
-    const key = e.target.value || "";
+
+  const setFromSelect = () => {
+    const key = sel.value || "";
     __selectedCaseKey__ = key;
     let text = CASE_EXAMPLES[key];
     if(!text){
@@ -735,7 +722,14 @@ function wireCaseSelector(){
       if(note) note.textContent='';
       console.debug('[TT] Cleared case selection');
     }
-  });
+  };
+
+  sel.addEventListener('change', setFromSelect);
+  sel.addEventListener('input', setFromSelect);
+  sel.addEventListener('click', (e)=>{ if(sel.value) setFromSelect(); });
+
+  // If a non-empty option is preselected, populate textarea on load
+  if (sel.value) setFromSelect();
 }
 
 // Validation benchmarks runner
