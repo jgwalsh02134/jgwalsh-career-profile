@@ -27,6 +27,27 @@ let __LAST_RESULT__ = null;
 let __LAST_TEXT__ = '';
 let __LAST_RUBRIC__ = null;
 
+function fillNarrativeFromSelect(){
+  const sel = document.getElementById('caseSelect');
+  const ta  = document.getElementById('narrative');
+  const note= document.getElementById('caseNote');
+  if(!sel || !ta) return false;
+  const key = sel.value || '';
+  __selectedCaseKey__ = key;
+  let text = (CASE_EXAMPLES && CASE_EXAMPLES[key]) || '';
+  if(!text){
+    const opt = sel.options && sel.options[sel.selectedIndex];
+    text = (opt && (opt.dataset ? opt.dataset.text : (opt.getAttribute && opt.getAttribute('data-text')))) || '';
+  }
+  if(text){
+    ta.value = text;
+    const ra=document.getElementById('resultsArea'); if(ra) ra.style.display='none';
+    if(note) note.textContent = (CASE_LABELS && CASE_LABELS[key]) ? (`Case loaded: ${CASE_LABELS[key]}`) : '';
+    return true;
+  }
+  return false;
+}
+
 function buildMarkdownReport(result, rawText){
   if(!result) return '# Threat Triage\n\nNo results yet. Use "Run Triage" first.';
   const { totals, flags, sub, conf } = result;
@@ -111,6 +132,9 @@ async function loadRubricOnce(){
 
 async function runTriageOnce(){
   try{
+    // If textarea empty and a case is selected, fill it first
+    const taEl = document.getElementById('narrative');
+    if(taEl && !taEl.value) fillNarrativeFromSelect();
     const txt = document.getElementById('narrative')?.value || '';
     const rubric = await loadRubricOnce();
     if (typeof aggregate !== 'function') throw new Error('aggregate missing');
@@ -724,23 +748,7 @@ function wireCaseSelector(){
   if(!sel || !ta){ console.warn('[TT] caseSelect or narrative missing'); return; }
 
   const setFromSelect = () => {
-    const key = sel.value || "";
-    __selectedCaseKey__ = key;
-    let text = CASE_EXAMPLES[key];
-    if(!text){
-      const opt = sel.options[sel.selectedIndex];
-      text = opt?.getAttribute('data-text') || '';
-    }
-    if(text){
-      ta.value = text;
-      const ra=document.getElementById('resultsArea'); if(ra) ra.style.display='none';
-      if(note) note.textContent = CASE_LABELS[key] ? `Case loaded: ${CASE_LABELS[key]}` : '';
-      ta.focus();
-      console.debug('[TT] Loaded case', key);
-    } else {
-      if(note) note.textContent='';
-      console.debug('[TT] Cleared case selection');
-    }
+    if (fillNarrativeFromSelect()) { ta.focus(); }
   };
 
   sel.addEventListener('change', setFromSelect);
