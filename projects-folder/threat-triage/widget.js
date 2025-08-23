@@ -136,7 +136,7 @@ async function runTriageOnce(){
 
 (function boot(){
   const start = ()=>{ 
-    try { ensureIds(); wireCaseSelect(); bindButtons(); console.log('[TT] boot ok'); }
+    try { ensureIds(); wireCaseSelector(); bindButtons(); console.log('[TT] boot ok'); }
     catch(e){ console.error('[TT] boot error', e); toast('Boot error: '+(e?.message||e)); }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
