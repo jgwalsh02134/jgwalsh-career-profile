@@ -1,6 +1,6 @@
 [build]
-command = "npm run build"
-directory = "dist"
+command = ""
+directory = "."
 
 [env.production]
 branch = "main"
