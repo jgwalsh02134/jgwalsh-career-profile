@@ -17,15 +17,25 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate sitemap.xml
-        uses: cicirello/generate-sitemap@v1
-        with:
-          base-url-path: https://jgwalsh.com/
-          sitemap-path: sitemap.xml
+      - name: Generate sitemap via shell
+        run: |
+          echo "Generating sitemap.xml"
+          base="https://jgwalsh.com"
+          urls=$(git ls-files '*.html' | sed 's|^|$base/|' | sed 's|index.html$||')
+          {
+            echo '<?xml version="1.0" encoding="UTF-8"?>'
+            echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            for u in $urls; do
+              loc=$(echo "$u" | sed 's|/\./|/|g')
+              echo "  <url><loc>${loc}</loc></url>"
+            done
+            echo '</urlset>'
+          } > sitemap.xml
+          cat sitemap.xml
 
       - name: Commit sitemap.xml
         uses: EndBug/add-and-commit@v9
         with:
           add: "sitemap.xml"
-          message: "chore(ci): auto-generate sitemap.xml"
+          message: "chore(ci): auto-generate sitemap.xml (shell)"
           default_author: github_actions
