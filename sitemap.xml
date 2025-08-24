@@ -31,6 +31,9 @@
   <url><loc>$base/projects-folder/interview-sim/</loc></url>
   <url><loc>$base/projects-folder/threat-triage/</loc></url>
   <url><loc>$base/projects.html</loc></url>
+  <url><loc>$base/projects/albany-crime-dashboard/</loc></url>
+  <url><loc>$base/projects/gallery/</loc></url>
+  <url><loc>$base/projects/psyber-nexus/</loc></url>
   <url><loc>$base/resume.html</loc></url>
   <url><loc>$base/verification.html</loc></url>
 </urlset>
