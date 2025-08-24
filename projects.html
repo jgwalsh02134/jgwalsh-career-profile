@@ -158,7 +158,7 @@
     </section>
 
     <div id="projects-grid" class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
-      <div class="project-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Interactive Projects Gallery" data-tags="visualization,open-source">
+      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Interactive Projects Gallery" data-tags="visualization,open-source">
         <img src="assets/images/jgw_career_pf.png" alt="Preview of Interactive Projects Gallery" class="w-full h-40 object-cover" loading="lazy" decoding="async">
         <div class="p-8 flex flex-col h-full">
           <h2 class="text-2xl font-bold text-navy mb-2">Interactive Projects Gallery</h2>
@@ -166,13 +166,14 @@
           <p class="text-slate-700 mb-6">
             Browse interactive prototypes, proofs of concept, and in-progress explorations collected in one place.
           </p>
-          <a href="/projects/gallery/" class="inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy mt-auto">
+          <a href="/projects/gallery/" class="relative z-20 inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy mt-auto">
             Open Gallery
           </a>
         </div>
+        <a href="/projects/gallery/" class="absolute inset-0 z-10" aria-label="Open Interactive Projects Gallery"></a>
       </div>
 
-      <div class="project-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Project Source Code & Contributions" data-tags="open-source,research">
+      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Project Source Code & Contributions" data-tags="open-source,research">
         <img src="assets/images/jgw_career_pf.png" alt="Preview of GitHub projects and collaboration" class="w-full h-40 object-cover" loading="lazy" decoding="async">
         <div class="p-8 flex flex-col h-full">
           <h2 class="text-2xl font-bold text-navy mb-2">Project Source Code & Contributions</h2>
@@ -180,16 +181,17 @@
           <p class="text-slate-700 mb-6">
             The complete source code for this website, along with other public projects and contributions, is available on my GitHub profile.
           </p>
-          <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mt-auto" aria-label="View GitHub profile in new tab">
+          <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="relative z-20 inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mt-auto" aria-label="View GitHub profile in new tab">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
             </svg>
             View on GitHub
           </a>
         </div>
+        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="absolute inset-0 z-10" aria-label="Open GitHub profile in new tab"></a>
       </div>
 
-      <div class="project-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Psyber Nexus" data-tags="psych-tech,research">
+      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Psyber Nexus" data-tags="psych-tech,research">
         <img src="assets/images/jgw_career_pf.png" alt="Preview of Psyber Nexus project" class="w-full h-40 object-cover" loading="lazy" decoding="async">
         <div class="p-8 flex flex-col h-full">
           <h2 class="text-2xl font-bold text-navy mb-2">Psyber Nexus</h2>
@@ -197,13 +199,14 @@
           <p class="text-slate-700 mb-6">
             Psyber Nexus is a research program at the intersection of psychology and technology—examining AI-assisted cognition, online behavior, and digital well-being. Outputs include literature reviews, empirical notebooks, and interactive tools.
           </p>
-          <a href="/projects/psyber-nexus/" class="inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage mt-auto">
+          <a href="/projects/psyber-nexus/" class="relative z-20 inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage mt-auto">
             Visit Website
           </a>
         </div>
+        <a href="/projects/psyber-nexus/" class="absolute inset-0 z-10" aria-label="Open Psyber Nexus"></a>
       </div>
 
-      <div class="project-card bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Crime Analysis Report: Albany, NY (2021-2024)" data-tags="research,visualization">
+      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Crime Analysis Report: Albany, NY (2021-2024)" data-tags="research,visualization">
         <img src="assets/images/jgw_career_pf.png" alt="Map visualization preview for Crime Analysis report" class="w-full h-40 object-cover" loading="lazy" decoding="async">
         <div class="p-8 flex flex-col h-full">
           <h2 class="text-2xl font-bold text-navy mb-2">Crime Analysis Report: Albany, NY (2021-2024)</h2>
@@ -212,14 +215,15 @@
             This report analyzes crime trends in Albany, New York, using data obtained via a FOIL request. The analysis covers total crimes, violent crime categories, neighborhood distribution, and case resolution rates, revealing key public safety insights.
           </p>
           <div class="mt-6 flex flex-wrap gap-4">
-            <a href="/projects/albany-crime-report-2021-2024.pdf" target="_blank" rel="noopener" class="inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage">
+            <a href="/projects/albany-crime-report-2021-2024.pdf" target="_blank" rel="noopener" class="relative z-20 inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage">
               View Full Report (PDF)
             </a>
-            <a href="/projects/albany-crime-dashboard/" class="inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">
+            <a href="/projects/albany-crime-dashboard/" class="relative z-20 inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">
               Open Interactive Dashboard
             </a>
           </div>
         </div>
+        <a href="/projects/albany-crime-dashboard/" class="absolute inset-0 z-10" aria-label="Open Albany Crime Dashboard"></a>
       </div>
     </div>
   </main>
