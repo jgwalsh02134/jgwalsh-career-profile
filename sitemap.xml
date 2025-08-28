@@ -24,6 +24,10 @@
   <url><loc>$base/private/</loc></url>
   <url><loc>$base/private/notes.html</loc></url>
   <url><loc>$base/project-crime-analysis.html</loc></url>
+  <url><loc>$base/projects-folder/Vision</loc></url>
+  <url><loc>Data/demos/object-detection/</loc></url>
+  <url><loc>$base/projects-folder/Vision</loc></url>
+  <url><loc>Data/</loc></url>
   <url><loc>$base/projects-folder/city-incident-pulse/</loc></url>
   <url><loc>$base/projects-folder/deception-explorer/</loc></url>
   <url><loc>$base/projects-folder/index-dev.html</loc></url>
