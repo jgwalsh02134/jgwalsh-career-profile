@@ -18,71 +18,42 @@
     .files-list li { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border:1px solid #e5e7eb; border-radius:12px; margin:10px 0; }
     .files-list a { text-decoration:none; }
     #diag { margin-top:16px; font-size:12px; color:#6b7280; }
-
-    /* Retro Windows 95 theme overrides */
-    body.retro-win { background:#008080; font-family: 'MS Sans Serif', 'Tahoma', 'Geneva', sans-serif; margin:0; }
-    body.retro-win .container { padding:32px 24px; }
-    .win95-window { background:#c0c0c0; border:2px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf; border-radius:4px; overflow:hidden; }
-    .win95-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-weight:bold; font-size:14px; padding:4px 8px; display:flex; align-items:center; justify-content:space-between; }
-    .win95-titlebar span { user-select:none; }
-    .win95-titlebar .controls { display:flex; gap:4px; }
-    .win95-titlebar .controls button { width:18px; height:18px; padding:0; font: inherit; background:#c0c0c0; border:1px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf; cursor:pointer; line-height:1; display:flex; align-items:center; justify-content:center; }
-    .win95-titlebar .controls button:active { border:1px solid #404040; border-right-color:#ffffff; border-bottom-color:#ffffff; box-shadow: inset -1px -1px 0 #dfdfdf, inset 1px 1px 0 #000; }
-    .win95-body { padding:20px 24px 28px; }
-    body.retro-win h1 { margin-top:0; font-size:20px; }
-    body.retro-win .card { background:#dfdfdf; border:2px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; border-radius:2px; box-shadow:none; }
-    body.retro-win .btn { background:#c0c0c0; color:#000; border:1px solid #ffffff; border-right-color:#404040; border-bottom-color:#404040; border-radius:2px; padding:6px 14px; font-size:13px; box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf; text-decoration:none; }
-    body.retro-win .btn:active { border:1px solid #404040; border-right-color:#ffffff; border-bottom-color:#ffffff; box-shadow: inset -1px -1px 0 #dfdfdf, inset 1px 1px 0 #000; }
-    body.retro-win nav { margin-bottom:12px; }
-    body.retro-win .muted { color:#000; opacity:0.8; }
-    body.retro-win #diag { color:#000; }
-    @media (max-width:640px) { .win95-body { padding:16px 16px 24px; } }
+    @media (max-width:640px) { .container { padding: 20px 16px; } }
   </style>
 </head>
-<body class="retro-win">
+<body>
   <main class="container">
-    <div class="win95-window" role="group" aria-label="Vision Data Window">
-      <div class="win95-titlebar"><span>Vision Data — Marketing Plan</span>
-        <div class="controls" aria-hidden="true">
-          <button tabindex="-1" aria-label="Minimize">_</button>
-          <button tabindex="-1" aria-label="Maximize">▢</button>
-          <button tabindex="-1" aria-label="Close">×</button>
-        </div>
+    <nav style="margin-bottom:12px;">
+      <a href="/projects-folder/" class="btn" aria-label="Back to Projects">← Back</a>
+    </nav>
+
+    <header>
+      <h1>Vision Data — Marketing Plan</h1>
+      <p class="muted">Central hub for Vision Data's marketing plan, deliverables, and working documents. Initiatives and files are listed below.</p>
+    </header>
+
+    <section aria-labelledby="projects-heading">
+      <div class="section-head">
+        <h2 id="projects-heading">Initiatives</h2>
+        <span class="muted" id="projects-count" aria-live="polite"></span>
       </div>
-      <div class="win95-body">
-        <nav>
-          <a href="/projects-folder/" class="btn" aria-label="Back to Projects">← Back</a>
-        </nav>
+      <div id="projects-grid" class="grid"></div>
+    </section>
 
-        <header>
-          <h1>Vision Data — Marketing Plan</h1>
-          <p class="muted">Central hub for Vision Data's marketing plan, deliverables, and working documents. Initiatives and files are listed below.</p>
-        </header>
-
-        <section aria-labelledby="projects-heading">
-          <div class="section-head">
-            <h2 id="projects-heading">Initiatives</h2>
-            <span class="muted" id="projects-count" aria-live="polite"></span>
-          </div>
-          <div id="projects-grid" class="grid"></div>
-        </section>
-
-        <section aria-labelledby="files-heading" style="margin-top:24px;">
-          <div class="section-head">
-            <h2 id="files-heading">Plan Files</h2>
-            <span class="muted" id="files-count" aria-live="polite"></span>
-          </div>
-          <ul id="files-list" class="files-list"></ul>
-        </section>
-
-        <div id="diag" aria-live="polite"></div>
-        <noscript>
-          <div class="card">
-            <p class="muted">JavaScript is disabled. If a <code>manifest.json</code> is present in this folder, enable JavaScript to see the listings.</p>
-          </div>
-        </noscript>
+    <section aria-labelledby="files-heading" style="margin-top:24px;">
+      <div class="section-head">
+        <h2 id="files-heading">Plan Files</h2>
+        <span class="muted" id="files-count" aria-live="polite"></span>
       </div>
-    </div>
+      <ul id="files-list" class="files-list"></ul>
+    </section>
+
+    <div id="diag" aria-live="polite"></div>
+    <noscript>
+      <div class="card">
+        <p class="muted">JavaScript is disabled. If a <code>manifest.json</code> is present in this folder, enable JavaScript to see the listings.</p>
+      </div>
+    </noscript>
   </main>
 
   <script>
