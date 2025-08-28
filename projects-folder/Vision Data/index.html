@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vision Data</title>
+  <link rel="canonical" href="https://jgwalsh.com/projects-folder/Vision%20Data/" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .container { max-width: 960px; margin: 0 auto; padding: 24px; }
+    .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .btn { display: inline-block; margin-top: 12px; padding: 10px 16px; background: #111; color: #fff; text-decoration: none; border-radius: 10px; }
+    .muted { color:#6b7280; }
+    .tag { font-size:12px; color:#6b7280; margin-right:8px; }
+    .section-head { display:flex; align-items:baseline; justify-content:space-between; margin-top: 16px; }
+    .files-list { list-style:none; padding:0; margin:0; }
+    .files-list li { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border:1px solid #e5e7eb; border-radius:12px; margin:10px 0; }
+    .files-list a { text-decoration:none; }
+    #diag { margin-top:16px; font-size:12px; color:#6b7280; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <nav style="margin-bottom:12px;">
+      <a href="/projects-folder/" class="btn" aria-label="Back to Projects">← Back</a>
+    </nav>
+
+    <header>
+      <h1>Vision Data</h1>
+      <p class="muted">Explore computer vision demos, datasets, and reference files. Use the sections below to open projects and download assets.</p>
+    </header>
+
+    <section aria-labelledby="projects-heading">
+      <div class="section-head">
+        <h2 id="projects-heading">Projects</h2>
+        <span class="muted" id="projects-count" aria-live="polite"></span>
+      </div>
+      <div id="projects-grid" class="grid"></div>
+    </section>
+
+    <section aria-labelledby="files-heading" style="margin-top:24px;">
+      <div class="section-head">
+        <h2 id="files-heading">Files</h2>
+        <span class="muted" id="files-count" aria-live="polite"></span>
+      </div>
+      <ul id="files-list" class="files-list"></ul>
+    </section>
+
+    <div id="diag" aria-live="polite"></div>
+    <noscript>
+      <div class="card">
+        <p class="muted">JavaScript is disabled. If a <code>manifest.json</code> is present in this folder, enable JavaScript to see the listings.</p>
+      </div>
+    </noscript>
+  </main>
+
+  <script>
+  async function renderVisionHome() {
+    const diag = document.getElementById('diag');
+    const projectsGrid = document.getElementById('projects-grid');
+    const filesList = document.getElementById('files-list');
+    const projectsCount = document.getElementById('projects-count');
+    const filesCount = document.getElementById('files-count');
+
+    try {
+      const res = await fetch('./manifest.json?v=1', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status} fetching manifest.json`);
+      const manifest = await res.json();
+
+      const projects = Array.isArray(manifest.projects) ? manifest.projects : [];
+      const files = Array.isArray(manifest.files) ? manifest.files : [];
+
+      // Render Projects
+      projectsGrid.innerHTML = '';
+      if (projects.length === 0) {
+        projectsGrid.innerHTML = '<p class="muted">No projects yet.</p>';
+      } else {
+        projects.forEach(item => {
+          const card = document.createElement('article');
+          card.className = 'card';
+          const tags = (item.tags || []).map(t => `<span class="tag">#${t}</span>`).join('');
+          card.innerHTML = `
+            <h3>${item.title || 'Untitled Project'}</h3>
+            <p class="muted">${item.description || ''}</p>
+            ${tags ? `<div style="margin:8px 0 0;">${tags}</div>` : ''}
+            ${item.link ? `<a href="${item.link}" class="btn">Open</a>` : ''}
+          `;
+          projectsGrid.appendChild(card);
+        });
+      }
+      projectsCount.textContent = projects.length ? `${projects.length} item${projects.length!==1?'s':''}` : '';
+
+      // Render Files
+      filesList.innerHTML = '';
+      if (files.length === 0) {
+        filesList.innerHTML = '<li class="muted" style="border:none; padding:0;">No files yet.</li>';
+      } else {
+        files.forEach(file => {
+          const li = document.createElement('li');
+          const safeName = file.name || (file.path ? file.path.split('/').pop() : 'Unnamed File');
+          const link = file.path || file.url || '#';
+          li.innerHTML = `
+            <span>${safeName}${file.type ? ` <span class="muted">(${file.type})</span>` : ''}</span>
+            ${link && link !== '#' ? `<a href="${link}" class="btn">View</a>` : ''}
+          `;
+          filesList.appendChild(li);
+        });
+      }
+      filesCount.textContent = files.length ? `${files.length} file${files.length!==1?'s':''}` : '';
+
+      diag.textContent = '';
+    } catch (err) {
+      console.error(err);
+      diag.textContent = 'Could not load manifest.json';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', renderVisionHome);
+  </script>
+</body>
+</html>
+
+

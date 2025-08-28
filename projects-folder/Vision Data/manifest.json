@@ -1,0 +1,18 @@
+{
+  "title": "Vision Data",
+  "description": "Computer vision demos, datasets, and reference files.",
+  "projects": [
+    {
+      "title": "Sample Object Detection Demo",
+      "description": "Browser-based demo showcasing bounding boxes over static images.",
+      "link": "./demos/object-detection/index.html",
+      "tags": ["demo", "cv"]
+    }
+  ],
+  "files": [
+    { "name": "Labels Template.csv", "path": "./files/labels-template.csv", "type": "csv" },
+    { "name": "README", "path": "./files/README.txt", "type": "txt" }
+  ]
+}
+
+
