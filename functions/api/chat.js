@@ -32,8 +32,7 @@ Keep answers to 2–5 sentences unless asked for detail.`;
         input: [
           { role: "system", content: sysPrompt },
           ...(Array.isArray(messages) ? messages : [])
-        ],
-        temperature: 0.4
+        ]
       }),
     });
 
