@@ -42,8 +42,14 @@ Keep answers to 2–5 sentences unless asked for detail.`;
       body: JSON.stringify({
         model: "gpt-5-mini",
         input: [
-          { role: "system", content: sysPrompt },
-          ...(Array.isArray(messages) ? messages : [])
+          {
+            role: "system",
+            content: [{ type: "text", text: sysPrompt }]
+          },
+          ...(Array.isArray(messages) ? messages.map(m => ({
+            role: m.role,
+            content: [{ type: "text", text: String(m.content ?? "") }]
+          })) : [])
         ]
       }),
     });
@@ -61,6 +67,9 @@ Keep answers to 2–5 sentences unless asked for detail.`;
       text = String(raw.output[0].content[0].text).trim();
     } else if (raw.error?.message) {
       text = `Error: ${raw.error.message}`;
+    }
+    if (!text) {
+      text = "Sorry—no content was returned. Try rephrasing, or ask me about a specific page (e.g., “Where is the résumé?”).";
     }
 
     // Always normalize to a chat/completions-like shape for the frontend
