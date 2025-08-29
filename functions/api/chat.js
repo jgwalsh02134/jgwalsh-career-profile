@@ -42,14 +42,8 @@ Keep answers to 2–5 sentences unless asked for detail.`;
       body: JSON.stringify({
         model: "gpt-4o-mini",
         input: [
-          {
-            role: "system",
-            content: [{ type: "input_text", text: sysPrompt }]
-          },
-          ...(Array.isArray(messages) ? messages.map(m => ({
-            role: m.role,
-            content: [{ type: "input_text", text: String(m.content ?? "") }]
-          })) : [])
+          { role: "system", content: sysPrompt },
+          ...(Array.isArray(messages) ? messages : [])
         ]
       }),
     });
