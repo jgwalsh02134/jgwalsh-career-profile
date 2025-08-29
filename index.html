@@ -46,6 +46,20 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
 
+  <meta name="color-scheme" content="light dark">
+  <script>
+  (function () {
+    const KEY='theme';
+    const doc=document.documentElement;
+    let theme=localStorage.getItem(KEY);
+    if(!theme){
+      theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    }
+    doc.setAttribute('data-theme', theme);
+    doc.style.colorScheme = theme;
+  })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -121,8 +135,9 @@
       }
     }
   </script>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-slate-50 text-slate-700 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
+<body class="antialiased leading-relaxed flex flex-col min-h-screen font-sans">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-indigo-600 focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
 
   <header class="bg-slate-50/80 backdrop-blur-sm shadow-sm sticky top-0 w-full z-50">
@@ -139,6 +154,9 @@
         <a href="resume.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Résumé</a>
         <a href="projects.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Projects</a>
         <a href="contact.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Contact</a>
+        <button id="theme-toggle" type="button" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false">
+          <span class="theme-label">Light</span>
+        </button>
       </nav>
     </div>
     <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 space-y-2" role="navigation" aria-label="Mobile navigation">
@@ -252,6 +270,31 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
+  (function(){
+    const KEY='theme';
+    const btn=document.getElementById('theme-toggle');
+    if(btn){
+      function setTheme(theme){
+        const doc=document.documentElement;
+        doc.setAttribute('data-theme', theme);
+        doc.style.colorScheme = theme;
+        localStorage.setItem(KEY, theme);
+        if(theme==='dark'){ doc.classList.add('dark'); } else { doc.classList.remove('dark'); }
+        btn.setAttribute('aria-pressed', String(theme==='dark'));
+        const label=btn.querySelector('.theme-label');
+        if(label) label.textContent = theme==='dark' ? 'Dark' : 'Light';
+      }
+      setTheme(document.documentElement.getAttribute('data-theme') || 'light');
+      btn.addEventListener('click', ()=>{
+        const next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+        setTheme(next);
+      });
+      const mql=window.matchMedia('(prefers-color-scheme: dark)');
+      mql.addEventListener?.('change', e=>{
+        if(!localStorage.getItem(KEY)) setTheme(e.matches?'dark':'light');
+      });
+    }
+  })();
     // --- Helper Function for Mobile Menu ---
     function toggleMenu() {
       const menu = document.getElementById('mobile-menu');
