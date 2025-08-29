@@ -49,6 +49,7 @@ Keep answers to 2–5 sentences unless asked for detail.`;
     });
 
     const raw = await r.json();
+    console.log("DEBUG raw OpenAI response:", JSON.stringify(raw, null, 2));
 
     // Minimal server-side logging (visible in Cloudflare Pages → Deployments → View logs)
     try { console.log("OpenAI raw:", JSON.stringify(raw)); } catch {}
