@@ -49,11 +49,23 @@ Keep answers to 2–5 sentences unless asked for detail.`;
     });
 
     const raw = await r.json();
-    const text =
-      raw.output_text ||
-      raw.output?.[0]?.content?.[0]?.text ||
-      raw.error?.message || "";
-    return new Response(JSON.stringify({ choices: [{ message: { content: text } }] }), {
+
+    // Minimal server-side logging (visible in Cloudflare Pages → Deployments → View logs)
+    try { console.log("OpenAI raw:", JSON.stringify(raw)); } catch {}
+
+    let text = "";
+    if (typeof raw.output_text === "string" && raw.output_text.trim().length) {
+      text = raw.output_text.trim();
+    } else if (Array.isArray(raw.output) && raw.output[0]?.content?.[0]?.text) {
+      text = String(raw.output[0].content[0].text).trim();
+    } else if (raw.error?.message) {
+      text = `Error: ${raw.error.message}`;
+    }
+
+    // Always normalize to a chat/completions-like shape for the frontend
+    return new Response(JSON.stringify({
+      choices: [{ message: { content: text } }]
+    }), {
       status: r.ok ? 200 : (r.status || 500),
       headers: {
         "content-type": "application/json",
