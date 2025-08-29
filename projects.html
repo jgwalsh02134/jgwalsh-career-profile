@@ -108,8 +108,19 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content || '…';
+      const raw = await res.text();
+      let reply = '…';
+      try {
+        const data = JSON.parse(raw);
+        // Responses API shape
+        reply = data.output?.[0]?.content?.[0]?.text
+             // (also support chat/completions fallback if ever used)
+             || data.choices?.[0]?.message?.content
+             || data.error?.message
+             || 'No content returned.';
+      } catch {
+        reply = raw || 'Unexpected response.';
+      }
       add('assistant', reply);
       thread = [...payload.messages, { role: 'assistant', content: reply }];
     } catch (err) {

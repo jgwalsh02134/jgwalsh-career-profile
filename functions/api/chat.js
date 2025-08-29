@@ -12,28 +12,29 @@ export async function onRequestPost({ request, env }) {
   try {
     const { messages } = await request.json();
 
-    const sysPrompt = `
+    const defaultPrompt = `
 You are the onsite assistant for https://jgwalsh.com/projects.
-Be concise and helpful. Prefer site-relative links (e.g., /projects-folder/...).
-If unsure, say so and offer the closest on-site resource.
-Keep answers short (2–5 sentences) unless the user asks for detail.`;
+Be concise and helpful. Prefer site-relative links (/projects-folder/...).
+If unsure, say so and point to the closest on-site resource.
+Keep answers to 2–5 sentences unless asked for detail.`;
 
-    const body = {
-      model: "gpt-5-mini",
-      temperature: 0.4,
-      messages: [
-        { role: "system", content: sysPrompt },
-        ...(Array.isArray(messages) ? messages : []),
-      ],
-    };
+    const sysPrompt = env.CHATBOT_SYSTEM_PROMPT || defaultPrompt;
 
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
+    // Use Responses API so we can call gpt-5-mini
+    const r = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${env.OPENAI_CHATBOT_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        model: "gpt-5-mini",
+        input: [
+          { role: "system", content: sysPrompt },
+          ...(Array.isArray(messages) ? messages : [])
+        ],
+        temperature: 0.4
+      }),
     });
 
     const text = await r.text();
