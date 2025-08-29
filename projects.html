@@ -42,7 +42,7 @@
   .jgw-chat-panel{position:fixed;right:16px;bottom:80px;z-index:1000;width:min(420px,92vw);max-height:min(70vh,700px);display:none;flex-direction:column;border-radius:14px;background:#fff;color:#111;box-shadow:0 18px 40px rgba(0,0,0,.28);overflow:hidden;border:1px solid rgba(0,0,0,.08)}
   .jgw-chat-header{padding:12px 14px;font-weight:600;border-bottom:1px solid #eee}
   .jgw-chat-body{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-  .jgw-chat-body a { text-decoration: underline; cursor: pointer; }
+  .jgw-chat-body a { text-decoration: underline; cursor: pointer; color: #0b5fff; }
   .jgw-msg{padding:10px 12px;border-radius:10px;max-width:85%;line-height:1.35}
   .jgw-user{align-self:flex-end;background:#0b5fff;color:#fff}
   .jgw-bot{align-self:flex-start;background:#f3f3f3}
@@ -82,35 +82,42 @@
   const form = panel.querySelector('#jgw-form');
   const input = panel.querySelector('#jgw-input');
 
-  function sanitizeForChat(value) {
-    const str = String(value ?? '');
-    const escapeHtml = s => s
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-    const escapeAttr = s => s
-      .replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-    const escaped = escapeHtml(str);
-    const urlRe = /(https?:\/\/[^\s]+|\/[A-Za-z0-9._~\-\/?#\[\]@!$&'()*+,;=%]+)/g;
-    const linked = escaped.replace(urlRe, (m) => {
-      const safeHref = escapeAttr(m);
-      return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer">${m}</a>`;
+  function sanitizeForChat(html) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+
+    temp.querySelectorAll("*").forEach((el) => {
+      const tag = el.tagName.toLowerCase();
+      if (tag === "a") {
+        const raw = el.getAttribute("href") || "";
+        try {
+          const url = new URL(raw, location.origin);
+          const isRelative = raw.startsWith("/");
+          const isSameOrigin = url.origin === location.origin;
+          if (!isRelative && !isSameOrigin) {
+            el.replaceWith(document.createTextNode(el.textContent || ""));
+            return;
+          }
+          el.setAttribute("target", "_self");
+          el.setAttribute("rel", "noopener");
+        } catch {
+          el.replaceWith(document.createTextNode(el.textContent || ""));
+        }
+      } else {
+        el.replaceWith(document.createTextNode(el.textContent || ""));
+      }
     });
-    return linked.replace(/\n/g, '<br>');
+
+    return temp.innerHTML;
   }
 
   const add = (role, text) => {
     const d = document.createElement('div');
     d.className = `jgw-msg ${role === 'user' ? 'jgw-user' : 'jgw-bot'}`;
     if (role === 'assistant') {
-      d.innerHTML = sanitizeForChat(text);
+      d.innerHTML = sanitizeForChat(String(text ?? ""));
     } else {
-      d.textContent = text;
+      d.textContent = String(text ?? "");
     }
     bodyEl.appendChild(d);
     bodyEl.scrollTop = bodyEl.scrollHeight;
