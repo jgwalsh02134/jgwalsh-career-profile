@@ -19,13 +19,44 @@
   --color-gray-700: #374151;
   --color-gray-800: #1f2937;
   --color-white: #ffffff;
+
+  /* Theme tokens */
+  --bg: #ffffff; 
+  --text: #111111; 
+  --muted: #555555; 
+  --link: #0b5fff; 
+  --border: #e6e6e6;
+  --btn-bg: #0b5fff; 
+  --btn-text: #ffffff;
+
+  /* Footer tokens */
+  --footer-bg: #f4f6f8; 
+  --footer-text: #334155; 
+  --footer-link: #0b5fff; 
+  --footer-border: #e2e8f0;
 }
 html { scroll-behavior: smooth; }
 body {
-  background-color: var(--color-gray-50);
-  color: var(--color-gray-800);
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
+}
+
+/* Dark theme */
+html[data-theme="dark"]{
+  --bg:#0f1115; 
+  --text:#e6e8ee; 
+  --muted:#a8adbb; 
+  --link:#77a8ff; 
+  --border:#262a33;
+  --btn-bg:#2a64ff; 
+  --btn-text:#ffffff;
+
+  --footer-bg:#0e1014; 
+  --footer-text:#d6d9e0; 
+  --footer-link:#8fb3ff; 
+  --footer-border:#242832;
 }
 
 /* --- Layout & Structure --- */
@@ -115,3 +146,29 @@ body {
   .sm\:hidden { display: none; }
   .sm\:flex { display: flex; }
 }
+
+/* Global interactive elements */
+a { color: var(--link); }
+button { background: var(--btn-bg); color: var(--btn-text); border: 1px solid var(--border); }
+.theme-toggle{ background: var(--bg); color: var(--text); border:1px solid var(--border); padding:.375rem .5rem; border-radius:6px; cursor:pointer; }
+.theme-toggle:focus-visible, a:focus-visible{ outline:2px solid var(--link); outline-offset:2px; }
+
+/* Footer styles: do not alter hrefs; style only */
+footer, .site-footer{
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  border-top: 1px solid var(--footer-border);
+  text-align: center;
+}
+footer a{ color: var(--footer-link); }
+
+/* Footer icon links: keep sizes and brand colors */
+footer a img,
+footer a svg{
+  width: 20px; height: 20px; display: inline-block;
+  filter: none !important; mix-blend-mode: normal !important; opacity: 1 !important;
+}
+
+/* Optional: larger tap targets without changing hrefs */
+footer a.icon-link{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:8px; }
+footer a.icon-link:focus-visible{ outline:2px solid var(--footer-link); outline-offset:3px; }
