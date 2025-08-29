@@ -44,11 +44,11 @@ Keep answers to 2–5 sentences unless asked for detail.`;
         input: [
           {
             role: "system",
-            content: [{ type: "text", text: sysPrompt }]
+            content: [{ type: "input_text", text: sysPrompt }]
           },
           ...(Array.isArray(messages) ? messages.map(m => ({
             role: m.role,
-            content: [{ type: "text", text: String(m.content ?? "") }]
+            content: [{ type: "input_text", text: String(m.content ?? "") }]
           })) : [])
         ]
       }),
