@@ -40,7 +40,7 @@ Keep answers to 2–5 sentences unless asked for detail.`;
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-5-mini",
+        model: "gpt-4o-mini",
         input: [
           {
             role: "system",
