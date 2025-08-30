@@ -219,19 +219,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
 
   <meta name="color-scheme" content="light dark">
-  <script>
-  (function () {
-    const KEY='theme';
-    const doc=document.documentElement;
-    let theme=localStorage.getItem(KEY);
-    if(!theme){
-      theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-    }
-    doc.setAttribute('data-theme', theme);
-    doc.style.colorScheme = theme;
-    if(theme==='dark'){ doc.classList.add('dark'); } else { doc.classList.remove('dark'); }
-  })();
-  </script>
+  <script src="/assets/js/theme.js" defer></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -277,7 +265,28 @@
         <a href="/resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
         <a href="/projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy" aria-current="page">Projects</a>
         <a href="/contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
-        <button id="theme-toggle" type="button" class="theme-toggle" aria-label="Toggle theme" aria-pressed="false"><span class="theme-label">Light</span></button>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+          <span class="theme-toggle__track" aria-hidden="true">
+            <span class="theme-toggle__thumb">
+              <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4.25"></circle>
+                <g stroke-linecap="round" stroke-width="2" fill="none">
+                  <path d="M12 2 L12 5"></path>
+                  <path d="M12 19 L12 22"></path>
+                  <path d="M2 12 L5 12"></path>
+                  <path d="M19 12 L22 12"></path>
+                  <path d="M4.93 4.93 L6.99 7"></path>
+                  <path d="M17.01 17 L19.07 19.07"></path>
+                  <path d="M17.01 7 L19.07 4.93"></path>
+                  <path d="M4.93 19.07 L6.99 17"></path>
+                </g>
+              </svg>
+              <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 3.5 A9 9 0 1 0 21 14.5 A6.5 6.5 0 0 1 15.5 3.5 Z"></path>
+              </svg>
+            </span>
+          </span>
+        </button>
       </nav>
     </div>
     <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" role="navigation" aria-label="Mobile navigation">
@@ -286,7 +295,28 @@
       <a href="/resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
       <a href="/projects.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy" aria-current="page">Projects</a>
       <a href="/contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
-      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle" type="button" aria-pressed="false" aria-label="Toggle theme"><span class="theme-label">Light</span></button>
+      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+        <span class="theme-toggle__track" aria-hidden="true">
+          <span class="theme-toggle__thumb">
+            <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.25"></circle>
+              <g stroke-linecap="round" stroke-width="2" fill="none">
+                <path d="M12 2 L12 5"></path>
+                <path d="M12 19 L12 22"></path>
+                <path d="M2 12 L5 12"></path>
+                <path d="M19 12 L22 12"></path>
+                <path d="M4.93 4.93 L6.99 7"></path>
+                <path d="M17.01 17 L19.07 19.07"></path>
+                <path d="M17.01 7 L19.07 4.93"></path>
+                <path d="M4.93 19.07 L6.99 17"></path>
+              </g>
+            </svg>
+            <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 3.5 A9 9 0 1 0 21 14.5 A6.5 6.5 0 0 1 15.5 3.5 Z"></path>
+            </svg>
+          </span>
+        </span>
+      </button>
     </div>
   </header>
 
@@ -427,26 +457,7 @@
       menu.classList.toggle('hidden');
       menu.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
     }
-    (function(){
-      const KEY='theme';
-      const btn=document.getElementById('theme-toggle');
-      const btnMobile=document.getElementById('theme-toggle-mobile');
-      function setTheme(theme){
-        const doc=document.documentElement;
-        doc.setAttribute('data-theme', theme);
-        doc.style.colorScheme = theme;
-        localStorage.setItem(KEY, theme);
-        if(theme==='dark'){ doc.classList.add('dark'); } else { doc.classList.remove('dark'); }
-        if(btn){ btn.setAttribute('aria-pressed', String(theme==='dark')); const l=btn.querySelector('.theme-label'); if(l) l.textContent = theme==='dark' ? 'Dark' : 'Light'; }
-        if(btnMobile){ btnMobile.setAttribute('aria-pressed', String(theme==='dark')); const l2=btnMobile.querySelector('.theme-label'); if(l2) l2.textContent = theme==='dark' ? 'Dark' : 'Light'; }
-      }
-      setTheme(document.documentElement.getAttribute('data-theme') || 'light');
-      function toggle(){ const next = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark'; setTheme(next); }
-      if(btn) btn.addEventListener('click', toggle);
-      if(btnMobile) btnMobile.addEventListener('click', toggle);
-      const mql=window.matchMedia('(prefers-color-scheme: dark)');
-      mql.addEventListener?.('change', e=>{ if(!localStorage.getItem(KEY)) setTheme(e.matches?'dark':'light'); });
-    })();
+    // theme handled by /assets/js/theme.js
 
     (function initSearchAndFilters(){
       const searchInput = document.getElementById('search');
