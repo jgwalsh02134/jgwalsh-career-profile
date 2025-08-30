@@ -1,2 +1,18 @@
-[]
-
+[
+  {
+    "id": "pdf-58261c2434e0058734536dcc93aeefb1dc6668e57aa087b0abb9a6fc5e127942",
+    "title": "American Psychological Association APA D",
+    "collection": "library",
+    "type": "pdf",
+    "path": "/resources/library/pdfs/American_Psychological_Association_APA_D.pdf",
+    "description": "",
+    "tags": [],
+    "added_at": "2025-08-30",
+    "updated_at": "2025-08-30",
+    "size_bytes": 12156825,
+    "checksum": "58261c2434e0058734536dcc93aeefb1dc6668e57aa087b0abb9a6fc5e127942",
+    "preview": {
+      "enabled": true
+    }
+  }
+]
