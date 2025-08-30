@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Resource Center</title>
+    <link rel="stylesheet" href="/resources/styles/resources.css" />
+  </head>
+  <body>
+    <header class="rc-header">
+      <h1>Resource Center</h1>
+      <p class="rc-sub">Central repository for PDFs, documents, notes, and datasets.</p>
+    </header>
+
+    <section class="rc-toolbar" aria-label="Filters">
+      <input id="rc-search" type="search" placeholder="Search title, tags, description…" autocomplete="off" />
+      <select id="rc-collection">
+        <option value="">All collections</option>
+        <option value="library">Library</option>
+        <option value="dataset">Datasets</option>
+        <option value="raw">Raw</option>
+      </select>
+      <select id="rc-type">
+        <option value="">All types</option>
+        <option value="pdf">PDF</option>
+        <option value="epub">EPUB</option>
+        <option value="docx">DOCX</option>
+        <option value="md">Markdown</option>
+        <option value="txt">Text</option>
+        <option value="css">CSS</option>
+        <option value="csv">CSV</option>
+        <option value="json">JSON</option>
+        <option value="parquet">Parquet</option>
+        <option value="xlsx">XLSX</option>
+        <option value="link">Link</option>
+        <option value="other">Other</option>
+      </select>
+      <select id="rc-sort">
+        <option value="new">Newest</option>
+        <option value="title">Title A–Z</option>
+      </select>
+    </section>
+
+    <section id="rc-tags" class="rc-tags" aria-label="Tag filters"></section>
+
+    <main id="rc-results" class="rc-grid" aria-live="polite"></main>
+
+    <template id="rc-card-template">
+      <article class="rc-card">
+        <div class="rc-card-head">
+          <span class="rc-badge" data-type></span>
+          <h3 class="rc-title" data-title></h3>
+        </div>
+        <p class="rc-desc" data-desc></p>
+        <div class="rc-meta">
+          <span data-updated></span>
+          <span data-size></span>
+        </div>
+        <a class="rc-link" data-href target="_blank" rel="noopener noreferrer">Open</a>
+        <div class="rc-tagsline" data-tagsline></div>
+      </article>
+    </template>
+
+    <p id="rc-empty" class="rc-empty" hidden>No resources found. Adjust filters.</p>
+
+    <footer class="rc-footer">
+      <small>Private area (Access-gated). Not indexed.</small>
+    </footer>
+
+    <script src="/resources/scripts/resources.js" defer></script>
+  </body>
+  </html>
+
+
