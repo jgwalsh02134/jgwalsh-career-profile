@@ -111,11 +111,16 @@
     return temp.innerHTML;
   }
 
+  function clampText(s, max=2000) {
+    if (!s) return "";
+    return s.length > max ? s.slice(0, max) + " …" : s;
+  }
+
   const add = (role, text) => {
     const d = document.createElement('div');
     d.className = `jgw-msg ${role === 'user' ? 'jgw-user' : 'jgw-bot'}`;
     if (role === 'assistant') {
-      d.innerHTML = sanitizeForChat(String(text ?? ""));
+      d.innerHTML = sanitizeForChat(clampText(String(text ?? "")));
     } else {
       d.textContent = String(text ?? "");
     }

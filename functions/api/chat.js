@@ -48,6 +48,21 @@ Keep answers to 2–5 sentences unless asked for detail.`;
       }),
     });
 
+    const ct = r.headers.get("content-type") || "";
+    if (!ct.toLowerCase().startsWith("application/json")) {
+      const peek = await r.text();
+      try { console.error("Upstream non-JSON response:", peek.slice(0, 400)); } catch {}
+      return new Response(JSON.stringify({
+        choices: [{ message: { content: "Sorry—an upstream service returned an unexpected response. Please try again." } }]
+      }), {
+        status: r.ok ? 200 : (r.status || 502),
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "https://jgwalsh.com",
+        },
+      });
+    }
+
     const raw = await r.json();
     console.log("DEBUG raw OpenAI response:", JSON.stringify(raw, null, 2));
 
