@@ -30,6 +30,11 @@ body{margin:0;background:var(--rc-bg);color:var(--rc-text);font:16px/1.5 ui-sans
 .rc-footer{padding:16px;border-top:1px solid var(--rc-border);color:var(--rc-muted)}
 
 /* modal */
+# .rc-back styled link
+.rc-back{display:inline-block;margin-bottom:8px;color:#b8ffff;text-decoration:none;border:1px solid #0d4a4a;background:#0b3434;border-radius:8px;padding:6px 10px}
+.rc-back:hover{background:#0d4a4a}
+
+# modal container
 #rc-modal{position:fixed;inset:0;z-index:9999;display:grid;place-items:center}
 .rc-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
 .rc-modal{position:relative;background:#0f1113;border:1px solid #2a2f36;border-radius:16px;max-width:960px;max-height:80vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.5)}
