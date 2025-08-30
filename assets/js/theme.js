@@ -11,15 +11,22 @@
 
   window.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("theme-toggle");
-    if (!btn) return;
+    const btnMobile = document.getElementById("theme-toggle-mobile");
+    if (!btn && !btnMobile) return;
 
     function render(theme){
-      btn.setAttribute("aria-pressed", String(theme === "dark"));
-      btn.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+      if(btn){
+        btn.setAttribute("aria-pressed", String(theme === "dark"));
+        btn.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+      }
+      if(btnMobile){
+        btnMobile.setAttribute("aria-pressed", String(theme === "dark"));
+        btnMobile.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+      }
     }
     render(initial);
 
-    btn.addEventListener("click", () => {
+    function toggleTheme(){
       const cur = doc.getAttribute("data-theme") === "dark" ? "dark" : "light";
       const next = cur === "dark" ? "light" : "dark";
       doc.setAttribute("data-theme", next);
@@ -27,7 +34,9 @@
       if(next === "dark"){ doc.classList.add("dark"); } else { doc.classList.remove("dark"); }
       localStorage.setItem(KEY, next);
       render(next);
-    });
+    }
+    if(btn) btn.addEventListener("click", toggleTheme);
+    if(btnMobile) btnMobile.addEventListener("click", toggleTheme);
 
     mql.addEventListener?.("change", e => {
       if (!localStorage.getItem(KEY)) {
