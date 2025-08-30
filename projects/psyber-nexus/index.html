@@ -22,114 +22,107 @@
   <link rel="stylesheet" href="/assets/css/main.css" />
 
   <style>
-  /* ===== Psyber Nexus – NeXT/CERN-inspired palette (modernized) =====
-     - Monochrome base (nearly-black bg, cool grays)
-     - Single accent teal (matches logo vibe)
-     - Thin 1px rules, rounded 16px radii (not boxy)
-     - System UI fonts for crisp retro-modern feel
+  /* ===== Psyber Nexus Retro-Modern Theme =====
+     - Dark gray/black base
+     - Teal #008080 primary accent
+     - Rounded edges, subtle shadows (not boxy)
+     - Inspired by NeXT/CERN with modern polish
   */
 
   :root{
-    /* Core tokens (page-scope overrides) */
-    --bg: #0f1115;               /* near-black charcoal */
-    --surface: #13161c;          /* card background (dark slate) */
-    --surface-2: #0b1b29;        /* banner slate (kept from prior) */
-    --text: #e7eaee;             /* primary text */
-    --text-muted: #a0a7b3;       /* secondary text */
-    --rule: #262b35;             /* hairline separators/borders */
-    --rule-soft: #1b2029;        /* softer borders/hover */
-    --accent-teal: #12b3b3;      /* brand teal (adjust if needed) */
-    --accent-teal-2: #0fb0c4;    /* hover/alt teal */
-    --focus: #35c6c6;            /* focus ring color */
+    --bg: #0f1115;             /* near-black background */
+    --surface: #181b20;        /* card background (charcoal gray) */
+    --surface-2: #101318;      /* banner background */
+    --text: #e6e8eb;           /* light gray text */
+    --text-muted: #9aa0a9;     /* muted gray text */
+    --rule: #2a2f38;           /* border color */
+    --accent: #008080;         /* teal accent */
+    --accent-hover: #009999;   /* hover teal */
+    --focus: #00b3b3;          /* focus ring teal */
     --radius: 16px;
-    --shadow: 0 10px 24px rgba(0,0,0,.35);
+    --shadow: 0 8px 20px rgba(0,0,0,.35);
   }
 
-  /* Prefer site-wide CSS; page-scope minimal reset */
-  html, body { background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
-  img { display:block; }
+  html, body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  }
 
   .pn-hero{ padding:4rem 1.25rem 2rem; max-width:1100px; margin:0 auto; }
   .pn-badge{
-    display:inline-flex; align-items:center; gap:.55rem;
-    font-weight:700; letter-spacing:.02em; padding:.38rem .7rem;
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-weight:700; padding:.4rem .75rem;
     border-radius:999px; border:1px solid var(--rule);
-    background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    background: rgba(255,255,255,.02);
   }
-  .pn-logo{ width:22px; height:22px; opacity:.95; }
-  @media (min-width:900px){ .pn-logo{ width:24px; height:24px; } }
+  .pn-logo{ width:22px; height:22px; }
+  @media(min-width:900px){ .pn-logo{ width:24px; height:24px; } }
 
   .pn-title{
-    font-size:clamp(1.9rem, 2.8vw, 2.75rem); line-height:1.15; margin:.8rem 0 .35rem;
-    text-shadow: 0 1px 0 rgba(0,0,0,.35);
+    font-size:clamp(1.9rem,2.8vw,2.75rem);
+    line-height:1.15; margin:.8rem 0 .4rem;
+    text-shadow:0 1px 0 rgba(0,0,0,.5);
   }
-  .pn-sub{ color:var(--text-muted); font-size:clamp(1.05rem, 1.4vw, 1.2rem); max-width:60ch; }
+  .pn-sub{ color:var(--text-muted); font-size:clamp(1.05rem,1.4vw,1.2rem); }
 
   .pn-wrap{ max-width:980px; margin:1.6rem auto 4rem; padding:0 1.25rem; }
   .pn-grid{ display:grid; grid-template-columns:1fr; gap:1.25rem; }
-  @media (min-width:900px){ .pn-grid{ grid-template-columns:1.2fr .8fr; } }
+  @media(min-width:900px){ .pn-grid{ grid-template-columns:1.2fr .8fr; } }
 
   .card{
     border:1px solid var(--rule); border-radius:var(--radius);
-    padding:1.2rem 1.2rem; background: var(--surface);
+    padding:1.2rem; background: var(--surface);
     box-shadow: var(--shadow);
   }
-  .card h2, .card h3{ margin:.25rem 0 .6rem; }
+  .card h2,.card h3{ margin:.25rem 0 .6rem; }
   .muted{ color: var(--text-muted); }
-  .list{ padding-left:1.15rem; }
-  .list li{ margin:.42rem 0; }
+  .list{ padding-left:1.1rem; }
+  .list li{ margin:.4rem 0; }
 
-  /* CTA + links – teal accent with retro underlines */
-  a, .cta{ color: var(--accent-teal); text-decoration: none; }
-  a:hover{ color: var(--accent-teal-2); text-decoration: underline; text-underline-offset: 2px; }
+  a,.cta{ color: var(--accent); text-decoration:none; }
+  a:hover{ color: var(--accent-hover); text-decoration:underline; text-underline-offset:2px; }
   .cta{
-    display:inline-block; margin-top:.7rem; padding:.6rem .95rem; border-radius:12px;
-    border:1px solid var(--rule); background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.25));
+    display:inline-block; margin-top:.7rem; padding:.6rem .95rem;
+    border-radius:12px; border:1px solid var(--rule);
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.25));
   }
-  .cta:hover{ border-color: var(--accent-teal); background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.35)); }
+  .cta:hover{ border-color: var(--accent); background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.35)); }
   .cta:focus{ outline:2px solid var(--focus); outline-offset:2px; }
 
-  /* Banner – subtle gridlines to nod to NeXT/CERN era, with teal accent */
   .pn-banner{
     position:relative; width:100%; aspect-ratio:16/9; border-radius:var(--radius);
     overflow:hidden; border:1px solid var(--rule); background: var(--surface-2);
-    display:flex; align-items:center; justify-content:center; color:#dff1ff;
+    display:flex; align-items:center; justify-content:center;
     box-shadow: var(--shadow);
   }
   .pn-banner::before{
-    /* faint grid lines for retro feel */
     content:""; position:absolute; inset:0;
     background:
-      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px) 0 0/ 100% 22px,
-      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px) 0 0/ 22px 100%;
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px) 0 0/ 100% 24px,
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px) 0 0/ 24px 100%;
     pointer-events:none;
   }
   .pn-banner::after{
-    /* teal vignette */
     content:""; position:absolute; inset:0;
-    background: radial-gradient(60% 60% at 50% 40%, rgba(18,179,179,.18), transparent 60%);
+    background: radial-gradient(60% 60% at 50% 40%, rgba(0,128,128,.2), transparent 60%);
     pointer-events:none;
   }
   .pn-banner-inner{ position:relative; text-align:center; padding:1rem; }
-  .pn-banner-logo{ width:90px; height:90px; margin:0 auto .65rem auto; filter: drop-shadow(0 4px 14px rgba(18,179,179,.25)); }
-  .pn-banner-title{ font-size:clamp(1.2rem, 2vw, 1.4rem); font-weight:800; letter-spacing:.01em; }
-  .pn-banner-tag{ font-size:clamp(.92rem, 1.3vw, 1rem); opacity:.88; margin-top:.18rem; color:#cfe8ea; }
-  @media (min-width:900px){ .pn-banner-logo{ width:110px; height:110px; } }
-
-  /* Hairline separators to organize content (retro web feel) */
-  .hr{ height:1px; background: var(--rule); margin:1rem 0; opacity:.9; }
+  .pn-banner-logo{ width:90px; height:90px; margin:0 auto .65rem; filter: drop-shadow(0 4px 12px rgba(0,128,128,.4)); }
+  .pn-banner-title{ font-size:clamp(1.2rem,2vw,1.4rem); font-weight:800; }
+  .pn-banner-tag{ font-size:clamp(.92rem,1.3vw,1rem); opacity:.9; margin-top:.2rem; color: var(--accent-hover); }
+  @media(min-width:900px){ .pn-banner-logo{ width:110px; height:110px; } }
 
   .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
 
-  /* Respect user dark mode; we’re already dark-first, just polish */
-  @media (prefers-color-scheme: light){
+  @media(prefers-color-scheme:light){
     :root{
-      --bg:#fafafa; --surface:#ffffff; --surface-2:#eaf4f6;
-      --text:#111317; --text-muted:#5b6470; --rule:#e4e6eb; --rule-soft:#edf0f3;
+      --bg:#fafafa; --surface:#ffffff; --surface-2:#e8f2f2;
+      --text:#111317; --text-muted:#555c66; --rule:#d7dadf;
     }
-    .pn-banner{ color:#0d2a2a; }
-    .pn-banner-tag{ color:#275a5a; }
+    .pn-banner{ background:#f2fdfd; }
+    .pn-banner-tag{ color:#008080; }
   }
   </style>
 </head>
