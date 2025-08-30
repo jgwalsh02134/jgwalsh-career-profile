@@ -130,13 +130,34 @@
     if (panel.style.display === 'flex') input.focus();
   });
 
+  function buildProjectIndex() {
+    const cards = document.querySelectorAll('[data-project-card], .project-card, .card');
+    const items = [];
+    cards.forEach(card => {
+      const titleEl = card.querySelector('h2, h3, .card-title, a');
+      const linkEl  = card.querySelector('a[href]');
+      const title = titleEl?.textContent?.trim();
+      const href  = linkEl?.getAttribute('href');
+      if (title && href) items.push({ title, href });
+    });
+    return items;
+  }
+  function asSystemContextFromIndex(items) {
+    if (!items.length) return '';
+    const lines = items.map(i => `• ${i.title} → ${i.href}`);
+    return `Canonical site links (use these EXACT paths when linking):\n${lines.join('\n')}\nTop-level: /, /about.html, /resume.html, /projects.html, /contact.html`;
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const q = input.value.trim();
     if (!q) return;
     add('user', q); input.value = '';
 
-    const payload = { messages: [...thread, { role: 'user', content: q }] };
+    const siteIndex = buildProjectIndex();
+    const siteContext = asSystemContextFromIndex(siteIndex);
+    const contextMsg = siteContext ? [{ role: 'system', content: siteContext }] : [];
+    const payload = { messages: [...thread, ...contextMsg, { role: 'user', content: q }] };
     try {
       const res = await fetch(WORKER_ENDPOINT, {
         method: 'POST',
