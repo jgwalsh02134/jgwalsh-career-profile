@@ -1,4 +1,7 @@
-/** Streams R2 object at /dl/<key> (supports slashes). Requires Pages R2 binding: LIBRARY -> resources-library */
+/**
+ * Streams an R2 object at /dl/<key>. Supports keys with slashes.
+ * Requires a Pages R2 binding named LIBRARY -> resources-library.
+ */
 export const onRequestGet = async (ctx) => {
   const { LIBRARY } = ctx.env || {};
   const key = ctx.params?.path;
@@ -14,5 +17,3 @@ export const onRequestGet = async (ctx) => {
   headers.set("Cache-Control", "public, max-age=3600");
   return new Response(obj.body, { headers });
 };
-
-
