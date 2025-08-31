@@ -49,17 +49,6 @@
   <url><loc>$base/public/interactive_neighborhood_treemap.html</loc></url>
   <url><loc>$base/public/interactive_violent_crime_sunburst.html</loc></url>
   <url><loc>$base/public/logout.html</loc></url>
-  <url><loc>$base/public/private/applications.html</loc></url>
-  <url><loc>$base/public/private/assets/My-Notes/The</loc></url>
-  <url><loc>Psychology</loc></url>
-  <url><loc>of</loc></url>
-  <url><loc>Online</loc></url>
-  <url><loc>Criminal</loc></url>
-  <url><loc>Behavior/</loc></url>
-  <url><loc>$base/public/private/caselog.html</loc></url>
-  <url><loc>$base/public/private/docs/</loc></url>
-  <url><loc>$base/public/private/</loc></url>
-  <url><loc>$base/public/private/notes.html</loc></url>
   <url><loc>$base/public/project-crime-analysis.html</loc></url>
   <url><loc>$base/public/projects-folder/Vision</loc></url>
   <url><loc>Data/demos/object-detection/</loc></url>
