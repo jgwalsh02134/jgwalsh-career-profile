@@ -38,6 +38,46 @@
   <url><loc>$base/projects/albany-crime-dashboard/</loc></url>
   <url><loc>$base/projects/gallery/</loc></url>
   <url><loc>$base/projects/psyber-nexus/</loc></url>
+  <url><loc>$base/public/404.html</loc></url>
+  <url><loc>$base/public/about.html</loc></url>
+  <url><loc>$base/public/assets/favicon/</loc></url>
+  <url><loc>$base/public/case_resolution_sankey_2024.html</loc></url>
+  <url><loc>$base/public/contact.html</loc></url>
+  <url><loc>$base/public/experience.html</loc></url>
+  <url><loc>$base/public/</loc></url>
+  <url><loc>$base/public/interactive_crime_arrest_trends.html</loc></url>
+  <url><loc>$base/public/interactive_neighborhood_treemap.html</loc></url>
+  <url><loc>$base/public/interactive_violent_crime_sunburst.html</loc></url>
+  <url><loc>$base/public/logout.html</loc></url>
+  <url><loc>$base/public/private/applications.html</loc></url>
+  <url><loc>$base/public/private/assets/My-Notes/The</loc></url>
+  <url><loc>Psychology</loc></url>
+  <url><loc>of</loc></url>
+  <url><loc>Online</loc></url>
+  <url><loc>Criminal</loc></url>
+  <url><loc>Behavior/</loc></url>
+  <url><loc>$base/public/private/caselog.html</loc></url>
+  <url><loc>$base/public/private/docs/</loc></url>
+  <url><loc>$base/public/private/</loc></url>
+  <url><loc>$base/public/private/notes.html</loc></url>
+  <url><loc>$base/public/project-crime-analysis.html</loc></url>
+  <url><loc>$base/public/projects-folder/Vision</loc></url>
+  <url><loc>Data/demos/object-detection/</loc></url>
+  <url><loc>$base/public/projects-folder/Vision</loc></url>
+  <url><loc>Data/</loc></url>
+  <url><loc>$base/public/projects-folder/city-incident-pulse/</loc></url>
+  <url><loc>$base/public/projects-folder/deception-explorer/</loc></url>
+  <url><loc>$base/public/projects-folder/index-dev.html</loc></url>
+  <url><loc>$base/public/projects-folder/</loc></url>
+  <url><loc>$base/public/projects-folder/interview-sim/</loc></url>
+  <url><loc>$base/public/projects-folder/threat-triage/</loc></url>
+  <url><loc>$base/public/projects.html</loc></url>
+  <url><loc>$base/public/projects/albany-crime-dashboard/</loc></url>
+  <url><loc>$base/public/projects/gallery/</loc></url>
+  <url><loc>$base/public/projects/psyber-nexus/</loc></url>
+  <url><loc>$base/public/resources/</loc></url>
+  <url><loc>$base/public/resume.html</loc></url>
+  <url><loc>$base/public/verification.html</loc></url>
   <url><loc>$base/resources/</loc></url>
   <url><loc>$base/resume.html</loc></url>
   <url><loc>$base/verification.html</loc></url>
