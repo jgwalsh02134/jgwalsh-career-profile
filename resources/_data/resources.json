@@ -30,5 +30,21 @@
     "preview": {
       "enabled": true
     }
+  },
+  {
+    "id": "pdf-r2-apa-concise-dictionary-of-psychology-gary-r-vandenbos.pdf",
+    "title": "APA Concise Dictionary of Psychology (VandenBos)",
+    "collection": "library",
+    "type": "pdf",
+    "path": "/dl/apa-concise-dictionary-of-psychology-gary-r-vandenbos.pdf",
+    "description": "",
+    "tags": [],
+    "added_at": "2025-08-31",
+    "updated_at": "2025-08-31",
+    "size_bytes": 0,
+    "checksum": "",
+    "preview": {
+      "enabled": true
+    }
   }
 ]
