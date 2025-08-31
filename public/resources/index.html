@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Resource Center</title>
   <link rel="stylesheet" href="/resources/styles/resources.css?v=1756621024" />
+  <link rel="stylesheet" href="/assets/css/resource-center.css" />
 </head>
 <body>
   <header class="rc-header">
@@ -58,6 +59,18 @@
     <div id="rc-tags" class="rc-tags" aria-label="Tag filters"></div>
 
     <div class="rc-stats" aria-live="polite" id="rc-count">0 items</div>
+  </section>
+
+  <section class="rc-static-sample" aria-label="Sample resources">
+    <div class="resource-card">
+      <div class="icon pdf-icon"></div>
+      <div class="meta">
+        <h3>Albany Crime Report 2024</h3>
+        <p>Collection: Albany Aegis • PDF • 2024</p>
+        <a href="/private/docs/albany-crime-2024.pdf" target="_blank" rel="noopener">View</a>
+        <button onclick="copyURL('/private/docs/albany-crime-2024.pdf')">Copy Link</button>
+      </div>
+    </div>
   </section>
 
   <main id="rc-results" class="rc-grid" role="list" aria-live="polite"></main>
@@ -114,7 +127,11 @@
     </div>
   </div>
 
-  <p id="rc-empty" class="rc-empty" hidden>No resources found. Adjust filters.</p>
+  <div id="rc-empty" class="empty-state" hidden>
+    <h2>No documents yet</h2>
+    <p>This private library will list your PDFs, notes, and datasets.</p>
+    <button class="upload-btn">Upload a file</button>
+  </div>
 
   <footer class="rc-footer">
     <small>Private area (Access-gated). Not indexed.</small>
@@ -123,6 +140,7 @@
   <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" hidden></div>
 
   <script src="/resources/scripts/resources.js?v=1756621024" defer></script>
+  <script src="/assets/js/resource-center.js" defer></script>
 </body>
 </html>
 

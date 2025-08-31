@@ -1,0 +1,5 @@
+.resource-card { display:flex; align-items:center; background:#1a1a1a; padding:1rem; margin:.5rem 0; border-radius:12px; box-shadow:0 0 6px rgba(0,0,0,.3); }
+.resource-card .icon { width:40px; height:40px; margin-right:1rem; }
+.empty-state { text-align:center; padding:3rem; opacity:.8; }
+
+
