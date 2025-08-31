@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Notes — WorldWideWeb Interface</title>
+
+  <!-- DEV: Loosen CSP during local testing (no nonce). PROD: enable the commented block below and ensure a Worker injects {{NONCE}} -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 connect-src 'self' https://notes-worker.jgregorywalsh.workers.dev https://www.cloudflare.com;
+                 img-src      'self' data:;
+                 font-src     'self';
+                 style-src    'self' 'unsafe-inline';
+                 script-src   'self' 'unsafe-inline';
+                 frame-ancestors 'none';">
+
+  <!-- PRODUCTION CSP (enable for deploy):
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 connect-src 'self' https://notes-worker.jgregorywalsh.workers.dev https://www.cloudflare.com;
+                 img-src      'self' data:;
+                 font-src     'self';
+                 style-src    'self' 'unsafe-inline';
+                 script-src   'self' 'nonce-{{NONCE}}';
+                 frame-ancestors 'none';">
+  -->
+
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
+  <meta http-equiv="Pragma"        content="no-cache">
+  <meta http-equiv="Expires"       content="0">
+  <meta name="robots"              content="noindex, nofollow">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="/assets/favicon/favicon.ico">
+</head>
+<body>
+  <div class="window">
+
+    <!-- Titlebar -->
+    <div class="titlebar">
+      <span class="titlebar-title">Secure Notes</span>
+      <div class="titlebar-buttons">
+        <button class="titlebar-button" type="button" aria-label="Minimise">—</button>
+        <button class="titlebar-button" type="button" aria-label="Maximise">□</button>
+        <button class="titlebar-button" type="button" aria-label="Close">✕</button>
+      </div>
+    </div>
+
+    <!-- Menubar -->
+    <nav class="menubar" role="navigation">
+      <a class="menu-item" href="/private/index.html">Dashboard</a>
+      <a class="menu-item" href="/private/docs/index.html">Documents</a>
+      <a class="menu-item" href="/private/notes.html" aria-current="page">Notes</a>
+      <a class="menu-item" href="/private/applications.html">Applications</a>
+      <a class="menu-item" href="/cdn-cgi/access/logout" id="logoutBtn">Logout</a>
+    </nav>
+
+    <!-- Retro toolbar -->
+    <div class="navbar">
+      <div class="nav-buttons">
+        <button class="nav-button" type="button" id="btnBack">Back</button>
+        <button class="nav-button" type="button" id="btnFwd">Forward</button>
+        <button class="nav-button" type="button" id="btnHome">Home</button>
+        <button class="nav-button" type="button" id="btnReload">Reload</button>
+      </div>
+      <input type="text" class="url-field" value="https://jgwalsh.com/private/notes" readonly>
+    </div>
+
+    <!-- Content -->
+    <main class="content">
+      <h1>Secure Notes</h1>
+      <p>Access granted to <strong id="userEmail">…</strong></p>
+      <p id="sessionMessage" class="hidden">Notes are saved to secure Cloudflare KV storage. Session required.</p>
+
+      <!-- Terminal status -->
+      <div class="module terminal mb-6" role="log" aria-live="polite">
+        <div>&gt; Identity: <span id="terminalEmail"></span></div>
+        <div>&gt; IP Address: <span id="userIP"></span></div>
+      </div>
+
+      <!-- New Note -->
+      <div id="newNoteForm" class="module">
+        <h3>New Note</h3>
+        <p><input id="noteTitle" class="url-field" placeholder="Title"></p>
+        <p><textarea id="noteBody" class="url-field" style="height:120px;" placeholder="Body..."></textarea></p>
+        <button id="togglePreview" class="nav-button" type="button">↕ Show Preview</button>
+        <div id="previewPanel" class="module hidden" style="margin-top:10px;"></div>
+        <p><button id="saveNote" class="nav-button" type="button" style="margin-top:10px;">Save Note</button></p>
+      </div>
+
+      <!-- Search -->
+      <h2>Search</h2>
+      <p><input type="text" id="searchInput" class="url-field" placeholder="Search notes…"></p>
+
+      <!-- Notes list -->
+      <h2>Notes</h2>
+      <div id="notesList" class="module"></div>
+
+      <!-- Note Viewer (modal) -->
+      <div id="noteViewer" class="hidden" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" style="position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1000;">
+        <div class="module" style="position:relative;max-width:760px;width:92%;max-height:80vh;overflow:auto;">
+          <button id="viewerClose" class="titlebar-button" type="button" aria-label="Close" style="position:absolute;top:8px;right:8px;">✕</button>
+          <h3 id="viewerTitle" style="margin-right:36px;"></h3>
+          <div id="viewerTime" style="font-size:11px;color:#666;margin:-6px 0 10px 0;"></div>
+          <div id="viewerBody" class="mb-6"></div>
+        </div>
+      </div>
+
+      <p style="margin-top:16px;">
+        <a class="hyperlink" href="/private/index.html">← Return to dashboard</a>
+      </p>
+    </main>
+
+    <!-- Status bar -->
+    <footer class="statusbar">
+      <span style="display:flex;align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" height="13" viewBox="0 0 19 13" style="margin-right:8px;">
+          <path fill="#B22234" d="M0 0h19v13H0z"/>
+          <path fill="#FFF" d="M0 1h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0z"/>
+          <path fill="#3C3B6E" d="M0 0h9v7H0z"/>
+        </svg>
+        Protected by Cloudflare Zero Trust | AES-256 Encryption
+      </span>
+      <span class="blink">SECURE SESSION</span>
+    </footer>
+  </div>
+
+  <!-- Optional local Marked (no CDN). Put file at /private/assets/js/marked.min.js -->
+  <script src="assets/js/marked.min.js" defer></script>
+  <!-- Local DOMPurify for sanitizing rendered markdown -->
+  <script src="assets/js/dompurify.min.js" defer></script>
+
+  <!-- DEV: no nonce. PROD: restore nonce="{{NONCE}}" and enable the production CSP above. -->
+  <script defer>
+  // ——— Helpers ———
+  const $ = s => document.querySelector(s);
+  const getCookie = n => document.cookie.split('; ').find(c => c.startsWith(n+'='))?.split('=')[1] ?? null;
+  const decodeJWT = t => { try { const [,p]=t.split('.'); return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));} catch { return null; } };
+  // Drop raw HTML rendering in Marked (belt-and-suspenders)
+  if (window.marked) {
+    marked.use({ renderer: { html() { return ''; } } });
+  }
+
+  // Render markdown -> sanitize -> HTML string
+  function safeMarkdownToHTML(md) {
+    const html = (window.marked
+      ? marked.parse(md, { mangle: false, headerIds: false, gfm: true, breaks: false })
+      : String(md).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))
+    );
+    const clean = (window.DOMPurify
+      ? DOMPurify.sanitize(html, {
+          FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'link', 'meta'],
+          FORBID_ATTR: ['on*'],
+          ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|\/|#)/i
+        })
+      : html
+    );
+    return clean;
+  }
+
+  // Harden anchors inside a container
+  function hardenAnchors(container) {
+    container.querySelectorAll('a').forEach(a => {
+      a.setAttribute('rel', 'noopener noreferrer nofollow');
+      // a.setAttribute('target', '_blank'); // enable if desired
+    });
+  }
+
+  // ——— Identity & IP ———
+  function renderIdentity() {
+    const jwt = getCookie('CF_Authorization');
+    const payload = decodeJWT(jwt || '');
+    const email = payload?.email || 'Authenticated User';
+    $('#userEmail').textContent = email;
+    $('#terminalEmail').textContent = email;
+  }
+  async function fetchIP() {
+    try {
+      const txt = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(r=>r.text());
+      $('#userIP').textContent = txt.match(/ip=([^\n]+)/)?.[1] ?? 'Unavailable';
+    } catch { $('#userIP').textContent = 'Unavailable'; }
+  }
+
+  // ——— Markdown preview ———
+  const previewBtn = $('#togglePreview');
+  const previewPanel = $('#previewPanel');
+  const bodyInput = $('#noteBody');
+  previewBtn.addEventListener('click', () => {
+    const hidden = previewPanel.classList.toggle('hidden');
+    previewBtn.textContent = hidden ? '↕ Show Preview' : '↕ Hide Preview';
+    if (!hidden) {
+      previewPanel.innerHTML = safeMarkdownToHTML(bodyInput.value);
+      hardenAnchors(previewPanel);
+    }
+  });
+
+  // ——— JWT helpers ———
+  const getJwt = () => getCookie('CF_Authorization');
+  const sessionValid = () => {
+    const jwt = getJwt(); if (!jwt) return false;
+    const p = decodeJWT(jwt); return !!p && p.exp*1000 > Date.now();
+  };
+
+  // ——— Notes API ———
+  async function saveNote() {
+    const title = $('#noteTitle').value.trim();
+    const body  = $('#noteBody').value.trim();
+    if (!sessionValid()) return alert('Session expired. Please re-authenticate.');
+    if (!title || !body)  return alert('Both title and body are required.');
+
+    const jwt = getJwt();
+    const saveBtn = $('#saveNote');
+    saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+    const payload = JSON.stringify({ title, body });
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'cf-access-jwt-assertion': jwt,
+      'Authorization': `Bearer ${jwt}`
+    };
+
+    async function tryPost(url) {
+      try {
+        const res = await fetch(url, { method: 'POST', headers, body: payload });
+        if (res.ok) return { ok: true };
+        const text = await res.text().catch(() => '');
+        return { ok: false, status: res.status, text };
+      } catch (err) {
+        return { ok: false, error: err?.message || String(err) };
+      }
+    }
+
+    try {
+      const isFile = location.protocol === 'file:';
+      let out = isFile ? await tryPost('https://notes-worker.jgregorywalsh.workers.dev/')
+                       : await tryPost('/api/notes');
+      if (!out.ok) out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/');
+      if (!out.ok) {
+        // Fallback to a common alt route
+        out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/notes');
+      }
+      if (out.ok) {
+        location.reload();
+      } else {
+        const details = out.text || out.error || '';
+        alert(`Error saving note (status ${out.status || 'n/a'}).` + (details ? `\n\n${details}` : ''));
+      }
+    } catch (e) {
+      alert(`Network error while saving note. ${e?.message || e}`);
+    } finally {
+      saveBtn.disabled = false; saveBtn.textContent = 'Save Note';
+    }
+  }
+  $('#saveNote').addEventListener('click', saveNote);
+
+  function fmtDate(ts) {
+    if (!ts) return '';
+    const d = isNaN(+ts) ? new Date(ts) : new Date(Number(ts));
+    return isNaN(d.getTime()) ? String(ts) : d.toLocaleString();
+  }
+
+  function renderNoteCard(note) {
+    const div = document.createElement('div');
+    div.className = 'module';
+    const when = fmtDate(note.timestamp);
+    div.innerHTML = `
+      <h3>${note.title || '(untitled)'}</h3>
+      <div class="mb-6">${safeMarkdownToHTML(note.body || '')}</div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;">
+        <span>${when || ''}</span>
+        <span>
+          <button class="hyperlink" onclick='viewNote(${JSON.stringify(JSON.stringify(note))})'>View</button>
+          &nbsp;|&nbsp;
+          <button class="hyperlink" onclick="deleteNote('${note.key}')">Delete</button>
+          &nbsp;|&nbsp;
+          <button class="hyperlink" onclick='duplicateNote(${JSON.stringify(JSON.stringify(note))})'>Duplicate</button>
+        </span>
+      </div>`;
+    hardenAnchors(div);
+    return div;
+  }
+
+  async function loadNotes() {
+    try {
+      const isFile = location.protocol === 'file:';
+      let res;
+      try {
+        res = isFile ? null : await fetch('/api/notes');
+      } catch { res = null; }
+      if (!res || !res.ok) {
+        try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/'); } catch { res = null; }
+        if (!res || !res.ok) {
+          try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/notes'); } catch { res = null; }
+        }
+      }
+      const data = res ? await res.json().catch(() => ({})) : {};
+      const raw  = Array.isArray(data.notes) ? data.notes : [];
+      const all  = raw.map(n => ({
+        ...n,
+        key: n.key || n.id || n.noteId || n._id || '',
+        timestamp: n.timestamp || n.time || n.createdAt || n.updatedAt || Date.now()
+      }));
+      const render = () => {
+        const q = ($('#searchInput').value || '').toLowerCase();
+        $('#notesList').innerHTML = '';
+        all.filter(n => (n.title||'').toLowerCase().includes(q) || (n.body||'').toLowerCase().includes(q))
+           .forEach(n => $('#notesList').appendChild(renderNoteCard(n)));
+      };
+      $('#searchInput').addEventListener('input', render);
+      render();
+    } catch {
+      $('#notesList').innerHTML = '<p>Error loading notes.</p>';
+    }
+  }
+
+  window.deleteNote = async (key) => {
+    if (!confirm('Delete this note?')) return;
+    const jwt = getJwt();
+    const headers = jwt ? { 'cf-access-jwt-assertion': jwt, 'Authorization': `Bearer ${jwt}` } : {};
+    const isFile = location.protocol === 'file:';
+    let res = null;
+    try { res = isFile ? null : await fetch(`/api/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
+    if (!res || !res.ok) {
+      try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
+      if (!res || !res.ok) {
+        try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
+      }
+    }
+    if (res && res.ok) location.reload(); else alert(`Error deleting note${res ? ` (status ${res.status})` : ''}.`);
+  };
+
+  window.duplicateNote = (encodedJSON) => {
+    const note = JSON.parse(encodedJSON);
+    $('#noteTitle').value = `(copy) ${note.title || ''}`;
+    $('#noteBody').value  = note.body || '';
+    previewPanel.innerHTML = '';
+    previewPanel.classList.add('hidden');
+    previewBtn.textContent = '↕ Show Preview';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // View note (modal)
+  const viewer = $('#noteViewer');
+  const viewerTitle = $('#viewerTitle');
+  const viewerBody = $('#viewerBody');
+  const viewerTime = $('#viewerTime');
+  const viewerClose = $('#viewerClose');
+
+  function showViewer() { viewer.classList.remove('hidden'); }
+  function hideViewer() { viewer.classList.add('hidden'); }
+
+  window.viewNote = (encodedJSON) => {
+    const note = JSON.parse(encodedJSON);
+    viewerTitle.textContent = note.title || '(untitled)';
+    viewerTime.textContent = fmtDate(note.timestamp) || '';
+    viewerBody.innerHTML = safeMarkdownToHTML(note.body || '');
+    hardenAnchors(viewerBody);
+    showViewer();
+  };
+
+  viewer.addEventListener('click', (e) => {
+    if (e.target === viewer) hideViewer();
+  });
+  viewerClose.addEventListener('click', hideViewer);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !viewer.classList.contains('hidden')) hideViewer();
+  });
+
+  // ——— Nav & session state ———
+  const nav = {
+    back: ()=>history.back(),
+    fwd: ()=>history.forward(),
+    home: ()=>location.assign('/private/index.html'),
+    reload: ()=>location.reload(),
+  };
+  $('#btnBack').addEventListener('click', nav.back);
+  $('#btnFwd').addEventListener('click', nav.fwd);
+  $('#btnHome').addEventListener('click', nav.home);
+  $('#btnReload').addEventListener('click', nav.reload);
+  $('#logoutBtn').addEventListener('click', e => { e.preventDefault(); document.cookie='CF_Authorization=; Max-Age=0; path=/; secure; samesite=lax'; location.href='/cdn-cgi/access/logout?returnTo=/'; });
+
+  (function init(){
+    renderIdentity();
+    fetchIP();
+    if (!sessionValid()) { $('#newNoteForm').style.display='none'; $('#sessionMessage').classList.remove('hidden'); }
+    loadNotes();
+  })();
+  </script>
+</body>
+</html>

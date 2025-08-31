@@ -1,0 +1,39 @@
+{
+  "title": "AdSell.ai × Vision Data — Marketing Plan",
+  "description": "Co-marketing plan hub: initiatives and working files.",
+  "projects": [
+    {
+      "title": "Co-branded Value Proposition",
+      "description": "Draft positioning and value props aligning AdSell.ai with Vision Data’s publishing suite.",
+      "link": "./files/value-proposition-adsell-vdata.md",
+      "tags": ["positioning","messaging"]
+    },
+    {
+      "title": "Publisher ICP and Segmentation",
+      "description": "Define ideal customer profiles and segments across media companies.",
+      "link": "./files/ICP-and-segmentation.csv",
+      "tags": ["ICP","segmentation"]
+    },
+    {
+      "title": "Channels & Campaigns Plan",
+      "description": "Prioritized channels, campaign concepts, and KPIs; includes PR with E&P Magazine references.",
+      "link": "./files/channels-and-campaigns.md",
+      "tags": ["PR","demand-gen","content"]
+    },
+    {
+      "title": "Timeline & Milestones",
+      "description": "Quarterly roadmap for pilot, launch, and scale phases.",
+      "link": "./files/timeline-and-milestones.md",
+      "tags": ["roadmap","ops"]
+    }
+  ],
+  "files": [
+    { "name": "Marketing Plan Overview.md", "path": "./files/marketing-plan-overview.md", "type": "md" },
+    { "name": "Value Proposition — AdSell.ai × Vision Data.md", "path": "./files/value-proposition-adsell-vdata.md", "type": "md" },
+    { "name": "ICP-and-segmentation.csv", "path": "./files/ICP-and-segmentation.csv", "type": "csv" },
+    { "name": "Channels-and-campaigns.md", "path": "./files/channels-and-campaigns.md", "type": "md" },
+    { "name": "Timeline-and-milestones.md", "path": "./files/timeline-and-milestones.md", "type": "md" }
+  ]
+}
+
+

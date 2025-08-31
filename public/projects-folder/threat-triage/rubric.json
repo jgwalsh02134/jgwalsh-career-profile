@@ -1,0 +1,92 @@
+{
+  "version": "4.0.0",
+  "meta": {
+    "name": "Behavioral Threat Triage Rubric",
+    "notes": "Deterministic intake; entire score derived from narrative text. Signals ≠ proof; human review required.",
+    "sources": [
+      "U.S. Secret Service & DHS BTAM guides",
+      "Meloy et al. (2011) TRAP-18 warning behaviors",
+      "Virginia DCJS school threat assessment technical reports",
+      "FBI Law Enforcement Bulletin (threat assessment teams)",
+      "HCR-20 contextual risk factors; protective-factor literature"
+    ]
+  },
+
+  "bands": [
+    { "min": 0,  "max": 3,  "label": "Low",      "guidance": ["Log and monitor", "No immediate escalation"] },
+    { "min": 4,  "max": 7,  "label": "Moderate", "guidance": ["Supervisor review", "Check for corroboration"] },
+    { "min": 8,  "max": 12, "label": "Elevated", "guidance": ["Escalate to duty officer", "Preserve evidence"] },
+    { "min": 13, "max": 99, "label": "Critical", "guidance": ["Immediate escalation", "Safety planning and containment"] }
+  ],
+
+  "dampeners": {
+    "negation_cues": ["no intention", "won't do it", "not going to", "just joking", "joking"],
+    "stopwords":     ["movie", "metaphor", "sarcasm", "hypothetical"],
+    "max_negation_deduction": 2
+  },
+
+  "btam_core": [
+    { "name": "Direct threat",            "weight": 3, "patterns": ["i will harm", "i'm going to kill", "kill them", "bomb", "shoot", "shooting", "stab"] },
+    { "name": "Weapon reference",         "weight": 2, "patterns": ["gun", "rifle", "knife", "explosive", "ammo", "ammunition"] },
+    { "name": "Specific target",          "weight": 2, "patterns": ["principal", "officer", "my boss", "my teacher", "the school", "the building", "coworker"] },
+    { "name": "Time/place specificity",   "weight": 1, "patterns": ["tomorrow", "friday", "at 8am", "after work", "in the parking lot"] },
+    { "name": "Grievance fixation",       "weight": 1, "patterns": ["they wronged me", "i'll make them pay", "everyone will see", "revenge"] },
+    { "name": "Leakage language",         "weight": 1, "patterns": ["you'll see", "just wait", "not a joke", "this is real"] },
+    { "name": "Pathway hints (behavior)", "weight": 1, "patterns": ["bought", "purchased", "packed", "wrote a note", "printed a map", "scouted"] },
+    { "name": "Means/access hints",       "weight": 1, "patterns": ["i have access", "i can get in", "badge", "keys", "service door"] },
+    { "name": "Self-harm with others",    "weight": 1, "patterns": ["take them with me", "i don't care if i die"] }
+  ],
+
+  "trap18_subset": [
+    { "name": "Fixation",            "weight": 1, "patterns": ["can't stop thinking", "obsessed", "all i think about", "focus on them"] },
+    { "name": "Identification",      "weight": 1, "patterns": ["i am the avenger", "they'll know my name", "i'll be remembered"] },
+    { "name": "Energy burst",        "weight": 1, "patterns": ["can't sleep", "adrenaline", "rushed to finish"] },
+    { "name": "Novel aggression",    "weight": 1, "patterns": ["first time i hurt", "never done this before but"] },
+    { "name": "Last resort framing", "weight": 1, "patterns": ["no other choice", "last resort", "nothing left"] }
+  ],
+
+  "hcr20_context": [
+    { "name": "History—violence/justice",   "weight": 1, "patterns": ["prior assault", "probation", "restraining order", "parole"] },
+    { "name": "Clinical—disturbance cues",  "weight": 1, "patterns": ["hearing voices", "paranoia", "manic", "can't control anger"] },
+    { "name": "Risk—situational stressors", "weight": 1, "patterns": ["lost my job", "evicted", "custody battle", "financial ruin"] },
+    { "name": "Risk—lack of supports",      "weight": 1, "patterns": ["no friends", "no family", "no one cares", "alone"] }
+  ],
+
+  "lenses_lexical": {
+    "cap_total": 3,
+    "categories": [
+      { "name": "Verbal aggression",     "weight": 0.5, "patterns": ["hate you", "idiot", "stupid", "shut up", "i'll make you pay"] },
+      { "name": "Property aggression",   "weight": 1.0, "patterns": ["burn it", "smash", "break windows", "trash the place"] },
+      { "name": "Physical—others",       "weight": 1.5, "patterns": ["attack", "hurt them", "beat them", "kill", "stab", "shoot"] },
+      { "name": "Self-directed harm",    "weight": 1.0, "patterns": ["end my life", "kill myself", "i don't care if i die"] }
+    ]
+  },
+
+  "protective_lexical": {
+    "cap_abs": 2,
+    "categories": [
+      { "name": "Help-seeking",       "weight": 1, "patterns": ["help me", "can we talk", "counselor", "therapist", "need support", "reach out"] },
+      { "name": "Remorse/apology",    "weight": 1, "patterns": ["sorry", "apologize", "i regret", "i was wrong"] },
+      { "name": "Prosocial intent",   "weight": 1, "patterns": ["i don't want trouble", "i want to fix", "peace", "calm down"] },
+      { "name": "3rd-party oversight", "weight": 1, "patterns": ["told the principal", "reported", "security informed", "called the police"] }
+    ]
+  },
+
+  "actions_catalog": {
+    "immediate": [
+      "If direct threat + means/access + time/place → notify duty officer, initiate safety plan, preserve evidence.",
+      "If weapon reference + specific target → escalate and document contact attempts."
+    ],
+    "near_term": [
+      "Supervisor review; corroborate details; capture screenshots/logs with timestamps and hashes.",
+      "Assess access control gaps; adjust patrol/monitoring for identified time/place."
+    ],
+    "follow_up": [
+      "Reassess within 24–72h; monitor for new leakage or pathway behaviors.",
+      "Engage support resources; document protective factors and intervention offers."
+    ],
+    "protective_prompts": [
+      "If help-seeking/remorse detected → offer resources and voluntary safety planning; document offers."
+    ]
+  }
+}

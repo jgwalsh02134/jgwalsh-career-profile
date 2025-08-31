@@ -1,0 +1,50 @@
+[
+  {
+    "id": "pdf-58261c2434e0058734536dcc93aeefb1dc6668e57aa087b0abb9a6fc5e127942",
+    "title": "American Psychological Association APA D",
+    "collection": "library",
+    "type": "pdf",
+    "path": "/resources/library/pdfs/American_Psychological_Association_APA_D.pdf",
+    "description": "",
+    "tags": [],
+    "added_at": "2025-08-30",
+    "updated_at": "2025-08-30",
+    "size_bytes": 12156825,
+    "checksum": "58261c2434e0058734536dcc93aeefb1dc6668e57aa087b0abb9a6fc5e127942",
+    "preview": {
+      "enabled": true
+    }
+  },
+  {
+    "id": "pdf-81827d078ad4499c347fcbad6eba924b77add226155790dd50e5d60f52e46b1a",
+    "title": "APA Concise Dictionary of Psychology (VandenBos)",
+    "collection": "library",
+    "type": "pdf",
+    "path": "/resources/library/pdfs/apa-concise-dictionary-of-psychology-gary-r-vandenbos.pdf",
+    "description": "",
+    "tags": [],
+    "added_at": "2025-08-30",
+    "updated_at": "2025-08-30",
+    "size_bytes": 58618900,
+    "checksum": "81827d078ad4499c347fcbad6eba924b77add226155790dd50e5d60f52e46b1a",
+    "preview": {
+      "enabled": true
+    }
+  },
+  {
+    "id": "pdf-r2-apa-concise-dictionary-of-psychology-gary-r-vandenbos.pdf",
+    "title": "APA Concise Dictionary of Psychology (VandenBos)",
+    "collection": "library",
+    "type": "pdf",
+    "path": "/dl/apa-concise-dictionary-of-psychology-gary-r-vandenbos.pdf",
+    "description": "",
+    "tags": [],
+    "added_at": "2025-08-31",
+    "updated_at": "2025-08-31",
+    "size_bytes": 0,
+    "checksum": "",
+    "preview": {
+      "enabled": true
+    }
+  }
+]
