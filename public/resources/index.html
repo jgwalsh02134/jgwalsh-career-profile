@@ -5,18 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Resource Center</title>
+  <link rel="stylesheet" href="/src/resources.css?v=bb0dfda" />
   <link rel="stylesheet" href="/resources/styles/resources.css?v=1756621024" />
   <link rel="stylesheet" href="/assets/css/resource-center.css" />
 </head>
-<body>
-  <!-- resources-build: 9eb055d -->
+<body data-js="rc-root">
+  <!-- resources-build: bb0dfda -->
   <header class="rc-header">
     <a href="/projects.html" class="rc-back" aria-label="Back to Projects">← Back to Projects</a>
     <h1>Resource Center</h1>
     <p class="rc-sub">Private library for PDFs, documents, notes, and datasets.</p>
   </header>
 
-  <section class="rc-toolbar" role="region" aria-label="Search and filters" data-js="rc-root">
+  <section class="rc-toolbar" role="region" aria-label="Search and filters">
     <div class="rc-row">
       <div class="rc-input-wrap">
         <input id="rc-search" data-js="search" type="search" placeholder="Search ( / to focus )" autocomplete="off" aria-label="Search resources" />
@@ -60,10 +61,8 @@
     <div id="rc-tags" data-js="chips" class="rc-tags" aria-label="Tag filters"></div>
 
     <div class="rc-stats" aria-live="polite" id="rc-count"><span data-js="count">0</span> items</div>
+    <span class="sr-only" aria-live="polite" data-js="status"></span>
   </section>
-
-  <!-- resources:start -->
-  <div class="rc-chips" data-js="chips" aria-label="Tags"></div>
 
   <section class="rc-results rc-grid" id="rc-results" data-js="results" role="list" aria-live="polite"></section>
 
@@ -114,6 +113,7 @@
   <div class="rc-bulkbar" id="rc-bulkbar" data-js="bulkbar" hidden>
     <div><strong id="rc-bulkcount" data-js="bulk-count">0</strong> selected</div>
     <div class="rc-bulk-actions">
+      <button class="rc-btn" data-js="bulk-select-all">Select all (visible)</button>
       <button class="rc-btn" id="rc-bulk-copy" data-js="bulk-copy">Copy URLs</button>
       <button class="rc-btn ghost" id="rc-bulk-clear" data-js="bulk-clear">Clear</button>
     </div>
@@ -130,11 +130,9 @@
     <small>Private area (Access-gated). Not indexed.</small>
   </footer>
 
-  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" data-js="status" hidden></div>
+  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" hidden></div>
 
   <!-- Include the new script with a cache-busting param -->
-  <script type="module" src="/src/resources.js?v=9eb055d"></script>
-  <!-- resources:end -->
+  <script type="module" src="/src/resources.js?v=bb0dfda"></script>
 </body>
 </html>
-

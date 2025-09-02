@@ -9,33 +9,34 @@
   <link rel="stylesheet" href="/assets/css/resource-center.css" />
 </head>
 <body>
+  <!-- resources-build: 9eb055d -->
   <header class="rc-header">
     <a href="/projects.html" class="rc-back" aria-label="Back to Projects">← Back to Projects</a>
     <h1>Resource Center</h1>
     <p class="rc-sub">Private library for PDFs, documents, notes, and datasets.</p>
   </header>
 
-  <section class="rc-toolbar" role="region" aria-label="Search and filters">
+  <section class="rc-toolbar" role="region" aria-label="Search and filters" data-js="rc-root">
     <div class="rc-row">
       <div class="rc-input-wrap">
-        <input id="rc-search" type="search" placeholder="Search ( / to focus )" autocomplete="off" aria-label="Search resources" />
-        <button id="rc-clear" class="rc-btn ghost" aria-label="Clear search">Clear</button>
+        <input id="rc-search" data-js="search" type="search" placeholder="Search ( / to focus )" autocomplete="off" aria-label="Search resources" />
+        <button id="rc-clear" data-js="clear" class="rc-btn ghost" aria-label="Clear search">Clear</button>
       </div>
 
       <div class="rc-views">
-        <button id="rc-grid" class="rc-btn toggle" aria-pressed="true" title="Grid view (g)">Grid</button>
-        <button id="rc-list" class="rc-btn toggle" aria-pressed="false" title="List view (l)">List</button>
+        <button id="rc-grid" data-js="view-grid" class="rc-btn toggle" aria-pressed="true" title="Grid view (g)">Grid</button>
+        <button id="rc-list" data-js="view-list" class="rc-btn toggle" aria-pressed="false" title="List view (l)">List</button>
       </div>
     </div>
 
     <div class="rc-row rc-filters">
-      <select id="rc-collection" aria-label="Filter by collection">
+      <select id="rc-collection" data-js="filter-collection" aria-label="Filter by collection">
         <option value="">All collections</option>
         <option value="library">Library</option>
         <option value="dataset">Datasets</option>
         <option value="raw">Raw</option>
       </select>
-      <select id="rc-type" aria-label="Filter by type">
+      <select id="rc-type" data-js="filter-type" aria-label="Filter by type">
         <option value="">All types</option>
         <option value="pdf">PDF</option><option value="epub">EPUB</option>
         <option value="docx">DOCX</option><option value="md">Markdown</option>
@@ -44,36 +45,27 @@
         <option value="parquet">Parquet</option><option value="xlsx">XLSX</option>
         <option value="link">Link</option><option value="other">Other</option>
       </select>
-      <select id="rc-year" aria-label="Filter by year (added)">
+      <select id="rc-year" data-js="filter-year" aria-label="Filter by year (added)">
         <option value="">All years</option>
       </select>
-      <select id="rc-sort" aria-label="Sort results">
+      <select id="rc-sort" data-js="sort" aria-label="Sort results">
         <option value="new">Newest</option>
         <option value="old">Oldest</option>
         <option value="title">Title A–Z</option>
         <option value="size">Size</option>
       </select>
-      <button id="rc-reset" class="rc-btn ghost" title="Reset filters (c)">Reset</button>
+      <button id="rc-reset" data-js="reset" class="rc-btn ghost" title="Reset filters (c)">Reset</button>
     </div>
 
-    <div id="rc-tags" class="rc-tags" aria-label="Tag filters"></div>
+    <div id="rc-tags" data-js="chips" class="rc-tags" aria-label="Tag filters"></div>
 
-    <div class="rc-stats" aria-live="polite" id="rc-count">0 items</div>
+    <div class="rc-stats" aria-live="polite" id="rc-count"><span data-js="count">0</span> items</div>
   </section>
 
-  <section class="rc-static-sample" aria-label="Sample resources">
-    <div class="resource-card">
-      <div class="icon pdf-icon"></div>
-      <div class="meta">
-        <h3>Albany Crime Report 2024</h3>
-        <p>Collection: Albany Aegis • PDF • 2024</p>
-        <a href="/private/docs/albany-crime-2024.pdf" target="_blank" rel="noopener">View</a>
-        <button onclick="copyURL('/private/docs/albany-crime-2024.pdf')">Copy Link</button>
-      </div>
-    </div>
-  </section>
+  <!-- resources:start -->
+  <div class="rc-chips" data-js="chips" aria-label="Tags"></div>
 
-  <main id="rc-results" class="rc-grid" role="list" aria-live="polite"></main>
+  <section class="rc-results rc-grid" id="rc-results" data-js="results" role="list" aria-live="polite"></section>
 
   <!-- Templates -->
   <template id="rc-card-template">
@@ -119,29 +111,30 @@
     </div>
   </template>
 
-  <div class="rc-bulkbar" id="rc-bulkbar" hidden>
-    <div><strong id="rc-bulkcount">0</strong> selected</div>
+  <div class="rc-bulkbar" id="rc-bulkbar" data-js="bulkbar" hidden>
+    <div><strong id="rc-bulkcount" data-js="bulk-count">0</strong> selected</div>
     <div class="rc-bulk-actions">
-      <button class="rc-btn" id="rc-bulk-copy">Copy URLs</button>
-      <button class="rc-btn ghost" id="rc-bulk-clear">Clear</button>
+      <button class="rc-btn" id="rc-bulk-copy" data-js="bulk-copy">Copy URLs</button>
+      <button class="rc-btn ghost" id="rc-bulk-clear" data-js="bulk-clear">Clear</button>
     </div>
   </div>
 
-  <div id="rc-empty" class="empty-state" hidden>
-    <h2>No documents yet</h2>
-    <p>This private library will list your PDFs, notes, and datasets.</p>
-    <button class="upload-btn">Upload a file</button>
-  </div>
+  <template data-js="tpl-empty-all">
+    <div class="empty-state"><h2>No resources yet</h2><p>Add items to <code>/assets/resources.json</code>.</p></div>
+  </template>
+  <template data-js="tpl-empty-filter">
+    <div class="empty-state"><h2>No matches</h2><p>Clear search or filters.</p></div>
+  </template>
 
   <footer class="rc-footer">
     <small>Private area (Access-gated). Not indexed.</small>
   </footer>
 
-  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" hidden></div>
+  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" data-js="status" hidden></div>
 
-  <script src="/resources/scripts/resources.js?v=1756621024" defer></script>
-  <script src="/assets/js/resource-center.js" defer></script>
+  <!-- Include the new script with a cache-busting param -->
+  <script type="module" src="/src/resources.js?v=9eb055d"></script>
+  <!-- resources:end -->
 </body>
 </html>
-
 
