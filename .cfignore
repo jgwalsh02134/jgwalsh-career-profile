@@ -9,3 +9,7 @@ functions/vitest.config.mts
 # Do NOT exclude the functions directory itself; required for Pages Functions.
 # Never upload private content placed under the public tree:
 public/private/
+ 
+ # Exclude oversized library PDFs from deploy
+ public/resources/library/pdfs/
+ resources/library/pdfs/
