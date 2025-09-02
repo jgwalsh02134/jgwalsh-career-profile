@@ -5,6 +5,7 @@ functions/node_modules/
 functions/test/
 functions/src/
 functions/vitest.config.mts
-# Never upload private content
+
+# Do NOT exclude the functions directory itself; required for Pages Functions.
+# Never upload private content placed under the public tree:
 public/private/
-functions/

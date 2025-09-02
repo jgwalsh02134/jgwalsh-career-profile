@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+[]
+=======
+[
+  {
+    "id": "sample-hello",
+    "title": "Sample Text File",
+    "desc": "Demo text download used for QA.",
+    "url": "/assets/samples/hello.txt",
+    "tags": ["demo", "txt"],
+    "updated": "2025-09-02"
+  },
+  {
+    "id": "sample-notes",
+    "title": "Sample Notes",
+    "desc": "Another tiny file for multi-select testing.",
+    "url": "/assets/samples/notes.txt",
+    "tags": ["demo"],
+    "updated": "2025-09-02"
+  }
+]
+>>>>>>> fix/resources-ui

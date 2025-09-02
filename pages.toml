@@ -1,24 +1,9 @@
 [build]
-command = ""
-directory = "."
+command = ""           # static site, no build
+directory = "public"   # deploy the public/ dir
 
 [env.production]
 branch = "main"
 
 [env.preview]
-branch = ""
-
-# Cloudflare Pages configuration
-
-[build]
-# Change this command and directory to match your framework
-command = "npm run build"
-directory = "dist"
-
-[env.production]
-# Only deploy from the main branch
-branch = "main"
-
-[env.preview]
-# Disable previews entirely
-branch = ""
+branch = ""            # disable previews if desired
