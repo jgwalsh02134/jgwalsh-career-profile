@@ -1,0 +1,8 @@
+{
+  "name": "jgwalsh-career-profile",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "deploy:pages": "bash scripts/deploy-pages.sh"
+  }
+}
