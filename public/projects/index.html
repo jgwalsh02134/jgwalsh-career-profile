@@ -173,7 +173,7 @@
       menu.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
     }
 
-    // Data for cards (centralize so grid & list share one source)
+    // ---- PROJECT DATA (edit here when adding new projects) ----
     const PROJECTS = [
       {
         title: "Interactive Projects Gallery",
@@ -181,7 +181,7 @@
         img: "/assets/images/interactive-project-gal-2.png",
         date: "2025-08-20",
         tags: ["visualization","open-source"],
-        blurb: "Prototypes and POCs collected in one place."
+        blurb: "Prototypes and proofs of concept collected in one place."
       },
       {
         title: "Project Source Code & Contributions",
@@ -189,7 +189,7 @@
         img: "/assets/images/source-code-project-card.png",
         date: "2025-07-10",
         tags: ["open-source","research"],
-        blurb: "Website source and other public repos.",
+        blurb: "Website source and other public repositories.",
         external: true
       },
       {
@@ -220,30 +220,29 @@
       {
         title: "Resource Center",
         href: "/resources/",
-        img: "/assets/images/psyber-nexus-project-card-3.png?v=3",
+        img: "/assets/images/interactive-project-gal-2.png",
         date: "2025-08-24",
         tags: ["open-source","resources"],
-        blurb: "Password-protected hub for PDFs, docs, notes, datasets."
+        blurb: "Password-protected hub for PDFs, docs, notes, and datasets."
       }
     ];
 
-    // Utilities
-    const qs   = (s, el=document) => el.querySelector(s);
-    const qsa  = (s, el=document) => [...el.querySelectorAll(s)];
-    const norm = (s) => (s||'').toLowerCase();
+    // ------- Utilities -------
+    const qs  = (s, el=document) => el.querySelector(s);
+    const qsa = (s, el=document) => [...el.querySelectorAll(s)];
+    const norm = (s) => (s || "").toLowerCase();
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Renderers
     function projectCard(p, index, listMode=false){
-      // srcset/sizes for perf
       const srcset = `${p.img} 640w, ${p.img} 960w, ${p.img} 1280w`;
       const sizes  = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
-
       const badgeHTML = p.tags.slice(0,3).map(t => `<span class="tag">${t}</span>`).join(' ');
+      const btnLabel = p.external ? 'Open Link' : 'View Project';
+      const targetRel = p.external ? 'target="_blank" rel="noopener"' : '';
 
       if (!listMode) {
         return `
-        <article class="card relative card-clip bg-white dark:bg-slate-800 shadow-card hover:shadow-cardHover transition will-change-transform focus-within:ring-2 focus-within:ring-sage"
+        <article class="card relative card-clip bg-white dark:bg-slate-800 shadow-card hover:shadow-cardHover transition focus-within:ring-2 focus-within:ring-sage"
                  data-title="${p.title}" data-tags="${p.tags.join(',')}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
           <meta itemprop="position" content="${index+1}" />
           <img class="card-img" src="${p.img}" srcset="${srcset}" sizes="${sizes}" alt="${p.title}" loading="lazy" decoding="async" itemprop="image">
@@ -254,17 +253,14 @@
             <p class="text-slate-700 dark:text-slate-300">${p.blurb}</p>
             <div class="flex flex-wrap gap-2 mt-1">${badgeHTML}</div>
             <div class="mt-4">
-              <a href="${p.href}" ${p.external?'target="_blank" rel="noopener"':''}
-                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-navy text-white hover:bg-navy/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">
-                ${p.external ? 'Open Link' : 'View Project'}
-              </a>
+              <a href="${p.href}" ${targetRel}
+                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-navy text-white hover:bg-navy/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">${btnLabel}</a>
             </div>
           </div>
-          <a href="${p.href}" ${p.external?'target="_blank" rel="noopener"':''} class="absolute inset-0 z-10" aria-label="${p.title}"></a>
+          <a href="${p.href}" ${targetRel} class="absolute inset-0 z-10" aria-label="${p.title}"></a>
         </article>`;
       }
 
-      // list mode
       return `
       <article class="list-card card relative bg-white dark:bg-slate-800 rounded-xl2 shadow-card hover:shadow-cardHover transition p-4 sm:p-5 flex gap-4 items-start"
                data-title="${p.title}" data-tags="${p.tags.join(',')}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -276,12 +272,30 @@
           <p class="mt-2 text-slate-700 dark:text-slate-300">${p.blurb}</p>
           <div class="flex flex-wrap gap-2 mt-2">${badgeHTML}</div>
           <div class="mt-3">
-            <a href="${p.href}" ${p.external?'target="_blank" rel="noopener"':''}
+            <a href="${p.href}" ${targetRel}
                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-navy text-white hover:bg-navy/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">Open</a>
           </div>
         </div>
-        <a href="${p.href}" ${p.external?'target="_blank" rel="noopener"':''} class="absolute inset-0 z-10" aria-label="${p.title}"></a>
+        <a href="${p.href}" ${targetRel} class="absolute inset-0 z-10" aria-label="${p.title}"></a>
       </article>`;
+    }
+
+    function observeReveal(){
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if (e.isIntersecting) {
+            e.target.style.transition = 'transform .35s ease, opacity .35s ease';
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.opacity = '1';
+            obs.unobserve(e.target);
+          }
+        });
+      }, { rootMargin: '80px 0px' });
+      qsa('#projectsGrid article').forEach(card=>{
+        card.style.transform = 'translateY(8px)';
+        card.style.opacity = '.001';
+        obs.observe(card);
+      });
     }
 
     function render(listMode=false) {
@@ -291,10 +305,10 @@
         : "grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 animate-fade-in";
       wrap.innerHTML = PROJECTS.map((p,i)=>projectCard(p,i,listMode)).join('');
       if (!prefersReduced) observeReveal();
-      applyFilters(); // reapply after re-render (layout switch)
+      applyFilters(); // keep in sync after render
     }
 
-    // Search / Filter / Sort with query-string persistence
+    // Search / Filter / Sort / Layout
     const searchEl = document.getElementById('search');
     const countEl  = document.getElementById('results-count');
     const pills    = qsa('.filter-pill');
@@ -316,14 +330,14 @@
       const term = norm(searchEl.value);
       const active = pills.find(p=>p.getAttribute('aria-pressed')==='true');
       const filter = active ? active.getAttribute('data-filter') : 'all';
-      // sort
+
+      // sort in-place
       const mode = sortEl.value;
       PROJECTS.sort((a,b)=>{
         if (mode==='alpha') return a.title.localeCompare(b.title);
-        // recent default
-        return new Date(b.date) - new Date(a.date);
+        return new Date(b.date) - new Date(a.date); // default recent
       });
-      // filter + search
+
       const cards = qsa('#projectsGrid article');
       let visible = 0;
       cards.forEach(card=>{
@@ -336,7 +350,7 @@
         if (show) visible++;
       });
       if (countEl) countEl.textContent = `Showing ${visible} project${visible===1?'':'s'}`;
-      setQS({ q: term or null, f: filter, s: sortEl.value, mode: gridBtn.getAttribute('aria-pressed')==='true' ? 'grid' : 'list' });
+      setQS({ q: term || null, f: filter, s: sortEl.value, mode: gridBtn.getAttribute('aria-pressed')==='true' ? 'grid' : 'list' });
     }
 
     // Event wiring
@@ -345,8 +359,8 @@
       pill.setAttribute('aria-pressed','true'); pill.classList.add('bg-navy','text-white'); pill.classList.remove('bg-slate-200');
       applyFilters();
     }));
-    searchEl.addEventListener('input', () => { applyFilters(); });
-    sortEl.addEventListener('change', () => { applyFilters(); });
+    searchEl.addEventListener('input', applyFilters);
+    sortEl.addEventListener('change', applyFilters);
 
     gridBtn.addEventListener('click', () => {
       gridBtn.setAttribute('aria-pressed','true'); listBtn.setAttribute('aria-pressed','false');
@@ -357,26 +371,7 @@
       render(true);
     });
 
-    // Reveal on scroll (reduced-motion aware)
-    function observeReveal(){
-      const obs = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if (e.isIntersecting) {
-            e.target.style.transition = 'transform .35s ease, opacity .35s ease';
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.opacity = '1';
-            obs.unobserve(e.target);
-          }
-        });
-      }, { rootMargin: '80px 0px' });
-      qsa('#projectsGrid article').forEach(card=>{
-        card.style.transform = 'translateY(8px)';
-        card.style.opacity = '.001';
-        obs.observe(card);
-      });
-    }
-
-    // Initialize with QS state
+    // ---- INIT: make sure cards actually render ----
     (function init(){
       const { q, f, s, mode } = getQS();
       if (q) searchEl.value = q;
@@ -388,6 +383,7 @@
         p.classList.toggle('text-white', on);
         if (!on) p.classList.add('bg-slate-200','dark:bg-slate-800');
       });
+      // First render (grid by default unless mode=list)
       if (mode === 'list') { listBtn.click(); } else { gridBtn.click(); }
       applyFilters();
     })();
