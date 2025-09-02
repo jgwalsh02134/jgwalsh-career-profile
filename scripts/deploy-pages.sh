@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Detect output dir produced by existing build (prefers dist/, then build/)
+# Detect output dir produced by existing build (prefers dist/, then build/, then public/)
 OUTDIR=""
 [[ -d "dist" ]] && OUTDIR="dist"
 [[ -z "${OUTDIR}" && -d "build" ]] && OUTDIR="build"
+[[ -z "${OUTDIR}" && -d "public" ]] && OUTDIR="public"
 if [[ -z "${OUTDIR}" ]]; then
-  echo "Build output folder not found. Ensure \`npm run build\` produced dist/ or build/." >&2
+  echo "Build output folder not found. Ensure \`npm run build\` produced dist/, build/, or public/." >&2
   exit 1
 fi
 
