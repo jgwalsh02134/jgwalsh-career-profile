@@ -118,7 +118,7 @@ function cardHTML(d) {
   const tagBadges = (d.tags||[]).slice(0,4).map(t => `<span class="badge">#${t}</span>`).join("");
   const statusClass = d.status ? `status-${d.status}` : "";
   const tech = (d.tech||[]).slice(0,4).join(" · ");
-  const img = d.thumb ? `<img loading="lazy" src="${d.thumb}" alt="${escapeHTML(d.title)} thumbnail">` : "";
+  const img = d.thumb ? `<img loading="lazy" class="project-card-image" src="${d.thumb}" alt="${escapeHTML(d.title)} thumbnail">` : "";
   const primary = d.links?.primary || d.links?.demo || d.links?.github || "#";
 
   return `
