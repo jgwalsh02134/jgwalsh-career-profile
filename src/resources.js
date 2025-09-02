@@ -1,137 +1,254 @@
-const DATA_URL = '/assets/resources.json';
+const DATA_URL = '/assets/resources.json'; // same-origin; works behind Access
 
-const els = { q:null, sort:null, chips:null, grid:null, download:null, status:null, emptyAll:null, emptyFilter:null };
+// Helper to query by data-js
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+const els = {};
+const state = {
+  q: '',
+  view: localStorage.getItem('rc:view') || 'grid', // 'grid' | 'list'
+  sort: 'recent',
+  tags: new Set(),               // optional tag system (uses item.tags if present)
+  filters: { collection: 'All', type: 'All', year: 'All' },
+  selected: new Set(),
+};
 let DATA = [];
-const state = { q:'', tags:new Set(), sort:'recent', selected:new Set() };
 
-document.addEventListener('DOMContentLoaded', async () => {
-  els.q = document.querySelector('#q');
-  els.sort = document.querySelector('#sort');
-  els.chips = document.querySelector('#chips');
-  els.grid = document.querySelector('#grid');
-  els.download = document.querySelector('#downloadSelected');
-  els.status = document.querySelector('#status');
-  els.emptyAll = document.querySelector('#empty-all');
-  els.emptyFilter = document.querySelector('#empty-filter');
+document.addEventListener('DOMContentLoaded', init);
 
-  wireEvents();
+async function init(){
+  const root = $('[data-js="rc-root"]');
+  if (!root) return console.warn('[rc] root not found');
 
-  try {
-    const res = await fetch(DATA_URL, { credentials: 'include', headers: { 'accept': 'application/json' } });
-    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-    const raw = await res.json();
-    // Memoize IDs ONCE so selection remains stable across renders
-    DATA = (Array.isArray(raw) ? raw : []).map(rec => ({ ...rec, id: rec.id ?? crypto.randomUUID() }));
-    renderChips(collectTags(DATA));
-    render();
-  } catch (err) {
-    console.error(err);
-    toast(`Couldn’t load resources.`, true);
+  // Cache elements
+  els.search  = $('[data-js="search"]', root);
+  els.clear   = $('[data-js="clear"]', root);
+  els.gridBtn = $('[data-js="view-grid"]', root);
+  els.listBtn = $('[data-js="view-list"]', root);
+  els.fColl   = $('[data-js="filter-collection"]', root);
+  els.fType   = $('[data-js="filter-type"]', root);
+  els.fYear   = $('[data-js="filter-year"]', root);
+  els.sort    = $('[data-js="sort"]', root);
+  els.reset   = $('[data-js="reset"]', root);
+  els.count   = $('[data-js="count"]', root);
+  els.chips   = $('[data-js="chips"]', root);
+  els.results = $('[data-js="results"]', root);
+  els.bulk    = $('[data-js="bulkbar"]', root);
+  els.bulkCount = $('[data-js="bulk-count"]', root);
+  els.bulkCopy  = $('[data-js="bulk-copy"]', root);
+  els.bulkClear = $('[data-js="bulk-clear"]', root);
+  els.status = $('[data-js="status"]', root);
+  els.tplEmptyAll = $('[data-js="tpl-empty-all"]', root);
+  els.tplEmptyFilter = $('[data-js="tpl-empty-filter"]', root);
+
+  bindUI();
+
+  try{
+    const res = await fetch(DATA_URL, { credentials: 'include', headers: { 'accept':'application/json' } });
+    if(!res.ok) throw new Error(`fetch ${res.status}`);
+    const json = await res.json();
+    DATA = Array.isArray(json) ? json.map(memoId) : [];
+  }catch(e){
+    console.error('[rc]', e);
     DATA = [];
-    render(); // still render empty state
   }
-});
 
-function wireEvents() {
-  els.q.addEventListener('input', () => { state.q = els.q.value.trim().toLowerCase(); render(); });
-  els.sort.addEventListener('change', () => { state.sort = els.sort.value; render(); });
-  els.chips.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-tag]'); if (!btn) return;
-    const tag = btn.dataset.tag;
-    state.tags.has(tag) ? state.tags.delete(tag) : state.tags.add(tag);
-    renderChips(collectTags(DATA)); render();
-  });
-  els.download.addEventListener('click', handleBulkDownload);
-  els.grid.addEventListener('click', (e) => {
-    const copyBtn = e.target.closest('button[data-copy]');
-    if (copyBtn) { copyToClipboard(copyBtn.dataset.copy, copyBtn); return; }
-    const sel = e.target.closest('input[type="checkbox"][data-id]');
-    if (sel) {
-      const id = sel.dataset.id;
-      sel.checked ? state.selected.add(id) : state.selected.delete(id);
-      els.download.disabled = state.selected.size === 0;
-    }
-  });
+  hydrateFilters(DATA);
+  render();
 }
 
-function collectTags(items) { return [...new Set(items.flatMap(x => x.tags || []))].sort(); }
+function memoId(x){ return { ...x, id: x.id ?? crypto.randomUUID() }; }
 
-function renderChips(tags) {
-  els.chips.innerHTML = tags.map(t => {
-    const active = state.tags.has(t);
-    return `<button type="button" data-tag="${t}" class="px-2 py-1 rounded border text-sm ${active ? 'bg-slate-900 text-white' : 'bg-white text-slate-700'}">#${t}</button>`;
-  }).join('');
+function bindUI(){
+  // Search + keyboard shortcut
+  els.search?.addEventListener('input', () => { state.q = (els.search.value||'').trim().toLowerCase(); render(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === '/' && document.activeElement?.tagName !== 'INPUT'){ e.preventDefault(); els.search?.focus(); }});
+
+  els.clear?.addEventListener('click', ()=>{ state.q=''; if(els.search){ els.search.value=''; } render(); });
+
+  // View toggle
+  els.gridBtn?.addEventListener('click', ()=> setView('grid'));
+  els.listBtn?.addEventListener('click', ()=> setView('list'));
+  reflectView();
+
+  // Filters (defensive: optional)
+  els.fColl?.addEventListener('change', ()=>{ state.filters.collection = els.fColl.value; render(); });
+  els.fType?.addEventListener('change', ()=>{ state.filters.type = els.fType.value; render(); });
+  els.fYear?.addEventListener('change', ()=>{ state.filters.year = els.fYear.value; render(); });
+
+  // Sort
+  els.sort?.addEventListener('change', ()=>{ state.sort = els.sort.value; render(); });
+
+  // Reset
+  els.reset?.addEventListener('click', ()=>{
+    state.q=''; if(els.search) els.search.value='';
+    state.sort='recent';
+    state.tags.clear();
+    state.filters = { collection:'All', type:'All', year:'All' };
+    if(els.fColl) els.fColl.value='All';
+    if(els.fType) els.fType.value='All';
+    if(els.fYear) els.fYear.value='All';
+    if(els.sort) els.sort.value='recent';
+    render();
+  });
+
+  // Bulk actions
+  els.bulkCopy?.addEventListener('click', copySelected);
+  els.bulkClear?.addEventListener('click', ()=>{ state.selected.clear(); render(); });
 }
 
-function render() {
-  const filtered = filterItems(DATA);
-  const items = sortItems(filtered);
-  if (!DATA.length) {
-    els.grid.innerHTML = (els.emptyAll?.innerHTML ?? '');
-  } else if (!items.length) {
-    els.grid.innerHTML = (els.emptyFilter?.innerHTML ?? '');
-  } else {
-    els.grid.innerHTML = items.map(card).join('');
+function setView(v){ state.view=v; localStorage.setItem('rc:view', v); reflectView(); render(); }
+function reflectView(){
+  if(els.gridBtn) els.gridBtn.setAttribute('aria-pressed', String(state.view==='grid'));
+  if(els.listBtn) els.listBtn.setAttribute('aria-pressed', String(state.view==='list'));
+}
+
+function hydrateFilters(items){
+  // Build option sets
+  const coll = ['All', ...dedupe(items.map(i=>i.collection).filter(Boolean))];
+  const type = ['All', ...dedupe(items.map(i=>i.type).filter(Boolean))];
+  const years = ['All', ...dedupe(items.map(i=> String(i.year || (i.updated ? new Date(i.updated).getFullYear() : '')) ).filter(Boolean)).sort((a,b)=>b.localeCompare(a))];
+
+  fillSelect(els.fColl, coll);
+  fillSelect(els.fType, type);
+  fillSelect(els.fYear, years);
+}
+
+function fillSelect(sel, arr){
+  if(!sel) return;
+  sel.innerHTML = arr.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join('');
+  sel.value = arr[0] || 'All';
+}
+
+function render(){
+  const items = sortItems(filterItems(DATA));
+  els.count && (els.count.textContent = String(items.length));
+
+  if(!DATA.length){
+    els.results.innerHTML = els.tplEmptyAll?.innerHTML || '';
+    updateBulk();
+    return;
   }
-  els.download.disabled = state.selected.size === 0;
+  if(items.length===0){
+    els.results.innerHTML = els.tplEmptyFilter?.innerHTML || '';
+    updateBulk();
+    return;
+  }
+
+  if(state.view==='list'){
+    els.results.innerHTML = items.map(renderRow).join('');
+  }else{
+    els.results.innerHTML = items.map(renderCard).join('');
+  }
+
+  // Wire delegated events (copy/select)
+  els.results.addEventListener('click', onResultsClick);
+  updateBulk();
 }
 
-function filterItems(items) {
-  const q = state.q, tags = state.tags;
-  return items.filter(x => {
-    const hay = `${x.title||''} ${x.desc||''} ${(x.tags||[]).join(' ')}`.toLowerCase();
-    const matchQ = q ? hay.includes(q) : true;
-    const matchT = tags.size ? (x.tags||[]).some(t => tags.has(t)) : true;
-    return matchQ && matchT;
+function onResultsClick(e){
+  const copyBtn = e.target.closest('[data-copy]');
+  if(copyBtn){ doCopy(copyBtn.getAttribute('data-copy'), copyBtn); return; }
+  const sel = e.target.closest('input[type="checkbox"][data-id]');
+  if(sel){
+    const id = sel.getAttribute('data-id');
+    sel.checked ? state.selected.add(id) : state.selected.delete(id);
+    updateBulk();
+  }
+}
+
+function updateBulk(){
+  if(els.bulkCount) els.bulkCount.textContent = String(state.selected.size);
+}
+
+function filterItems(items){
+  const q = state.q;
+  const { collection, type, year } = state.filters;
+  return items.filter(x=>{
+    const hay = `${x.title||''} ${x.desc||''} ${(x.tags||[]).join(' ')} ${x.collection||''} ${x.type||''} ${x.year||''}`.toLowerCase();
+    const mq = q ? hay.includes(q) : true;
+    const mc = (collection==='All') || (x.collection === collection);
+    const mt = (type==='All') || (x.type === type);
+    const my = (year==='All') || (String(x.year)===String(year) || (x.updated && String(new Date(x.updated).getFullYear())===String(year)));
+    return mq && mc && mt && my;
   });
 }
 
-function sortItems(items) {
+function sortItems(items){
   const s = state.sort;
-  return [...items].sort((a,b) => {
-    if (s === 'title') return (a.title||'').localeCompare(b.title||'');
-    if (s === 'size') return (b.bytes||0) - (a.bytes||0);
-    return new Date(b.updated||0) - new Date(a.updated||0); // default: recent
-  });
+  const copy = [...items];
+  if(s==='title') copy.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
+  else if(s==='size') copy.sort((a,b)=> (b.bytes||0) - (a.bytes||0));
+  else copy.sort((a,b)=> new Date(b.updated||0) - new Date(a.updated||0)); // recent default
+  return copy;
 }
 
-function card(x) {
-  const absolute = new URL(x.url, location.origin).href;
+function renderCard(x){
   const size = x.bytes ? ` · ${formatBytes(x.bytes)}` : '';
-  const tags = (x.tags||[]).map(t => `<span class="text-xs text-slate-500">#${t}</span>`).join(' ');
+  const yr = x.year || (x.updated ? new Date(x.updated).getFullYear() : '');
+  const tags = (x.tags||[]).map(t=>`<span class="rc-tag">#${escapeHTML(t)}</span>`).join(' ');
+  const id = x.id;
+  const abs = new URL(x.url, location.origin).href;
   return `
-  <article class="p-4 rounded border bg-white flex flex-col gap-2">
-    <h2 class="font-medium">${escapeHTML(x.title||'Untitled')}</h2>
-    <p class="text-sm text-slate-600">${escapeHTML(x.desc||'')}</p>
-    <div class="text-xs text-slate-500">${escapeHTML(x.updated||'')}${size}</div>
-    <div class="flex gap-2 mt-1">${tags}</div>
-    <div class="mt-2 flex items-center gap-2">
-      <a href="${x.url}" download class="px-2 py-1 border rounded">Download</a>
-      <button type="button" class="px-2 py-1 border rounded" data-copy="${absolute}">Copy link</button>
-      <label class="ml-auto flex items-center gap-2 text-sm">
-        <input type="checkbox" data-id="${x.id}" ${state.selected.has(x.id) ? 'checked' : ''}/>
-        <span>Select</span>
-      </label>
+  <article class="rc-card">
+    <header class="rc-card-h"><h3>${escapeHTML(x.title||'Untitled')}</h3></header>
+    <div class="rc-card-b">
+      <p class="rc-sub">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</p>
+      ${x.desc? `<p class="rc-desc">${escapeHTML(x.desc)}</p>`:''}
+      <div class="rc-tags">${tags}</div>
     </div>
+    <footer class="rc-card-f">
+      <a href="${x.url}" class="rc-btn">View</a>
+      <button type="button" class="rc-btn" data-copy="${abs}">Copy Link</button>
+      <label class="rc-select">
+        <input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/> Select
+      </label>
+    </footer>
   </article>`;
 }
 
-// === Utilities ===
-function formatBytes(n){const u=['B','KB','MB','GB','TB'];let i=0,v=n||0;while(v>=1024&&i<u.length-1){v/=1024;i++;}return `${v.toFixed(v<10&&i?1:0)} ${u[i]}`;}
-function escapeHTML(s=''){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-async function copyToClipboard(text, btn){
-  try{ await navigator.clipboard.writeText(text); toast('Link copied.'); pulse(btn); }
-  catch{ const ta=Object.assign(document.createElement('textarea'),{value:text}); ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); toast('Link copied.'); pulse(btn); }
+function renderRow(x){
+  const size = x.bytes ? ` · ${formatBytes(x.bytes)}` : '';
+  const yr = x.year || (x.updated ? new Date(x.updated).getFullYear() : '');
+  const id = x.id;
+  const abs = new URL(x.url, location.origin).href;
+  return `
+  <div class="rc-row">
+    <label class="rc-select"><input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/></label>
+    <div class="rc-row-main">
+      <div class="rc-row-title">${escapeHTML(x.title||'Untitled')}</div>
+      <div class="rc-row-sub">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</div>
+    </div>
+    <div class="rc-row-acts">
+      <a class="rc-btn" href="${x.url}">View</a>
+      <button class="rc-btn" data-copy="${abs}">Copy Link</button>
+    </div>
+  </div>`;
 }
-function pulse(el){ el.classList.add('ring-2','ring-green-500'); setTimeout(()=>el.classList.remove('ring-2','ring-green-500'),600); }
-function toast(msg,isErr=false){ els.status.textContent = msg; if(isErr) console.warn(msg); }
-async function handleBulkDownload(){
-  const ids=[...state.selected]; if(!ids.length) return;
-  const files=filterItems(DATA).filter(x => ids.includes(x.id));
-  for(const f of files){
-    const a=document.createElement('a'); a.href=f.url; a.download=''; document.body.appendChild(a); a.click(); a.remove();
-    await new Promise(r=>setTimeout(r,250));
-  }
-  toast(`Started ${files.length} download${files.length>1?'s':''}.`);
+
+// Copy helpers
+async function doCopy(text, btn){
+  try{ await navigator.clipboard.writeText(text); speak('Link copied.'); pulse(btn); }
+  catch{ fallbackCopy(text); speak('Link copied.'); pulse(btn); }
 }
+async function copySelected(){
+  const urls = DATA.filter(x=> state.selected.has(x.id)).map(x=> new URL(x.url, location.origin).href);
+  if(!urls.length) return;
+  try{ await navigator.clipboard.writeText(urls.join('\n')); speak('URLs copied.'); }
+  catch{ fallbackCopy(urls.join('\n')); speak('URLs copied.'); }
+}
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
+  ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+}
+
+function speak(msg){ if(els.status){ els.status.textContent = msg; } }
+function pulse(el){ if(!el) return; el.classList.add('rc-pulse'); setTimeout(()=> el.classList.remove('rc-pulse'), 600); }
+
+// Utils
+function dedupe(arr){ return Array.from(new Set(arr)); }
+function formatBytes(n){ const u=['B','KB','MB','GB','TB']; let i=0,v=n||0; while(v>=1024&&i<u.length-1){ v/=1024; i++; } return `${v.toFixed(v<10&&i?1:0)} ${u[i]}`; }
+function escapeHTML(s=''){ return s.replace(/[&<>"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
