@@ -57,6 +57,34 @@
     .jgw-send-btn,.jgw-chat-launcher{background:#e8e8e8;color:#111}
   }
   @media (prefers-color-scheme: dark){ .jgw-chat-body a { color: #9ec3ff; } }
+  .project-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .project-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #000;
+    background: #f9f9f9;
+    transition: background 0.2s ease;
+  }
+
+  .project-button:hover {
+    background: #e6e6e6;
+  }
+
+  .project-button .icon {
+    width: 20px;
+    height: 20px;
+  }
   </style>
 
   <script type="module">
@@ -354,5 +382,13 @@
       applyFilters();
     })();
   </script>
+
+  <div class="project-links">
+    <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt" 
+       class="project-button" target="_blank" rel="noopener noreferrer">
+      <img src="/assets/icons/b&w-chatgpt-2.svg" alt="Investigator GPT Icon" class="icon" />
+      Investigator GPT
+    </a>
+  </div>
 </body>
 </html>
