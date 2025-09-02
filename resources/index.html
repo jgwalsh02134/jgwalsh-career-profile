@@ -2,146 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <title>Resource Center & Downloads — jgwalsh.com</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Resource Center</title>
-  <link rel="stylesheet" href="/resources/styles/resources.css?v=1756621024" />
-  <link rel="stylesheet" href="/assets/css/resource-center.css" />
+  <!-- Tailwind CDN is acceptable here; if CSP blocks it, keep the markup and continue (the page still functions). -->
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="/src/resources.js" type="module" defer></script>
 </head>
-<body>
-  <header class="rc-header">
-    <a href="/projects.html" class="rc-back" aria-label="Back to Projects">← Back to Projects</a>
-    <h1>Resource Center</h1>
-    <p class="rc-sub">Private library for PDFs, documents, notes, and datasets.</p>
-  </header>
+<body class="bg-slate-50 text-slate-900">
+  <main class="mx-auto max-w-6xl p-6">
+    <header class="mb-6">
+      <h1 class="text-2xl font-semibold">Resource Center & Downloads</h1>
+      <p class="text-sm text-slate-600">Search, filter, and download files.</p>
+    </header>
 
-  <section class="rc-toolbar" role="region" aria-label="Search and filters">
-    <div class="rc-row">
-      <div class="rc-input-wrap">
-        <input id="rc-search" type="search" placeholder="Search ( / to focus )" autocomplete="off" aria-label="Search resources" />
-        <button id="rc-clear" class="rc-btn ghost" aria-label="Clear search">Clear</button>
-      </div>
-
-      <div class="rc-views">
-        <button id="rc-grid" class="rc-btn toggle" aria-pressed="true" title="Grid view (g)">Grid</button>
-        <button id="rc-list" class="rc-btn toggle" aria-pressed="false" title="List view (l)">List</button>
-      </div>
-    </div>
-
-    <div class="rc-row rc-filters">
-      <select id="rc-collection" aria-label="Filter by collection">
-        <option value="">All collections</option>
-        <option value="library">Library</option>
-        <option value="dataset">Datasets</option>
-        <option value="raw">Raw</option>
-      </select>
-      <select id="rc-type" aria-label="Filter by type">
-        <option value="">All types</option>
-        <option value="pdf">PDF</option><option value="epub">EPUB</option>
-        <option value="docx">DOCX</option><option value="md">Markdown</option>
-        <option value="txt">Text</option><option value="css">CSS</option>
-        <option value="csv">CSV</option><option value="json">JSON</option>
-        <option value="parquet">Parquet</option><option value="xlsx">XLSX</option>
-        <option value="link">Link</option><option value="other">Other</option>
-      </select>
-      <select id="rc-year" aria-label="Filter by year (added)">
-        <option value="">All years</option>
-      </select>
-      <select id="rc-sort" aria-label="Sort results">
-        <option value="new">Newest</option>
-        <option value="old">Oldest</option>
-        <option value="title">Title A–Z</option>
+    <!-- Controls -->
+    <form id="controls" class="flex flex-wrap gap-3 mb-4" onsubmit="return false;">
+      <input id="q" class="border rounded px-3 py-2 flex-1 min-w-[260px]" placeholder="Search titles, descriptions, tags…" autocomplete="off" />
+      <select id="sort" class="border rounded px-3 py-2">
+        <option value="recent">Newest</option>
+        <option value="title">A → Z</option>
         <option value="size">Size</option>
       </select>
-      <button id="rc-reset" class="rc-btn ghost" title="Reset filters (c)">Reset</button>
-    </div>
+      <button id="downloadSelected" type="button" class="px-3 py-2 border rounded disabled:opacity-50" disabled>Download selected</button>
+      <span id="status" class="sr-only" aria-live="polite" role="status"></span>
+    </form>
 
-    <div id="rc-tags" class="rc-tags" aria-label="Tag filters"></div>
+    <!-- Dynamic tag chips -->
+    <div id="chips" class="flex flex-wrap gap-2 mb-4"></div>
 
-    <div class="rc-stats" aria-live="polite" id="rc-count">0 items</div>
-  </section>
+    <!-- Results grid -->
+    <section id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" aria-live="polite"></section>
 
-  <section class="rc-static-sample" aria-label="Sample resources">
-    <div class="resource-card">
-      <div class="icon pdf-icon"></div>
-      <div class="meta">
-        <h3>Albany Crime Report 2024</h3>
-        <p>Collection: Albany Aegis • PDF • 2024</p>
-        <a href="/private/docs/albany-crime-2024.pdf" target="_blank" rel="noopener">View</a>
-        <button onclick="copyURL('/private/docs/albany-crime-2024.pdf')">Copy Link</button>
-      </div>
-    </div>
-  </section>
-
-  <main id="rc-results" class="rc-grid" role="list" aria-live="polite"></main>
-
-  <!-- Templates -->
-  <template id="rc-card-template">
-    <article class="rc-card" role="listitem" tabindex="0">
-      <div class="rc-card-head">
-        <span class="rc-badge" data-type></span>
-        <span class="rc-collection" data-collection></span>
-        <span class="rc-origin" data-origin></span>
-        <h3 class="rc-title" data-title></h3>
-      </div>
-      <p class="rc-desc" data-desc></p>
-      <div class="rc-meta">
-        <span data-updated></span>
-        <span data-size></span>
-      </div>
-      <div class="rc-actions">
-        <a class="rc-link" data-href target="_blank" rel="noopener noreferrer">Open</a>
-        <button class="rc-btn ghost" data-copy-url>Copy URL</button>
-        <button class="rc-btn ghost" data-copy-md>Copy MD</button>
-        <button class="rc-btn ghost" data-copy-html>Copy HTML</button>
-        <button class="rc-btn ghost" data-copy-json>Copy JSON</button>
-      </div>
-      <div class="rc-tagsline" data-tagsline></div>
-      <input type="checkbox" class="rc-select" data-select aria-label="Select item for bulk actions">
-    </article>
-  </template>
-
-  <template id="rc-row-template">
-    <div class="rc-row-item" role="listitem" tabindex="0">
-      <label class="rc-cell rc-check"><input type="checkbox" data-select /></label>
-      <span class="rc-cell rc-type" data-type></span>
-      <span class="rc-cell rc-collection" data-collection></span>
-      <span class="rc-cell rc-origin" data-origin></span>
-      <a class="rc-cell rc-title rc-linkrow" data-href target="_blank" rel="noopener" data-title></a>
-      <span class="rc-cell rc-size" data-size></span>
-      <span class="rc-cell rc-date" data-updated></span>
-      <div class="rc-cell rc-row-actions">
-        <button class="rc-btn mini" data-copy-url title="Copy URL">URL</button>
-        <button class="rc-btn mini" data-copy-md title="Copy Markdown">MD</button>
-        <button class="rc-btn mini" data-copy-html title="Copy HTML">HTML</button>
-        <button class="rc-btn mini" data-copy-json title="Copy JSON">JSON</button>
-      </div>
-    </div>
-  </template>
-
-  <div class="rc-bulkbar" id="rc-bulkbar" hidden>
-    <div><strong id="rc-bulkcount">0</strong> selected</div>
-    <div class="rc-bulk-actions">
-      <button class="rc-btn" id="rc-bulk-copy">Copy URLs</button>
-      <button class="rc-btn ghost" id="rc-bulk-clear">Clear</button>
-    </div>
-  </div>
-
-  <div id="rc-empty" class="empty-state" hidden>
-    <h2>No documents yet</h2>
-    <p>This private library will list your PDFs, notes, and datasets.</p>
-    <button class="upload-btn">Upload a file</button>
-  </div>
-
-  <footer class="rc-footer">
-    <small>Private area (Access-gated). Not indexed.</small>
-  </footer>
-
-  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" hidden></div>
-
-  <script src="/resources/scripts/resources.js?v=1756621024" defer></script>
-  <script src="/assets/js/resource-center.js" defer></script>
+    <!-- Empty states -->
+    <template id="empty-all">
+      <div class="p-6 border rounded bg-white text-slate-600">No resources yet. Add items to <code>/assets/resources.json</code>.</div>
+    </template>
+    <template id="empty-filter">
+      <div class="p-6 border rounded bg-white text-slate-600">No matches. Try clearing search or tags.</div>
+    </template>
+  </main>
 </body>
 </html>
-
-
