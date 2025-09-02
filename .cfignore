@@ -7,3 +7,4 @@ functions/src/
 functions/vitest.config.mts
 # Never upload private content
 public/private/
+functions/
