@@ -11,9 +11,7 @@ branch = ""
 # Cloudflare Pages configuration
 
 [build]
-# Change this command and directory to match your framework
-command = "npm run build"
-directory = "dist"
+# No build command or directory needed for static HTML site
 
 [env.production]
 # Only deploy from the main branch
