@@ -1,0 +1,6 @@
+name = "jgwalsh-career-profile"
+compatibility_date = "2025-08-31"
+pages_build_output_dir = "."   # serve/deploy from repo root
+
+[dev]
+port = 8788

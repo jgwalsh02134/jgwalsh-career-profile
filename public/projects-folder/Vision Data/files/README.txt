@@ -1,1 +1,0 @@
-Vision Data files placeholder.

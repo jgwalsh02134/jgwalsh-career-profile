@@ -1,0 +1,25 @@
+# --- Do not ship local/dev clutter ---
+node_modules/
+cloudflare-worker/
+public/
+src/
+.github/
+.git/
+.vscode/
+.nova/
+.wrangler/
+*.map
+*.bak
+
+# --- Keep these out of the live site ---
+private/
+projects-folder/
+
+# --- IMPORTANT: DO NOT exclude functions/ so Pages Functions deploy ---
+# (No "functions/" entry here on purpose)
+
+# --- Large files: exclude oversized library PDFs ---
+resources/library/pdfs/
+/resources/library/pdfs/
+/resources/library/pdfs/**
+/resources/library/pdfs/*.pdf

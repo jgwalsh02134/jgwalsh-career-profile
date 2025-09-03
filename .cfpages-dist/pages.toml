@@ -1,0 +1,10 @@
+[build]
+command = ""        # static site; no build step
+directory = "."     # deploy the REPO ROOT
+
+[env.production]
+branch = "main"
+
+# Optional: disable previews; set if you don't want preview builds
+[env.preview]
+branch = ""
