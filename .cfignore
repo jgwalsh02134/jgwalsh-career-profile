@@ -1,15 +1,8 @@
-# Exclude dev/build artifacts from Pages direct upload
+# Ignore common local cruft, NOT your actual site files
 node_modules/
-cloudflare-worker/
-functions/node_modules/
-functions/test/
-functions/src/
-functions/vitest.config.mts
-
-# Do NOT exclude the functions directory itself; required for Pages Functions.
-# Never upload private content placed under the public tree:
-public/private/
- 
- # Exclude oversized library PDFs from deploy
- public/resources/library/pdfs/
- resources/library/pdfs/
+.DS_Store
+.git/
+.gitignore
+*.log
+# If you truly have a build output folder, keep it (but you're serving from root)
+# DO NOT put "/" or "*" here, and do not ignore index.html, assets/, etc.
