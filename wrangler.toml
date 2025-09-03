@@ -6,3 +6,9 @@ port = 8788
 
 [pages]
 pages_build_output_dir = "."
+
+[pages]
+pages_build_output_dir = "."
+
+[pages]
+pages_build_output_dir = "."
