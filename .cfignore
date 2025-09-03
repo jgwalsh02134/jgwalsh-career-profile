@@ -17,3 +17,6 @@ projects-folder/
 
 # --- IMPORTANT: DO NOT exclude functions/ so Pages Functions deploy ---
 # (No "functions/" entry here on purpose)
+
+# --- Large files: exclude oversized library PDFs ---
+resources/library/pdfs/
