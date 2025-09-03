@@ -1,8 +1,5 @@
-# Ignore common local cruft, NOT your actual site files
 node_modules/
 .DS_Store
 .git/
 .gitignore
 *.log
-# If you truly have a build output folder, keep it (but you're serving from root)
-# DO NOT put "/" or "*" here, and do not ignore index.html, assets/, etc.
