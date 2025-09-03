@@ -1,10 +1,5 @@
-# Exclude dev/build artifacts from Pages direct upload
 node_modules/
-cloudflare-worker/
-functions/node_modules/
-functions/test/
-functions/src/
-functions/vitest.config.mts
-# Never upload private content
-public/private/
-functions/
+.DS_Store
+.git/
+.gitignore
+*.log
