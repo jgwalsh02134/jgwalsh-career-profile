@@ -1,9 +1,0 @@
-[build]
-command = ""           # static site, no build
-directory = "public"   # deploy the public/ dir
-
-[env.production]
-branch = "main"
-
-[env.preview]
-branch = ""            # disable previews if desired
