@@ -84,6 +84,58 @@ What the script does:
 
 Review the script before running in CI. Adjust the `.cfignore` section if you need assets from paths it excludes (e.g., remove `src/` if those files must deploy).
 
+### Quick Recovery / Fix Scripts Added
+
+These helper scripts live in `scripts/` to recover or adjust Cloudflare Pages behavior quickly:
+
+| Script | Purpose |
+| ------ | ------- |
+| `fix_pages_deploy.sh` | Flatten (if needed), ensure `_headers`, `_redirects`, normalize `.cfignore`, remove stale `pages.toml`, push a preview deploy via Wrangler. |
+| `enable_pages_git_deploy.sh` | Re-introduce a `pages.toml` declaring the repo root as the output and trigger a preview deploy (interactive merge prompt). |
+| `fix_pages_enable_git_deploys.sh` | Minimal variant that just adds `pages.toml` + bump to force Cloudflare detecting content, pushes a dedicated branch. |
+| `promote_pages_fix.sh` | Promotes the fix branch: optional Wrangler preview, merges into `main`, triggers production deploy, basic header sanity check. |
+
+All scripts are idempotent (re-running is safe) and use fast‑forward only pulls to avoid accidental merge commits unless explicitly merging a fix branch.
+
+### Typical Recovery Flow
+
+1. Run `scripts/fix_pages_enable_git_deploys.sh` to create a branch with a minimal `pages.toml` if Cloudflare shows "No deployment available" for previews.
+2. If you need a more guided interactive merge, use `scripts/enable_pages_git_deploy.sh` instead.
+3. Once preview is healthy, run `scripts/promote_pages_fix.sh` (or open a PR and merge manually) to put the config on `main`.
+4. (Optional) Use `scripts/fix_pages_deploy.sh` if you previously had a `public/` folder or conflicting config you want to flatten/remove.
+
+### Minimal `pages.toml` Reference
+
+```toml
+[build]
+command = ""
+cwd = "."
+output_dir = "."
+```
+
+### Environment Variables (Wrangler Direct Deploys)
+
+Set these if you want the scripts to auto‑invoke Wrangler deploys instead of relying only on Git builds:
+
+```bash
+export CLOUDFLARE_ACCOUNT_ID="<account_id>"   # or CLOUDFLARE_ACCOUNT_ID
+export CLOUDFLARE_API_TOKEN="<token_with_pages_edit>"  # or CF_API_TOKEN
+```
+
+Without them, scripts skip direct Wrangler deploys gracefully (Git deploy still occurs).
+
+### Safety Notes
+
+- Scripts never force push.
+- Use a clean working tree; they add only the intended config files.
+- Re-run is safe; if branches already exist they are reset to local state with `git switch -C` semantics.
+
+### Future Hardening Ideas
+
+- Add a GitHub Action that validates `pages.toml` and warns on accidental deletion.
+- Add a smoke test (curl + grep for a known string) after each production deploy.
+- Collapse overlapping scripts into a single `pagesctl` with subcommands if maintenance overhead grows.
+
 ## Contact
 
 Feel free to reach out:
