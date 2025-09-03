@@ -20,3 +20,6 @@ projects-folder/
 
 # --- Large files: exclude oversized library PDFs ---
 resources/library/pdfs/
+/resources/library/pdfs/
+/resources/library/pdfs/**
+/resources/library/pdfs/*.pdf
