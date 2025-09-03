@@ -1,4 +1,4 @@
-# keep site content; ignore only junk
+# Keep site content; ignore only junk
 node_modules/
 .DS_Store
 .git/
