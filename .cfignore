@@ -1,5 +1,5 @@
+# Keep site content; ignore only junk
 node_modules/
 .DS_Store
 .git/
-.gitignore
-*.log
+.vscode/
