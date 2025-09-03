@@ -6,7 +6,7 @@
   <url><loc>$base/case_resolution_sankey_2024.html</loc></url>
   <url><loc>$base/contact.html</loc></url>
   <url><loc>$base/experience.html</loc></url>
-  <url><loc>$base/functions/</loc></url>
+  <url><loc>$base/functions/public/</loc></url>
   <url><loc>$base/</loc></url>
   <url><loc>$base/interactive_crime_arrest_trends.html</loc></url>
   <url><loc>$base/interactive_neighborhood_treemap.html</loc></url>
@@ -39,36 +39,6 @@
   <url><loc>$base/projects/gallery/</loc></url>
   <url><loc>$base/projects/</loc></url>
   <url><loc>$base/projects/psyber-nexus/</loc></url>
-  <url><loc>$base/404.html</loc></url>
-  <url><loc>$base/about.html</loc></url>
-  <url><loc>$base/assets/favicon/</loc></url>
-  <url><loc>$base/case_resolution_sankey_2024.html</loc></url>
-  <url><loc>$base/contact.html</loc></url>
-  <url><loc>$base/experience.html</loc></url>
-  <url><loc>$base/</loc></url>
-  <url><loc>$base/interactive_crime_arrest_trends.html</loc></url>
-  <url><loc>$base/interactive_neighborhood_treemap.html</loc></url>
-  <url><loc>$base/interactive_violent_crime_sunburst.html</loc></url>
-  <url><loc>$base/logout.html</loc></url>
-  <url><loc>$base/project-crime-analysis.html</loc></url>
-  <url><loc>$base/projects-folder/Vision</loc></url>
-  <url><loc>Data/demos/object-detection/</loc></url>
-  <url><loc>$base/projects-folder/Vision</loc></url>
-  <url><loc>Data/</loc></url>
-  <url><loc>$base/projects-folder/city-incident-pulse/</loc></url>
-  <url><loc>$base/projects-folder/deception-explorer/</loc></url>
-  <url><loc>$base/projects-folder/index-dev.html</loc></url>
-  <url><loc>$base/projects-folder/</loc></url>
-  <url><loc>$base/projects-folder/interview-sim/</loc></url>
-  <url><loc>$base/projects-folder/threat-triage/</loc></url>
-  <url><loc>$base/projects.html</loc></url>
-  <url><loc>$base/projects/albany-crime-dashboard/</loc></url>
-  <url><loc>$base/projects/gallery/</loc></url>
-  <url><loc>$base/projects/</loc></url>
-  <url><loc>$base/projects/psyber-nexus/</loc></url>
-  <url><loc>$base/resources/</loc></url>
-  <url><loc>$base/resume.html</loc></url>
-  <url><loc>$base/verification.html</loc></url>
   <url><loc>$base/resources/</loc></url>
   <url><loc>$base/resume.html</loc></url>
   <url><loc>$base/verification.html</loc></url>
