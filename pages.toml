@@ -1,8 +1,6 @@
 # Cloudflare Pages build config
 [build]
-# No build needed (static site at repo root)
-command   = ""
-# Build runs in the repo root
-cwd       = "."
-# Deploy files from the repo root
+# No build step, static site lives at repo root
+command    = ""
+cwd        = "."
 output_dir = "."
