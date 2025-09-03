@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Resource Center & Downloads — jgwalsh.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CDN is acceptable here; if CSP blocks it, keep the markup and continue (functionality remains). -->
+  <script src="https://cdn.tailwindcss.com" defer></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <main class="mx-auto max-w-6xl p-6">
+    <header class="mb-6">
+      <h1 class="text-2xl font-semibold">Resource Center & Downloads</h1>
+      <p class="text-sm text-slate-600">Search, filter, and download files.</p>
+    </header>
+
+    <!-- resources:start -->
+    <!-- resources-build: 405f15c -->
+    <section class="rc" data-js="rc-root">
+      <div class="rc-controls" data-js="controls" aria-label="Resource controls">
+        <input data-js="search" type="search" placeholder="Search ( / to focus )" aria-label="Search resources" />
+        <button data-js="clear">Clear</button>
+
+        <div class="rc-views" role="group" aria-label="View">
+          <button data-js="view-grid" aria-pressed="true">Grid</button>
+          <button data-js="view-list" aria-pressed="false">List</button>
+        </div>
+
+        <select data-js="filter-collection" aria-label="Filter by collection"></select>
+        <select data-js="filter-type" aria-label="Filter by type"></select>
+        <select data-js="filter-year" aria-label="Filter by year"></select>
+        <select data-js="sort" aria-label="Sort">
+          <option value="recent">Newest</option>
+          <option value="title">Title A→Z</option>
+          <option value="size">Size</option>
+        </select>
+
+        <button data-js="reset">Reset</button>
+        <div class="rc-count"><span data-js="count">0</span> items</div>
+        <span class="sr-only" data-js="status" aria-live="polite"></span>
+      </div>
+
+      <div class="rc-chips" data-js="chips" aria-label="Tags"></div>
+
+      <section class="rc-results" data-js="results" aria-live="polite"></section>
+
+      <div class="rc-bulk" data-js="bulkbar" aria-label="Bulk actions">
+        <span><strong data-js="bulk-count">0</strong> selected</span>
+        <div class="rc-bulk-actions">
+          <button data-js="bulk-copy">Copy URLs</button>
+          <button data-js="bulk-clear">Clear</button>
+        </div>
+      </div>
+
+      <p class="rc-note">Private area (Access-gated). Not indexed.</p>
+
+      <!-- Empty states -->
+      <template data-js="tpl-empty-all">
+        <div class="rc-empty">No resources yet. Add items to <code>/assets/resources.json</code>.</div>
+      </template>
+      <template data-js="tpl-empty-filter">
+        <div class="rc-empty">No matches. Clear search or filters.</div>
+      </template>
+    </section>
+    <!-- resources:end -->
+  </main>
+  <!-- Include the new script with a cache-busting param -->
+  <script type="module" src="/src/resources.js?v=405f15c"></script>
+</body>
+</html>

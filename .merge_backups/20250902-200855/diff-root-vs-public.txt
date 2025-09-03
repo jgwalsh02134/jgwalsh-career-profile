@@ -1,0 +1,2137 @@
+---- resume.html
+diff --git a/resume.html b/public/resume.html
+index 1bc0a12..53694f2 100644
+--- a/resume.html
++++ b/public/resume.html
+@@ -88,7 +88,6 @@
+         <a href="about.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">About</a>
+         <a href="resume.html" class="font-medium text-slate-600 bg-indigo-100 text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2" aria-current="page">Résumé</a>
+         <a href="projects.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Projects</a>
+-        <a href="/resources/" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Resources</a>
+         <a href="contact.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Contact</a>
+         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+@@ -99,7 +98,6 @@
+       <a href="about.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">About</a>
+       <a href="resume.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 bg-indigo-100 text-indigo-700" aria-current="page">Résumé</a>
+       <a href="projects.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Projects</a>
+-      <a href="/resources/" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Resources</a>
+       <a href="contact.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Contact</a>
+     </div>
+   </header>
+
+---- index.html
+diff --git a/index.html b/public/index.html
+index 152f16c..72bbda9 100644
+--- a/index.html
++++ b/public/index.html
+@@ -142,7 +142,6 @@
+         <a href="about.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">About</a>
+         <a href="resume.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Résumé</a>
+         <a href="projects.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Projects</a>
+-        <a href="/resources/" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Resources</a>
+         <a href="contact.html" class="font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-200 rounded-md px-3 py-2">Contact</a>
+         <button id="theme-toggle"
+                 class="theme-toggle"
+@@ -159,7 +158,6 @@
+       <a href="about.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">About</a>
+       <a href="resume.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Résumé</a>
+       <a href="projects.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Projects</a>
+-      <a href="/resources/" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Resources</a>
+       <a href="contact.html" class="block py-2 px-3 rounded-md font-medium text-slate-600 hover:bg-indigo-100 hover:text-indigo-700">Contact</a>
+     </div>
+   </header>
+
+---- about.html
+diff --git a/about.html b/public/about.html
+index f623a18..01c4290 100644
+--- a/about.html
++++ b/public/about.html
+@@ -110,7 +110,6 @@
+         <a href="about.html" class="text-indigo-600 font-semibold border-b-2 border-indigo-600 px-2 py-1" aria-current="page">About</a>
+         <a href="resume.html" class="hover:text-indigo-600 transition px-2 py-1">Résumé</a>
+         <a href="projects.html" class="hover:text-indigo-600 transition px-2 py-1">Projects</a>
+-        <a href="/resources/" class="hover:text-indigo-600 transition px-2 py-1">Resources</a>
+         <a href="contact.html" class="hover:text-indigo-600 transition px-2 py-1">Contact</a>
+         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+@@ -121,7 +120,6 @@
+       <a href="about.html" class="block py-2 text-sm text-indigo-600 font-semibold">About</a>
+       <a href="resume.html" class="block py-2 text-sm hover:text-indigo-600">Résumé</a>
+       <a href="projects.html" class="block py-2 text-sm hover:text-indigo-600">Projects</a>
+-      <a href="/resources/" class="block py-2 text-sm hover:text-indigo-600">Resources</a>
+       <a href="contact.html" class="block py-2 text-sm hover:text-indigo-600">Contact</a>
+     </div>
+   </header>
+@@ -216,4 +214,4 @@
+     }
+   </script>
+ </body>
+-</html>
++</html>
+\ No newline at end of file
+
+---- contact.html
+diff --git a/contact.html b/public/contact.html
+index df9c1a9..9b4d2a9 100644
+--- a/contact.html
++++ b/public/contact.html
+@@ -109,7 +109,6 @@
+         <a href="about.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">About</a>
+         <a href="resume.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Résumé</a>
+         <a href="projects.html" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Projects</a>
+-        <a href="/resources/" class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Resources</a>
+         <a href="contact.html" class="text-indigo-600 font-semibold transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Contact</a>
+         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+@@ -120,7 +119,6 @@
+       <a href="about.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">About</a>
+       <a href="resume.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Résumé</a>
+       <a href="projects.html" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Projects</a>
+-      <a href="/resources/" class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Resources</a>
+       <a href="contact.html" class="block py-2 text-sm text-indigo-600 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Contact</a>
+     </div>
+   </header>
+
+---- projects/index.html
+diff --git a/projects/index.html b/public/projects/index.html
+index af07560..8a43784 100644
+--- a/projects/index.html
++++ b/public/projects/index.html
+@@ -1,61 +1,394 @@
+-<!doctype html>
+-<html lang="en">
++<!DOCTYPE html>
++<html lang="en" class="scroll-smooth">
+ <head>
+-  <meta charset="utf-8">
+-  <meta name="viewport" content="width=device-width,initial-scale=1">
+-  <title>Projects & Portfolio — James Gregory Walsh</title>
+-  <meta name="description" content="A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives.">
+-  <link rel="canonical" href="/projects/">
+-  <meta name="color-scheme" content="light dark">
+-  <link rel="stylesheet" href="/assets/css/projects.css">
++  <meta charset="UTF-8" />
++  <meta name="viewport" content="width=device-width, initial-scale=1" />
++  <title>Projects & Portfolio – James Gregory Walsh</title>
++  <meta name="description" content="Projects and portfolio of James (J.) Gregory Walsh – analysis, public data, visualization, psych+tech." />
++  <link rel="canonical" href="https://jgwalsh.com/projects" />
++  <meta name="color-scheme" content="light dark" />
++  <link rel="preconnect" href="https://fonts.googleapis.com">
++  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
++  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@450;600;700&display=swap" rel="stylesheet">
++  <link rel="stylesheet" href="/assets/css/style.css" />
++  <script src="/assets/js/theme.js" defer></script>
++  <script src="https://cdn.tailwindcss.com"></script>
++  <script>
++    tailwind.config = {
++      darkMode: 'class',
++      theme: {
++        extend: {
++          colors: { navy: '#0F2A5F', sage: '#4b6e5d', ink: '#111317' },
++          boxShadow: {
++            card: '0 8px 24px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.06)',
++            cardHover: '0 16px 32px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.10)'
++          },
++          borderRadius: { 'xl2': '1.1rem' },
++          animation: { 'fade-in': 'fadeIn .7s ease-out both' },
++          keyframes: {
++            fadeIn: { '0%': {opacity:0, transform:'translateY(8px)'},
++                      '100%': {opacity:1, transform:'translateY(0)'} }
++          }
++        },
++        fontFamily: { sans: ['Inter','system-ui','Avenir','Helvetica','Arial','sans-serif'] }
++      }
++    }
++  </script>
++  <style>
++    /* Minimal helpers (safe to keep here or move to style.css) */
++    .card-img {
++      aspect-ratio: 16/9;
++      width: 100%; height: auto; object-fit: cover; display: block;
++    }
++    .card-clip { border-radius: 14px; overflow: hidden; }
++    .card { background: var(--card-bg, #fff); }
++    .card:hover .img-overlay { opacity: .08; }
++    .img-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,.28)); opacity: .05; transition: opacity .2s ease; }
++    .tag {
++      font: 600 12px/1.2 Inter, sans-serif; padding: 6px 10px; border-radius: 999px;
++      background: rgba(15,42,95,.06); color:#0F2A5F; border:1px solid rgba(15,42,95,.12);
++    }
++    @media (prefers-color-scheme: dark) {
++      .tag { background: rgba(255,255,255,.06); color:#e8e8e8; border-color: rgba(255,255,255,.14); }
++    }
++    .focus-ring { outline: 0; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0F2A5F; }
++    @media (prefers-color-scheme: dark) { .focus-ring { box-shadow: 0 0 0 2px #0F2A5F, 0 0 0 4px #e8e8e8; } }
++    .list-card .card-img { aspect-ratio: 3/2; max-width: 320px; }
++  </style>
++
++  <!-- OpenGraph (optional) -->
++  <meta property="og:title" content="Projects & Portfolio – James Gregory Walsh" />
++  <meta property="og:description" content="Selected work across analysis, visualization, and psych+tech." />
++  <meta property="og:url" content="https://jgwalsh.com/projects" />
++  <meta property="og:image" content="https://jgwalsh.com/assets/favicon/favicon-192.png" />
+ </head>
+-<body style="background:var(--bg); color:var(--text);">
+-  <main class="page-wrap" id="projects-app">
+-    <header class="header" aria-labelledby="title">
+-      <h1 id="title">Projects & Portfolio</h1>
+-      <p>A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives.</p>
+-    </header>
+-
+-    <section class="toolbar" aria-label="Project controls">
+-      <div class="search" role="search">
+-        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M21 21l-4.2-4.2m1.2-4a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+-        <input id="q" type="search" placeholder="Search projects…" autocomplete="off" />
++
++<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-slate-200 antialiased leading-relaxed flex flex-col min-h-screen">
++  <a href="#main" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
++
++  <!-- Header -->
++  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50">
++    <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
++      <a href="/index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
++      <div class="sm:hidden">
++        <button onclick="toggleMenu()" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false">
++          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
++          <span class="sr-only">Toggle menu</span>
++        </button>
+       </div>
+-      <div class="filters" aria-label="Filters">
+-        <!-- Pills added by JS from distinct types/tags -->
++      <nav class="hidden sm:flex items-center gap-6 text-sm text-slate-700" role="navigation" aria-label="Main">
++        <a href="/index.html" class="hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Home</a>
++        <a href="/about.html" class="hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
++        <a href="/resume.html" class="hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
++        <a href="/projects/" class="hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy" aria-current="page">Projects</a>
++        <a href="/contact.html" class="hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
++        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
++          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
++        </button>
++      </nav>
++    </div>
++    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" role="navigation" aria-label="Mobile">
++      <a href="/index.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Home</a>
++      <a href="/about.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
++      <a href="/resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
++      <a href="/projects/" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy" aria-current="page">Projects</a>
++      <a href="/contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
++      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch theme">
++        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
++      </button>
++    </div>
++  </header>
++
++  <main id="main" class="max-w-6xl mx-auto py-10 sm:py-14 px-4 flex-grow w-full" itemscope itemtype="https://schema.org/ItemList">
++    <meta itemprop="itemListOrder" content="https://schema.org/ItemListOrderAscending" />
++    <meta itemprop="name" content="Projects" />
++
++    <!-- Title + Controls -->
++    <section class="mb-6 sm:mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
++      <div>
++        <h1 class="text-3xl sm:text-4xl font-bold text-navy">Projects</h1>
++        <p class="text-base text-slate-600 dark:text-slate-400 mt-2">A curated set of analysis, visualization, and psych+tech work.</p>
+       </div>
+-      <div class="sort">
+-        <label for="sort">Sort</label>
+-        <select id="sort" aria-label="Sort">
+-          <option value="featured">Featured</option>
+-          <option value="newest">Newest</option>
+-          <option value="oldest">Oldest</option>
+-          <option value="az">A–Z</option>
+-        </select>
++      <div class="flex flex-wrap items-center gap-3">
++        <div class="flex gap-2" role="toolbar" aria-label="Layout">
++          <button id="gridBtn" class="px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold" aria-pressed="true">Grid</button>
++          <button id="listBtn" class="px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm">List</button>
++        </div>
++        <div class="flex gap-2">
++          <label class="sr-only" for="sort">Sort</label>
++          <select id="sort" class="px-3 py-1.5 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm">
++            <option value="recent" selected>Most Recent</option>
++            <option value="alpha">A → Z</option>
++          </select>
++        </div>
+       </div>
+     </section>
+ 
+-    <section class="grid" id="grid" aria-live="polite">
+-      <article class="card skeleton" aria-hidden="true" style="height:280px;"></article>
+-      <article class="card skeleton" aria-hidden="true" style="height:280px;"></article>
+-      <article class="card skeleton" aria-hidden="true" style="height:280px;"></article>
++    <!-- Search + Filter pills -->
++    <section class="mb-6">
++      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
++        <label for="search" class="sr-only">Search projects</label>
++        <input id="search" type="search" placeholder="Search projects…" class="w-full md:w-80 px-3 py-2 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sage" aria-describedby="results-count" />
++        <div id="filters" class="flex flex-wrap gap-2" role="toolbar" aria-label="Filters">
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-navy text-white" data-filter="all" aria-pressed="true">All</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800" data-filter="research" aria-pressed="false">Research</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800" data-filter="open-source" aria-pressed="false">Open Source</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800" data-filter="visualization" aria-pressed="false">Visualization</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800" data-filter="psych-tech" aria-pressed="false">Psych + Tech</button>
++        </div>
++      </div>
++      <div id="results-count" class="mt-2 text-sm text-slate-600 dark:text-slate-400" aria-live="polite">Showing 0 projects</div>
+     </section>
+ 
+-    <div class="empty" id="empty" hidden>No results. Try clearing filters.</div>
++    <!-- Grid/List container -->
++    <div id="projectsGrid" class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 animate-fade-in"></div>
+   </main>
+ 
+-  <script type="module" src="/assets/js/projects.js"></script>
+-</body>
++  <!-- GPT buttons -->
++  <section class="gpt-links" aria-label="Custom GPTs">
++    <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt" class="gpt-button" target="_blank" rel="noopener">
++      <img src="/assets/icons/b&w-chatgpt-2.svg" alt="Investigator GPT icon" class="gpt-icon" />
++      <span>Investigator GPT</span>
++    </a>
++  </section>
+ 
+-<section class="gpt-links" aria-label="Custom GPTs">
+-  <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt"
+-     class="gpt-button" target="_blank" rel="noopener noreferrer">
+-    <img src="/assets/icons/b&w-chatgpt-2.svg" alt="Investigator GPT icon" class="gpt-icon" />
+-    <span>Investigator GPT</span>
+-  </a>
+-</section>
+-  
+-</html>
++  <!-- Footer -->
++  <footer class="bg-gray-100 dark:bg-slate-950 text-sm text-gray-600 dark:text-slate-400 border-t pt-8 pb-6 px-4 mt-auto">
++    <div class="max-w-4xl mx-auto text-center space-y-4">
++      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
++      <div class="flex justify-center items-center gap-3">
++        <a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline">Email</a>
++        <span>·</span>
++        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-navy hover:underline">GitHub</a>
++        <span>·</span>
++        <a href="/contact.html" class="text-navy hover:underline">Contact</a>
++      </div>
++    </div>
++  </footer>
++
++  <script>
++    function toggleMenu() {
++      const menu = document.getElementById('mobile-menu');
++      menu.classList.toggle('hidden');
++      menu.setAttribute('aria-expanded', !menu.classList.contains('hidden'));
++    }
++
++    // ---- PROJECT DATA (edit here when adding new projects) ----
++    const PROJECTS = [
++      {
++        title: "Interactive Projects Gallery",
++        href: "/projects-folder/index.html",
++        img: "/assets/images/interactive-project-gal-2.png",
++        date: "2025-08-20",
++        tags: ["visualization","open-source"],
++        blurb: "Prototypes and proofs of concept collected in one place."
++      },
++      {
++        title: "Project Source Code & Contributions",
++        href: "https://github.com/jgwalsh02134",
++        img: "/assets/images/source-code-project-card.png",
++        date: "2025-07-10",
++        tags: ["open-source","research"],
++        blurb: "Website source and other public repositories.",
++        external: true
++      },
++      {
++        title: "Psyber Nexus",
++        href: "/projects/psyber-nexus/",
++        img: "/assets/images/psyber-nexus-project-card-3.png?v=3",
++        date: "2025-08-10",
++        tags: ["psych-tech","research"],
++        blurb: "Research at the intersection of psychology and technology."
++      },
++      {
++        title: "Crime Analysis Report: Albany, NY (2021–2024)",
++        href: "/projects/albany-crime-dashboard/",
++        img: "/assets/images/alb-crime-analysis-image-2.png",
++        date: "2025-03-21",
++        tags: ["research","visualization"],
++        blurb: "Trends across total crime, violent categories, neighborhood distribution, and case resolution."
++      },
++      {
++        title: "AdSell.ai & Vision Data — Marketing Plan",
++        href: "https://notes.jgwalsh.com",
++        img: "/assets/images/notes-project-card-image.png?v=2",
++        date: "2025-06-18",
++        tags: ["psych-tech","open-source"],
++        blurb: "Central planning hub and notes.",
++        external: true
++      },
++      {
++        title: "Resource Center",
++        href: "/resources/",
++        img: "/assets/images/interactive-project-gal-2.png",
++        date: "2025-08-24",
++        tags: ["open-source","resources"],
++        blurb: "Password-protected hub for PDFs, docs, notes, and datasets."
++      }
++    ];
++
++    // ------- Utilities -------
++    const qs  = (s, el=document) => el.querySelector(s);
++    const qsa = (s, el=document) => [...el.querySelectorAll(s)];
++    const norm = (s) => (s || "").toLowerCase();
++    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
++
++    function projectCard(p, index, listMode=false){
++      const srcset = `${p.img} 640w, ${p.img} 960w, ${p.img} 1280w`;
++      const sizes  = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw";
++      const badgeHTML = p.tags.slice(0,3).map(t => `<span class="tag">${t}</span>`).join(' ');
++      const btnLabel = p.external ? 'Open Link' : 'View Project';
++      const targetRel = p.external ? 'target="_blank" rel="noopener"' : '';
+ 
++      if (!listMode) {
++        return `
++        <article class="card relative card-clip bg-white dark:bg-slate-800 shadow-card hover:shadow-cardHover transition focus-within:ring-2 focus-within:ring-sage"
++                 data-title="${p.title}" data-tags="${p.tags.join(',')}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
++          <meta itemprop="position" content="${index+1}" />
++          <img class="card-img" src="${p.img}" srcset="${srcset}" sizes="${sizes}" alt="${p.title}" loading="lazy" decoding="async" itemprop="image">
++          <div class="img-overlay" aria-hidden="true"></div>
++          <div class="p-6 sm:p-7 flex flex-col gap-3">
++            <h2 class="text-xl sm:text-2xl font-bold text-navy" itemprop="name">${p.title}</h2>
++            <p class="text-sm text-slate-500">${new Date(p.date).toLocaleDateString()}</p>
++            <p class="text-slate-700 dark:text-slate-300">${p.blurb}</p>
++            <div class="flex flex-wrap gap-2 mt-1">${badgeHTML}</div>
++            <div class="mt-4">
++              <a href="${p.href}" ${targetRel}
++                 class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-navy text-white hover:bg-navy/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">${btnLabel}</a>
++            </div>
++          </div>
++          <a href="${p.href}" ${targetRel} class="absolute inset-0 z-10" aria-label="${p.title}"></a>
++        </article>`;
++      }
++
++      return `
++      <article class="list-card card relative bg-white dark:bg-slate-800 rounded-xl2 shadow-card hover:shadow-cardHover transition p-4 sm:p-5 flex gap-4 items-start"
++               data-title="${p.title}" data-tags="${p.tags.join(',')}" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
++        <meta itemprop="position" content="${index+1}" />
++        <img class="card-img rounded-xl2" src="${p.img}" srcset="${srcset}" sizes="(max-width: 640px) 100vw, 320px" alt="${p.title}" loading="lazy" decoding="async" itemprop="image" style="max-width:320px;">
++        <div class="flex-1 min-w-0">
++          <h2 class="text-lg sm:text-xl font-bold text-navy" itemprop="name">${p.title}</h2>
++          <p class="text-sm text-slate-500">${new Date(p.date).toLocaleDateString()}</p>
++          <p class="mt-2 text-slate-700 dark:text-slate-300">${p.blurb}</p>
++          <div class="flex flex-wrap gap-2 mt-2">${badgeHTML}</div>
++          <div class="mt-3">
++            <a href="${p.href}" ${targetRel}
++               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-navy text-white hover:bg-navy/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">Open</a>
++          </div>
++        </div>
++        <a href="${p.href}" ${targetRel} class="absolute inset-0 z-10" aria-label="${p.title}"></a>
++      </article>`;
++    }
++
++    function observeReveal(){
++      const obs = new IntersectionObserver((entries)=>{
++        entries.forEach(e=>{
++          if (e.isIntersecting) {
++            e.target.style.transition = 'transform .35s ease, opacity .35s ease';
++            e.target.style.transform = 'translateY(0)';
++            e.target.style.opacity = '1';
++            obs.unobserve(e.target);
++          }
++        });
++      }, { rootMargin: '80px 0px' });
++      qsa('#projectsGrid article').forEach(card=>{
++        card.style.transform = 'translateY(8px)';
++        card.style.opacity = '.001';
++        obs.observe(card);
++      });
++    }
++
++    function render(listMode=false) {
++      const wrap = document.getElementById('projectsGrid');
++      wrap.className = listMode
++        ? "grid gap-5 grid-cols-1 animate-fade-in"
++        : "grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 animate-fade-in";
++      wrap.innerHTML = PROJECTS.map((p,i)=>projectCard(p,i,listMode)).join('');
++      if (!prefersReduced) observeReveal();
++      applyFilters(); // keep in sync after render
++    }
++
++    // Search / Filter / Sort / Layout
++    const searchEl = document.getElementById('search');
++    const countEl  = document.getElementById('results-count');
++    const pills    = qsa('.filter-pill');
++    const sortEl   = document.getElementById('sort');
++    const gridBtn  = document.getElementById('gridBtn');
++    const listBtn  = document.getElementById('listBtn');
++
++    function setQS(params) {
++      const url = new URL(location.href);
++      Object.entries(params).forEach(([k,v]) => (v==null || v==='') ? url.searchParams.delete(k) : url.searchParams.set(k,v));
++      history.replaceState(null,'',url);
++    }
++    function getQS() {
++      const sp = new URLSearchParams(location.search);
++      return { q: sp.get('q')||'', f: sp.get('f')||'all', s: sp.get('s')||'recent', mode: sp.get('mode')||'grid' };
++    }
++
++    function applyFilters(){
++      const term = norm(searchEl.value);
++      const active = pills.find(p=>p.getAttribute('aria-pressed')==='true');
++      const filter = active ? active.getAttribute('data-filter') : 'all';
++
++      // sort in-place
++      const mode = sortEl.value;
++      PROJECTS.sort((a,b)=>{
++        if (mode==='alpha') return a.title.localeCompare(b.title);
++        return new Date(b.date) - new Date(a.date); // default recent
++      });
++
++      const cards = qsa('#projectsGrid article');
++      let visible = 0;
++      cards.forEach(card=>{
++        const title = norm(card.getAttribute('data-title'));
++        const tags  = norm(card.getAttribute('data-tags'));
++        const matchesTerm = !term || title.includes(term) || tags.includes(term);
++        const matchesFilter = filter==='all' || tags.split(',').includes(filter);
++        const show = matchesTerm && matchesFilter;
++        card.style.display = show ? '' : 'none';
++        if (show) visible++;
++      });
++      if (countEl) countEl.textContent = `Showing ${visible} project${visible===1?'':'s'}`;
++      setQS({ q: term || null, f: filter, s: sortEl.value, mode: gridBtn.getAttribute('aria-pressed')==='true' ? 'grid' : 'list' });
++    }
++
++    // Event wiring
++    pills.forEach(pill => pill.addEventListener('click', () => {
++      pills.forEach(p => { p.setAttribute('aria-pressed','false'); p.classList.remove('bg-navy','text-white'); p.classList.add('bg-slate-200','dark:bg-slate-800'); });
++      pill.setAttribute('aria-pressed','true'); pill.classList.add('bg-navy','text-white'); pill.classList.remove('bg-slate-200');
++      applyFilters();
++    }));
++    searchEl.addEventListener('input', applyFilters);
++    sortEl.addEventListener('change', applyFilters);
++
++    gridBtn.addEventListener('click', () => {
++      gridBtn.setAttribute('aria-pressed','true'); listBtn.setAttribute('aria-pressed','false');
++      render(false);
++    });
++    listBtn.addEventListener('click', () => {
++      gridBtn.setAttribute('aria-pressed','false'); listBtn.setAttribute('aria-pressed','true');
++      render(true);
++    });
++
++    // ---- INIT: make sure cards actually render ----
++    (function init(){
++      const { q, f, s, mode } = getQS();
++      if (q) searchEl.value = q;
++      sortEl.value = s;
++      pills.forEach(p => {
++        const on = p.getAttribute('data-filter') === f;
++        p.setAttribute('aria-pressed', on ? 'true' : 'false');
++        p.classList.toggle('bg-navy', on);
++        p.classList.toggle('text-white', on);
++        if (!on) p.classList.add('bg-slate-200','dark:bg-slate-800');
++      });
++      // First render (grid by default unless mode=list)
++      if (mode === 'list') { listBtn.click(); } else { gridBtn.click(); }
++      applyFilters();
++    })();
++  </script>
++</body>
++</html>
+ 
+ 
+
+---- projects/psyber-nexus/index.html
+diff --git a/projects/psyber-nexus/index.html b/public/projects/psyber-nexus/index.html
+index 3978a4c..96db39a 100644
+--- a/projects/psyber-nexus/index.html
++++ b/public/projects/psyber-nexus/index.html
+@@ -14,8 +14,10 @@
+   <meta property="og:image" content="https://jgwalsh.com/assets/images/psyber-nexus/og-card.png" />
+ 
+   <!-- Favicons -->
+-  <link rel="icon" href="/favicon.ico" sizes="any" />
+-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
++  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png" />
++  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/favicon-192.png" />
++  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180-precomposed.png" />
++  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
+ 
+   <!-- Site CSS -->
+   <link rel="stylesheet" href="/assets/css/main.css" />
+@@ -115,21 +117,6 @@
+ 
+   .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+ 
+-  /* Back to projects button */
+-  .pn-back{
+-    display:inline-block;
+-    margin: 0 0 1rem 0;
+-    padding:.5rem .85rem;
+-    border-radius:12px;
+-    border:1px solid var(--rule);
+-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.2));
+-    color: var(--text);
+-    font-weight:600;
+-    text-decoration:none;
+-  }
+-  .pn-back:hover{ border-color: var(--accent); color: var(--accent-hover); text-decoration:none; }
+-  .pn-back:focus{ outline:2px solid var(--focus); outline-offset:2px; }
+-
+   @media(prefers-color-scheme:light){
+     :root{
+       --bg:#fafafa; --surface:#ffffff; --surface-2:#e8f2f2;
+@@ -143,7 +130,6 @@
+ <body>
+   <main>
+     <section class="pn-hero">
+-      <a class="pn-back" href="/projects/" aria-label="Back to projects">← Back to Projects</a>
+       <div class="pn-badge" aria-label="Psyber Nexus badge">
+         <img class="pn-logo" src="/assets/icons/psyber-nexus-1.svg" alt="" aria-hidden="true" />
+         <span>Psyber Nexus</span>
+
+---- resources/index.html
+diff --git a/resources/index.html b/public/resources/index.html
+index 9a07e7a..770166b 100644
+--- a/resources/index.html
++++ b/public/resources/index.html
+@@ -2,69 +2,137 @@
+ <html lang="en">
+ <head>
+   <meta charset="utf-8" />
+-  <title>Resource Center & Downloads — jgwalsh.com</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+-  <!-- Tailwind CDN is acceptable here; if CSP blocks it, keep the markup and continue (functionality remains). -->
+-  <script src="https://cdn.tailwindcss.com" defer></script>
++  <meta name="robots" content="noindex, nofollow" />
++  <title>Resource Center</title>
++  <link rel="stylesheet" href="/src/resources.css?v=bb0dfda" />
++  <link rel="stylesheet" href="/resources/styles/resources.css?v=1756621024" />
++  <link rel="stylesheet" href="/assets/css/resource-center.css" />
+ </head>
+-<body class="bg-slate-50 text-slate-900">
+-  <!-- resources-build: 39d4bbf -->
+-  <main class="mx-auto max-w-6xl p-6">
+-    <header class="mb-6">
+-      <h1 class="text-2xl font-semibold">Resource Center & Downloads</h1>
+-      <p class="text-sm text-slate-600">Search, filter, and download files.</p>
+-    </header>
++<body data-js="rc-root">
++  <!-- resources-build: bb0dfda -->
++  <header class="rc-header">
++    <a href="/projects.html" class="rc-back" aria-label="Back to Projects">← Back to Projects</a>
++    <h1>Resource Center</h1>
++    <p class="rc-sub">Private library for PDFs, documents, notes, and datasets.</p>
++  </header>
+ 
+-    <!-- resources:start -->
+-    <section class="rc" data-js="rc-root">
+-      <div class="rc-controls" data-js="controls" aria-label="Resource controls">
+-        <input data-js="search" type="search" placeholder="Search ( / to focus )" aria-label="Search resources" />
+-        <button data-js="clear">Clear</button>
++  <section class="rc-toolbar" role="region" aria-label="Search and filters">
++    <div class="rc-row">
++      <div class="rc-input-wrap">
++        <input id="rc-search" data-js="search" type="search" placeholder="Search ( / to focus )" autocomplete="off" aria-label="Search resources" />
++        <button id="rc-clear" data-js="clear" class="rc-btn ghost" aria-label="Clear search">Clear</button>
++      </div>
+ 
+-        <div class="rc-views" role="group" aria-label="View">
+-          <button data-js="view-grid" aria-pressed="true">Grid</button>
+-          <button data-js="view-list" aria-pressed="false">List</button>
+-        </div>
++      <div class="rc-views">
++        <button id="rc-grid" data-js="view-grid" class="rc-btn toggle" aria-pressed="true" title="Grid view (g)">Grid</button>
++        <button id="rc-list" data-js="view-list" class="rc-btn toggle" aria-pressed="false" title="List view (l)">List</button>
++      </div>
++    </div>
+ 
+-        <select data-js="filter-collection" aria-label="Filter by collection"></select>
+-        <select data-js="filter-type" aria-label="Filter by type"></select>
+-        <select data-js="filter-year" aria-label="Filter by year"></select>
+-        <select data-js="sort" aria-label="Sort">
+-          <option value="recent">Newest</option>
+-          <option value="title">Title A→Z</option>
+-          <option value="size">Size</option>
+-        </select>
++    <div class="rc-row rc-filters">
++      <select id="rc-collection" data-js="filter-collection" aria-label="Filter by collection">
++        <option value="">All collections</option>
++        <option value="library">Library</option>
++        <option value="dataset">Datasets</option>
++        <option value="raw">Raw</option>
++      </select>
++      <select id="rc-type" data-js="filter-type" aria-label="Filter by type">
++        <option value="">All types</option>
++        <option value="pdf">PDF</option><option value="epub">EPUB</option>
++        <option value="docx">DOCX</option><option value="md">Markdown</option>
++        <option value="txt">Text</option><option value="css">CSS</option>
++        <option value="csv">CSV</option><option value="json">JSON</option>
++        <option value="parquet">Parquet</option><option value="xlsx">XLSX</option>
++        <option value="link">Link</option><option value="other">Other</option>
++      </select>
++      <select id="rc-year" data-js="filter-year" aria-label="Filter by year (added)">
++        <option value="">All years</option>
++      </select>
++      <select id="rc-sort" data-js="sort" aria-label="Sort results">
++        <option value="new">Newest</option>
++        <option value="old">Oldest</option>
++        <option value="title">Title A–Z</option>
++        <option value="size">Size</option>
++      </select>
++      <button id="rc-reset" data-js="reset" class="rc-btn ghost" title="Reset filters (c)">Reset</button>
++    </div>
+ 
+-        <button data-js="reset">Reset</button>
+-        <div class="rc-count"><span data-js="count">0</span> items</div>
+-        <span class="sr-only" data-js="status" aria-live="polite"></span>
+-      </div>
++    <div id="rc-tags" data-js="chips" class="rc-tags" aria-label="Tag filters"></div>
+ 
+-      <div class="rc-chips" data-js="chips" aria-label="Tags"></div>
++    <div class="rc-stats" aria-live="polite" id="rc-count"><span data-js="count">0</span> items</div>
++    <span class="sr-only" aria-live="polite" data-js="status"></span>
++  </section>
+ 
+-      <section class="rc-results" data-js="results" aria-live="polite"></section>
++  <section class="rc-results rc-grid" id="rc-results" data-js="results" role="list" aria-live="polite"></section>
++
++  <!-- Templates -->
++  <template id="rc-card-template">
++    <article class="rc-card" role="listitem" tabindex="0">
++      <div class="rc-card-head">
++        <span class="rc-badge" data-type></span>
++        <span class="rc-collection" data-collection></span>
++        <span class="rc-origin" data-origin></span>
++        <h3 class="rc-title" data-title></h3>
++      </div>
++      <p class="rc-desc" data-desc></p>
++      <div class="rc-meta">
++        <span data-updated></span>
++        <span data-size></span>
++      </div>
++      <div class="rc-actions">
++        <a class="rc-link" data-href target="_blank" rel="noopener noreferrer">Open</a>
++        <button class="rc-btn ghost" data-copy-url>Copy URL</button>
++        <button class="rc-btn ghost" data-copy-md>Copy MD</button>
++        <button class="rc-btn ghost" data-copy-html>Copy HTML</button>
++        <button class="rc-btn ghost" data-copy-json>Copy JSON</button>
++      </div>
++      <div class="rc-tagsline" data-tagsline></div>
++      <input type="checkbox" class="rc-select" data-select aria-label="Select item for bulk actions">
++    </article>
++  </template>
+ 
+-      <div class="rc-bulk" data-js="bulkbar" aria-label="Bulk actions">
+-        <span><strong data-js="bulk-count">0</strong> selected</span>
+-        <div class="rc-bulk-actions">
+-          <button data-js="bulk-copy">Copy URLs</button>
+-          <button data-js="bulk-clear">Clear</button>
+-        </div>
++  <template id="rc-row-template">
++    <div class="rc-row-item" role="listitem" tabindex="0">
++      <label class="rc-cell rc-check"><input type="checkbox" data-select /></label>
++      <span class="rc-cell rc-type" data-type></span>
++      <span class="rc-cell rc-collection" data-collection></span>
++      <span class="rc-cell rc-origin" data-origin></span>
++      <a class="rc-cell rc-title rc-linkrow" data-href target="_blank" rel="noopener" data-title></a>
++      <span class="rc-cell rc-size" data-size></span>
++      <span class="rc-cell rc-date" data-updated></span>
++      <div class="rc-cell rc-row-actions">
++        <button class="rc-btn mini" data-copy-url title="Copy URL">URL</button>
++        <button class="rc-btn mini" data-copy-md title="Copy Markdown">MD</button>
++        <button class="rc-btn mini" data-copy-html title="Copy HTML">HTML</button>
++        <button class="rc-btn mini" data-copy-json title="Copy JSON">JSON</button>
+       </div>
++    </div>
++  </template>
++
++  <div class="rc-bulkbar" id="rc-bulkbar" data-js="bulkbar" hidden>
++    <div><strong id="rc-bulkcount" data-js="bulk-count">0</strong> selected</div>
++    <div class="rc-bulk-actions">
++      <button class="rc-btn" data-js="bulk-select-all">Select all (visible)</button>
++      <button class="rc-btn" id="rc-bulk-copy" data-js="bulk-copy">Copy URLs</button>
++      <button class="rc-btn ghost" id="rc-bulk-clear" data-js="bulk-clear">Clear</button>
++    </div>
++  </div>
++
++  <template data-js="tpl-empty-all">
++    <div class="empty-state"><h2>No resources yet</h2><p>Add items to <code>/assets/resources.json</code>.</p></div>
++  </template>
++  <template data-js="tpl-empty-filter">
++    <div class="empty-state"><h2>No matches</h2><p>Clear search or filters.</p></div>
++  </template>
++
++  <footer class="rc-footer">
++    <small>Private area (Access-gated). Not indexed.</small>
++  </footer>
+ 
+-      <p class="rc-note">Private area (Access-gated). Not indexed.</p>
++  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" hidden></div>
+ 
+-      <!-- Empty states -->
+-      <template data-js="tpl-empty-all">
+-        <div class="rc-empty">No resources yet. Add items to <code>/assets/resources.json</code>.</div>
+-      </template>
+-      <template data-js="tpl-empty-filter">
+-        <div class="rc-empty">No matches. Clear search or filters.</div>
+-      </template>
+-    </section>
+-    <!-- resources:end -->
+-  </main>
+   <!-- Include the new script with a cache-busting param -->
+-  <script type="module" src="/src/resources.js?v=39d4bbf"></script>
++  <script type="module" src="/src/resources.js?v=bb0dfda"></script>
+ </body>
+ </html>
+
+---- resources/index.html.bak
+diff --git a/resources/index.html.bak b/public/resources/index.html.bak
+index 241f141..f31f35d 100644
+--- a/resources/index.html.bak
++++ b/public/resources/index.html.bak
+@@ -2,69 +2,139 @@
+ <html lang="en">
+ <head>
+   <meta charset="utf-8" />
+-  <title>Resource Center & Downloads — jgwalsh.com</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+-  <!-- Tailwind CDN is acceptable here; if CSP blocks it, keep the markup and continue (functionality remains). -->
+-  <script src="https://cdn.tailwindcss.com" defer></script>
++  <meta name="robots" content="noindex, nofollow" />
++  <title>Resource Center</title>
++  <link rel="stylesheet" href="/resources/styles/resources.css?v=1756621024" />
++  <link rel="stylesheet" href="/assets/css/resource-center.css" />
+ </head>
+-<body class="bg-slate-50 text-slate-900">
+-  <main class="mx-auto max-w-6xl p-6">
+-    <header class="mb-6">
+-      <h1 class="text-2xl font-semibold">Resource Center & Downloads</h1>
+-      <p class="text-sm text-slate-600">Search, filter, and download files.</p>
+-    </header>
++<body>
++  <!-- resources-build: 9eb055d -->
++  <header class="rc-header">
++    <a href="/projects.html" class="rc-back" aria-label="Back to Projects">← Back to Projects</a>
++    <h1>Resource Center</h1>
++    <p class="rc-sub">Private library for PDFs, documents, notes, and datasets.</p>
++  </header>
+ 
+-    <!-- resources:start -->
+-    <!-- resources-build: 405f15c -->
+-    <section class="rc" data-js="rc-root">
+-      <div class="rc-controls" data-js="controls" aria-label="Resource controls">
+-        <input data-js="search" type="search" placeholder="Search ( / to focus )" aria-label="Search resources" />
+-        <button data-js="clear">Clear</button>
++  <section class="rc-toolbar" role="region" aria-label="Search and filters" data-js="rc-root">
++    <div class="rc-row">
++      <div class="rc-input-wrap">
++        <input id="rc-search" data-js="search" type="search" placeholder="Search ( / to focus )" autocomplete="off" aria-label="Search resources" />
++        <button id="rc-clear" data-js="clear" class="rc-btn ghost" aria-label="Clear search">Clear</button>
++      </div>
+ 
+-        <div class="rc-views" role="group" aria-label="View">
+-          <button data-js="view-grid" aria-pressed="true">Grid</button>
+-          <button data-js="view-list" aria-pressed="false">List</button>
+-        </div>
++      <div class="rc-views">
++        <button id="rc-grid" data-js="view-grid" class="rc-btn toggle" aria-pressed="true" title="Grid view (g)">Grid</button>
++        <button id="rc-list" data-js="view-list" class="rc-btn toggle" aria-pressed="false" title="List view (l)">List</button>
++      </div>
++    </div>
+ 
+-        <select data-js="filter-collection" aria-label="Filter by collection"></select>
+-        <select data-js="filter-type" aria-label="Filter by type"></select>
+-        <select data-js="filter-year" aria-label="Filter by year"></select>
+-        <select data-js="sort" aria-label="Sort">
+-          <option value="recent">Newest</option>
+-          <option value="title">Title A→Z</option>
+-          <option value="size">Size</option>
+-        </select>
++    <div class="rc-row rc-filters">
++      <select id="rc-collection" data-js="filter-collection" aria-label="Filter by collection">
++        <option value="">All collections</option>
++        <option value="library">Library</option>
++        <option value="dataset">Datasets</option>
++        <option value="raw">Raw</option>
++      </select>
++      <select id="rc-type" data-js="filter-type" aria-label="Filter by type">
++        <option value="">All types</option>
++        <option value="pdf">PDF</option><option value="epub">EPUB</option>
++        <option value="docx">DOCX</option><option value="md">Markdown</option>
++        <option value="txt">Text</option><option value="css">CSS</option>
++        <option value="csv">CSV</option><option value="json">JSON</option>
++        <option value="parquet">Parquet</option><option value="xlsx">XLSX</option>
++        <option value="link">Link</option><option value="other">Other</option>
++      </select>
++      <select id="rc-year" data-js="filter-year" aria-label="Filter by year (added)">
++        <option value="">All years</option>
++      </select>
++      <select id="rc-sort" data-js="sort" aria-label="Sort results">
++        <option value="new">Newest</option>
++        <option value="old">Oldest</option>
++        <option value="title">Title A–Z</option>
++        <option value="size">Size</option>
++      </select>
++      <button id="rc-reset" data-js="reset" class="rc-btn ghost" title="Reset filters (c)">Reset</button>
++    </div>
+ 
+-        <button data-js="reset">Reset</button>
+-        <div class="rc-count"><span data-js="count">0</span> items</div>
+-        <span class="sr-only" data-js="status" aria-live="polite"></span>
+-      </div>
++    <div id="rc-tags" data-js="chips" class="rc-tags" aria-label="Tag filters"></div>
+ 
+-      <div class="rc-chips" data-js="chips" aria-label="Tags"></div>
++    <div class="rc-stats" aria-live="polite" id="rc-count"><span data-js="count">0</span> items</div>
++  </section>
+ 
+-      <section class="rc-results" data-js="results" aria-live="polite"></section>
++  <!-- resources:start -->
++  <div class="rc-chips" data-js="chips" aria-label="Tags"></div>
++
++  <section class="rc-results rc-grid" id="rc-results" data-js="results" role="list" aria-live="polite"></section>
++
++  <!-- Templates -->
++  <template id="rc-card-template">
++    <article class="rc-card" role="listitem" tabindex="0">
++      <div class="rc-card-head">
++        <span class="rc-badge" data-type></span>
++        <span class="rc-collection" data-collection></span>
++        <span class="rc-origin" data-origin></span>
++        <h3 class="rc-title" data-title></h3>
++      </div>
++      <p class="rc-desc" data-desc></p>
++      <div class="rc-meta">
++        <span data-updated></span>
++        <span data-size></span>
++      </div>
++      <div class="rc-actions">
++        <a class="rc-link" data-href target="_blank" rel="noopener noreferrer">Open</a>
++        <button class="rc-btn ghost" data-copy-url>Copy URL</button>
++        <button class="rc-btn ghost" data-copy-md>Copy MD</button>
++        <button class="rc-btn ghost" data-copy-html>Copy HTML</button>
++        <button class="rc-btn ghost" data-copy-json>Copy JSON</button>
++      </div>
++      <div class="rc-tagsline" data-tagsline></div>
++      <input type="checkbox" class="rc-select" data-select aria-label="Select item for bulk actions">
++    </article>
++  </template>
+ 
+-      <div class="rc-bulk" data-js="bulkbar" aria-label="Bulk actions">
+-        <span><strong data-js="bulk-count">0</strong> selected</span>
+-        <div class="rc-bulk-actions">
+-          <button data-js="bulk-copy">Copy URLs</button>
+-          <button data-js="bulk-clear">Clear</button>
+-        </div>
++  <template id="rc-row-template">
++    <div class="rc-row-item" role="listitem" tabindex="0">
++      <label class="rc-cell rc-check"><input type="checkbox" data-select /></label>
++      <span class="rc-cell rc-type" data-type></span>
++      <span class="rc-cell rc-collection" data-collection></span>
++      <span class="rc-cell rc-origin" data-origin></span>
++      <a class="rc-cell rc-title rc-linkrow" data-href target="_blank" rel="noopener" data-title></a>
++      <span class="rc-cell rc-size" data-size></span>
++      <span class="rc-cell rc-date" data-updated></span>
++      <div class="rc-cell rc-row-actions">
++        <button class="rc-btn mini" data-copy-url title="Copy URL">URL</button>
++        <button class="rc-btn mini" data-copy-md title="Copy Markdown">MD</button>
++        <button class="rc-btn mini" data-copy-html title="Copy HTML">HTML</button>
++        <button class="rc-btn mini" data-copy-json title="Copy JSON">JSON</button>
+       </div>
++    </div>
++  </template>
++
++  <div class="rc-bulkbar" id="rc-bulkbar" data-js="bulkbar" hidden>
++    <div><strong id="rc-bulkcount" data-js="bulk-count">0</strong> selected</div>
++    <div class="rc-bulk-actions">
++      <button class="rc-btn" id="rc-bulk-copy" data-js="bulk-copy">Copy URLs</button>
++      <button class="rc-btn ghost" id="rc-bulk-clear" data-js="bulk-clear">Clear</button>
++    </div>
++  </div>
+ 
+-      <p class="rc-note">Private area (Access-gated). Not indexed.</p>
++  <template data-js="tpl-empty-all">
++    <div class="empty-state"><h2>No resources yet</h2><p>Add items to <code>/assets/resources.json</code>.</p></div>
++  </template>
++  <template data-js="tpl-empty-filter">
++    <div class="empty-state"><h2>No matches</h2><p>Clear search or filters.</p></div>
++  </template>
++
++  <footer class="rc-footer">
++    <small>Private area (Access-gated). Not indexed.</small>
++  </footer>
++
++  <div id="rc-toast" role="status" aria-live="polite" class="rc-toast" data-js="status" hidden></div>
+ 
+-      <!-- Empty states -->
+-      <template data-js="tpl-empty-all">
+-        <div class="rc-empty">No resources yet. Add items to <code>/assets/resources.json</code>.</div>
+-      </template>
+-      <template data-js="tpl-empty-filter">
+-        <div class="rc-empty">No matches. Clear search or filters.</div>
+-      </template>
+-    </section>
+-    <!-- resources:end -->
+-  </main>
+   <!-- Include the new script with a cache-busting param -->
+-  <script type="module" src="/src/resources.js?v=405f15c"></script>
++  <script type="module" src="/src/resources.js?v=9eb055d"></script>
++  <!-- resources:end -->
+ </body>
+ </html>
++
+
+---- projects.html
+diff --git a/projects.html b/public/projects.html
+index 05df73b..507b7e9 100644
+--- a/projects.html
++++ b/public/projects.html
+@@ -57,7 +57,6 @@
+     .jgw-send-btn,.jgw-chat-launcher{background:#e8e8e8;color:#111}
+   }
+   @media (prefers-color-scheme: dark){ .jgw-chat-body a { color: #9ec3ff; } }
+-  /* moved button styles to /assets/css/style.css */
+   </style>
+ 
+   <script type="module">
+@@ -265,7 +264,6 @@
+         <a href="/about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
+         <a href="/resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
+         <a href="/projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy" aria-current="page">Projects</a>
+-        <a href="/resources/" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Resources</a>
+         <a href="/contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+@@ -277,7 +275,6 @@
+       <a href="/about.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
+       <a href="/resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
+       <a href="/projects.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy" aria-current="page">Projects</a>
+-      <a href="/resources/" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Resources</a>
+       <a href="/contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
+       <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+         <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+@@ -289,11 +286,133 @@
+     <div class="text-center mb-8 animate-fade-in">
+         <h1 class="text-3xl sm:text-4xl font-bold text-navy">Projects & Portfolio</h1>
+         <p class="text-lg text-slate-700 mt-4 max-w-2xl mx-auto">
+-            Browse the upgraded, data-driven gallery at <a class="underline" href="/projects/">/projects/</a>.
++            A selection of projects demonstrating my skills in analysis, research, and public service initiatives.
+         </p>
+     </div>
+-    <div class="text-center">
+-      <a href="/projects/" class="inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">Open Projects Gallery</a>
++    <section aria-labelledby="filters-heading" class="mb-6">
++      <h2 id="filters-heading" class="sr-only">Project search and filters</h2>
++      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
++        <label for="search" class="sr-only">Search projects</label>
++        <input id="search" type="search" placeholder="Search projects..." class="w-full md:w-80 px-3 py-2 rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sage" aria-describedby="results-count" />
++        <div class="flex flex-wrap gap-2" role="toolbar" aria-label="Filters">
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-navy text-white focus:outline-none focus:ring-2 focus:ring-sage" data-filter="all" aria-pressed="true">All</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sage" data-filter="research" aria-pressed="false">Research</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sage" data-filter="open-source" aria-pressed="false">Open Source</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sage" data-filter="visualization" aria-pressed="false">Visualization</button>
++          <button class="filter-pill px-3 py-1.5 rounded-full text-sm bg-slate-200 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-sage" data-filter="psych-tech" aria-pressed="false">Psych + Tech</button>
++        </div>
++      </div>
++      <div id="results-count" class="mt-2 text-sm text-slate-600 dark:text-slate-400" aria-live="polite">Showing 0 projects</div>
++    </section>
++
++    <div id="projects-grid" class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
++      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Interactive Projects Gallery" data-tags="visualization,open-source">
++        <img src="/assets/images/interactive-project-gal-2.png" srcset="/assets/images/interactive-project-gal-2.png 1x, /assets/images/interactive-project-gal-2.png 2x" alt="Cover image for Interactive Projects Gallery" class="w-full h-40 object-cover project-card-img" loading="lazy" decoding="async" width="720" height="360">
++        <div class="p-8 flex flex-col h-full">
++          <h2 class="text-2xl font-bold text-navy mb-2">Interactive Projects Gallery</h2>
++          <p class="text-sm text-gray-500 mb-4">Experimental workspace</p>
++          <p class="text-slate-700 mb-6">
++            Browse interactive prototypes, proofs of concept, and in-progress explorations collected in one place.
++          </p>
++          <a href="/projects-folder/index.html" class="relative z-20 inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy mt-auto">
++            Open Gallery
++          </a>
++        </div>
++        <a href="/projects-folder/index.html" class="absolute inset-0 z-10" aria-label="Open Interactive Projects Gallery"></a>
++      </div>
++
++      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Project Source Code & Contributions" data-tags="open-source,research">
++        <img src="/assets/images/source-code-project-card.png" srcset="/assets/images/source-code-project-card.png 1x, /assets/images/source-code-project-card.png 2x" alt="Preview of GitHub projects and collaboration" class="w-full h-40 object-cover" loading="lazy" decoding="async" width="720" height="360">
++        <div class="p-8 flex flex-col h-full">
++          <h2 class="text-2xl font-bold text-navy mb-2">Project Source Code & Contributions</h2>
++          <p class="text-sm text-gray-500 mb-4">View my work on GitHub</p>
++          <p class="text-slate-700 mb-6">
++            The complete source code for this website, along with other public projects and contributions, is available on my GitHub profile.
++          </p>
++          <div class="mt-4 flex flex-row items-center gap-3">
++            <img src="/assets/icons/black-github-dev.svg" alt="GitHub" title="GitHub" class="h-6 w-6" loading="lazy" decoding="async" />
++            <img src="/assets/icons/black-git.svg" alt="Git" title="Git" class="h-6 w-6" loading="lazy" decoding="async" />
++            <img src="/assets/icons/black-cursor-ai.svg" alt="Cursor AI" title="Cursor AI" class="h-6 w-6" loading="lazy" decoding="async" />
++            <img src="/assets/icons/vs-code-black.svg" alt="VS Code" title="VS Code" class="h-6 w-6" loading="lazy" decoding="async" />
++          </div>
++          <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="relative z-20 inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mt-auto" aria-label="View GitHub profile in new tab">
++            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
++              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
++            </svg>
++            View on GitHub
++          </a>
++        </div>
++        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="absolute inset-0 z-10" aria-label="Open GitHub profile in new tab"></a>
++      </div>
++
++      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Psyber Nexus" data-tags="psych-tech,research">
++        <img src="/assets/images/psyber-nexus-project-card-3.png?v=3" srcset="/assets/images/psyber-nexus-project-card-3.png?v=3 1x, /assets/images/psyber-nexus-project-card-3.png?v=3 2x" alt="Psyber Nexus project card artwork" loading="lazy" decoding="async" class="w-full h-40 object-cover project-card-img" width="720" height="405">
++        <div class="p-8 flex flex-col h-full">
++          <h2 class="text-2xl font-bold text-navy mb-2">Psyber Nexus</h2>
++          <p class="text-sm text-gray-500 mb-4">Ongoing Project</p>
++          <p class="text-slate-700 mb-6">
++            Psyber Nexus is a research program at the intersection of psychology and technology—examining AI-assisted cognition, online behavior, and digital well-being. Outputs include literature reviews, empirical notebooks, and interactive tools.
++          </p>
++          <a href="/projects/psyber-nexus/" class="relative z-20 inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage mt-auto">
++            Visit Website
++          </a>
++        </div>
++        <a href="/projects/psyber-nexus/" class="absolute inset-0 z-10" aria-label="Open Psyber Nexus"></a>
++      </div>
++
++      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Crime Analysis Report: Albany, NY (2021-2024)" data-tags="research,visualization">
++        <img
++          src="/assets/images/alb-crime-analysis-image-2.png"
++          alt="Crime Analysis Report"
++          loading="lazy"
++          class="project-card-image"
++        />
++        <div class="p-8 flex flex-col h-full">
++          <h2 class="text-2xl font-bold text-navy mb-2">Crime Analysis Report: Albany, NY (2021-2024)</h2>
++          <p class="text-xs uppercase tracking-wide text-gray-500 mb-4">Date: March 21, 2025</p>
++          <p class="text-slate-700">
++            This report analyzes crime trends in Albany, New York, using data obtained via a FOIL request. The analysis covers total crimes, violent crime categories, neighborhood distribution, and case resolution rates, revealing key public safety insights.
++          </p>
++          <div class="mt-6 flex flex-wrap gap-4">
++            <a href="/projects/albany-crime-report-2021-2024.pdf" target="_blank" rel="noopener" class="relative z-20 inline-block px-6 py-3 bg-sage text-white rounded-lg hover:bg-sage/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage">
++              View Full Report (PDF)
++            </a>
++            <a href="/projects/albany-crime-dashboard/" class="relative z-20 inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">
++              Open Interactive Dashboard
++            </a>
++          </div>
++        </div>
++        <a href="/projects/albany-crime-dashboard/" class="absolute inset-0 z-10" aria-label="Open Albany Crime Dashboard"></a>
++      </div>
++
++      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="AdSell.ai & Vision Data — Marketing Plan" data-tags="psych-tech,open-source">
++        <img src="/assets/images/notes-project-card-image.png?v=2" srcset="/assets/images/notes-project-card-image.png?v=2 1x, /assets/images/notes-project-card-image.png?v=2 2x" alt="Notes-style cover image for AdSell.ai & Vision Data Marketing Plan" loading="lazy" decoding="async" class="w-full h-40 object-cover project-card-img" width="720" height="405">
++        <div class="p-8 flex flex-col h-full">
++          <h2 class="text-2xl font-bold text-navy mb-2">AdSell.ai & Vision Data — Marketing Plan</h2>
++          <p class="text-sm text-gray-500 mb-4">Marketing Plan</p>
++          <p class="text-slate-700 mb-6">
++            Central hub for planning and notes.
++          </p>
++          <a href="https://notes.jgwalsh.com" target="_blank" rel="noopener" class="relative z-20 inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy mt-auto">
++            Open Marketing Plan
++          </a>
++        </div>
++        <a href="https://notes.jgwalsh.com" target="_blank" rel="noopener" class="absolute inset-0 z-10" aria-label="Open AdSell.ai & Vision Data — Marketing Plan"></a>
++      </div>
++
++      <div class="project-card relative bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden transition hover:shadow-xl duration-200 hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-sage h-full motion-reduce:transition-none motion-reduce:transform-none" data-title="Resource Center" data-tags="open-source,resources">
++        <div class="p-8 flex flex-col h-full">
++          <h2 class="text-2xl font-bold text-navy mb-2">Resource Center</h2>
++          <p class="text-sm text-gray-500 mb-4">Private Area</p>
++          <p class="text-slate-700 mb-6">
++            Password-protected hub for PDFs, docs, notes, and datasets.
++          </p>
++          <a href="/resources/" class="relative z-20 inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy mt-auto">
++            Open Resource Center
++          </a>
++        </div>
++        <a href="/resources/" class="absolute inset-0 z-10" aria-label="Open Resource Center"></a>
++      </div>
+     </div>
+   </main>
+ 
+@@ -357,13 +476,5 @@
+       applyFilters();
+     })();
+   </script>
+-
+-  <section class="gpt-links" aria-label="Custom GPTs">
+-    <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt"
+-       class="gpt-button" target="_blank" rel="noopener noreferrer">
+-      <img src="/assets/icons/b&w-chatgpt-2.svg" alt="Investigator GPT icon" class="gpt-icon" />
+-      <span>Investigator GPT</span>
+-    </a>
+-  </section>
+ </body>
+-</html>
++</html>
+\ No newline at end of file
+
+---- assets/.DS_Store
+diff --git a/assets/.DS_Store b/public/assets/.DS_Store
+index 4efea94..0252d78 100644
+Binary files a/assets/.DS_Store and b/public/assets/.DS_Store differ
+
+---- assets/css/style.css
+diff --git a/assets/css/style.css b/public/assets/css/style.css
+index 0020c5b..82df1b6 100644
+--- a/assets/css/style.css
++++ b/public/assets/css/style.css
+@@ -199,60 +199,6 @@ footer a.icon-link:focus-visible{ outline:2px solid var(--footer-link); outline-
+ html, body{ background:var(--color-bg); color:var(--color-text); }
+ img, svg{ filter:none !important; mix-blend-mode:normal !important; }
+ 
+-/* --- Project card image safety --- */
+-.project-card-image {
+-  display: block;
+-  width: 100%;
+-  height: auto;
+-  max-height: 280px;
+-  object-fit: cover;
+-  border-radius: 8px;
+-}
+-
+-/* --- GPT buttons row --- */
+-.gpt-links {
+-  display: flex;
+-  flex-wrap: wrap;
+-  gap: 0.75rem;
+-  justify-content: center;
+-  align-items: center;
+-  margin: 2rem auto 3rem;
+-  max-width: 1100px;
+-  padding: 0 1rem;
+-}
+-
+-.gpt-button {
+-  display: inline-flex;
+-  align-items: center;
+-  gap: 0.5rem;
+-  padding: 0.6rem 1rem;
+-  text-decoration: none;
+-  font-weight: 600;
+-  border: 1px solid #d0d0d0;
+-  border-radius: 10px;
+-  background: #f8f8f8;
+-  color: #111;
+-  line-height: 1;
+-  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+-}
+-
+-.gpt-button:hover {
+-  transform: translateY(-1px);
+-  background: #f1f1f1;
+-  border-color: #c0c0c0;
+-}
+-
+-.gpt-icon {
+-  width: 20px;
+-  height: 20px;
+-  display: inline-block;
+-}
+-
+-.gpt-button:focus-visible {
+-  outline: 2px solid #008080;
+-  outline-offset: 2px;
+-}
+-
+ /* === Sliding Switch === */
+ .theme-toggle{
+   /* mobile-first sizing with clamp() scales on tablets/desktop */
+@@ -368,4 +314,35 @@ img, svg { filter:none !important; mix-blend-mode:normal !important; }
+ :root[data-theme="dark"] .theme-toggle:hover .switch__thumb{ transform:translate(-0.5px,-0.5px); }
+ @media (prefers-reduced-motion: reduce){
+   .switch__track, .switch__thumb{ transition:none; }
+-}
+\ No newline at end of file
++}
++
++/* Professional spacing & button harmonization */
++.btn {
++  display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem;
++  border-radius:10px; font-weight:600; text-decoration:none;
++}
++.btn-primary { background:#0F2A5F; color:#fff; }
++.btn-primary:hover { background:#0F2A5Fcc; }
++
++/* Card focus ring utility */
++:where(article:focus-within, a:focus-visible) { outline:0; }
++
++/* Prefer brand teal for focus if you like: */
++.gpt-button:focus-visible { outline: 2px solid #008080; outline-offset: 2px; }
++
++/* --- Project card image and card polish (helper if not already present) --- */
++.card-img { aspect-ratio: 16/9; width: 100%; height: auto; object-fit: cover; display: block; }
++.card-clip { border-radius: 14px; overflow: hidden; }
++.tag { font: 600 12px/1.2 Inter, sans-serif; padding: 6px 10px; border-radius: 999px; background: rgba(15,42,95,.06); color:#0F2A5F; border:1px solid rgba(15,42,95,.12); }
++@media (prefers-color-scheme: dark) {
++  .tag { background: rgba(255,255,255,.06); color:#e8e8e8; border-color: rgba(255,255,255,.14); }
++}
++.shadow-card { box-shadow: 0 8px 24px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.06); }
++.shadow-cardHover { box-shadow: 0 16px 32px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.10); }
++
++/* --- GPT button row (centered, pro style) --- */
++.gpt-links { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; align-items:center; margin: 2.5rem auto 3rem; max-width: 1100px; padding: 0 1rem; }
++.gpt-button { display:inline-flex; align-items:center; gap:.6rem; padding:.65rem 1rem; border-radius: 12px; font-weight: 700; border:1px solid #cbd5e1; background:#ffffff; color:#0f172a; transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease; }
++.gpt-button:hover { transform: translateY(-1px); background:#f8fafc; border-color:#94a3b8; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
++.gpt-button:focus-visible { outline: 2px solid #008080; outline-offset: 2px; }
++.gpt-icon { width: 22px; height: 22px; display:inline-block; }
+\ No newline at end of file
+
+---- assets/favicon/favicon-48.png
+diff --git a/assets/favicon/favicon-48.png b/public/assets/favicon/favicon-48.png
+index 130cf9c..a68dc93 100644
+Binary files a/assets/favicon/favicon-48.png and b/public/assets/favicon/favicon-48.png differ
+
+---- assets/favicon/favicon-60.png
+diff --git a/assets/favicon/favicon-60.png b/public/assets/favicon/favicon-60.png
+index 46934b0..8bf0995 100644
+Binary files a/assets/favicon/favicon-60.png and b/public/assets/favicon/favicon-60.png differ
+
+---- assets/favicon/favicon-192.png
+diff --git a/assets/favicon/favicon-192.png b/public/assets/favicon/favicon-192.png
+index 38a800b..880e951 100644
+Binary files a/assets/favicon/favicon-192.png and b/public/assets/favicon/favicon-192.png differ
+
+---- assets/favicon/favicon-76.png
+diff --git a/assets/favicon/favicon-76.png b/public/assets/favicon/favicon-76.png
+index 8ba07b2..89a9a27 100644
+Binary files a/assets/favicon/favicon-76.png and b/public/assets/favicon/favicon-76.png differ
+
+---- assets/favicon/favicon.ico
+diff --git a/assets/favicon/favicon.ico b/public/assets/favicon/favicon.ico
+index 449966f..0fe4cc0 100644
+Binary files a/assets/favicon/favicon.ico and b/public/assets/favicon/favicon.ico differ
+
+---- assets/favicon/favicon-72.png
+diff --git a/assets/favicon/favicon-72.png b/public/assets/favicon/favicon-72.png
+index 72233d4..624e9ee 100644
+Binary files a/assets/favicon/favicon-72.png and b/public/assets/favicon/favicon-72.png differ
+
+---- assets/favicon/favicon-72-precomposed.png
+diff --git a/assets/favicon/favicon-72-precomposed.png b/public/assets/favicon/favicon-72-precomposed.png
+index 72233d4..624e9ee 100644
+Binary files a/assets/favicon/favicon-72-precomposed.png and b/public/assets/favicon/favicon-72-precomposed.png differ
+
+---- assets/favicon/favicon-180-precomposed.png
+diff --git a/assets/favicon/favicon-180-precomposed.png b/public/assets/favicon/favicon-180-precomposed.png
+index f38759c..4fb57b6 100644
+Binary files a/assets/favicon/favicon-180-precomposed.png and b/public/assets/favicon/favicon-180-precomposed.png differ
+
+---- assets/favicon/favicon-36.png
+diff --git a/assets/favicon/favicon-36.png b/public/assets/favicon/favicon-36.png
+index 3ecf20f..696a5e4 100644
+Binary files a/assets/favicon/favicon-36.png and b/public/assets/favicon/favicon-36.png differ
+
+---- assets/favicon/favicon-114-precomposed.png
+diff --git a/assets/favicon/favicon-114-precomposed.png b/public/assets/favicon/favicon-114-precomposed.png
+index 00746c9..ff72374 100644
+Binary files a/assets/favicon/favicon-114-precomposed.png and b/public/assets/favicon/favicon-114-precomposed.png differ
+
+---- assets/favicon/manifest.json
+diff --git a/assets/favicon/manifest.json b/public/assets/favicon/manifest.json
+index 683acd3..d0d92af 100644
+--- a/assets/favicon/manifest.json
++++ b/public/assets/favicon/manifest.json
+@@ -1,41 +1,41 @@
+ {
+-  "name": "J. Gregory Walsh",
+-  "icons": [
+-    {
+-      "src": "favicon-36.png",
+-      "sizes": "36x36",
+-      "type": "image/png",
+-      "density": 0.75
+-    },
+-    {
+-      "src": "favicon-48.png",
+-      "sizes": "48x48",
+-      "type": "image/png",
+-      "density": 1
+-    },
+-    {
+-      "src": "favicon-72.png",
+-      "sizes": "72x72",
+-      "type": "image/png",
+-      "density": 1.5
+-    },
+-    {
+-      "src": "favicon-96.png",
+-      "sizes": "96x96",
+-      "type": "image/png",
+-      "density": 2
+-    },
+-    {
+-      "src": "favicon-144.png",
+-      "sizes": "144x144",
+-      "type": "image/png",
+-      "density": 3
+-    },
+-    {
+-      "src": "favicon-192.png",
+-      "sizes": "192x192",
+-      "type": "image/png",
+-      "density": 4
+-    }
+-  ]
++	"name": "pollo",
++	"icons": [
++		{
++			"src": "\/favicon-36.png",
++			"sizes": "36x36",
++			"type": "image\/png",
++			"density": 0.75
++		},
++		{
++			"src": "\/favicon-48.png",
++			"sizes": "48x48",
++			"type": "image\/png",
++			"density": 1
++		},
++		{
++			"src": "\/favicon-72.png",
++			"sizes": "72x72",
++			"type": "image\/png",
++			"density": 1.5
++		},
++		{
++			"src": "\/favicon-96.png",
++			"sizes": "96x96",
++			"type": "image\/png",
++			"density": 2
++		},
++		{
++			"src": "\/favicon-144.png",
++			"sizes": "144x144",
++			"type": "image\/png",
++			"density": 3
++		},
++		{
++			"src": "\/favicon-192.png",
++			"sizes": "192x192",
++			"type": "image\/png",
++			"density": 4
++		}
++	]
+ }
+
+---- assets/favicon/favicon-32.png
+diff --git a/assets/favicon/favicon-32.png b/public/assets/favicon/favicon-32.png
+index 3099ec3..9184e34 100644
+Binary files a/assets/favicon/favicon-32.png and b/public/assets/favicon/favicon-32.png differ
+
+---- assets/favicon/favicon-96.png
+diff --git a/assets/favicon/favicon-96.png b/public/assets/favicon/favicon-96.png
+index 234b61e..24d7175 100644
+Binary files a/assets/favicon/favicon-96.png and b/public/assets/favicon/favicon-96.png differ
+
+---- assets/favicon/favicon-57.png
+diff --git a/assets/favicon/favicon-57.png b/public/assets/favicon/favicon-57.png
+index d1af842..d1af96f 100644
+Binary files a/assets/favicon/favicon-57.png and b/public/assets/favicon/favicon-57.png differ
+
+---- assets/favicon/favicon-120-precomposed.png
+diff --git a/assets/favicon/favicon-120-precomposed.png b/public/assets/favicon/favicon-120-precomposed.png
+index 8fe78db..16c855b 100644
+Binary files a/assets/favicon/favicon-120-precomposed.png and b/public/assets/favicon/favicon-120-precomposed.png differ
+
+---- assets/favicon/favicon-144-precomposed.png
+diff --git a/assets/favicon/favicon-144-precomposed.png b/public/assets/favicon/favicon-144-precomposed.png
+index eb930d2..fbc4987 100644
+Binary files a/assets/favicon/favicon-144-precomposed.png and b/public/assets/favicon/favicon-144-precomposed.png differ
+
+---- assets/favicon/favicon-152-precomposed.png
+diff --git a/assets/favicon/favicon-152-precomposed.png b/public/assets/favicon/favicon-152-precomposed.png
+index 3e014bf..883854f 100644
+Binary files a/assets/favicon/favicon-152-precomposed.png and b/public/assets/favicon/favicon-152-precomposed.png differ
+
+---- src/resources.js
+diff --git a/src/resources.js b/public/src/resources.js
+index 746d43f..b715aeb 100644
+--- a/src/resources.js
++++ b/public/src/resources.js
+@@ -1,13 +1,12 @@
+-const DATA_URL = '/assets/resources.json'; // same-origin; works with Access
++const DATA_URL = '/assets/resources.json'; // same-origin; works behind Access
+ 
+-// Shortcuts
+ const $ = (sel, root=document) => root.querySelector(sel);
++const qs = (s, r=document) => Array.from(r.querySelectorAll(s));
+ const els = {};
+ const state = {
+-  q: '',
+-  view: localStorage.getItem('rc:view') || 'grid', // 'grid' | 'list'
+-  sort: 'recent',
+-  filters: { collection:'All', type:'All', year:'All' },
++  q:'', view: localStorage.getItem('rc:view') || 'grid',
++  sort: localStorage.getItem('rc:sort') || 'recent',
++  filters: JSON.parse(localStorage.getItem('rc:filters') || '{"collection":"All","type":"All","year":"All"}'),
+   selected: new Set(),
+ };
+ let DATA = [];
+@@ -16,122 +15,136 @@ let RESULTS_CLICK_BOUND = false;
+ document.addEventListener('DOMContentLoaded', init);
+ 
+ async function init(){
+-  const root = document.querySelector('[data-js="rc-root"]');
+-  if (!root) return console.warn('[rc] root not found');
+-
+-  // Map controls (data-js hooks must already exist in your HTML)
+-  els.root = root;
+-  els.search  = $('[data-js="search"]', root);
+-  els.clear   = $('[data-js="clear"]', root);
+-  els.gridBtn = $('[data-js="view-grid"]', root);
+-  els.listBtn = $('[data-js="view-list"]', root);
+-  els.fColl   = $('[data-js="filter-collection"]', root);
+-  els.fType   = $('[data-js="filter-type"]', root);
+-  els.fYear   = $('[data-js="filter-year"]', root);
+-  els.sortSel = $('[data-js="sort"]', root);
+-  els.reset   = $('[data-js="reset"]', root);
+-  els.count   = $('[data-js="count"]', root);
+-  els.chips   = $('[data-js="chips"]', root);
+-  els.results = $('[data-js="results"]', root);
+-  els.bulkBar = $('[data-js="bulkbar"]', root);
+-  els.bulkCount = $('[data-js="bulk-count"]', root);
+-  els.bulkCopy  = $('[data-js="bulk-copy"]', root);
+-  els.bulkClear = $('[data-js="bulk-clear"]', root);
+-  els.status = $('[data-js="status"]', root);
+-  els.tplEmptyAll    = $('[data-js="tpl-empty-all"]', root);
+-  els.tplEmptyFilter = $('[data-js="tpl-empty-filter"]', root);
+-
+-  bindUI();
++  mapHooks();
++  bindGlobalShortcuts();
+ 
+   try{
+-    const r = await fetch(DATA_URL, { credentials:'include', headers:{ 'accept':'application/json' }});
++    const r = await fetch(DATA_URL, { credentials:'include', headers:{'accept':'application/json'} });
+     if(!r.ok) throw new Error(`fetch ${r.status}`);
+     const json = await r.json();
+-    DATA = Array.isArray(json) ? json.map(memoId) : [];
++    DATA = Array.isArray(json) ? json.map(x => ({ ...x, id: x.id ?? crypto.randomUUID() })) : [];
+   }catch(e){
+-    console.error('[rc]', e);
+-    DATA = [];
++    console.error('[rc]', e); DATA = [];
+   }
+ 
++  // Query-string → state (q, view, sort, c, t, y)
++  seedFromURL();
++
+   hydrateFilters(DATA);
++  reflectControls();
+   render();
+ }
+ 
+-function memoId(x){ return { ...x, id: x.id ?? crypto.randomUUID() }; }
+-
+-function bindUI(){
+-  // Search + "/" focus
+-  els.search?.addEventListener('input', () => { state.q = (els.search.value||'').trim().toLowerCase(); render(); });
+-  document.addEventListener('keydown', (e)=>{ if(e.key === '/' && document.activeElement?.tagName !== 'INPUT'){ e.preventDefault(); els.search?.focus(); }});
+-  els.clear?.addEventListener('click', ()=>{ state.q=''; if(els.search) els.search.value=''; render(); });
++function mapHooks(){
++  const root = document.querySelector('[data-js="rc-root"]'); if(!root) return;
++  els.root=root;
++  els.search=$('[data-js="search"]',root);
++  els.clear=$('[data-js="clear"]',root);
++  els.gridBtn=$('[data-js="view-grid"]',root);
++  els.listBtn=$('[data-js="view-list"]',root);
++  els.fColl=$('[data-js="filter-collection"]',root);
++  els.fType=$('[data-js="filter-type"]',root);
++  els.fYear=$('[data-js="filter-year"]',root);
++  els.sortSel=$('[data-js="sort"]',root);
++  els.reset=$('[data-js="reset"]',root);
++  els.count=$('[data-js="count"]',root);
++  els.chips=$('[data-js="chips"]',root);
++  els.results=$('[data-js="results"]',root);
++  els.bulkBar=$('[data-js="bulkbar"]',root);
++  els.bulkCount=$('[data-js="bulk-count"]',root);
++  els.bulkCopy=$('[data-js="bulk-copy"]',root);
++  els.bulkClear=$('[data-js="bulk-clear"]',root);
++  els.bulkSelectAll=$('[data-js="bulk-select-all"]',root);
++  els.status=$('[data-js="status"]',root);
++
++  // Bind UI
++  els.search?.addEventListener('input', ()=>{ state.q=(els.search.value||'').trim().toLowerCase(); syncURL(); render(); });
++  els.clear?.addEventListener('click', ()=>{ state.q=''; if(els.search) els.search.value=''; syncURL(); render(); });
+ 
+-  // View toggle
+   els.gridBtn?.addEventListener('click', ()=> setView('grid'));
+   els.listBtn?.addEventListener('click', ()=> setView('list'));
+-  reflectView();
+ 
+-  // Filters
+-  els.fColl?.addEventListener('change', ()=>{ state.filters.collection = els.fColl.value; render(); });
+-  els.fType?.addEventListener('change', ()=>{ state.filters.type = els.fType.value; render(); });
+-  els.fYear?.addEventListener('change', ()=>{ state.filters.year = els.fYear.value; render(); });
++  els.fColl?.addEventListener('change', ()=>{ state.filters.collection = els.fColl.value; persistFilters(); syncURL(); render(); });
++  els.fType?.addEventListener('change', ()=>{ state.filters.type = els.fType.value; persistFilters(); syncURL(); render(); });
++  els.fYear?.addEventListener('change', ()=>{ state.filters.year = els.fYear.value; persistFilters(); syncURL(); render(); });
++
++  els.sortSel?.addEventListener('change', ()=>{ state.sort = els.sortSel.value; localStorage.setItem('rc:sort', state.sort); syncURL(); render(); });
+ 
+-  // Sort + Reset
+-  els.sortSel?.addEventListener('change', ()=>{ state.sort = els.sortSel.value; render(); });
+   els.reset?.addEventListener('click', ()=>{
+     state.q=''; if(els.search) els.search.value='';
+-    state.sort='recent'; if(els.sortSel) els.sortSel.value='recent';
+-    state.filters = { collection:'All', type:'All', year:'All' };
+-    if(els.fColl) els.fColl.value='All';
+-    if(els.fType) els.fType.value='All';
+-    if(els.fYear) els.fYear.value='All';
+-    state.selected.clear();
+-    render();
++    state.view = state.view || 'grid'; // keep view
++    state.sort='recent'; localStorage.setItem('rc:sort','recent');
++    state.filters = { collection:'All', type:'All', year:'All' }; persistFilters();
++    reflectControls(); syncURL(); state.selected.clear(); render();
+   });
+ 
+-  // Bulk actions
+   els.bulkCopy?.addEventListener('click', copySelected);
+   els.bulkClear?.addEventListener('click', ()=>{ state.selected.clear(); updateBulk(); render(); });
++  els.bulkSelectAll?.addEventListener('click', ()=>{ const visible = sortItems(filterItems(DATA)); visible.forEach(i=> state.selected.add(i.id)); updateBulk(); render(); });
+ }
+ 
+-function setView(v){ state.view=v; localStorage.setItem('rc:view', v); reflectView(); render(); }
+-function reflectView(){
+-  if(els.gridBtn) els.gridBtn.setAttribute('aria-pressed', String(state.view==='grid'));
+-  if(els.listBtn) els.listBtn.setAttribute('aria-pressed', String(state.view==='list'));
++function bindGlobalShortcuts(){
++  document.addEventListener('keydown', (e)=>{
++    if(e.key === '/' && document.activeElement?.tagName !== 'INPUT'){ e.preventDefault(); els.search?.focus(); }
++    if(e.key === 'g'){ setView('grid'); }
++    if(e.key === 'l'){ setView('list'); }
++    if(e.key === 'Escape'){ state.selected.clear(); updateBulk(); }
++  });
++}
++
++function seedFromURL(){
++  const u = new URL(location.href);
++  const q=u.searchParams.get('q'); const v=u.searchParams.get('view');
++  const s=u.searchParams.get('sort'); const c=u.searchParams.get('c');
++  const t=u.searchParams.get('t'); const y=u.searchParams.get('y');
++  if(q!=null){ state.q=q; if(els.search) els.search.value=q; }
++  if(v==='grid'||v==='list'){ state.view=v; }
++  if(s){ state.sort=s; }
++  if(c){ state.filters.collection=c; }
++  if(t){ state.filters.type=t; }
++  if(y){ state.filters.year=y; }
++}
++function syncURL(){
++  const u=new URL(location.href);
++  setQS(u,'q',state.q||null);
++  setQS(u,'view',state.view!=='grid'?state.view:null);
++  setQS(u,'sort',state.sort!=='recent'?state.sort:null);
++  setQS(u,'c',state.filters.collection!=='All'?state.filters.collection:null);
++  setQS(u,'t',state.filters.type!=='All'?state.filters.type:null);
++  setQS(u,'y',state.filters.year!=='All'?state.filters.year:null);
++  history.replaceState(null,'',u);
++}
++function setQS(u,k,v){ if(v==null||v===''){ u.searchParams.delete(k); } else { u.searchParams.set(k,v); } }
++
++function persistFilters(){ localStorage.setItem('rc:filters', JSON.stringify(state.filters)); }
++function setView(v){ state.view=v; localStorage.setItem('rc:view',v); reflectControls(); syncURL(); render(); }
++function reflectControls(){
++  els.gridBtn?.setAttribute('aria-pressed', String(state.view==='grid'));
++  els.listBtn?.setAttribute('aria-pressed', String(state.view==='list'));
++  if(els.sortSel) els.sortSel.value = state.sort;
++  if(els.fColl) els.fColl.value = state.filters.collection || 'All';
++  if(els.fType) els.fType.value = state.filters.type || 'All';
++  if(els.fYear) els.fYear.value = state.filters.year || 'All';
+ }
+ 
+ function hydrateFilters(items){
+   const coll = ['All', ...dedupe(items.map(i=>i.collection).filter(Boolean))];
+   const type = ['All', ...dedupe(items.map(i=>i.type).filter(Boolean))];
+-  const years = ['All', ...dedupe(items.map(i=> String(i.year || (i.updated ? new Date(i.updated).getFullYear() : '')) ).filter(Boolean))].sort((a,b)=>b.localeCompare(a));
+-  fillSelect(els.fColl, coll);
+-  fillSelect(els.fType, type);
+-  fillSelect(els.fYear, years);
+-}
+-
+-function fillSelect(sel, arr){
+-  if(!sel) return;
+-  sel.innerHTML = arr.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join('');
+-  sel.value = arr[0] || 'All';
++  const years = ['All', ...dedupe(items.map(i=> i.year || (i.updated ? new Date(i.updated).getFullYear() : ''))
++    .filter(Boolean).map(String))].sort((a,b)=>b.localeCompare(a));
++  fillSelect(els.fColl, coll); fillSelect(els.fType, type); fillSelect(els.fYear, years);
+ }
++function fillSelect(sel, arr){ if(!sel) return; sel.innerHTML = arr.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join(''); }
+ 
+ function render(){
+   const items = sortItems(filterItems(DATA));
+-  if(els.count) els.count.textContent = String(items.length);
++  setCount(items.length);
+ 
+-  if(!DATA.length){
+-    els.results.innerHTML = els.tplEmptyAll?.innerHTML || '';
+-    updateBulk();
+-    return;
+-  }
+-  if(items.length===0){
+-    els.results.innerHTML = els.tplEmptyFilter?.innerHTML || '';
+-    updateBulk();
+-    return;
+-  }
++  if(!DATA.length){ els.results.innerHTML = tmpl(els.tplEmptyAll); updateBulk(); return; }
++  if(items.length===0){ els.results.innerHTML = tmpl(els.tplEmptyFilter); updateBulk(); return; }
+ 
+   els.results.innerHTML = (state.view==='list' ? items.map(renderRow).join('') : items.map(renderCard).join(''));
+ 
+-  // Delegate result events once
+   if(!RESULTS_CLICK_BOUND){
+     els.results.addEventListener('click', onResultsClick);
+     RESULTS_CLICK_BOUND = true;
+@@ -150,96 +163,69 @@ function onResultsClick(e){
+   }
+ }
+ 
++function setCount(n){
++  if(!els.count) return;
++  els.count.textContent = String(n);
++}
++
+ function updateBulk(){
+   if(els.bulkCount) els.bulkCount.textContent = String(state.selected.size);
++  if(els.bulkBar) els.bulkBar.hidden = state.selected.size === 0;
+ }
+ 
+ function filterItems(items){
+-  const q = state.q;
+-  const { collection, type, year } = state.filters;
++  const {collection,type,year} = state.filters; const q=state.q;
+   return items.filter(x=>{
+     const hay = `${x.title||''} ${x.desc||''} ${(x.tags||[]).join(' ')} ${x.collection||''} ${x.type||''} ${x.year||''}`.toLowerCase();
+     const mq = q ? hay.includes(q) : true;
+-    const mc = (collection==='All') || (x.collection === collection);
+-    const mt = (type==='All') || (x.type === type);
++    const mc = (collection==='All') || (x.collection===collection);
++    const mt = (type==='All') || (x.type===type);
+     const my = (year==='All') || (String(x.year)===String(year) || (x.updated && String(new Date(x.updated).getFullYear())===String(year)));
+     return mq && mc && mt && my;
+   });
+ }
+ 
+ function sortItems(items){
+-  const s = state.sort;
+-  const copy = [...items];
+-  if(s==='title') copy.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
+-  else if(s==='size') copy.sort((a,b)=> (b.bytes||0) - (a.bytes||0));
+-  else copy.sort((a,b)=> new Date(b.updated||0) - new Date(a.updated||0)); // recent
+-  return copy;
++  const s=state.sort, out=[...items];
++  if(s==='title') out.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
++  else if(s==='size') out.sort((a,b)=> (b.bytes||0)-(a.bytes||0));
++  else out.sort((a,b)=> new Date(b.updated||0) - new Date(a.updated||0));
++  return out;
+ }
+ 
+ function renderCard(x){
+   const size = x.bytes ? ` · ${formatBytes(x.bytes)}` : '';
+   const yr = x.year || (x.updated ? new Date(x.updated).getFullYear() : '');
+-  const tags = (x.tags||[]).map(t=>`<span class="rc-tag">#${escapeHTML(t)}</span>`).join(' ');
+-  const id = x.id;
+-  const abs = new URL(x.url, location.origin).href;
++  const tags = (x.tags||[]).map(t=>`<span class=\"rc-tag\">#${escapeHTML(t)}</span>`).join(' ');
++  const id = x.id, abs = new URL(x.url, location.origin).href;
+   return `
+-  <article class="rc-card">
+-    <header class="rc-card-h"><h3>${escapeHTML(x.title||'Untitled')}</h3></header>
+-    <div class="rc-card-b">
+-      <p class="rc-sub">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</p>
+-      ${x.desc? `<p class="rc-desc">${escapeHTML(x.desc)}</p>`:''}
+-      <div class="rc-tags">${tags}</div>
+-    </div>
+-    <footer class="rc-card-f">
+-      <a href="${x.url}" class="rc-btn">View</a>
+-      <button type="button" class="rc-btn" data-copy="${abs}">Copy Link</button>
+-      <label class="rc-select">
+-        <input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/> Select
+-      </label>
+-    </footer>
+-  </article>`;
++  <article class=\"rc-card\">\n    <header class=\"rc-card-h\"><h3>${escapeHTML(x.title||'Untitled')}</h3></header>\n    <div class=\"rc-card-b\">\n      <p class=\"rc-sub\">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</p>\n      ${x.desc? `<p class=\"rc-desc\">${escapeHTML(x.desc)}</p>`:''}\n      <div class=\"rc-tags\">${tags}</div>\n    </div>\n    <footer class=\"rc-card-f\">\n      <a href=\"${x.url}\" class=\"rc-btn\">View</a>\n      <button type=\"button\" class=\"rc-btn\" data-copy=\"${abs}\">Copy Link</button>\n      <label class=\"rc-select\"><input type=\"checkbox\" data-id=\"${id}\" ${state.selected.has(id)?'checked':''}/> Select</label>\n    </footer>\n  </article>`;
+ }
+ 
+ function renderRow(x){
+   const size = x.bytes ? ` · ${formatBytes(x.bytes)}` : '';
+   const yr = x.year || (x.updated ? new Date(x.updated).getFullYear() : '');
+-  const id = x.id;
+-  const abs = new URL(x.url, location.origin).href;
++  const id = x.id, abs = new URL(x.url, location.origin).href;
+   return `
+-  <div class="rc-row">
+-    <label class="rc-select"><input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/></label>
+-    <div class="rc-row-main">
+-      <div class="rc-row-title">${escapeHTML(x.title||'Untitled')}</div>
+-      <div class="rc-row-sub">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</div>
+-    </div>
+-    <div class="rc-row-acts">
+-      <a class="rc-btn" href="${x.url}">View</a>
+-      <button class="rc-btn" data-copy="${abs}">Copy Link</button>
+-    </div>
+-  </div>`;
++  <div class=\"rc-row\">\n    <label class=\"rc-select\"><input type=\"checkbox\" data-id=\"${id}\" ${state.selected.has(id)?'checked':''}/></label>\n    <div class=\"rc-row-main\">\n      <div class=\"rc-row-title\">${escapeHTML(x.title||'Untitled')}</div>\n      <div class=\"rc-row-sub\">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</div>\n    </div>\n    <div class=\"rc-row-acts\">\n      <a class=\"rc-btn\" href=\"${x.url}\">View</a>\n      <button class=\"rc-btn\" data-copy=\"${abs}\">Copy Link</button>\n    </div>\n  </div>`;
+ }
+ 
+ // Copy helpers
+-async function doCopy(text, btn){
+-  try{ await navigator.clipboard.writeText(text); speak('Link copied.'); pulse(btn); }
+-  catch{ fallbackCopy(text); speak('Link copied.'); pulse(btn); }
+-}
++async function doCopy(text, btn){ try{ await navigator.clipboard.writeText(text); toast('Link copied.'); pulse(btn); } catch{ fallbackCopy(text); toast('Link copied.'); pulse(btn); } }
+ async function copySelected(){
+   const urls = DATA.filter(x=> state.selected.has(x.id)).map(x=> new URL(x.url, location.origin).href);
+-  if(!urls.length) return;
+-  try{ await navigator.clipboard.writeText(urls.join('\n')); speak('URLs copied.'); }
+-  catch{ fallbackCopy(urls.join('\n')); speak('URLs copied.'); }
+-}
+-function fallbackCopy(text){
+-  const ta = document.createElement('textarea');
+-  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
+-  ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
++  if(!urls.length) return toast('No items selected.');
++  try{ await navigator.clipboard.writeText(urls.join('\n')); toast('URLs copied.'); }
++  catch{ fallbackCopy(urls.join('\n')); toast('URLs copied.'); }
+ }
++function fallbackCopy(text){ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+ 
+-function speak(msg){ if(els.status){ els.status.textContent = msg; } }
++// Small helpers
++function dedupe(a){ return Array.from(new Set(a)); }
++function formatBytes(n){ const u=['B','KB','MB','GB','TB']; let i=0,v=n||0; while(v>=1024&&i<u.length-1){ v/=1024; i++; } return `${v.toFixed(v<10&&i?1:0)} ${u[i]}`; }
++function escapeHTML(s=''){ return s.replace(/[&<>\"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c])); }
+ function pulse(el){ if(!el) return; el.classList.add('rc-pulse'); setTimeout(()=> el.classList.remove('rc-pulse'), 600); }
++function toast(msg){ if(els.status){ els.status.textContent = msg; } }
++
++function tmpl(t){ return t?.innerHTML || ''; }
+ 
+-// Utils
+-function dedupe(arr){ return Array.from(new Set(arr)); }
+-function formatBytes(n){ const u=['B','KB','MB','GB','TB']; let i=0,v=n||0; while(v>=1024&&i<u.length-1){ v/=1024; i++; } return `${v.toFixed(v<10&&i?1:0)} ${u[i]}`; }
+-function escapeHTML(s=''){ return s.replace(/[&<>"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+---- src/resources.js.bak
+diff --git a/src/resources.js.bak b/public/src/resources.js.bak
+index af7e35a..fc612aa 100644
+--- a/src/resources.js.bak
++++ b/public/src/resources.js.bak
+@@ -1,186 +1,126 @@
+-const DATA_URL = '/assets/resources.json'; // same-origin; works behind Access
+-
+-// Helper to query by data-js
++const DATA_URL = '/assets/resources.json'; // same-origin; works with Access
+ const $ = (sel, root=document) => root.querySelector(sel);
+-const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+-
+ const els = {};
+-const state = {
+-  q: '',
+-  view: localStorage.getItem('rc:view') || 'grid', // 'grid' | 'list'
+-  sort: 'recent',
+-  tags: new Set(),               // optional tag system (uses item.tags if present)
+-  filters: { collection: 'All', type: 'All', year: 'All' },
+-  selected: new Set(),
+-};
++const state = { q:'', view: localStorage.getItem('rc:view') || 'grid', sort:'recent',
++                filters:{ collection:'All', type:'All', year:'All' }, selected: new Set() };
+ let DATA = [];
++let RESULTS_CLICK_BOUND = false;
+ 
+ document.addEventListener('DOMContentLoaded', init);
+ 
+ async function init(){
+-  const root = $('[data-js="rc-root"]');
++  const root = document.querySelector('[data-js="rc-root"]');
+   if (!root) return console.warn('[rc] root not found');
+ 
+-  // Cache elements
+-  els.search  = $('[data-js="search"]', root);
+-  els.clear   = $('[data-js="clear"]', root);
+-  els.gridBtn = $('[data-js="view-grid"]', root);
+-  els.listBtn = $('[data-js="view-list"]', root);
+-  els.fColl   = $('[data-js="filter-collection"]', root);
+-  els.fType   = $('[data-js="filter-type"]', root);
+-  els.fYear   = $('[data-js="filter-year"]', root);
+-  els.sort    = $('[data-js="sort"]', root);
+-  els.reset   = $('[data-js="reset"]', root);
+-  els.count   = $('[data-js="count"]', root);
+-  els.chips   = $('[data-js="chips"]', root);
+-  els.results = $('[data-js="results"]', root);
+-  els.bulk    = $('[data-js="bulkbar"]', root);
+-  els.bulkCount = $('[data-js="bulk-count"]', root);
+-  els.bulkCopy  = $('[data-js="bulk-copy"]', root);
+-  els.bulkClear = $('[data-js="bulk-clear"]', root);
+-  els.status = $('[data-js="status"]', root);
+-  els.tplEmptyAll = $('[data-js="tpl-empty-all"]', root);
+-  els.tplEmptyFilter = $('[data-js="tpl-empty-filter"]', root);
++  // Map hooks
++  els.root=root; els.search=$('[data-js="search"]',root); els.clear=$('[data-js="clear"]',root);
++  els.gridBtn=$('[data-js="view-grid"]',root); els.listBtn=$('[data-js="view-list"]',root);
++  els.fColl=$('[data-js="filter-collection"]',root); els.fType=$('[data-js="filter-type"]',root);
++  els.fYear=$('[data-js="filter-year"]',root); els.sortSel=$('[data-js="sort"]',root);
++  els.reset=$('[data-js="reset"]',root); els.count=$('[data-js="count"]',root);
++  els.chips=$('[data-js="chips"]',root); els.results=$('[data-js="results"]',root);
++  els.bulkBar=$('[data-js="bulkbar"]',root); els.bulkCount=$('[data-js="bulk-count"]',root);
++  els.bulkCopy=$('[data-js="bulk-copy"]',root); els.bulkClear=$('[data-js="bulk-clear"]',root);
++  els.status=$('[data-js="status"]',root);
++  els.tplEmptyAll=$('[data-js="tpl-empty-all"]',root);
++  els.tplEmptyFilter=$('[data-js="tpl-empty-filter"]',root);
+ 
+   bindUI();
+ 
+   try{
+-    const res = await fetch(DATA_URL, { credentials: 'include', headers: { 'accept':'application/json' } });
+-    if(!res.ok) throw new Error(`fetch ${res.status}`);
+-    const json = await res.json();
+-    DATA = Array.isArray(json) ? json.map(memoId) : [];
++    const r = await fetch(DATA_URL, { credentials:'include', headers:{ 'accept':'application/json' }});
++    if(!r.ok) throw new Error(`fetch ${r.status}`);
++    const json = await r.json();
++    DATA = Array.isArray(json) ? json.map(x => ({ ...x, id: x.id ?? crypto.randomUUID() })) : [];
+   }catch(e){
+-    console.error('[rc]', e);
+-    DATA = [];
++    console.error('[rc]', e); DATA = [];
+   }
+ 
+   hydrateFilters(DATA);
+   render();
+ }
+ 
+-function memoId(x){ return { ...x, id: x.id ?? crypto.randomUUID() }; }
+-
+ function bindUI(){
+-  // Search + keyboard shortcut
++  // Search + "/" focus
+   els.search?.addEventListener('input', () => { state.q = (els.search.value||'').trim().toLowerCase(); render(); });
+-  document.addEventListener('keydown', (e)=>{ if(e.key === '/' && document.activeElement?.tagName !== 'INPUT'){ e.preventDefault(); els.search?.focus(); }});
+-
+-  els.clear?.addEventListener('click', ()=>{ state.q=''; if(els.search){ els.search.value=''; } render(); });
++  document.addEventListener('keydown', (e)=>{ if(e.key==='/' && document.activeElement?.tagName!=='INPUT'){ e.preventDefault(); els.search?.focus(); }});
++  els.clear?.addEventListener('click', ()=>{ state.q=''; if(els.search) els.search.value=''; render(); });
+ 
+-  // View toggle
++  // View
+   els.gridBtn?.addEventListener('click', ()=> setView('grid'));
+   els.listBtn?.addEventListener('click', ()=> setView('list'));
+   reflectView();
+ 
+-  // Filters (defensive: optional)
++  // Filters
+   els.fColl?.addEventListener('change', ()=>{ state.filters.collection = els.fColl.value; render(); });
+   els.fType?.addEventListener('change', ()=>{ state.filters.type = els.fType.value; render(); });
+   els.fYear?.addEventListener('change', ()=>{ state.filters.year = els.fYear.value; render(); });
+ 
+-  // Sort
+-  els.sort?.addEventListener('change', ()=>{ state.sort = els.sort.value; render(); });
+-
+-  // Reset
++  // Sort + Reset
++  els.sortSel?.addEventListener('change', ()=>{ state.sort = els.sortSel.value; render(); });
+   els.reset?.addEventListener('click', ()=>{
+     state.q=''; if(els.search) els.search.value='';
+-    state.sort='recent';
+-    state.tags.clear();
+-    state.filters = { collection:'All', type:'All', year:'All' };
+-    if(els.fColl) els.fColl.value='All';
+-    if(els.fType) els.fType.value='All';
+-    if(els.fYear) els.fYear.value='All';
+-    if(els.sort) els.sort.value='recent';
+-    render();
++    state.sort='recent'; if(els.sortSel) els.sortSel.value='recent';
++    state.filters={ collection:'All', type:'All', year:'All' };
++    if(els.fColl) els.fColl.value='All'; if(els.fType) els.fType.value='All'; if(els.fYear) els.fYear.value='All';
++    state.selected.clear(); render();
+   });
+ 
+   // Bulk actions
+   els.bulkCopy?.addEventListener('click', copySelected);
+-  els.bulkClear?.addEventListener('click', ()=>{ state.selected.clear(); render(); });
++  els.bulkClear?.addEventListener('click', ()=>{ state.selected.clear(); updateBulk(); render(); });
+ }
+ 
+ function setView(v){ state.view=v; localStorage.setItem('rc:view', v); reflectView(); render(); }
+-function reflectView(){
+-  if(els.gridBtn) els.gridBtn.setAttribute('aria-pressed', String(state.view==='grid'));
+-  if(els.listBtn) els.listBtn.setAttribute('aria-pressed', String(state.view==='list'));
+-}
++function reflectView(){ els.gridBtn?.setAttribute('aria-pressed', String(state.view==='grid')); els.listBtn?.setAttribute('aria-pressed', String(state.view==='list')); }
+ 
+ function hydrateFilters(items){
+-  // Build option sets
+-  const coll = ['All', ...dedupe(items.map(i=>i.collection).filter(Boolean))];
+-  const type = ['All', ...dedupe(items.map(i=>i.type).filter(Boolean))];
+-  const years = ['All', ...dedupe(items.map(i=> String(i.year || (i.updated ? new Date(i.updated).getFullYear() : '')) ).filter(Boolean)).sort((a,b)=>b.localeCompare(a))];
+-
+-  fillSelect(els.fColl, coll);
+-  fillSelect(els.fType, type);
+-  fillSelect(els.fYear, years);
++  fillSelect(els.fColl, ['All', ...dedupe(items.map(i=>i.collection).filter(Boolean))]);
++  fillSelect(els.fType, ['All', ...dedupe(items.map(i=>i.type).filter(Boolean))]);
++  const years = items.map(i => i.year || (i.updated ? new Date(i.updated).getFullYear() : ''))
++                    .filter(Boolean).map(String);
++  fillSelect(els.fYear, ['All', ...dedupe(years)].sort((a,b)=>b.localeCompare(a)));
+ }
+ 
+-function fillSelect(sel, arr){
+-  if(!sel) return;
+-  sel.innerHTML = arr.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join('');
+-  sel.value = arr[0] || 'All';
+-}
++function fillSelect(sel, arr){ if(!sel) return; sel.innerHTML = arr.map(v=>`<option value="${escapeHTML(v)}">${escapeHTML(v)}</option>`).join(''); sel.value = arr[0]||'All'; }
+ 
+ function render(){
+   const items = sortItems(filterItems(DATA));
+-  els.count && (els.count.textContent = String(items.length));
++  if(els.count) els.count.textContent = String(items.length);
+ 
+-  if(!DATA.length){
+-    els.results.innerHTML = els.tplEmptyAll?.innerHTML || '';
+-    updateBulk();
+-    return;
+-  }
+-  if(items.length===0){
+-    els.results.innerHTML = els.tplEmptyFilter?.innerHTML || '';
+-    updateBulk();
+-    return;
+-  }
++  if(!DATA.length){ els.results.innerHTML = els.tplEmptyAll?.innerHTML || ''; updateBulk(); return; }
++  if(items.length===0){ els.results.innerHTML = els.tplEmptyFilter?.innerHTML || ''; updateBulk(); return; }
+ 
+-  if(state.view==='list'){
+-    els.results.innerHTML = items.map(renderRow).join('');
+-  }else{
+-    els.results.innerHTML = items.map(renderCard).join('');
+-  }
++  els.results.innerHTML = (state.view==='list' ? items.map(renderRow).join('') : items.map(renderCard).join(''));
+ 
+-  // Wire delegated events (copy/select)
+-  els.results.addEventListener('click', onResultsClick);
++  if(!RESULTS_CLICK_BOUND){ els.results.addEventListener('click', onResultsClick); RESULTS_CLICK_BOUND = true; }
+   updateBulk();
+ }
+ 
+ function onResultsClick(e){
+-  const copyBtn = e.target.closest('[data-copy]');
+-  if(copyBtn){ doCopy(copyBtn.getAttribute('data-copy'), copyBtn); return; }
+-  const sel = e.target.closest('input[type="checkbox"][data-id]');
+-  if(sel){
+-    const id = sel.getAttribute('data-id');
+-    sel.checked ? state.selected.add(id) : state.selected.delete(id);
+-    updateBulk();
+-  }
++  const copyBtn = e.target.closest('[data-copy]'); if(copyBtn){ doCopy(copyBtn.getAttribute('data-copy'), copyBtn); return; }
++  const sel = e.target.closest('input[type="checkbox"][data-id]'); if(sel){ const id = sel.getAttribute('data-id'); sel.checked ? state.selected.add(id) : state.selected.delete(id); updateBulk(); }
+ }
+ 
+-function updateBulk(){
+-  if(els.bulkCount) els.bulkCount.textContent = String(state.selected.size);
+-}
++function updateBulk(){ els.bulkCount && (els.bulkCount.textContent = String(state.selected.size)); }
+ 
+ function filterItems(items){
+-  const q = state.q;
+-  const { collection, type, year } = state.filters;
++  const { collection, type, year } = state.filters; const q = state.q;
+   return items.filter(x=>{
+     const hay = `${x.title||''} ${x.desc||''} ${(x.tags||[]).join(' ')} ${x.collection||''} ${x.type||''} ${x.year||''}`.toLowerCase();
+     const mq = q ? hay.includes(q) : true;
+-    const mc = (collection==='All') || (x.collection === collection);
+-    const mt = (type==='All') || (x.type === type);
++    const mc = (collection==='All') || (x.collection===collection);
++    const mt = (type==='All') || (x.type===type);
+     const my = (year==='All') || (String(x.year)===String(year) || (x.updated && String(new Date(x.updated).getFullYear())===String(year)));
+     return mq && mc && mt && my;
+   });
+ }
+ 
+ function sortItems(items){
+-  const s = state.sort;
+-  const copy = [...items];
+-  if(s==='title') copy.sort((a,b)=> (a.title||'').localeCompare(b.title||''));
++  const s = state.sort, copy=[...items];
++  if(s==='title') copy.sort((a,b)=> (a.title||'').localeCompare(b.title||'')); 
+   else if(s==='size') copy.sort((a,b)=> (b.bytes||0) - (a.bytes||0));
+-  else copy.sort((a,b)=> new Date(b.updated||0) - new Date(a.updated||0)); // recent default
++  else copy.sort((a,b)=> new Date(b.updated||0) - new Date(a.updated||0));
+   return copy;
+ }
+ 
+@@ -188,22 +128,19 @@ function renderCard(x){
+   const size = x.bytes ? ` · ${formatBytes(x.bytes)}` : '';
+   const yr = x.year || (x.updated ? new Date(x.updated).getFullYear() : '');
+   const tags = (x.tags||[]).map(t=>`<span class="rc-tag">#${escapeHTML(t)}</span>`).join(' ');
+-  const id = x.id;
+-  const abs = new URL(x.url, location.origin).href;
++  const id = x.id, abs = new URL(x.url, location.origin).href;
+   return `
+   <article class="rc-card">
+     <header class="rc-card-h"><h3>${escapeHTML(x.title||'Untitled')}</h3></header>
+     <div class="rc-card-b">
+-      <p class="rc-sub">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</p>
++      <p class="rc-sub">${escapeHTML(x.collection||'')}${x.type?' · '+escapeHTML(x.type):''}${yr?' · '+escapeHTML(String(yr)):''}${size}</p>
+       ${x.desc? `<p class="rc-desc">${escapeHTML(x.desc)}</p>`:''}
+       <div class="rc-tags">${tags}</div>
+     </div>
+     <footer class="rc-card-f">
+       <a href="${x.url}" class="rc-btn">View</a>
+       <button type="button" class="rc-btn" data-copy="${abs}">Copy Link</button>
+-      <label class="rc-select">
+-        <input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/> Select
+-      </label>
++      <label class="rc-select"><input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/> Select</label>
+     </footer>
+   </article>`;
+ }
+@@ -211,14 +148,13 @@ function renderCard(x){
+ function renderRow(x){
+   const size = x.bytes ? ` · ${formatBytes(x.bytes)}` : '';
+   const yr = x.year || (x.updated ? new Date(x.updated).getFullYear() : '');
+-  const id = x.id;
+-  const abs = new URL(x.url, location.origin).href;
++  const id = x.id, abs = new URL(x.url, location.origin).href;
+   return `
+   <div class="rc-row">
+     <label class="rc-select"><input type="checkbox" data-id="${id}" ${state.selected.has(id)?'checked':''}/></label>
+     <div class="rc-row-main">
+       <div class="rc-row-title">${escapeHTML(x.title||'Untitled')}</div>
+-      <div class="rc-row-sub">${escapeHTML(x.collection||'')}${x.type? ' · '+escapeHTML(x.type):''}${yr? ' · '+escapeHTML(String(yr)):''}${size}</div>
++      <div class="rc-row-sub">${escapeHTML(x.collection||'')}${x.type?' · '+escapeHTML(x.type):''}${yr?' · '+escapeHTML(String(yr)):''}${size}</div>
+     </div>
+     <div class="rc-row-acts">
+       <a class="rc-btn" href="${x.url}">View</a>
+@@ -228,27 +164,19 @@ function renderRow(x){
+ }
+ 
+ // Copy helpers
+-async function doCopy(text, btn){
+-  try{ await navigator.clipboard.writeText(text); speak('Link copied.'); pulse(btn); }
+-  catch{ fallbackCopy(text); speak('Link copied.'); pulse(btn); }
+-}
++async function doCopy(text, btn){ try{ await navigator.clipboard.writeText(text); speak('Link copied.'); pulse(btn); } catch{ fallbackCopy(text); speak('Link copied.'); pulse(btn); } }
+ async function copySelected(){
+   const urls = DATA.filter(x=> state.selected.has(x.id)).map(x=> new URL(x.url, location.origin).href);
+   if(!urls.length) return;
+-  try{ await navigator.clipboard.writeText(urls.join('\n')); speak('URLs copied.'); }
+-  catch{ fallbackCopy(urls.join('\n')); speak('URLs copied.'); }
+-}
+-function fallbackCopy(text){
+-  const ta = document.createElement('textarea');
+-  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
+-  ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
++  try{ await navigator.clipboard.writeText(urls.join('\n')); speak('URLs copied.'); } catch{ fallbackCopy(urls.join('\n')); speak('URLs copied.'); }
+ }
++function fallbackCopy(text){ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+ 
+-function speak(msg){ if(els.status){ els.status.textContent = msg; } }
++function speak(msg){ els.status && (els.status.textContent = msg); }
+ function pulse(el){ if(!el) return; el.classList.add('rc-pulse'); setTimeout(()=> el.classList.remove('rc-pulse'), 600); }
+ 
+ // Utils
+-function dedupe(arr){ return Array.from(new Set(arr)); }
++function dedupe(a){ return Array.from(new Set(a)); }
+ function formatBytes(n){ const u=['B','KB','MB','GB','TB']; let i=0,v=n||0; while(v>=1024&&i<u.length-1){ v/=1024; i++; } return `${v.toFixed(v<10&&i?1:0)} ${u[i]}`; }
+ function escapeHTML(s=''){ return s.replace(/[&<>"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+ 
+

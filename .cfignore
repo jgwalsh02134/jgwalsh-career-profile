@@ -1,15 +1,19 @@
-# Exclude dev/build artifacts from Pages direct upload
+# --- Do not ship local/dev clutter ---
 node_modules/
 cloudflare-worker/
-functions/node_modules/
-functions/test/
-functions/src/
-functions/vitest.config.mts
+public/
+src/
+.github/
+.git/
+.vscode/
+.nova/
+.wrangler/
+*.map
+*.bak
 
-# Do NOT exclude the functions directory itself; required for Pages Functions.
-# Never upload private content placed under the public tree:
-public/private/
- 
- # Exclude oversized library PDFs from deploy
- public/resources/library/pdfs/
- resources/library/pdfs/
+# --- Keep these out of the live site ---
+private/
+projects-folder/
+
+# --- IMPORTANT: DO NOT exclude functions/ so Pages Functions deploy ---
+# (No "functions/" entry here on purpose)

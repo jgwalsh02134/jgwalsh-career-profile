@@ -199,60 +199,6 @@ footer a.icon-link:focus-visible{ outline:2px solid var(--footer-link); outline-
 html, body{ background:var(--color-bg); color:var(--color-text); }
 img, svg{ filter:none !important; mix-blend-mode:normal !important; }
 
-/* --- Project card image safety --- */
-.project-card-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 280px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* --- GPT buttons row --- */
-.gpt-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem auto 3rem;
-  max-width: 1100px;
-  padding: 0 1rem;
-}
-
-.gpt-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  text-decoration: none;
-  font-weight: 600;
-  border: 1px solid #d0d0d0;
-  border-radius: 10px;
-  background: #f8f8f8;
-  color: #111;
-  line-height: 1;
-  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-}
-
-.gpt-button:hover {
-  transform: translateY(-1px);
-  background: #f1f1f1;
-  border-color: #c0c0c0;
-}
-
-.gpt-icon {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-}
-
-.gpt-button:focus-visible {
-  outline: 2px solid #008080;
-  outline-offset: 2px;
-}
-
 /* === Sliding Switch === */
 .theme-toggle{
   /* mobile-first sizing with clamp() scales on tablets/desktop */
@@ -369,3 +315,34 @@ img, svg { filter:none !important; mix-blend-mode:normal !important; }
 @media (prefers-reduced-motion: reduce){
   .switch__track, .switch__thumb{ transition:none; }
 }
+
+/* Professional spacing & button harmonization */
+.btn {
+  display:inline-flex; align-items:center; gap:.5rem; padding:.6rem 1rem;
+  border-radius:10px; font-weight:600; text-decoration:none;
+}
+.btn-primary { background:#0F2A5F; color:#fff; }
+.btn-primary:hover { background:#0F2A5Fcc; }
+
+/* Card focus ring utility */
+:where(article:focus-within, a:focus-visible) { outline:0; }
+
+/* Prefer brand teal for focus if you like: */
+.gpt-button:focus-visible { outline: 2px solid #008080; outline-offset: 2px; }
+
+/* --- Project card image and card polish (helper if not already present) --- */
+.card-img { aspect-ratio: 16/9; width: 100%; height: auto; object-fit: cover; display: block; }
+.card-clip { border-radius: 14px; overflow: hidden; }
+.tag { font: 600 12px/1.2 Inter, sans-serif; padding: 6px 10px; border-radius: 999px; background: rgba(15,42,95,.06); color:#0F2A5F; border:1px solid rgba(15,42,95,.12); }
+@media (prefers-color-scheme: dark) {
+  .tag { background: rgba(255,255,255,.06); color:#e8e8e8; border-color: rgba(255,255,255,.14); }
+}
+.shadow-card { box-shadow: 0 8px 24px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.06); }
+.shadow-cardHover { box-shadow: 0 16px 32px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.10); }
+
+/* --- GPT button row (centered, pro style) --- */
+.gpt-links { display:flex; flex-wrap:wrap; gap:.75rem; justify-content:center; align-items:center; margin: 2.5rem auto 3rem; max-width: 1100px; padding: 0 1rem; }
+.gpt-button { display:inline-flex; align-items:center; gap:.6rem; padding:.65rem 1rem; border-radius: 12px; font-weight: 700; border:1px solid #cbd5e1; background:#ffffff; color:#0f172a; transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease; }
+.gpt-button:hover { transform: translateY(-1px); background:#f8fafc; border-color:#94a3b8; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.gpt-button:focus-visible { outline: 2px solid #008080; outline-offset: 2px; }
+.gpt-icon { width: 22px; height: 22px; display:inline-block; }

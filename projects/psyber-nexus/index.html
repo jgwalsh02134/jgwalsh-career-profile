@@ -14,8 +14,10 @@
   <meta property="og:image" content="https://jgwalsh.com/assets/images/psyber-nexus/og-card.png" />
 
   <!-- Favicons -->
-  <link rel="icon" href="/favicon.ico" sizes="any" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/favicon-192.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/favicon-180-precomposed.png" />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico" />
 
   <!-- Site CSS -->
   <link rel="stylesheet" href="/assets/css/main.css" />
@@ -115,21 +117,6 @@
 
   .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
 
-  /* Back to projects button */
-  .pn-back{
-    display:inline-block;
-    margin: 0 0 1rem 0;
-    padding:.5rem .85rem;
-    border-radius:12px;
-    border:1px solid var(--rule);
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.2));
-    color: var(--text);
-    font-weight:600;
-    text-decoration:none;
-  }
-  .pn-back:hover{ border-color: var(--accent); color: var(--accent-hover); text-decoration:none; }
-  .pn-back:focus{ outline:2px solid var(--focus); outline-offset:2px; }
-
   @media(prefers-color-scheme:light){
     :root{
       --bg:#fafafa; --surface:#ffffff; --surface-2:#e8f2f2;
@@ -143,7 +130,6 @@
 <body>
   <main>
     <section class="pn-hero">
-      <a class="pn-back" href="/projects/" aria-label="Back to projects">← Back to Projects</a>
       <div class="pn-badge" aria-label="Psyber Nexus badge">
         <img class="pn-logo" src="/assets/icons/psyber-nexus-1.svg" alt="" aria-hidden="true" />
         <span>Psyber Nexus</span>
