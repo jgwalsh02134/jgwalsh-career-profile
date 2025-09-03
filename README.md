@@ -36,6 +36,54 @@ To run or contribute locally:
 3. Edit content in the HTML and CSS files.
 4. Push changes to GitHub; the site deploys automatically via Cloudflare Pages.
 
+## Deployment & Cloudflare Pages Modes
+
+Cloudflare Pages sometimes produces noisy dashboard rows like "Preview — Skipped (No deployment available)" for branches you never intend to deploy. A helper script is provided to streamline configuration via the Cloudflare API and optionally disable previews entirely.
+
+Script: `scripts/cloudflare_pages_mode.sh`
+
+Supported modes:
+
+- `git-prod-only` (default): Keep Git auto‑deploys only for the `main` branch; disable all preview / PR deployments.
+- `wrangler-only`: Turn off ALL Git-triggered deployments (including production) so you deploy only via Wrangler direct uploads.
+
+Prerequisites:
+
+1. Create a Cloudflare API token with `Pages:Edit` (and basic account read) permissions.
+2. Export required environment variables:
+
+```bash
+export CF_ACCOUNT_ID="<your_account_id>"
+export CF_API_TOKEN="<api_token_with_pages_edit_scope>"
+export CF_PROJECT_NAME="jgwalsh-career-profile"
+```
+
+Usage examples:
+
+```bash
+# Disable previews; keep production auto deploys from main
+MODE=git-prod-only bash scripts/cloudflare_pages_mode.sh
+
+# Turn off all Git deployments (manual Wrangler deploys only)
+MODE=wrangler-only bash scripts/cloudflare_pages_mode.sh
+```
+
+Wrangler manual deploy (only needed if you selected `wrangler-only`):
+
+```bash
+npx wrangler pages deploy . --project-name=jgwalsh-career-profile --branch=main --commit-dirty=true
+```
+
+What the script does:
+
+- PATCHes the Cloudflare Pages project config.
+- Rewrites minimal `pages.toml` & aligns `wrangler.toml`.
+- Normalizes `.cfignore` to exclude private/tooling directories while keeping `functions/` for Pages Functions.
+- Creates timestamped backups in `.merge_backups/<timestamp>/`.
+- Commits & pushes the config changes (best effort).
+
+Review the script before running in CI. Adjust the `.cfignore` section if you need assets from paths it excludes (e.g., remove `src/` if those files must deploy).
+
 ## Contact
 
 Feel free to reach out:
