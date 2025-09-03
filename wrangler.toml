@@ -5,12 +5,4 @@ compatibility_date = "2025-08-31"
 port = 8788
 
 [pages]
-
-[pages]
-
-[pages]
-
-[pages]
-
-[pages]
 pages_build_output_dir = "."
