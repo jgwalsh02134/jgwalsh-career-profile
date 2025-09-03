@@ -1,12 +1,8 @@
 name = "jgwalsh-career-profile"
 compatibility_date = "2025-08-31"
-pages_build_output_dir = "public"
 
 [dev]
 port = 8788
-
-[pages]
-pages_build_output_dir = "."
 
 [pages]
 pages_build_output_dir = "."
