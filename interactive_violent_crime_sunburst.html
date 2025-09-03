@@ -2359,7 +2359,6 @@ void main() {
 	if (aCoord == prevCoord) prevCoord = aCoord + normalize(bCoord - aCoord);
 	if (bCoord == nextCoord) nextCoord = bCoord - normalize(bCoord - aCoord);
 
-
 	vec2 prevDiff = aCoord - prevCoord;
 	vec2 currDiff = bCoord - aCoord;
 	vec2 nextDiff = nextCoord - bCoord;
