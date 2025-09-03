@@ -41,5 +41,7 @@
   <url><loc>$base/projects/psyber-nexus/</loc></url>
   <url><loc>$base/resources/</loc></url>
   <url><loc>$base/resume.html</loc></url>
+  <url><loc>$base/scripts/_home_link.fragment.html</loc></url>
+  <url><loc>$base/scripts/_projects_pro.fragment.html</loc></url>
   <url><loc>$base/verification.html</loc></url>
 </urlset>
