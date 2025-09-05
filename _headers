@@ -9,3 +9,7 @@ Permissions - Policy: geolocation = (), microphone = (), camera = ()
 
   / assets / data/*
   Cache-Control: no-cache, no-store, must-revalidate
+ 
+# Project data — always fresh
+/assets/data/*
+  Cache-Control: no-cache, no-store, must-revalidate
