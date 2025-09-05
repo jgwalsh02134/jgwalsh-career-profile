@@ -13,19 +13,19 @@ Visit [jgwalsh.com](https://jgwalsh.com) to explore the live site.
 
 The website is organized into the following sections:
 
-- **Home** – summary of my professional mission and values.
-- **About** – overview of my academic and professional journey.
-- **Résumé** – detailed résumé with education, certifications, and work history.
-- **Projects** – portfolio of research, analytics projects, and community initiatives.
-- **Contact** – ways to get in touch and connect.
+- Home — summary of my professional mission and values.
+- About — overview of my academic and professional journey.
+- Résumé — detailed résumé with education, certifications, and work history.
+- Projects — portfolio of research, analytics projects, and community initiatives.
+- Contact — ways to get in touch and connect.
 
 ## Technology Stack
 
 This personal website project is built using:
 
-- **HTML/CSS** with **Tailwind CSS** for a responsive, modern design.
-- Hosted on **Cloudflare Pages** for fast, secure delivery.
-- Version controlled on **GitHub**.
+- HTML/CSS with Tailwind CSS for a responsive, modern design.
+- Hosted on Cloudflare Pages for fast, secure delivery.
+- Version controlled on GitHub.
 
 ## Getting Started
 
@@ -52,11 +52,11 @@ Prerequisites:
 1. Create a Cloudflare API token with `Pages:Edit` (and basic account read) permissions.
 2. Export required environment variables:
 
-```bash
-export CF_ACCOUNT_ID="<your_account_id>"
-export CF_API_TOKEN="<api_token_with_pages_edit_scope>"
-export CF_PROJECT_NAME="jgwalsh-career-profile"
-```
+   ```bash
+   export CF_ACCOUNT_ID="<your_account_id>"
+   export CF_API_TOKEN="<api_token_with_pages_edit_scope>"
+   export CF_PROJECT_NAME="jgwalsh-career-profile"
+   ```
 
 Usage examples:
 
@@ -140,5 +140,5 @@ Without them, scripts skip direct Wrangler deploys gracefully (Git deploy still 
 
 Feel free to reach out:
 
-- 📍 Albany, NY
-- ✉️ [jgwalsh@proton.me](mailto:jgwalsh@proton.me)
+- Albany, NY
+- [jgwalsh@proton.me](mailto:jgwalsh@proton.me)

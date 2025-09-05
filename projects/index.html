@@ -1,16 +1,20 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Projects & Portfolio — James Gregory Walsh</title>
-  <meta name="description" content="A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives.">
+  <meta name="description"
+    content="A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives.">
   <link rel="canonical" href="/projects/">
   <meta name="color-scheme" content="light dark">
   <link rel="stylesheet" href="/assets/css/projects.css">
 </head>
+
 <body style="background:var(--bg); color:var(--text);">
-  <header class="site-header" role="banner" style="background:#f8fafc;border-bottom:1px solid rgba(0,0,0,.08);padding:.6rem 1rem">
+  <header class="site-header" role="banner"
+    style="background:#f8fafc;border-bottom:1px solid rgba(0,0,0,.08);padding:.6rem 1rem">
     <nav aria-label="Main">
       <a href="/">Home</a>
       <a href="/about.html">About</a>
@@ -28,7 +32,9 @@
 
     <section class="toolbar" aria-label="Project controls">
       <div class="search" role="search">
-        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M21 21l-4.2-4.2m1.2-4a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M21 21l-4.2-4.2m1.2-4a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
         <input id="q" type="search" placeholder="Search projects…" autocomplete="off" />
       </div>
       <div class="filters" aria-label="Filters">
@@ -46,12 +52,14 @@
     </section>
 
   </main>
-  
+
   <!-- Enhanced Projects (projects-pro) Section -->
   <section class="projects-pro" aria-labelledby="pp-heading">
     <h2 id="pp-heading" class="visually-hidden">Projects (Enhanced)</h2>
     <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.25rem;">
-      <a href="/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">← Home</a>
+      <a href="/"
+        style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
+        Home</a>
     </nav>
     <div class="pp-controls" role="group" aria-label="Project filters and search">
       <div class="pp-search">
@@ -83,7 +91,10 @@
             <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
             <div class="pp-meta">
               <button class="pp-icon pp-fav" title="Favorite" aria-pressed="false" aria-label="Toggle favorite">
-                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path class="pp-star" d="M12 .587l3.668 7.568L24 9.75l-6 5.854 1.416 8.264L12 19.771l-7.416 4.097L6 15.604 0 9.75l8.332-1.595z"/></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path class="pp-star"
+                    d="M12 .587l3.668 7.568L24 9.75l-6 5.854 1.416 8.264L12 19.771l-7.416 4.097L6 15.604 0 9.75l8.332-1.595z" />
+                </svg>
               </button>
               <button class="pp-icon pp-share" title="Copy link" aria-label="Copy link">Copy</button>
             </div>
@@ -94,134 +105,21 @@
       </article>
     </template>
 
-    <!-- Renderer: tries external JSON then falls back to inline, default sort = newest -->
+    <!-- Renderer moved to external module to avoid TS HTML Problems -->
     <script type="module">
-(async () => {
-  const $=(s,e=document)=>e.querySelector(s);
-  const list=$('#pp-results'), tpl=$('#pp-card');
-  const sortSel=$('#pp-sort'), input=$('#pp-search');
-  const chipsWrap=document.querySelector('.pp-tags');
-  const FAVORITES_KEY='pp:favorites';
-
-  async function loadExternal() {
-    const candidates = ['/assets/data/projects.json', '/assets/Data/projects.json'];
-    for (const url of candidates) {
-      try {
-        const res = await fetch(url, { cache: 'no-cache' });
-        if (!res.ok) continue;
-        const json = await res.json();
-        if (Array.isArray(json)) return json;
-      } catch {}
-    }
-    return null;
-  }
-  function loadInline() {
-    try { return JSON.parse($('#pp-data').textContent); } catch { return []; }
-  }
-
-  const external = await loadExternal();
-  const data = (external && external.length) ? external : loadInline();
-
-  if (!data.length) {
-    list.innerHTML = '<p style="padding:12px;">No projects found. Populate <code>/assets/data/projects.json</code> or <code>#pp-data</code>.</p>';
-    return;
-  }
-
-  const favs=new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]'));
-  const allTags=[...new Set(data.flatMap(p=>p.tags))].sort();
-  const qs=new URLSearchParams(location.search);
-  const state={ q: qs.get('q')||'', tags: new Set((qs.get('tags')||'').split(',').filter(Boolean)), sort: qs.get('sort')||'newest', view:'grid' };
-
-  if (input) input.value = state.q;
-  const favChip = chip('favorites','★ Favorites'); chipsWrap.append(favChip); allTags.forEach(t=>chipsWrap.append(chip(t)));
-
-  function chip(tag,label){
-    const c=document.createElement('button'); c.className='pp-chip'; c.textContent=label||tag; c.dataset.tag=tag;
-    if(state.tags.has(tag)) c.classList.add('is-on');
-    c.onclick=()=>{ state.tags.has(tag) ? (state.tags.delete(tag), c.classList.remove('is-on')) : (state.tags.add(tag), c.classList.add('is-on')); syncQS(); render(); };
-    return c;
-  }
-  function syncQS(){
-    const p=new URLSearchParams();
-    if(state.q) p.set('q',state.q);
-    if(state.tags.size) p.set('tags',[...state.tags].join(','));
-    if(state.sort!=='newest') p.set('sort',state.sort);
-    const u=location.pathname+(p.toString()?('?'+p.toString()):'');
-    history.replaceState(null,'',u);
-  }
-  function render(){
-    list.setAttribute('aria-busy','true'); list.innerHTML='';
-    let rows=data.slice();
-
-    const q=(state.q||'').trim().toLowerCase();
-    if(q) rows=rows.filter(p=>(p.title+p.desc+p.tags.join(' ')).toLowerCase().includes(q));
-
-    const tags=[...state.tags];
-    if(tags.length){
-      const favOn=state.tags.has('favorites');
-      rows=rows.filter(p=>{
-        const hasAll=tags.filter(t=>t!=='favorites').every(t=>p.tags.includes(t));
-        return (favOn?favs.has(p.id):true) && (tags.some(t=>t!=='favorites')?hasAll:true);
-      });
-    }
-
-    if(state.sort==='az') rows.sort((a,b)=>a.title.localeCompare(b.title));
-    else if(state.sort==='oldest') rows.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
-    else rows.sort((a,b)=>(b.date||'').localeCompare(a.date||'')); // newest default
-
-    if(!rows.length){
-      list.innerHTML = '<p style="padding:12px;">No matches. Clear filters or search.</p>';
-      list.setAttribute('aria-busy','false');
-      return;
-    }
-
-    for(const p of rows){
-      const n=tpl.content.firstElementChild.cloneNode(true);
-      const link=n.querySelector('.pp-link'), th=n.querySelector('.pp-thumb'), ds=n.querySelector('.pp-desc'), tl=n.querySelector('.pp-tagsline');
-      const favBtn=n.querySelector('.pp-fav'), share=n.querySelector('.pp-share');
-
-      link.href=p.url; link.textContent=p.title; th.href=p.url; ds.textContent=p.desc;
-
-      // Thumbnail wiring
-      const img = n.querySelector('.pp-thumb-img');
-      const thumb = p.thumb || '/assets/images/projects/placeholder.svg';
-      img.src = thumb;
-      img.alt = (p.thumb_alt || (p.title + ' thumbnail')).trim();
-      img.referrerPolicy = 'no-referrer';
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      p.tags.forEach(t=>{ const li=document.createElement('li'); li.className='pp-tag'; li.textContent=t; tl.appendChild(li); });
-
-      favBtn.setAttribute('aria-pressed', localStorage.getItem(FAVORITES_KEY)?.includes(p.id) ? 'true' : 'false');
-      favBtn.onclick=()=>{ const set=new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]')); set.has(p.id)?set.delete(p.id):set.add(p.id); localStorage.setItem(FAVORITES_KEY,JSON.stringify([...set])); };
-
-      share.onclick=async()=>{ try{ const u=new URL(p.url,location.origin); u.hash=p.id; await navigator.clipboard.writeText(u.toString()); share.textContent='Copied'; setTimeout(()=>share.textContent='Copy',1200);}catch{} };
-
-      list.appendChild(n);
-    }
-    list.className='pp-grid';
-    list.setAttribute('aria-busy','false');
-  }
-
-  if (sortSel) sortSel.onchange = e => { state.sort=e.target.value; syncQS(); render(); };
-  if (input)   input.oninput   = e => { state.q=e.target.value;     syncQS(); render(); };
-
-  render();
-})();
+      import initProjectsGallery from "/assets/js/projects-gallery.js";
+      initProjectsGallery;
     </script>
   </section>
   <!-- /Enhanced Projects Section -->
 </body>
 
 <section class="gpt-links" aria-label="Custom GPTs">
-  <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt"
-     class="gpt-button" target="_blank" rel="noopener noreferrer">
+  <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt" class="gpt-button" target="_blank"
+    rel="noopener noreferrer">
     <img src="/assets/icons/b&w-chatgpt-2.svg" alt="Investigator GPT icon" class="gpt-icon" />
     <span>Investigator GPT</span>
   </a>
 </section>
-  
+
 </html>
-
-
-

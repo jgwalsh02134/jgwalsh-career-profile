@@ -1,0 +1,6 @@
+{
+    "javascript.validate.enable": true,
+    "typescript.validate.enable": true,
+    "js/ts.implicitProjectConfig.checkJs": false,
+    "editor.formatOnSave": true
+}
