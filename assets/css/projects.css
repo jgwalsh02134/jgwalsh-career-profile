@@ -721,3 +721,28 @@
 footer{ margin-bottom: 0 !important; padding-bottom: 1rem; }
 body{ margin:0; }
 html, body{ height:auto; }
+/* 1) Use a flex page shell so footer sits at the bottom with no extra gap */
+html, body { height: 100%; }
+body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; }
+
+/* 2) Let main content grow; footer sits after it (no blank space after) */
+#main-content { flex: 1 0 auto; }          /* the <main> element on projects page */
+.site-footer  { flex-shrink: 0; }
+
+/* 3) Tighten vertical rhythm near the bottom */
+.projects-cta { margin-block-end: 8px; }    /* CTA just above footer: small bottom gap */
+footer, .site-footer { margin-bottom: 0 !important; padding-bottom: 12px; }
+
+/* 4) Remove any stray bottom margin on the last element on the page */
+body > :last-child { margin-bottom: 0 !important; }
+
+/* 5) Reduce bottom padding of the projects page container on large screens */
+@media (min-width: 1024px){
+  #main-content.container { padding-bottom: 12px !important; }
+}
+
+/* 6) Ensure no phantom spacing from empty blocks */
+.pp-empty { margin-bottom: 0; }
+
+/* (safety) If some global file adds a huge min-height after footer, override it */
+body::after { content: none !important; }
