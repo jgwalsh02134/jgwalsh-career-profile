@@ -30,7 +30,6 @@ export default (function initProjectsGallery() {
         const p = new URLSearchParams();
         if (state.q) p.set('q', state.q);
         if (state.sort !== 'newest') p.set('sort', state.sort);
-        if (state.view !== 'grid') p.set('view', state.view);
         const u = location.pathname + (p.toString() ? ('?' + p.toString()) : '');
         history.replaceState(null, '', u);
     }
@@ -91,7 +90,7 @@ export default (function initProjectsGallery() {
 
     let currentData = [], favs = new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
     const qs = new URLSearchParams(location.search);
-    const state = { q: qs.get('q') || '', sort: qs.get('sort') || 'newest', view: (qs.get('view') || 'grid') };
+    const state = { q: qs.get('q') || '', sort: qs.get('sort') || 'newest', view: 'grid' };
 
     function setView(view){
         state.view = (view === 'list') ? 'list' : 'grid';
@@ -122,7 +121,7 @@ export default (function initProjectsGallery() {
         });
 
         if (!currentData.length) { list.innerHTML = '<p class="pp-empty">No projects found. Populate <code>/assets/data/projects.json</code> or <code>#pp-data</code>.</p>'; return; }
-        setView(state.view);
+        setView('grid');
         render(currentData);
     })();
 })();
