@@ -1,15 +1,51 @@
 [
-  { "id": "crime-analysis", "title": "Crime Analysis Report", "url": "/project-crime-analysis.html", "desc": "Albany, NY 2021–2024 interactive brief.", "tags": ["crime","report","dashboard"], "date": "2025-07-20", "thumb": "/assets/images/projects/alb-crime-analysis-image-2.png", "thumb_alt": "Albany crime analysis charts and map" },
-  { "id": "arrest-trends", "title": "Interactive Crime Arrest Trends", "url": "/interactive_crime_arrest_trends.html", "desc": "Explore arrest patterns over time.", "tags": ["crime","visualization","timeseries"], "date": "2025-07-10", "thumb": "/assets/images/projects/interactive-project-gal-2.png", "thumb_alt": "Interactive arrest trends line charts" },
-  { "id": "neighborhood-treemap", "title": "Neighborhood Treemap", "url": "/interactive_neighborhood_treemap.html", "desc": "Incidents by area and category.", "tags": ["crime","geography","visualization"], "date": "2025-07-05", "thumb": "/assets/images/projects/ia-project-gal-7.png", "thumb_alt": "Treemap visualization screenshot" },
-  { "id": "violent-sunburst", "title": "Violent Crime Sunburst", "url": "/interactive_violent_crime_sunburst.html", "desc": "Hierarchical view of violent offenses.", "tags": ["crime","visualization","hierarchy"], "date": "2025-06-28", "thumb": "/assets/images/projects/source-code-project-card.png", "thumb_alt": "Sunburst chart visualization" },
-  { "id": "sankey-2024", "title": "Case Resolution Sankey (2024)", "url": "/case_resolution_sankey_2024.html", "desc": "Flow from report to outcome.", "tags": ["flow","visualization","process"], "date": "2025-06-20", "thumb": "/assets/images/projects/notes-project-card-image.png", "thumb_alt": "Sankey flow diagram preview" },
-  { "id": "resource-center", "title": "Resource Center", "url": "/resources/", "desc": "Datasets, documents, and references.", "tags": ["resources","docs","data"], "date": "2025-06-01", "thumb": "/assets/images/projects/jgw_career_pf.png", "thumb_alt": "Resource center materials tiles" },
-  { "id": "psyber-nexus", "title": "Psyber Nexus", "url": "/projects/psyber-nexus/", "desc": "Applied behavioral + cyber investigations hub.", "tags": ["investigations","behavioral","tools"], "date": "2025-09-02", "thumb": "/assets/images/projects/psyber-nexus-project-card-1.png", "thumb_alt": "Psyber Nexus interface preview" },
-  { "id": "albany-crime-dashboard", "title": "Albany Crime Dashboard", "url": "/projects/albany-crime-dashboard/", "desc": "Interactive crime analytics for the Capital District.", "tags": ["crime","dashboard","albany"], "date": "2025-09-02", "thumb": "/assets/images/projects/20250831_0342_Albany Crime Analysis_remix_01k3zh4f6gejaseec386t0n06b.png", "thumb_alt": "Albany skyline over map pins" },
-  { "id": "project-gallery", "title": "Project Gallery", "url": "/projects/gallery/", "desc": "Visual gallery of prototypes and experiments.", "tags": ["gallery","showcase"], "date": "2025-09-02", "thumb": "/assets/images/projects/jgwalsh-icom-hex-design.png", "thumb_alt": "Gallery of project thumbnails" }
+  {
+    "id": "albany-crime-analysis",
+    "title": "Albany Crime Analysis",
+    "url": "/projects/albany-crime-analysis/",
+    "desc": "Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.",
+    "tags": [
+      "crime",
+      "dashboard",
+      "report",
+      "visualization",
+      "albany"
+    ],
+    "date": "2025-09-05"
+  },
+  {
+    "id": "psyber-nexus",
+    "title": "Psyber Nexus",
+    "url": "/projects/psyber-nexus/",
+    "desc": "Applied behavioral + cyber investigations hub.",
+    "tags": [
+      "investigations",
+      "behavioral",
+      "tools"
+    ],
+    "date": "2025-09-02"
+  },
+  {
+    "id": "project-gallery",
+    "title": "Project Gallery",
+    "url": "/projects/gallery/",
+    "desc": "Visual gallery of prototypes and experiments.",
+    "tags": [
+      "gallery",
+      "showcase"
+    ],
+    "date": "2025-09-02"
+  },
+  {
+    "id": "resource-center",
+    "title": "Resource Center",
+    "url": "/resources/",
+    "desc": "Datasets, documents, and references.",
+    "tags": [
+      "resources",
+      "docs",
+      "data"
+    ],
+    "date": "2025-06-01"
+  }
 ]
-
-
-
-

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projects & Portfolio – James Gregory Walsh</title>
-  <meta name="description" content="Projects and portfolio of James (J.) Gregory Walsh – crime analysis, behavioral science initiatives, research, and applied data visualization." />
+  <meta name="description"
+    content="Projects and portfolio of James (J.) Gregory Walsh – crime analysis, behavioral science initiatives, research, and applied data visualization." />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="James Gregory Walsh" />
-  <meta name="keywords" content="James Gregory Walsh projects, crime analysis, behavioral science projects, data visualization, psychology research, investigative support" />
+  <meta name="keywords"
+    content="James Gregory Walsh projects, crime analysis, behavioral science projects, data visualization, psychology research, investigative support" />
   <meta property="og:site_name" content="jgwalsh.com" />
   <meta property="og:title" content="Projects & Portfolio – James Gregory Walsh" />
-  <meta property="og:description" content="Selected projects: crime analysis reporting, Psyber Nexus initiative, and data-driven public safety insights." />
+  <meta property="og:description"
+    content="Selected projects: crime analysis reporting, Psyber Nexus initiative, and data-driven public safety insights." />
   <meta property="og:url" content="https://jgwalsh.com/projects" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://jgwalsh.com/assets/favicon/favicon-192.png" />
@@ -36,39 +40,149 @@
     "creator": {"@id": "https://jgwalsh.com/#person"}
   }
   </script>
-  
+
   <style>
-  .jgw-chat-launcher{position:fixed;right:16px;bottom:16px;z-index:1000;width:56px;height:56px;border-radius:9999px;border:none;background:#111;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 10px 25px rgba(0,0,0,.25)}
-  .jgw-chat-panel{position:fixed;right:16px;bottom:80px;z-index:1000;width:min(420px,92vw);max-height:min(70vh,700px);display:none;flex-direction:column;border-radius:14px;background:#fff;color:#111;box-shadow:0 18px 40px rgba(0,0,0,.28);overflow:hidden;border:1px solid rgba(0,0,0,.08)}
-  .jgw-chat-header{padding:12px 14px;font-weight:600;border-bottom:1px solid #eee}
-  .jgw-chat-body{padding:12px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-  .jgw-chat-body a { text-decoration: underline; cursor: pointer; color: #0b5fff; }
-  .jgw-msg{padding:10px 12px;border-radius:10px;max-width:85%;line-height:1.35}
-  .jgw-user{align-self:flex-end;background:#0b5fff;color:#fff}
-  .jgw-bot{align-self:flex-start;background:#f3f3f3}
-  .jgw-chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid #eee}
-  .jgw-chat-input{flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:10px}
-  .jgw-send-btn{padding:10px 14px;border:none;border-radius:10px;background:#111;color:#fff;cursor:pointer}
-  @media (prefers-color-scheme: dark){
-    .jgw-chat-panel{background:#151515;color:#e8e8e8;border-color:rgba(255,255,255,.12)}
-    .jgw-chat-header{border-bottom-color:rgba(255,255,255,.12)}
-    .jgw-msg.jgw-bot{background:#222;color:#e8e8e8}
-    .jgw-chat-input{background:#111;color:#e8e8e8;border-color:#333}
-    .jgw-send-btn,.jgw-chat-launcher{background:#e8e8e8;color:#111}
-  }
-  @media (prefers-color-scheme: dark){ .jgw-chat-body a { color: #9ec3ff; } }
-  /* moved button styles to /assets/css/style.css */
+    .jgw-chat-launcher {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1000;
+      width: 56px;
+      height: 56px;
+      border-radius: 9999px;
+      border: none;
+      background: #111;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .25)
+    }
+
+    .jgw-chat-panel {
+      position: fixed;
+      right: 16px;
+      bottom: 80px;
+      z-index: 1000;
+      width: min(420px, 92vw);
+      max-height: min(70vh, 700px);
+      display: none;
+      flex-direction: column;
+      border-radius: 14px;
+      background: #fff;
+      color: #111;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+      overflow: hidden;
+      border: 1px solid rgba(0, 0, 0, .08)
+    }
+
+    .jgw-chat-header {
+      padding: 12px 14px;
+      font-weight: 600;
+      border-bottom: 1px solid #eee
+    }
+
+    .jgw-chat-body {
+      padding: 12px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .jgw-chat-body a {
+      text-decoration: underline;
+      cursor: pointer;
+      color: #0b5fff;
+    }
+
+    .jgw-msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      max-width: 85%;
+      line-height: 1.35
+    }
+
+    .jgw-user {
+      align-self: flex-end;
+      background: #0b5fff;
+      color: #fff
+    }
+
+    .jgw-bot {
+      align-self: flex-start;
+      background: #f3f3f3
+    }
+
+    .jgw-chat-form {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid #eee
+    }
+
+    .jgw-chat-input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px
+    }
+
+    .jgw-send-btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      cursor: pointer
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .jgw-chat-panel {
+        background: #151515;
+        color: #e8e8e8;
+        border-color: rgba(255, 255, 255, .12)
+      }
+
+      .jgw-chat-header {
+        border-bottom-color: rgba(255, 255, 255, .12)
+      }
+
+      .jgw-msg.jgw-bot {
+        background: #222;
+        color: #e8e8e8
+      }
+
+      .jgw-chat-input {
+        background: #111;
+        color: #e8e8e8;
+        border-color: #333
+      }
+
+      .jgw-send-btn,
+      .jgw-chat-launcher {
+        background: #e8e8e8;
+        color: #111
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .jgw-chat-body a {
+        color: #9ec3ff;
+      }
+    }
+
+    /* moved button styles to /assets/css/style.css */
   </style>
 
   <script type="module">
-  const WORKER_ENDPOINT = "/api/chat"; // Pages Function
+    const WORKER_ENDPOINT = "/api/chat"; // Pages Function
 
-  const btn = Object.assign(document.createElement('button'), {
-    className: 'jgw-chat-launcher', textContent: '✦', ariaLabel: 'Open chat'
-  });
-  const panel = document.createElement('div');
-  panel.className = 'jgw-chat-panel';
-  panel.innerHTML = `
+    const btn = Object.assign(document.createElement('button'), {
+      className: 'jgw-chat-launcher', textContent: '✦', ariaLabel: 'Open chat'
+    });
+    const panel = document.createElement('div');
+    panel.className = 'jgw-chat-panel';
+    panel.innerHTML = `
     <div class="jgw-chat-header">Ask about these projects</div>
     <div class="jgw-chat-body" id="jgw-body">
       <div class="jgw-msg jgw-bot">Hi! I can help you explore the projects here.</div>
@@ -77,119 +191,119 @@
       <input class="jgw-chat-input" id="jgw-input" placeholder="Type your question…" autocomplete="off" />
       <button class="jgw-send-btn">Send</button>
     </form>`;
-  document.body.append(btn, panel);
+    document.body.append(btn, panel);
 
-  const bodyEl = panel.querySelector('#jgw-body');
-  const form = panel.querySelector('#jgw-form');
-  const input = panel.querySelector('#jgw-input');
+    const bodyEl = panel.querySelector('#jgw-body');
+    const form = panel.querySelector('#jgw-form');
+    const input = panel.querySelector('#jgw-input');
 
-  function sanitizeForChat(html) {
-    const temp = document.createElement("div");
-    temp.innerHTML = html;
+    function sanitizeForChat(html) {
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
 
-    temp.querySelectorAll("*").forEach((el) => {
-      const tag = el.tagName.toLowerCase();
-      if (tag === "a") {
-        const raw = el.getAttribute("href") || "";
-        try {
-          const url = new URL(raw, location.origin);
-          const isRelative = raw.startsWith("/");
-          const isSameOrigin = url.origin === location.origin;
-          if (!isRelative && !isSameOrigin) {
+      temp.querySelectorAll("*").forEach((el) => {
+        const tag = el.tagName.toLowerCase();
+        if (tag === "a") {
+          const raw = el.getAttribute("href") || "";
+          try {
+            const url = new URL(raw, location.origin);
+            const isRelative = raw.startsWith("/");
+            const isSameOrigin = url.origin === location.origin;
+            if (!isRelative && !isSameOrigin) {
+              el.replaceWith(document.createTextNode(el.textContent || ""));
+              return;
+            }
+            el.setAttribute("target", "_self");
+            el.setAttribute("rel", "noopener");
+          } catch {
             el.replaceWith(document.createTextNode(el.textContent || ""));
-            return;
           }
-          el.setAttribute("target", "_self");
-          el.setAttribute("rel", "noopener");
-        } catch {
+        } else {
           el.replaceWith(document.createTextNode(el.textContent || ""));
         }
-      } else {
-        el.replaceWith(document.createTextNode(el.textContent || ""));
-      }
-    });
-
-    return temp.innerHTML;
-  }
-
-  function clampText(s, max=2000) {
-    if (!s) return "";
-    return s.length > max ? s.slice(0, max) + " …" : s;
-  }
-
-  const add = (role, text) => {
-    const d = document.createElement('div');
-    d.className = `jgw-msg ${role === 'user' ? 'jgw-user' : 'jgw-bot'}`;
-    if (role === 'assistant') {
-      d.innerHTML = sanitizeForChat(clampText(String(text ?? "")));
-    } else {
-      d.textContent = String(text ?? "");
-    }
-    bodyEl.appendChild(d);
-    bodyEl.scrollTop = bodyEl.scrollHeight;
-  };
-
-  let thread = [{ role: "assistant", content: "Hello! How can I help?" }];
-
-  btn.addEventListener('click', () => {
-    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
-    if (panel.style.display === 'flex') input.focus();
-  });
-
-  function buildProjectIndex() {
-    const cards = document.querySelectorAll('[data-project-card], .project-card, .card');
-    const items = [];
-    cards.forEach(card => {
-      const titleEl = card.querySelector('h2, h3, .card-title, a');
-      const linkEl  = card.querySelector('a[href]');
-      const title = titleEl?.textContent?.trim();
-      const href  = linkEl?.getAttribute('href');
-      if (title && href) items.push({ title, href });
-    });
-    return items;
-  }
-  function asSystemContextFromIndex(items) {
-    if (!items.length) return '';
-    const lines = items.map(i => `• ${i.title} → ${i.href}`);
-  return `Canonical site links (use these EXACT paths when linking):\n${lines.join('\n')}\nTop-level: /, /about.html, /resume.html, /projects/, /contact.html`;
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const q = input.value.trim();
-    if (!q) return;
-    add('user', q); input.value = '';
-
-    const siteIndex = buildProjectIndex();
-    const siteContext = asSystemContextFromIndex(siteIndex);
-    const contextMsg = siteContext ? [{ role: 'system', content: siteContext }] : [];
-    const payload = { messages: [...thread, ...contextMsg, { role: 'user', content: q }] };
-    try {
-      const res = await fetch(WORKER_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
       });
-      const raw = await res.text();
-      let reply = '…';
-      try {
-        const data = JSON.parse(raw);
-        // Responses API shape
-        reply = data.output?.[0]?.content?.[0]?.text
-             // (also support chat/completions fallback if ever used)
-             || data.choices?.[0]?.message?.content
-             || data.error?.message
-             || 'No content returned.';
-      } catch {
-        reply = raw || 'Unexpected response.';
-      }
-      add('assistant', reply);
-      thread = [...payload.messages, { role: 'assistant', content: reply }];
-    } catch (err) {
-      add('assistant', 'Sorry—something went wrong. Try again.');
-      console.error(err);
+
+      return temp.innerHTML;
     }
-  });
+
+    function clampText(s, max = 2000) {
+      if (!s) return "";
+      return s.length > max ? s.slice(0, max) + " …" : s;
+    }
+
+    const add = (role, text) => {
+      const d = document.createElement('div');
+      d.className = `jgw-msg ${role === 'user' ? 'jgw-user' : 'jgw-bot'}`;
+      if (role === 'assistant') {
+        d.innerHTML = sanitizeForChat(clampText(String(text ?? "")));
+      } else {
+        d.textContent = String(text ?? "");
+      }
+      bodyEl.appendChild(d);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+    };
+
+    let thread = [{ role: "assistant", content: "Hello! How can I help?" }];
+
+    btn.addEventListener('click', () => {
+      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+      if (panel.style.display === 'flex') input.focus();
+    });
+
+    function buildProjectIndex() {
+      const cards = document.querySelectorAll('[data-project-card], .project-card, .card');
+      const items = [];
+      cards.forEach(card => {
+        const titleEl = card.querySelector('h2, h3, .card-title, a');
+        const linkEl = card.querySelector('a[href]');
+        const title = titleEl?.textContent?.trim();
+        const href = linkEl?.getAttribute('href');
+        if (title && href) items.push({ title, href });
+      });
+      return items;
+    }
+    function asSystemContextFromIndex(items) {
+      if (!items.length) return '';
+      const lines = items.map(i => `• ${i.title} → ${i.href}`);
+      return `Canonical site links (use these EXACT paths when linking):\n${lines.join('\n')}\nTop-level: /, /about.html, /resume.html, /projects/, /contact.html`;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (!q) return;
+      add('user', q); input.value = '';
+
+      const siteIndex = buildProjectIndex();
+      const siteContext = asSystemContextFromIndex(siteIndex);
+      const contextMsg = siteContext ? [{ role: 'system', content: siteContext }] : [];
+      const payload = { messages: [...thread, ...contextMsg, { role: 'user', content: q }] };
+      try {
+        const res = await fetch(WORKER_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const raw = await res.text();
+        let reply = '…';
+        try {
+          const data = JSON.parse(raw);
+          // Responses API shape
+          reply = data.output?.[0]?.content?.[0]?.text
+            // (also support chat/completions fallback if ever used)
+            || data.choices?.[0]?.message?.content
+            || data.error?.message
+            || 'No content returned.';
+        } catch {
+          reply = raw || 'Unexpected response.';
+        }
+        add('assistant', reply);
+        thread = [...payload.messages, { role: 'assistant', content: reply }];
+      } catch (err) {
+        add('assistant', 'Sorry—something went wrong. Try again.');
+        console.error(err);
+      }
+    });
   </script>
 
   <!-- Favicons -->
@@ -248,93 +362,133 @@
     }
   </script>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-slate-200 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
+
+<body
+  class="bg-gray-50 text-gray-800 dark:bg-slate-900 dark:text-slate-200 antialiased leading-relaxed flex flex-col min-h-screen font-sans">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-navy focus:text-white focus:p-2 focus:rounded">Skip
+    to main content</a>
 
   <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50">
     <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
       <a href="/index.html" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
       <div class="sm:hidden">
-        <button onclick="toggleMenu()" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        <button onclick="toggleMenu()"
+          class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
+          aria-controls="mobile-menu" aria-expanded="false">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
           <span class="sr-only">Toggle menu</span>
         </button>
       </div>
       <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" role="navigation" aria-label="Main navigation">
-        <a href="/index.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Home</a>
-        <a href="/about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
-        <a href="/resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
-  <a href="/projects/" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy" aria-current="page">Projects</a><a href="/contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
+        <a href="/index.html"
+          class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Home</a>
+        <a href="/about.html"
+          class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
+        <a href="/resume.html"
+          class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
+        <a href="/projects/"
+          class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy"
+          aria-current="page">Projects</a><a href="/contact.html"
+          class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme"
+          aria-pressed="false">
           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
         </button>
       </nav>
     </div>
-    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" role="navigation" aria-label="Mobile navigation">
-      <a href="/index.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Home</a>
-      <a href="/about.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
-      <a href="/resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
-  <a href="/projects/" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy" aria-current="page">Projects</a><a href="/contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
-      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" role="navigation"
+      aria-label="Mobile navigation">
+      <a href="/index.html"
+        class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Home</a>
+      <a href="/about.html"
+        class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
+      <a href="/resume.html"
+        class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
+      <a href="/projects/"
+        class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy"
+        aria-current="page">Projects</a><a href="/contact.html"
+        class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
+      <button id="theme-toggle-mobile"
+        class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle"
+        type="button" aria-pressed="false" aria-label="Switch to dark theme">
         <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
       </button>
     </div>
   </header>
 
   <main id="main-content" class="max-w-6xl mx-auto py-12 sm:py-16 px-4 flex-grow w-full">
-<!-- HOME-LINK:BEGIN -->
-<nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.25rem;">
-  <a href="/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">← Home</a>
-</nav>
-<style>@media (prefers-color-scheme: dark){.home-link a{border-color:rgba(255,255,255,.18)}}</style>
-<!-- HOME-LINK:END -->
+    <!-- HOME-LINK:BEGIN -->
+    <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.25rem;">
+      <a href="/"
+        style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
+        Home</a>
+    </nav>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        .home-link a {
+          border-color: rgba(255, 255, 255, .18)
+        }
+      }
+    </style>
+    <!-- HOME-LINK:END -->
 
-<!-- PROJECTS:PRO BEGIN -->
-<section class="projects-pro" aria-label="Projects">
-  <header class="pp-header">
-    <div class="pp-title">
-      <h1 class="pp-h1">Projects</h1>
-      <p class="pp-sub">Interactive analyses, tools, and experiments.</p>
-    </div>
-    <div class="pp-actions" role="region" aria-label="Project controls">
-      <input id="pp-search" class="pp-input" type="search" placeholder="Search projects (press /)" aria-label="Search projects" />
-      <select id="pp-sort" class="pp-select" aria-label="Sort projects">
-        <option value="newest">Newest</option>
-        <option value="az">A → Z</option>
-      </select>
-      <div class="pp-view" role="group" aria-label="View mode">
-        <button id="pp-view-grid" class="pp-btn is-active" data-view="grid" title="Grid view (g)" aria-pressed="true">Grid</button>
-        <button id="pp-view-list" class="pp-btn" data-view="list" title="List view (l)" aria-pressed="false">List</button>
-      </div>
-    </div>
-  </header>
-
-  <section class="pp-tags" aria-label="Filter by tag"></section>
-  <div id="pp-results" class="pp-grid" role="list" aria-live="polite" aria-busy="true"></div>
-
-  <template id="pp-card">
-    <article class="pp-card" role="listitem">
-      <a class="pp-thumb" target="_self" rel="noopener"></a>
-      <div class="pp-body">
-        <div class="pp-top">
-          <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
-          <div class="pp-meta">
-            <button class="pp-icon pp-fav" title="Favorite (f)" aria-pressed="false" aria-label="Toggle favorite">
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path class="pp-star" d="M12 .587l3.668 7.568L24 9.75l-6 5.854 1.416 8.264L12 19.771l-7.416 4.097L6 15.604 0 9.75l8.332-1.595z"/></svg>
-            </button>
-            <button class="pp-icon pp-share" title="Copy link" aria-label="Copy link">
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a3 3 0 0 0-2.816 1.983l-6.07-3.035a3 3 0 1 0-.248 1.01l6.07 3.036a3 3 0 1 0 .064-1.012z"/></svg>
-            </button>
+    <!-- PROJECTS:PRO BEGIN -->
+    <section class="projects-pro" aria-label="Projects">
+      <header class="pp-header">
+        <div class="pp-title">
+          <h1 class="pp-h1">Projects</h1>
+          <p class="pp-sub">Interactive analyses, tools, and experiments.</p>
+        </div>
+        <div class="pp-actions" role="region" aria-label="Project controls">
+          <input id="pp-search" class="pp-input" type="search" placeholder="Search projects (press /)"
+            aria-label="Search projects" />
+          <select id="pp-sort" class="pp-select" aria-label="Sort projects">
+            <option value="newest">Newest</option>
+            <option value="az">A → Z</option>
+          </select>
+          <div class="pp-view" role="group" aria-label="View mode">
+            <button id="pp-view-grid" class="pp-btn is-active" data-view="grid" title="Grid view (g)"
+              aria-pressed="true">Grid</button>
+            <button id="pp-view-list" class="pp-btn" data-view="list" title="List view (l)"
+              aria-pressed="false">List</button>
           </div>
         </div>
-        <p class="pp-desc"></p>
-        <ul class="pp-tagsline" aria-label="Tags"></ul>
-      </div>
-    </article>
-  </template>
+      </header>
 
-  <!-- Initial dataset (we will upsert/update below) -->
-  <script type="application/json" id="pp-data">
+      <section class="pp-tags" aria-label="Filter by tag"></section>
+      <div id="pp-results" class="pp-grid" role="list" aria-live="polite" aria-busy="true"></div>
+
+      <template id="pp-card">
+        <article class="pp-card" role="listitem">
+          <a class="pp-thumb" target="_self" rel="noopener"></a>
+          <div class="pp-body">
+            <div class="pp-top">
+              <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
+              <div class="pp-meta">
+                <button class="pp-icon pp-fav" title="Favorite (f)" aria-pressed="false" aria-label="Toggle favorite">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path class="pp-star"
+                      d="M12 .587l3.668 7.568L24 9.75l-6 5.854 1.416 8.264L12 19.771l-7.416 4.097L6 15.604 0 9.75l8.332-1.595z" />
+                  </svg>
+                </button>
+                <button class="pp-icon pp-share" title="Copy link" aria-label="Copy link">
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M18 8a3 3 0 0 0-2.816 1.983l-6.07-3.035a3 3 0 1 0-.248 1.01l6.07 3.036a3 3 0 1 0 .064-1.012z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <p class="pp-desc"></p>
+            <ul class="pp-tagsline" aria-label="Tags"></ul>
+          </div>
+        </article>
+      </template>
+
+      <!-- Initial dataset (we will upsert/update below) -->
+      <script type="application/json" id="pp-data">
 [
   {
     "id": "crime-analysis",
@@ -446,89 +600,306 @@
 ]
 </script>
 
-  <style>
-    .projects-pro{--bg:#fff;--ink:#0a0a0a;--muted:#6b7280;--ring:#3b82f6;--card:#f8fafc;--bd:rgba(0,0,0,.12);--soft:rgba(0,0,0,.06);--chip:#e5e7eb;--chip-ink:#111827;--brand:#4f46e5;--fav:#f59e0b;--shadow:0 10px 30px rgba(0,0,0,.08);margin:1.25rem auto;max-width:1100px;padding:0 16px}
-    @media (prefers-color-scheme: dark){.projects-pro{--bg:#0b0f17;--ink:#e5e7eb;--muted:#94a3b8;--card:#0f1522;--bd:rgba(255,255,255,.12);--soft:rgba(255,255,255,.06);--chip:#1f2937;--chip-ink:#d1d5db;--brand:#7c8cff;--shadow:0 18px 40px rgba(0,0,0,.45)}}
-    .pp-header{display:flex;gap:16px;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
-    .pp-h1{font-size:2rem;margin:.25rem 0;color:var(--ink)} .pp-sub{margin:0;color:var(--muted)}
-    .pp-actions{display:flex;gap:10px;flex-wrap:wrap}
-    .pp-input,.pp-select,.pp-btn{border:1px solid var(--bd);background:var(--bg);color:var(--ink);border-radius:10px;padding:.55rem .7rem}
-    .pp-btn{cursor:pointer}.pp-btn.is-active{outline:2px solid var(--brand);outline-offset:2px}
-    .pp-tags{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
-    .pp-chip{border:1px solid var(--bd);background:var(--chip);color:var(--chip-ink);border-radius:999px;padding:.35rem .7rem;font-size:.9rem;cursor:pointer}
-    .pp-chip.is-on{background:var(--brand);color:#fff;border-color:transparent}
-    .pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .pp-list{display:block}.pp-card{background:var(--card);border:1px solid var(--bd);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-height:180px;transition:transform .2s ease,box-shadow .2s ease}
-    .pp-card:hover{transform:translateY(-3px)} .pp-thumb{display:block;min-height:120px;background:linear-gradient(135deg,var(--soft),transparent),radial-gradient(ellipse at bottom right,var(--soft),transparent)}
-    .pp-body{padding:14px}.pp-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-    .pp-title{font-size:1.05rem;margin:.1rem 0}.pp-title a{color:var(--ink);text-decoration:none}
-    .pp-desc{margin:.4rem 0;color:var(--muted)} .pp-tagsline{display:flex;flex-wrap:wrap;gap:6px;margin:.35rem 0 0;padding:0;list-style:none}
-    .pp-tag{font-size:.8rem;border:1px solid var(--bd);border-radius:999px;padding:.2rem .5rem;color:var(--muted)}
-    .pp-meta{display:flex;gap:6px}.pp-icon{background:transparent;border:1px solid var(--bd);border-radius:10px;padding:.35rem;cursor:pointer}
-    .pp-icon:focus{outline:2px solid var(--ring);outline-offset:2px}.pp-star{fill:transparent;stroke:var(--fav);stroke-width:1.2}.is-fav .pp-star{fill:var(--fav)}
-    .pp-list .pp-card{flex-direction:row}.pp-list .pp-thumb{width:240px;min-height:100%}
-    @media (prefers-reduced-motion: reduce){.pp-card,.pp-card:hover{transition:none;transform:none}}
-  </style>
+      <style>
+        .projects-pro {
+          --bg: #fff;
+          --ink: #0a0a0a;
+          --muted: #6b7280;
+          --ring: #3b82f6;
+          --card: #f8fafc;
+          --bd: rgba(0, 0, 0, .12);
+          --soft: rgba(0, 0, 0, .06);
+          --chip: #e5e7eb;
+          --chip-ink: #111827;
+          --brand: #4f46e5;
+          --fav: #f59e0b;
+          --shadow: 0 10px 30px rgba(0, 0, 0, .08);
+          margin: 1.25rem auto;
+          max-width: 1100px;
+          padding: 0 16px
+        }
 
-  <script>
-  (() => {
-    const $=(s,e=document)=>e.querySelector(s), $$=(s,e=document)=>[...e.querySelectorAll(s)];
-    const list=$('#pp-results'), tpl=$('#pp-card'), input=$('#pp-search'), sortSel=$('#pp-sort'), chipsWrap=$('.pp-tags');
-    const btnGrid=$('#pp-view-grid'), btnList=$('#pp-view-list'); const FAVORITES_KEY='pp:favorites';
-    const data=JSON.parse($('#pp-data').textContent); const favs=new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]'));
-    const allTags=[...new Set(data.flatMap(p=>p.tags))].sort(); const qs=new URLSearchParams(location.search);
-    let state={q:qs.get('q')||'',tags:new Set((qs.get('tags')||'').split(',').filter(Boolean)),sort:qs.get('sort')||'newest',view:qs.get('view')||'grid'};
-    input.value=state.q; sortSel.value=state.sort; setView(state.view);
-    const favChip=chip('favorites','★ Favorites'); chipsWrap.append(favChip); allTags.forEach(t=>chipsWrap.append(chip(t)));
-    function chip(tag,label){const c=document.createElement('button'); c.className='pp-chip'; c.textContent=label||tag; c.dataset.tag=tag; if(state.tags.has(tag)) c.classList.add('is-on'); c.onclick=()=>{state.tags.has(tag)?(state.tags.delete(tag),c.classList.remove('is-on')):(state.tags.add(tag),c.classList.add('is-on')); syncQS(); render();}; return c;}
-    function render(){list.setAttribute('aria-busy','true'); list.innerHTML=''; let rows=data.slice();
-      const q=state.q.trim().toLowerCase(); if(q) rows=rows.filter(p=>(p.title+p.desc+p.tags.join(' ')).toLowerCase().includes(q));
-      const tags=[...state.tags]; if(tags.length){const favOn=state.tags.has('favorites'); rows=rows.filter(p=>{const hasAll=tags.filter(t=>t!=='favorites').every(t=>p.tags.includes(t)); return (favOn?favs.has(p.id):true) && (tags.some(t=>t!=='favorites')?hasAll:true);});}
-      if(state.sort==='az') rows.sort((a,b)=>a.title.localeCompare(b.title)); else rows.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-      for(const p of rows){const n=tpl.content.firstElementChild.cloneNode(true); const link=$('.pp-link',n), th=$('.pp-thumb',n), ds=$('.pp-desc',n), tl=$('.pp-tagsline',n), fav=$('.pp-fav',n), sh=$('.pp-share',n);
-        link.href=p.url; link.textContent=p.title; link.title=p.title; th.href=p.url; ds.textContent=p.desc; p.tags.forEach(t=>{const li=document.createElement('li'); li.className='pp-tag'; li.textContent=t; tl.appendChild(li);});
-        fav.setAttribute('aria-pressed',favs.has(p.id)?'true':'false'); if(favs.has(p.id)) n.classList.add('is-fav'); fav.onclick=()=>{favs.has(p.id)?favs.delete(p.id):favs.add(p.id); localStorage.setItem(FAVORITES_KEY,JSON.stringify([...favs])); render();};
-        sh.onclick=async()=>{const u=new URL(p.url,location.origin); u.hash=p.id; try{await navigator.clipboard.writeText(u.toString()); sh.textContent='Copied'; setTimeout(()=>sh.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24"><path d="M18 8a3 3 0 0 0-2.816 1.983l-6.07-3.035a3 3 0 1 0-.248 1.01l6.07 3.036a3 3 0 1 0 .064-1.012z"/></svg>',1200);}catch{}};
-        list.appendChild(n);}
-      list.className=state.view==='list'?'pp-list':'pp-grid'; list.setAttribute('aria-busy','false');}
-    function setView(v){state.view=(v==='list')?'list':'grid'; btnGrid.classList.toggle('is-active',state.view==='grid'); btnList.classList.toggle('is-active',state.view==='list'); btnGrid.setAttribute('aria-pressed',state.view==='grid'); btnList.setAttribute('aria-pressed',state.view==='list'); syncQS(); render();}
-    function syncQS(){const p=new URLSearchParams(); if(state.q) p.set('q',state.q); if(state.tags.size) p.set('tags',[...state.tags].join(',')); if(state.sort!=='newest') p.set('sort',state.sort); if(state.view!=='grid') p.set('view',state.view); const u=location.pathname+(p.toString()?('?'+p.toString()):''); history.replaceState(null,'',u);}    
-    input.oninput=e=>{state.q=e.target.value; syncQS(); render();}; sortSel.onchange=e=>{state.sort=e.target.value; syncQS(); render();};
-    btnGrid.onclick=()=>setView('grid'); btnList.onclick=()=>setView('list');
-    document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==input){e.preventDefault(); input.focus();} if(e.key.toLowerCase()==='g') setView('grid'); if(e.key.toLowerCase()==='l') setView('list'); if(e.key.toLowerCase()==='f'&&list.firstElementChild){const b=list.firstElementChild.querySelector('.pp-fav'); if(b) b.click();}});
-    render();
-  })();
-  </script>
-</section>
-<!-- PROJECTS:PRO END -->
+        @media (prefers-color-scheme: dark) {
+          .projects-pro {
+            --bg: #0b0f17;
+            --ink: #e5e7eb;
+            --muted: #94a3b8;
+            --card: #0f1522;
+            --bd: rgba(255, 255, 255, .12);
+            --soft: rgba(255, 255, 255, .06);
+            --chip: #1f2937;
+            --chip-ink: #d1d5db;
+            --brand: #7c8cff;
+            --shadow: 0 18px 40px rgba(0, 0, 0, .45)
+          }
+        }
 
-  <!-- Moved from header: Resource Center link -->
-  <section class="resource-link" style="margin:1.25rem 0 2rem;text-align:center;">
-    <a href="/resources/" class="button secondary" style="display:inline-block;padding:.65rem 1rem;border:1px solid rgba(0,0,0,.15);border-radius:10px;text-decoration:none;">Resource Center →</a>
-  </section>
+        .pp-header {
+          display: flex;
+          gap: 16px;
+          justify-content: space-between;
+          align-items: flex-end;
+          flex-wrap: wrap;
+          margin-bottom: 14px
+        }
+
+        .pp-h1 {
+          font-size: 2rem;
+          margin: .25rem 0;
+          color: var(--ink)
+        }
+
+        .pp-sub {
+          margin: 0;
+          color: var(--muted)
+        }
+
+        .pp-actions {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap
+        }
+
+        .pp-input,
+        .pp-select,
+        .pp-btn {
+          border: 1px solid var(--bd);
+          background: var(--bg);
+          color: var(--ink);
+          border-radius: 10px;
+          padding: .55rem .7rem
+        }
+
+        .pp-btn {
+          cursor: pointer
+        }
+
+        .pp-btn.is-active {
+          outline: 2px solid var(--brand);
+          outline-offset: 2px
+        }
+
+        .pp-tags {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin: 6px 0 12px
+        }
+
+        .pp-chip {
+          border: 1px solid var(--bd);
+          background: var(--chip);
+          color: var(--chip-ink);
+          border-radius: 999px;
+          padding: .35rem .7rem;
+          font-size: .9rem;
+          cursor: pointer
+        }
+
+        .pp-chip.is-on {
+          background: var(--brand);
+          color: #fff;
+          border-color: transparent
+        }
+
+        .pp-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 16px
+        }
+
+        .pp-list {
+          display: block
+        }
+
+        .pp-card {
+          background: var(--card);
+          border: 1px solid var(--bd);
+          border-radius: 14px;
+          box-shadow: var(--shadow);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          min-height: 180px;
+          transition: transform .2s ease, box-shadow .2s ease
+        }
+
+        .pp-card:hover {
+          transform: translateY(-3px)
+        }
+
+        .pp-thumb {
+          display: block;
+          min-height: 120px;
+          background: linear-gradient(135deg, var(--soft), transparent), radial-gradient(ellipse at bottom right, var(--soft), transparent)
+        }
+
+        .pp-body {
+          padding: 14px
+        }
+
+        .pp-top {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+          align-items: flex-start
+        }
+
+        .pp-title {
+          font-size: 1.05rem;
+          margin: .1rem 0
+        }
+
+        .pp-title a {
+          color: var(--ink);
+          text-decoration: none
+        }
+
+        .pp-desc {
+          margin: .4rem 0;
+          color: var(--muted)
+        }
+
+        .pp-tagsline {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin: .35rem 0 0;
+          padding: 0;
+          list-style: none
+        }
+
+        .pp-tag {
+          font-size: .8rem;
+          border: 1px solid var(--bd);
+          border-radius: 999px;
+          padding: .2rem .5rem;
+          color: var(--muted)
+        }
+
+        .pp-meta {
+          display: flex;
+          gap: 6px
+        }
+
+        .pp-icon {
+          background: transparent;
+          border: 1px solid var(--bd);
+          border-radius: 10px;
+          padding: .35rem;
+          cursor: pointer
+        }
+
+        .pp-icon:focus {
+          outline: 2px solid var(--ring);
+          outline-offset: 2px
+        }
+
+        .pp-star {
+          fill: transparent;
+          stroke: var(--fav);
+          stroke-width: 1.2
+        }
+
+        .is-fav .pp-star {
+          fill: var(--fav)
+        }
+
+        .pp-list .pp-card {
+          flex-direction: row
+        }
+
+        .pp-list .pp-thumb {
+          width: 240px;
+          min-height: 100%
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+          .pp-card,
+          .pp-card:hover {
+            transition: none;
+            transform: none
+          }
+        }
+      </style>
+
+      <script>
+          (() => {
+            const $ = (s, e = document) => e.querySelector(s), $$ = (s, e = document) => [...e.querySelectorAll(s)];
+            const list = $('#pp-results'), tpl = $('#pp-card'), input = $('#pp-search'), sortSel = $('#pp-sort'), chipsWrap = $('.pp-tags');
+            const btnGrid = $('#pp-view-grid'), btnList = $('#pp-view-list'); const FAVORITES_KEY = 'pp:favorites';
+            const data = JSON.parse($('#pp-data').textContent); const favs = new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
+            const allTags = [...new Set(data.flatMap(p => p.tags))].sort(); const qs = new URLSearchParams(location.search);
+            let state = { q: qs.get('q') || '', tags: new Set((qs.get('tags') || '').split(',').filter(Boolean)), sort: qs.get('sort') || 'newest', view: qs.get('view') || 'grid' };
+            input.value = state.q; sortSel.value = state.sort; setView(state.view);
+            const favChip = chip('favorites', '★ Favorites'); chipsWrap.append(favChip); allTags.forEach(t => chipsWrap.append(chip(t)));
+            function chip(tag, label) { const c = document.createElement('button'); c.className = 'pp-chip'; c.textContent = label || tag; c.dataset.tag = tag; if (state.tags.has(tag)) c.classList.add('is-on'); c.onclick = () => { state.tags.has(tag) ? (state.tags.delete(tag), c.classList.remove('is-on')) : (state.tags.add(tag), c.classList.add('is-on')); syncQS(); render(); }; return c; }
+            function render() {
+              list.setAttribute('aria-busy', 'true'); list.innerHTML = ''; let rows = data.slice();
+              const q = state.q.trim().toLowerCase(); if (q) rows = rows.filter(p => (p.title + p.desc + p.tags.join(' ')).toLowerCase().includes(q));
+              const tags = [...state.tags]; if (tags.length) { const favOn = state.tags.has('favorites'); rows = rows.filter(p => { const hasAll = tags.filter(t => t !== 'favorites').every(t => p.tags.includes(t)); return (favOn ? favs.has(p.id) : true) && (tags.some(t => t !== 'favorites') ? hasAll : true); }); }
+              if (state.sort === 'az') rows.sort((a, b) => a.title.localeCompare(b.title)); else rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+              for (const p of rows) {
+                const n = tpl.content.firstElementChild.cloneNode(true); const link = $('.pp-link', n), th = $('.pp-thumb', n), ds = $('.pp-desc', n), tl = $('.pp-tagsline', n), fav = $('.pp-fav', n), sh = $('.pp-share', n);
+                link.href = p.url; link.textContent = p.title; link.title = p.title; th.href = p.url; ds.textContent = p.desc; p.tags.forEach(t => { const li = document.createElement('li'); li.className = 'pp-tag'; li.textContent = t; tl.appendChild(li); });
+                fav.setAttribute('aria-pressed', favs.has(p.id) ? 'true' : 'false'); if (favs.has(p.id)) n.classList.add('is-fav'); fav.onclick = () => { favs.has(p.id) ? favs.delete(p.id) : favs.add(p.id); localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favs])); render(); };
+                sh.onclick = async () => { const u = new URL(p.url, location.origin); u.hash = p.id; try { await navigator.clipboard.writeText(u.toString()); sh.textContent = 'Copied'; setTimeout(() => sh.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M18 8a3 3 0 0 0-2.816 1.983l-6.07-3.035a3 3 0 1 0-.248 1.01l6.07 3.036a3 3 0 1 0 .064-1.012z"/></svg>', 1200); } catch { } };
+                list.appendChild(n);
+              }
+              list.className = state.view === 'list' ? 'pp-list' : 'pp-grid'; list.setAttribute('aria-busy', 'false');
+            }
+            function setView(v) { state.view = (v === 'list') ? 'list' : 'grid'; btnGrid.classList.toggle('is-active', state.view === 'grid'); btnList.classList.toggle('is-active', state.view === 'list'); btnGrid.setAttribute('aria-pressed', state.view === 'grid'); btnList.setAttribute('aria-pressed', state.view === 'list'); syncQS(); render(); }
+            function syncQS() { const p = new URLSearchParams(); if (state.q) p.set('q', state.q); if (state.tags.size) p.set('tags', [...state.tags].join(',')); if (state.sort !== 'newest') p.set('sort', state.sort); if (state.view !== 'grid') p.set('view', state.view); const u = location.pathname + (p.toString() ? ('?' + p.toString()) : ''); history.replaceState(null, '', u); }
+            input.oninput = e => { state.q = e.target.value; syncQS(); render(); }; sortSel.onchange = e => { state.sort = e.target.value; syncQS(); render(); };
+            btnGrid.onclick = () => setView('grid'); btnList.onclick = () => setView('list');
+            document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); } if (e.key.toLowerCase() === 'g') setView('grid'); if (e.key.toLowerCase() === 'l') setView('list'); if (e.key.toLowerCase() === 'f' && list.firstElementChild) { const b = list.firstElementChild.querySelector('.pp-fav'); if (b) b.click(); } });
+            render();
+          })();
+      </script>
+    </section>
+    <!-- PROJECTS:PRO END -->
+
+    <!-- Moved from header: Resource Center link -->
+    <section class="resource-link" style="margin:1.25rem 0 2rem;text-align:center;">
+      <a href="/resources/" class="button secondary"
+        style="display:inline-block;padding:.65rem 1rem;border:1px solid rgba(0,0,0,.15);border-radius:10px;text-decoration:none;">Resource
+        Center →</a>
+    </section>
     <div class="text-center mb-8 animate-fade-in">
-        <h1 class="text-3xl sm:text-4xl font-bold text-navy">Projects & Portfolio</h1>
-        <p class="text-lg text-slate-700 mt-4 max-w-2xl mx-auto">
-            Browse the upgraded, data-driven gallery at <a class="underline" href="/projects/">/projects/</a>.
-        </p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-navy">Projects & Portfolio</h1>
+      <p class="text-lg text-slate-700 mt-4 max-w-2xl mx-auto">
+        Browse the upgraded, data-driven gallery at <a class="underline" href="/projects/">/projects/</a>.
+      </p>
     </div>
     <div class="text-center">
-      <a href="/projects/" class="inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">Open Projects Gallery</a>
+      <a href="/projects/"
+        class="inline-block px-6 py-3 bg-navy text-white rounded-lg hover:bg-navy/90 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-navy">Open
+        Projects Gallery</a>
     </div>
   </main>
 
-  <footer class="bg-gray-100 dark:bg-slate-950 text-sm text-gray-600 dark:text-slate-400 border-t pt-8 pb-6 px-4 mt-auto">
+  <footer
+    class="bg-gray-100 dark:bg-slate-950 text-sm text-gray-600 dark:text-slate-400 border-t pt-8 pb-6 px-4 mt-auto">
     <div class="max-w-4xl mx-auto text-center space-y-4">
       <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
       <div class="flex justify-center items-center gap-3">
-        <a href="mailto:jgwalsh@proton.me" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage rounded px-1 py-0.5">Email</a>
+        <a href="mailto:jgwalsh@proton.me"
+          class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage rounded px-1 py-0.5">Email</a>
         <span>·</span>
-        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage rounded px-1 py-0.5" aria-label="GitHub profile (opens in new tab)">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/></svg>
+        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener"
+          class="inline-flex items-center gap-1 text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage rounded px-1 py-0.5"
+          aria-label="GitHub profile (opens in new tab)">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill-rule="evenodd"
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z"
+              clip-rule="evenodd" />
+          </svg>
           GitHub
         </a>
         <span>·</span>
-        <a href="/contact.html" class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage rounded px-1 py-0.5">Contact</a>
+        <a href="/contact.html"
+          class="text-navy hover:underline focus:outline-none focus:ring-2 focus:ring-sage rounded px-1 py-0.5">Contact</a>
       </div>
     </div>
   </footer>
@@ -541,49 +912,50 @@
     }
     // theme handled by /assets/js/theme.js
 
-    (function initSearchAndFilters(){
+    (function initSearchAndFilters() {
       const searchInput = document.getElementById('search');
       const pills = Array.from(document.querySelectorAll('.filter-pill'));
       const cards = Array.from(document.querySelectorAll('.project-card'));
       const countEl = document.getElementById('results-count');
 
-      function normalize(str){ return (str || '').toLowerCase(); }
+      function normalize(str) { return (str || '').toLowerCase(); }
 
-      function applyFilters(){
+      function applyFilters() {
         const term = normalize(searchInput.value);
-        const active = pills.find(p=>p.getAttribute('aria-pressed')==='true');
+        const active = pills.find(p => p.getAttribute('aria-pressed') === 'true');
         const filter = active ? active.getAttribute('data-filter') : 'all';
         let visibleCount = 0;
         cards.forEach(card => {
           const title = normalize(card.getAttribute('data-title'));
           const tags = normalize(card.getAttribute('data-tags'));
           const matchesTerm = !term || title.includes(term) || tags.includes(term);
-          const matchesFilter = filter==='all' || tags.split(',').includes(filter);
+          const matchesFilter = filter === 'all' || tags.split(',').includes(filter);
           const show = matchesTerm && matchesFilter;
           card.style.display = show ? '' : 'none';
-          if(show) visibleCount++;
+          if (show) visibleCount++;
         });
-        if(countEl){ countEl.textContent = `Showing ${visibleCount} project${visibleCount===1?'':'s'}`; }
+        if (countEl) { countEl.textContent = `Showing ${visibleCount} project${visibleCount === 1 ? '' : 's'}`; }
       }
 
       pills.forEach(pill => pill.addEventListener('click', () => {
-        pills.forEach(p => { p.setAttribute('aria-pressed','false'); p.classList.remove('bg-navy','text-white'); p.classList.add('bg-slate-200','dark:bg-slate-800'); });
-        pill.setAttribute('aria-pressed','true');
-        pill.classList.add('bg-navy','text-white');
+        pills.forEach(p => { p.setAttribute('aria-pressed', 'false'); p.classList.remove('bg-navy', 'text-white'); p.classList.add('bg-slate-200', 'dark:bg-slate-800'); });
+        pill.setAttribute('aria-pressed', 'true');
+        pill.classList.add('bg-navy', 'text-white');
         pill.classList.remove('bg-slate-200');
         applyFilters();
       }));
-      if(searchInput){ searchInput.addEventListener('input', applyFilters); }
+      if (searchInput) { searchInput.addEventListener('input', applyFilters); }
       applyFilters();
     })();
   </script>
 
   <section class="gpt-links" aria-label="Custom GPTs">
-    <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt"
-       class="gpt-button" target="_blank" rel="noopener noreferrer">
+    <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt" class="gpt-button"
+      target="_blank" rel="noopener noreferrer">
       <img src="/assets/icons/b&w-chatgpt-2.svg" alt="Investigator GPT icon" class="gpt-icon" />
       <span>Investigator GPT</span>
     </a>
   </section>
 </body>
+
 </html>

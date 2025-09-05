@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,7 @@
 
   <!-- ─────── Security headers ─────── -->
   <!-- DEV NOTE: This CSP removes the nonce so inline scripts run locally. Before production, switch to the PRODUCTION CSP below and ensure a Cloudflare Worker injects a per-request nonce. -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self';
                  connect-src 'self' https://www.cloudflare.com;
                  img-src      'self' data:;
                  font-src     'self';
@@ -29,9 +29,9 @@
   -->
 
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
-  <meta http-equiv="Pragma"        content="no-cache">
-  <meta http-equiv="Expires"       content="0">
-  <meta name="robots"              content="noindex, nofollow">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="robots" content="noindex, nofollow">
 
   <link rel="stylesheet" href="/assets/css/style.css?v=proj1">
 </head>
@@ -78,15 +78,20 @@
       <div class="module terminal mb-6" role="log" aria-live="polite">
         <div>&gt; Identity: <span id="terminalEmail"></span></div>
         <div>&gt; IP Address: <span id="userIP"></span></div>
-        <div>&gt; Expires In: <span id="sessionTimer" role="status" aria-live="polite"></span><span class="blink">_</span></div>
+        <div>&gt; Expires In: <span id="sessionTimer" role="status" aria-live="polite"></span><span
+            class="blink">_</span></div>
       </div>
 
       <h2>Navigation</h2>
       <ul>
-        <li><a class="hyperlink" href="/private/notes.html">Secure Notes</a> — private markdown entries &amp; documentation.</li>
-        <li><a class="hyperlink" href="/private/docs/index.html">Secure Documents</a> — identity records &amp; AES‑256 files.</li>
-        <li><a class="hyperlink" href="/private/applications.html">Application Tracker</a> — federal forms &amp; submissions.</li>
-        <li><a class="hyperlink" href="/private/caselog.html">Case Log</a> — investigation notes &amp; field records.</li>
+        <li><a class="hyperlink" href="/private/notes.html">Secure Notes</a> — private markdown entries &amp;
+          documentation.</li>
+        <li><a class="hyperlink" href="/private/docs/index.html">Secure Documents</a> — identity records &amp; AES‑256
+          files.</li>
+        <li><a class="hyperlink" href="/private/applications.html">Application Tracker</a> — federal forms &amp;
+          submissions.</li>
+        <li><a class="hyperlink" href="/private/caselog.html">Case Log</a> — investigation notes &amp; field records.
+        </li>
       </ul>
 
       <h2>Recent Activity</h2>
@@ -101,9 +106,9 @@
     <footer class="statusbar">
       <span style="display:flex;align-items:center;">
         <svg xmlns="http://www.w3.org/2000/svg" width="19" height="13" viewBox="0 0 19 13" style="margin-right:8px;">
-          <path fill="#B22234" d="M0 0h19v13H0z"/>
-          <path fill="#FFF" d="M0 1h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0z"/>
-          <path fill="#3C3B6E" d="M0 0h9v7H0z"/>
+          <path fill="#B22234" d="M0 0h19v13H0z" />
+          <path fill="#FFF" d="M0 1h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0z" />
+          <path fill="#3C3B6E" d="M0 0h9v7H0z" />
         </svg>
         Protected by Cloudflare Zero Trust | AES‑256 Encryption
       </span>
@@ -114,107 +119,108 @@
 
   <!-- ─────── Client‑side logic (nonce‑bound) ─────── -->
   <script defer>
-  // DEV NOTE: In production, restore: <script nonce="{{NONCE}}" defer> and ensure Worker injects {{NONCE}}.
-  /* eslint-disable no-unused-vars, no-underscore-dangle */
+    // DEV NOTE: In production, restore: <script nonce="{{NONCE}}" defer> and ensure Worker injects {{NONCE}}.
+    /* eslint-disable no-unused-vars, no-underscore-dangle */
 
-  // ————————————————————————————————————————————————————
-  // Utility helpers
-  // ————————————————————————————————————————————————————
-  const $ = sel => document.querySelector(sel);
+    // ————————————————————————————————————————————————————
+    // Utility helpers
+    // ————————————————————————————————————————————————————
+    const $ = sel => document.querySelector(sel);
 
-  const getCookie = name =>
-    document.cookie.split('; ').find(c => c.startsWith(name + '='))?.split('=')[1] ?? null;
+    const getCookie = name =>
+      document.cookie.split('; ').find(c => c.startsWith(name + '='))?.split('=')[1] ?? null;
 
-  const decodeJWT = token => {
-    try {
-      const [, payload] = token.split('.');
-      return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
-    } catch { return null; }
-  };
-
-  const fmt = s => String(s).padStart(2, '0');
-  const hhmmss = sec => `${fmt(sec/3600|0)}:${fmt((sec%3600)/60|0)}:${fmt(sec%60)}`;
-
-  // ————————————————————————————————————————————————————
-  // Session & identity
-  // ————————————————————————————————————————————————————
-  function renderSession() {
-    const jwt      = getCookie('CF_Authorization');
-    const payload  = decodeJWT(jwt);
-    if (!payload) return;          // Not signed in
-
-    $('#userEmail').textContent    = payload.email ?? 'Authenticated User';
-    $('#terminalEmail').textContent= payload.email ?? '';
-    $('#userIP').textContent       = 'Loading…';
-
-    const expiry = payload.exp * 1_000;
-    const el     = $('#sessionTimer');
-    const tick   = () => {
-      const remain = Math.max(0, ((expiry - Date.now())/1000)|0);
-      el.textContent = hhmmss(remain);
-      if (remain === 0) { clearInterval(iv); setTimeout(logout, 1_000); }
+    const decodeJWT = token => {
+      try {
+        const [, payload] = token.split('.');
+        return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+      } catch { return null; }
     };
-    tick();
-    const iv = setInterval(tick, 1_000);
-  }
 
-  // ————————————————————————————————————————————————————
-  // Fetch public client IP via Cloudflare Trace
-  // ————————————————————————————————————————————————————
-  async function fetchIP() {
-    try {
-      const txt = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(r => r.text());
-      $('#userIP').textContent = txt.match(/ip=([^\n]+)/)?.[1] ?? 'Unavailable';
-    } catch { $('#userIP').textContent = 'Unavailable'; }
-  }
+    const fmt = s => String(s).padStart(2, '0');
+    const hhmmss = sec => `${fmt(sec / 3600 | 0)}:${fmt((sec % 3600) / 60 | 0)}:${fmt(sec % 60)}`;
 
-  // ————————————————————————————————————————————————————
-  // Recent activity loader
-  // ————————————————————————————————————————————————————
-  async function loadActivity() {
-    const list = $('#recentActivityList');
-    list.innerHTML = '<li class="animate-pulse">Loading…</li>';
+    // ————————————————————————————————————————————————————
+    // Session & identity
+    // ————————————————————————————————————————————————————
+    function renderSession() {
+      const jwt = getCookie('CF_Authorization');
+      const payload = decodeJWT(jwt);
+      if (!payload) return;          // Not signed in
 
-    try {
-      const {activities = []} = await fetch('/api/activity').then(r => r.json());
-      list.innerHTML = activities.length
-        ? activities.map(a => `<li>${a.type}: ${a.title} (${a.timestamp})</li>`).join('')
-        : '<li>No recent activity.</li>';
-    } catch {
-      list.innerHTML = '<li>Error loading activity. <a href="#" id="retry">Retry</a></li>';
-      $('#retry')?.addEventListener('click', e => { e.preventDefault(); loadActivity(); });
+      $('#userEmail').textContent = payload.email ?? 'Authenticated User';
+      $('#terminalEmail').textContent = payload.email ?? '';
+      $('#userIP').textContent = 'Loading…';
+
+      const expiry = payload.exp * 1_000;
+      const el = $('#sessionTimer');
+      const tick = () => {
+        const remain = Math.max(0, ((expiry - Date.now()) / 1000) | 0);
+        el.textContent = hhmmss(remain);
+        if (remain === 0) { clearInterval(iv); setTimeout(logout, 1_000); }
+      };
+      tick();
+      const iv = setInterval(tick, 1_000);
     }
-  }
 
-  // ————————————————————————————————————————————————————
-  // Navigation, reload, logout
-  // ————————————————————————————————————————————————————
-  const nav = {
-    back:   () => history.back(),
-    fwd:    () => history.forward(),
-    home:   () => location.assign('/private/index.html'),
-    reload: () => location.reload(),
-  };
+    // ————————————————————————————————————————————————————
+    // Fetch public client IP via Cloudflare Trace
+    // ————————————————————————————————————————————————————
+    async function fetchIP() {
+      try {
+        const txt = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(r => r.text());
+        $('#userIP').textContent = txt.match(/ip=([^\n]+)/)?.[1] ?? 'Unavailable';
+      } catch { $('#userIP').textContent = 'Unavailable'; }
+    }
 
-  function logout() {
-    document.cookie = 'CF_Authorization=; Max-Age=0; path=/; secure; samesite=lax';
-    location.href   = '/cdn-cgi/access/logout?returnTo=/';
-  }
+    // ————————————————————————————————————————————————————
+    // Recent activity loader
+    // ————————————————————————————————————————————————————
+    async function loadActivity() {
+      const list = $('#recentActivityList');
+      list.innerHTML = '<li class="animate-pulse">Loading…</li>';
 
-  // ————————————————————————————————————————————————————
-  // Initialise once DOM ready
-  // ————————————————————————————————————————————————————
-  document.addEventListener('DOMContentLoaded', () => {
-    renderSession();
-    fetchIP();
-    loadActivity();
+      try {
+        const { activities = [] } = await fetch('/api/activity').then(r => r.json());
+        list.innerHTML = activities.length
+          ? activities.map(a => `<li>${a.type}: ${a.title} (${a.timestamp})</li>`).join('')
+          : '<li>No recent activity.</li>';
+      } catch {
+        list.innerHTML = '<li>Error loading activity. <a href="#" id="retry">Retry</a></li>';
+        $('#retry')?.addEventListener('click', e => { e.preventDefault(); loadActivity(); });
+      }
+    }
 
-    $('#btnBack').addEventListener('click',  nav.back);
-    $('#btnFwd').addEventListener('click',   nav.fwd);
-    $('#btnHome').addEventListener('click',  nav.home);
-    $('#btnReload').addEventListener('click',nav.reload);
-    $('#logoutBtn').addEventListener('click',e => { e.preventDefault(); logout(); });
-  });
+    // ————————————————————————————————————————————————————
+    // Navigation, reload, logout
+    // ————————————————————————————————————————————————————
+    const nav = {
+      back: () => history.back(),
+      fwd: () => history.forward(),
+      home: () => location.assign('/private/index.html'),
+      reload: () => location.reload(),
+    };
+
+    function logout() {
+      document.cookie = 'CF_Authorization=; Max-Age=0; path=/; secure; samesite=lax';
+      location.href = '/cdn-cgi/access/logout?returnTo=/';
+    }
+
+    // ————————————————————————————————————————————————————
+    // Initialise once DOM ready
+    // ————————————————————————————————————————————————————
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSession();
+      fetchIP();
+      loadActivity();
+
+      $('#btnBack').addEventListener('click', nav.back);
+      $('#btnFwd').addEventListener('click', nav.fwd);
+      $('#btnHome').addEventListener('click', nav.home);
+      $('#btnReload').addEventListener('click', nav.reload);
+      $('#logoutBtn').addEventListener('click', e => { e.preventDefault(); logout(); });
+    });
   </script>
 </body>
+
 </html>

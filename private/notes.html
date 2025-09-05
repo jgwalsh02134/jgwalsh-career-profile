@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Secure Notes — WorldWideWeb Interface</title>
 
   <!-- DEV: Loosen CSP during local testing (no nonce). PROD: enable the commented block below and ensure a Worker injects {{NONCE}} -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self';
                  connect-src 'self' https://notes-worker.jgregorywalsh.workers.dev https://www.cloudflare.com;
                  img-src      'self' data:;
                  font-src     'self';
@@ -27,13 +27,14 @@
   -->
 
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
-  <meta http-equiv="Pragma"        content="no-cache">
-  <meta http-equiv="Expires"       content="0">
-  <meta name="robots"              content="noindex, nofollow">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="robots" content="noindex, nofollow">
 
   <link rel="stylesheet" href="/assets/css/style.css?v=proj1">
   <link rel="icon" href="/assets/favicon/favicon.ico">
 </head>
+
 <body>
   <div class="window">
 
@@ -98,9 +99,11 @@
       <div id="notesList" class="module"></div>
 
       <!-- Note Viewer (modal) -->
-      <div id="noteViewer" class="hidden" role="dialog" aria-modal="true" aria-labelledby="viewerTitle" style="position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1000;">
+      <div id="noteViewer" class="hidden" role="dialog" aria-modal="true" aria-labelledby="viewerTitle"
+        style="position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:1000;">
         <div class="module" style="position:relative;max-width:760px;width:92%;max-height:80vh;overflow:auto;">
-          <button id="viewerClose" class="titlebar-button" type="button" aria-label="Close" style="position:absolute;top:8px;right:8px;">✕</button>
+          <button id="viewerClose" class="titlebar-button" type="button" aria-label="Close"
+            style="position:absolute;top:8px;right:8px;">✕</button>
           <h3 id="viewerTitle" style="margin-right:36px;"></h3>
           <div id="viewerTime" style="font-size:11px;color:#666;margin:-6px 0 10px 0;"></div>
           <div id="viewerBody" class="mb-6"></div>
@@ -116,9 +119,9 @@
     <footer class="statusbar">
       <span style="display:flex;align-items:center;">
         <svg xmlns="http://www.w3.org/2000/svg" width="19" height="13" viewBox="0 0 19 13" style="margin-right:8px;">
-          <path fill="#B22234" d="M0 0h19v13H0z"/>
-          <path fill="#FFF" d="M0 1h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0z"/>
-          <path fill="#3C3B6E" d="M0 0h9v7H0z"/>
+          <path fill="#B22234" d="M0 0h19v13H0z" />
+          <path fill="#FFF" d="M0 1h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0zm0 2h19v1H0z" />
+          <path fill="#3C3B6E" d="M0 0h9v7H0z" />
         </svg>
         Protected by Cloudflare Zero Trust | AES-256 Encryption
       </span>
@@ -133,138 +136,138 @@
 
   <!-- DEV: no nonce. PROD: restore nonce="{{NONCE}}" and enable the production CSP above. -->
   <script defer>
-  // ——— Helpers ———
-  const $ = s => document.querySelector(s);
-  const getCookie = n => document.cookie.split('; ').find(c => c.startsWith(n+'='))?.split('=')[1] ?? null;
-  const decodeJWT = t => { try { const [,p]=t.split('.'); return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));} catch { return null; } };
-  // Drop raw HTML rendering in Marked (belt-and-suspenders)
-  if (window.marked) {
-    marked.use({ renderer: { html() { return ''; } } });
-  }
+    // ——— Helpers ———
+    const $ = s => document.querySelector(s);
+    const getCookie = n => document.cookie.split('; ').find(c => c.startsWith(n + '='))?.split('=')[1] ?? null;
+    const decodeJWT = t => { try { const [, p] = t.split('.'); return JSON.parse(atob(p.replace(/-/g, '+').replace(/_/g, '/'))); } catch { return null; } };
+    // Drop raw HTML rendering in Marked (belt-and-suspenders)
+    if (window.marked) {
+      marked.use({ renderer: { html() { return ''; } } });
+    }
 
-  // Render markdown -> sanitize -> HTML string
-  function safeMarkdownToHTML(md) {
-    const html = (window.marked
-      ? marked.parse(md, { mangle: false, headerIds: false, gfm: true, breaks: false })
-      : String(md).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))
-    );
-    const clean = (window.DOMPurify
-      ? DOMPurify.sanitize(html, {
+    // Render markdown -> sanitize -> HTML string
+    function safeMarkdownToHTML(md) {
+      const html = (window.marked
+        ? marked.parse(md, { mangle: false, headerIds: false, gfm: true, breaks: false })
+        : String(md).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))
+      );
+      const clean = (window.DOMPurify
+        ? DOMPurify.sanitize(html, {
           FORBID_TAGS: ['script', 'style', 'iframe', 'object', 'embed', 'link', 'meta'],
           FORBID_ATTR: ['on*'],
           ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|\/|#)/i
         })
-      : html
-    );
-    return clean;
-  }
-
-  // Harden anchors inside a container
-  function hardenAnchors(container) {
-    container.querySelectorAll('a').forEach(a => {
-      a.setAttribute('rel', 'noopener noreferrer nofollow');
-      // a.setAttribute('target', '_blank'); // enable if desired
-    });
-  }
-
-  // ——— Identity & IP ———
-  function renderIdentity() {
-    const jwt = getCookie('CF_Authorization');
-    const payload = decodeJWT(jwt || '');
-    const email = payload?.email || 'Authenticated User';
-    $('#userEmail').textContent = email;
-    $('#terminalEmail').textContent = email;
-  }
-  async function fetchIP() {
-    try {
-      const txt = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(r=>r.text());
-      $('#userIP').textContent = txt.match(/ip=([^\n]+)/)?.[1] ?? 'Unavailable';
-    } catch { $('#userIP').textContent = 'Unavailable'; }
-  }
-
-  // ——— Markdown preview ———
-  const previewBtn = $('#togglePreview');
-  const previewPanel = $('#previewPanel');
-  const bodyInput = $('#noteBody');
-  previewBtn.addEventListener('click', () => {
-    const hidden = previewPanel.classList.toggle('hidden');
-    previewBtn.textContent = hidden ? '↕ Show Preview' : '↕ Hide Preview';
-    if (!hidden) {
-      previewPanel.innerHTML = safeMarkdownToHTML(bodyInput.value);
-      hardenAnchors(previewPanel);
+        : html
+      );
+      return clean;
     }
-  });
 
-  // ——— JWT helpers ———
-  const getJwt = () => getCookie('CF_Authorization');
-  const sessionValid = () => {
-    const jwt = getJwt(); if (!jwt) return false;
-    const p = decodeJWT(jwt); return !!p && p.exp*1000 > Date.now();
-  };
+    // Harden anchors inside a container
+    function hardenAnchors(container) {
+      container.querySelectorAll('a').forEach(a => {
+        a.setAttribute('rel', 'noopener noreferrer nofollow');
+        // a.setAttribute('target', '_blank'); // enable if desired
+      });
+    }
 
-  // ——— Notes API ———
-  async function saveNote() {
-    const title = $('#noteTitle').value.trim();
-    const body  = $('#noteBody').value.trim();
-    if (!sessionValid()) return alert('Session expired. Please re-authenticate.');
-    if (!title || !body)  return alert('Both title and body are required.');
+    // ——— Identity & IP ———
+    function renderIdentity() {
+      const jwt = getCookie('CF_Authorization');
+      const payload = decodeJWT(jwt || '');
+      const email = payload?.email || 'Authenticated User';
+      $('#userEmail').textContent = email;
+      $('#terminalEmail').textContent = email;
+    }
+    async function fetchIP() {
+      try {
+        const txt = await fetch('https://www.cloudflare.com/cdn-cgi/trace').then(r => r.text());
+        $('#userIP').textContent = txt.match(/ip=([^\n]+)/)?.[1] ?? 'Unavailable';
+      } catch { $('#userIP').textContent = 'Unavailable'; }
+    }
 
-    const jwt = getJwt();
-    const saveBtn = $('#saveNote');
-    saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
-    const payload = JSON.stringify({ title, body });
-    const headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'cf-access-jwt-assertion': jwt,
-      'Authorization': `Bearer ${jwt}`
+    // ——— Markdown preview ———
+    const previewBtn = $('#togglePreview');
+    const previewPanel = $('#previewPanel');
+    const bodyInput = $('#noteBody');
+    previewBtn.addEventListener('click', () => {
+      const hidden = previewPanel.classList.toggle('hidden');
+      previewBtn.textContent = hidden ? '↕ Show Preview' : '↕ Hide Preview';
+      if (!hidden) {
+        previewPanel.innerHTML = safeMarkdownToHTML(bodyInput.value);
+        hardenAnchors(previewPanel);
+      }
+    });
+
+    // ——— JWT helpers ———
+    const getJwt = () => getCookie('CF_Authorization');
+    const sessionValid = () => {
+      const jwt = getJwt(); if (!jwt) return false;
+      const p = decodeJWT(jwt); return !!p && p.exp * 1000 > Date.now();
     };
 
-    async function tryPost(url) {
+    // ——— Notes API ———
+    async function saveNote() {
+      const title = $('#noteTitle').value.trim();
+      const body = $('#noteBody').value.trim();
+      if (!sessionValid()) return alert('Session expired. Please re-authenticate.');
+      if (!title || !body) return alert('Both title and body are required.');
+
+      const jwt = getJwt();
+      const saveBtn = $('#saveNote');
+      saveBtn.disabled = true; saveBtn.textContent = 'Saving…';
+      const payload = JSON.stringify({ title, body });
+      const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'cf-access-jwt-assertion': jwt,
+        'Authorization': `Bearer ${jwt}`
+      };
+
+      async function tryPost(url) {
+        try {
+          const res = await fetch(url, { method: 'POST', headers, body: payload });
+          if (res.ok) return { ok: true };
+          const text = await res.text().catch(() => '');
+          return { ok: false, status: res.status, text };
+        } catch (err) {
+          return { ok: false, error: err?.message || String(err) };
+        }
+      }
+
       try {
-        const res = await fetch(url, { method: 'POST', headers, body: payload });
-        if (res.ok) return { ok: true };
-        const text = await res.text().catch(() => '');
-        return { ok: false, status: res.status, text };
-      } catch (err) {
-        return { ok: false, error: err?.message || String(err) };
+        const isFile = location.protocol === 'file:';
+        let out = isFile ? await tryPost('https://notes-worker.jgregorywalsh.workers.dev/')
+          : await tryPost('/api/notes');
+        if (!out.ok) out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/');
+        if (!out.ok) {
+          // Fallback to a common alt route
+          out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/notes');
+        }
+        if (out.ok) {
+          location.reload();
+        } else {
+          const details = out.text || out.error || '';
+          alert(`Error saving note (status ${out.status || 'n/a'}).` + (details ? `\n\n${details}` : ''));
+        }
+      } catch (e) {
+        alert(`Network error while saving note. ${e?.message || e}`);
+      } finally {
+        saveBtn.disabled = false; saveBtn.textContent = 'Save Note';
       }
     }
+    $('#saveNote').addEventListener('click', saveNote);
 
-    try {
-      const isFile = location.protocol === 'file:';
-      let out = isFile ? await tryPost('https://notes-worker.jgregorywalsh.workers.dev/')
-                       : await tryPost('/api/notes');
-      if (!out.ok) out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/');
-      if (!out.ok) {
-        // Fallback to a common alt route
-        out = await tryPost('https://notes-worker.jgregorywalsh.workers.dev/notes');
-      }
-      if (out.ok) {
-        location.reload();
-      } else {
-        const details = out.text || out.error || '';
-        alert(`Error saving note (status ${out.status || 'n/a'}).` + (details ? `\n\n${details}` : ''));
-      }
-    } catch (e) {
-      alert(`Network error while saving note. ${e?.message || e}`);
-    } finally {
-      saveBtn.disabled = false; saveBtn.textContent = 'Save Note';
+    function fmtDate(ts) {
+      if (!ts) return '';
+      const d = isNaN(+ts) ? new Date(ts) : new Date(Number(ts));
+      return isNaN(d.getTime()) ? String(ts) : d.toLocaleString();
     }
-  }
-  $('#saveNote').addEventListener('click', saveNote);
 
-  function fmtDate(ts) {
-    if (!ts) return '';
-    const d = isNaN(+ts) ? new Date(ts) : new Date(Number(ts));
-    return isNaN(d.getTime()) ? String(ts) : d.toLocaleString();
-  }
-
-  function renderNoteCard(note) {
-    const div = document.createElement('div');
-    div.className = 'module';
-    const when = fmtDate(note.timestamp);
-    div.innerHTML = `
+    function renderNoteCard(note) {
+      const div = document.createElement('div');
+      div.className = 'module';
+      const when = fmtDate(note.timestamp);
+      div.innerHTML = `
       <h3>${note.title || '(untitled)'}</h3>
       <div class="mb-6">${safeMarkdownToHTML(note.body || '')}</div>
       <div style="display:flex;justify-content:space-between;font-size:11px;">
@@ -277,115 +280,116 @@
           <button class="hyperlink" onclick='duplicateNote(${JSON.stringify(JSON.stringify(note))})'>Duplicate</button>
         </span>
       </div>`;
-    hardenAnchors(div);
-    return div;
-  }
+      hardenAnchors(div);
+      return div;
+    }
 
-  async function loadNotes() {
-    try {
-      const isFile = location.protocol === 'file:';
-      let res;
+    async function loadNotes() {
       try {
-        res = isFile ? null : await fetch('/api/notes');
-      } catch { res = null; }
-      if (!res || !res.ok) {
-        try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/'); } catch { res = null; }
+        const isFile = location.protocol === 'file:';
+        let res;
+        try {
+          res = isFile ? null : await fetch('/api/notes');
+        } catch { res = null; }
         if (!res || !res.ok) {
-          try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/notes'); } catch { res = null; }
+          try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/'); } catch { res = null; }
+          if (!res || !res.ok) {
+            try { res = await fetch('https://notes-worker.jgregorywalsh.workers.dev/notes'); } catch { res = null; }
+          }
+        }
+        const data = res ? await res.json().catch(() => ({})) : {};
+        const raw = Array.isArray(data.notes) ? data.notes : [];
+        const all = raw.map(n => ({
+          ...n,
+          key: n.key || n.id || n.noteId || n._id || '',
+          timestamp: n.timestamp || n.time || n.createdAt || n.updatedAt || Date.now()
+        }));
+        const render = () => {
+          const q = ($('#searchInput').value || '').toLowerCase();
+          $('#notesList').innerHTML = '';
+          all.filter(n => (n.title || '').toLowerCase().includes(q) || (n.body || '').toLowerCase().includes(q))
+            .forEach(n => $('#notesList').appendChild(renderNoteCard(n)));
+        };
+        $('#searchInput').addEventListener('input', render);
+        render();
+      } catch {
+        $('#notesList').innerHTML = '<p>Error loading notes.</p>';
+      }
+    }
+
+    window.deleteNote = async (key) => {
+      if (!confirm('Delete this note?')) return;
+      const jwt = getJwt();
+      const headers = jwt ? { 'cf-access-jwt-assertion': jwt, 'Authorization': `Bearer ${jwt}` } : {};
+      const isFile = location.protocol === 'file:';
+      let res = null;
+      try { res = isFile ? null : await fetch(`/api/notes/${encodeURIComponent(key)}`, { method: 'DELETE', headers }); } catch { }
+      if (!res || !res.ok) {
+        try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method: 'DELETE', headers }); } catch { }
+        if (!res || !res.ok) {
+          try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/${encodeURIComponent(key)}`, { method: 'DELETE', headers }); } catch { }
         }
       }
-      const data = res ? await res.json().catch(() => ({})) : {};
-      const raw  = Array.isArray(data.notes) ? data.notes : [];
-      const all  = raw.map(n => ({
-        ...n,
-        key: n.key || n.id || n.noteId || n._id || '',
-        timestamp: n.timestamp || n.time || n.createdAt || n.updatedAt || Date.now()
-      }));
-      const render = () => {
-        const q = ($('#searchInput').value || '').toLowerCase();
-        $('#notesList').innerHTML = '';
-        all.filter(n => (n.title||'').toLowerCase().includes(q) || (n.body||'').toLowerCase().includes(q))
-           .forEach(n => $('#notesList').appendChild(renderNoteCard(n)));
-      };
-      $('#searchInput').addEventListener('input', render);
-      render();
-    } catch {
-      $('#notesList').innerHTML = '<p>Error loading notes.</p>';
-    }
-  }
+      if (res && res.ok) location.reload(); else alert(`Error deleting note${res ? ` (status ${res.status})` : ''}.`);
+    };
 
-  window.deleteNote = async (key) => {
-    if (!confirm('Delete this note?')) return;
-    const jwt = getJwt();
-    const headers = jwt ? { 'cf-access-jwt-assertion': jwt, 'Authorization': `Bearer ${jwt}` } : {};
-    const isFile = location.protocol === 'file:';
-    let res = null;
-    try { res = isFile ? null : await fetch(`/api/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
-    if (!res || !res.ok) {
-      try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/notes/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
-      if (!res || !res.ok) {
-        try { res = await fetch(`https://notes-worker.jgregorywalsh.workers.dev/${encodeURIComponent(key)}`, { method:'DELETE', headers }); } catch {}
-      }
-    }
-    if (res && res.ok) location.reload(); else alert(`Error deleting note${res ? ` (status ${res.status})` : ''}.`);
-  };
+    window.duplicateNote = (encodedJSON) => {
+      const note = JSON.parse(encodedJSON);
+      $('#noteTitle').value = `(copy) ${note.title || ''}`;
+      $('#noteBody').value = note.body || '';
+      previewPanel.innerHTML = '';
+      previewPanel.classList.add('hidden');
+      previewBtn.textContent = '↕ Show Preview';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
-  window.duplicateNote = (encodedJSON) => {
-    const note = JSON.parse(encodedJSON);
-    $('#noteTitle').value = `(copy) ${note.title || ''}`;
-    $('#noteBody').value  = note.body || '';
-    previewPanel.innerHTML = '';
-    previewPanel.classList.add('hidden');
-    previewBtn.textContent = '↕ Show Preview';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    // View note (modal)
+    const viewer = $('#noteViewer');
+    const viewerTitle = $('#viewerTitle');
+    const viewerBody = $('#viewerBody');
+    const viewerTime = $('#viewerTime');
+    const viewerClose = $('#viewerClose');
 
-  // View note (modal)
-  const viewer = $('#noteViewer');
-  const viewerTitle = $('#viewerTitle');
-  const viewerBody = $('#viewerBody');
-  const viewerTime = $('#viewerTime');
-  const viewerClose = $('#viewerClose');
+    function showViewer() { viewer.classList.remove('hidden'); }
+    function hideViewer() { viewer.classList.add('hidden'); }
 
-  function showViewer() { viewer.classList.remove('hidden'); }
-  function hideViewer() { viewer.classList.add('hidden'); }
+    window.viewNote = (encodedJSON) => {
+      const note = JSON.parse(encodedJSON);
+      viewerTitle.textContent = note.title || '(untitled)';
+      viewerTime.textContent = fmtDate(note.timestamp) || '';
+      viewerBody.innerHTML = safeMarkdownToHTML(note.body || '');
+      hardenAnchors(viewerBody);
+      showViewer();
+    };
 
-  window.viewNote = (encodedJSON) => {
-    const note = JSON.parse(encodedJSON);
-    viewerTitle.textContent = note.title || '(untitled)';
-    viewerTime.textContent = fmtDate(note.timestamp) || '';
-    viewerBody.innerHTML = safeMarkdownToHTML(note.body || '');
-    hardenAnchors(viewerBody);
-    showViewer();
-  };
+    viewer.addEventListener('click', (e) => {
+      if (e.target === viewer) hideViewer();
+    });
+    viewerClose.addEventListener('click', hideViewer);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !viewer.classList.contains('hidden')) hideViewer();
+    });
 
-  viewer.addEventListener('click', (e) => {
-    if (e.target === viewer) hideViewer();
-  });
-  viewerClose.addEventListener('click', hideViewer);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !viewer.classList.contains('hidden')) hideViewer();
-  });
+    // ——— Nav & session state ———
+    const nav = {
+      back: () => history.back(),
+      fwd: () => history.forward(),
+      home: () => location.assign('/private/index.html'),
+      reload: () => location.reload(),
+    };
+    $('#btnBack').addEventListener('click', nav.back);
+    $('#btnFwd').addEventListener('click', nav.fwd);
+    $('#btnHome').addEventListener('click', nav.home);
+    $('#btnReload').addEventListener('click', nav.reload);
+    $('#logoutBtn').addEventListener('click', e => { e.preventDefault(); document.cookie = 'CF_Authorization=; Max-Age=0; path=/; secure; samesite=lax'; location.href = '/cdn-cgi/access/logout?returnTo=/'; });
 
-  // ——— Nav & session state ———
-  const nav = {
-    back: ()=>history.back(),
-    fwd: ()=>history.forward(),
-    home: ()=>location.assign('/private/index.html'),
-    reload: ()=>location.reload(),
-  };
-  $('#btnBack').addEventListener('click', nav.back);
-  $('#btnFwd').addEventListener('click', nav.fwd);
-  $('#btnHome').addEventListener('click', nav.home);
-  $('#btnReload').addEventListener('click', nav.reload);
-  $('#logoutBtn').addEventListener('click', e => { e.preventDefault(); document.cookie='CF_Authorization=; Max-Age=0; path=/; secure; samesite=lax'; location.href='/cdn-cgi/access/logout?returnTo=/'; });
-
-  (function init(){
-    renderIdentity();
-    fetchIP();
-    if (!sessionValid()) { $('#newNoteForm').style.display='none'; $('#sessionMessage').classList.remove('hidden'); }
-    loadNotes();
-  })();
+    (function init() {
+      renderIdentity();
+      fetchIP();
+      if (!sessionValid()) { $('#newNoteForm').style.display = 'none'; $('#sessionMessage').classList.remove('hidden'); }
+      loadNotes();
+    })();
   </script>
 </body>
+
 </html>
