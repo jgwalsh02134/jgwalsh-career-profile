@@ -89,12 +89,16 @@
   const FAVORITES_KEY='pp:favorites';
 
   async function loadExternal() {
-    try {
-      const res = await fetch('/assets/data/projects.json', { cache: 'no-cache' });
-      if (!res.ok) return null;
-      const json = await res.json();
-      return Array.isArray(json) ? json : null;
-    } catch { return null; }
+    const candidates = ['/assets/data/projects.json', '/assets/Data/projects.json'];
+    for (const url of candidates) {
+      try {
+        const res = await fetch(url, { cache: 'no-cache' });
+        if (!res.ok) continue;
+        const json = await res.json();
+        if (Array.isArray(json)) return json;
+      } catch {}
+    }
+    return null;
   }
   function loadInline() {
     try { return JSON.parse($('#pp-data').textContent); } catch { return []; }
