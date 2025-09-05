@@ -10,6 +10,16 @@
   <link rel="stylesheet" href="/assets/css/projects.css">
 </head>
 <body style="background:var(--bg); color:var(--text);">
+  <header class="site-header" role="banner" style="background:#f8fafc;border-bottom:1px solid rgba(0,0,0,.08);padding:.6rem 1rem">
+    <nav aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/resume.html">Résumé</a>
+      <a href="/projects/" aria-current="page" class="font-bold text-navy">Projects</a>
+      <a href="/contact.html">Contact</a>
+      <button id="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">Theme</button>
+    </nav>
+  </header>
   <main class="page-wrap" id="projects-app">
     <header class="header" aria-labelledby="title">
       <h1 id="title">Projects & Portfolio</h1>
@@ -40,6 +50,9 @@
   <!-- Enhanced Projects (projects-pro) Section -->
   <section class="projects-pro" aria-labelledby="pp-heading">
     <h2 id="pp-heading" class="visually-hidden">Projects (Enhanced)</h2>
+    <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.25rem;">
+      <a href="/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">← Home</a>
+    </nav>
     <div class="pp-controls" role="group" aria-label="Project filters and search">
       <div class="pp-search">
         <input id="pp-search" type="search" placeholder="Search…" autocomplete="off" aria-label="Search projects">
@@ -62,7 +75,9 @@
     <!-- Card template used by renderer -->
     <template id="pp-card">
       <article class="pp-card" role="listitem" data-project-card>
-        <a class="pp-thumb" target="_self" rel="noopener"></a>
+        <a class="pp-thumb" target="_self" rel="noopener" aria-label="Open project">
+          <img class="pp-thumb-img" alt="" loading="lazy" decoding="async" />
+        </a>
         <div class="pp-body">
           <div class="pp-top">
             <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
@@ -166,6 +181,15 @@
       const favBtn=n.querySelector('.pp-fav'), share=n.querySelector('.pp-share');
 
       link.href=p.url; link.textContent=p.title; th.href=p.url; ds.textContent=p.desc;
+
+      // Thumbnail wiring
+      const img = n.querySelector('.pp-thumb-img');
+      const thumb = p.thumb || '/assets/images/projects/placeholder.svg';
+      img.src = thumb;
+      img.alt = (p.thumb_alt || (p.title + ' thumbnail')).trim();
+      img.referrerPolicy = 'no-referrer';
+      img.loading = 'lazy';
+      img.decoding = 'async';
       p.tags.forEach(t=>{ const li=document.createElement('li'); li.className='pp-tag'; li.textContent=t; tl.appendChild(li); });
 
       favBtn.setAttribute('aria-pressed', localStorage.getItem(FAVORITES_KEY)?.includes(p.id) ? 'true' : 'false');
