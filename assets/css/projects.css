@@ -746,3 +746,9 @@ body > :last-child { margin-bottom: 0 !important; }
 
 /* (safety) If some global file adds a huge min-height after footer, override it */
 body::after { content: none !important; }
+/* Hide List View button only on mobile screens */
+@media (max-width: 640px) {
+  #pp-view-list {
+    display: none !important;
+  }
+}
