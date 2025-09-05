@@ -10,8 +10,8 @@
   <link rel="canonical" href="/projects/">
   <meta name="color-scheme" content="light dark">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/assets/css/style.css?v=proj_fix2">
-  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_fix2">
+  <link rel="stylesheet" href="/assets/css/style.css?v=proj_fix4">
+  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_fix4">
 </head>
 
 <body style="background:var(--bg); color:var(--text);">
@@ -41,31 +41,29 @@
         style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
         Home</a>
     </nav>
-    <div class="pp-controls" role="group" aria-label="Project filters and search">
-      <div class="pp-search">
-        <input id="pp-search" type="search" placeholder="Search…" autocomplete="off" aria-label="Search projects">
+    <div class="pp-actions" role="region" aria-label="Project controls">
+      <div class="pp-searchwrap">
+        <input id="pp-search" class="pp-input" type="search" placeholder="Search projects…" aria-label="Search projects" />
+        <button id="pp-search-go" class="pp-btn" type="button" aria-label="Run search">Enter</button>
       </div>
-      <div class="pp-sort">
-        <label for="pp-sort" class="visually-hidden">Sort</label>
-        <select id="pp-sort" aria-label="Sort projects">
-          <option value="newest" selected>Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="az">A–Z</option>
-        </select>
+
+      <label for="pp-sort" class="sr-only">Sort</label>
+      <select id="pp-sort" class="pp-select" aria-label="Sort projects">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="az">A → Z</option>
+      </select>
+
+      <div class="pp-view" role="group" aria-label="View mode">
+        <button id="pp-view-grid" class="pp-btn is-active" data-view="grid" aria-pressed="true">Grid</button>
+        <button id="pp-view-list" class="pp-btn" data-view="list" aria-pressed="false">List</button>
       </div>
-      <div class="pp-view" aria-label="View toggles" style="display:flex;gap:.5rem;align-items:center">
-        <button id="pp-view-grid" type="button" aria-pressed="true" class="pp-toggle">Grid</button>
-        <button id="pp-view-list" type="button" aria-pressed="false" class="pp-toggle">List</button>
-      </div>
-      <!-- tags removed -->
     </div>
-    <div id="pp-results" class="pp-grid" role="list" aria-live="polite"></div>
+    <div id="pp-results" class="pp-grid" role="list" aria-live="polite" aria-busy="true"></div>
     <!-- Card template used by renderer -->
     <template id="pp-card">
       <article class="pp-card" role="listitem" data-project-card>
-        <a class="pp-thumb" target="_self" rel="noopener" aria-label="Open project">
-          <img class="pp-thumb-img" alt="" loading="lazy" decoding="async" />
-        </a>
+        <a class="pp-thumb" target="_self" rel="noopener"><img class="pp-thumb-img" alt="" loading="lazy" decoding="async" /></a>
         <div class="pp-body">
           <div class="pp-top">
             <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
@@ -85,14 +83,21 @@
       </article>
     </template>
 
-    <!-- Inline dataset fallback (used if external fetch fails) -->
+    <!-- inline fallback (keep []) — external JSON is primary -->
     <script type="application/json" id="pp-data">[]</script>
 
     <!-- Renderer moved to external module to avoid TS HTML Problems -->
     <script type="module">
-      import initProjectsGallery from "/assets/js/projects-gallery.js?v=proj3";
+      import initProjectsGallery from "/assets/js/projects-gallery.js?v=proj_fix4";
       initProjectsGallery;
     </script>
+
+    <section class="projects-cta" aria-label="Assistant">
+      <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt"
+         class="cta-btn" target="_blank" rel="noopener">
+         Investigator GPT
+      </a>
+    </section>
   </section>
   <!-- /Enhanced Projects Section -->
 

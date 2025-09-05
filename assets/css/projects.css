@@ -121,6 +121,29 @@
   }
 }
 
+/* Controls layout (search+button grouped) */
+.pp-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.pp-searchwrap{ display:flex; gap:6px; align-items:center; }
+#pp-search{ min-width:220px; }
+#pp-search-go{ cursor:pointer; }
+
+/* View toggle buttons */
+.pp-view .pp-btn.is-active{ outline:2px solid var(--brand); outline-offset:2px; }
+
+/* Grid vs list container class (already present; ensure both) */
+.pp-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; }
+.pp-list{ display:block; }
+.pp-list .pp-card{ display:flex; flex-direction:row; gap:16px; }
+.pp-list .pp-thumb{ width:240px; min-height:100%; }
+
+/* Investigator GPT section */
+.projects-cta{ display:flex; justify-content:center; margin-block: 24px 12px; }
+.projects-cta .cta-btn{
+  display:inline-block; padding:.65rem 1rem; border:1px solid var(--bd);
+  border-radius:10px; text-decoration:none; background:var(--bg); color:var(--ink);
+}
+.projects-cta .cta-btn:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+
 /* --------------------- 1) Component layer (scoped) ------------------------ */
 @layer components {
   .projects-pro {

@@ -7,7 +7,9 @@ export default (function initProjectsGallery() {
     const tpl = $('#pp-card');
     const sortSel = $('#pp-sort');
     const input = $('#pp-search');
-    const chipsWrap = document.querySelector('.pp-tags');
+    const btnGrid = document.getElementById('pp-view-grid');
+    const btnList = document.getElementById('pp-view-list');
+    const btnGo   = document.getElementById('pp-search-go');
     const FAVORITES_KEY = 'pp:favorites';
 
     if (!list || !tpl) return;
@@ -24,45 +26,22 @@ export default (function initProjectsGallery() {
         try { return JSON.parse($('#pp-data')?.textContent || '[]'); } catch { return []; }
     }
 
-    function chip(tag, label) {
-        const c = document.createElement('button');
-        c.className = 'pp-chip';
-        c.textContent = label || tag;
-        c.dataset.tag = tag;
-        if (state.tags.has(tag)) c.classList.add('is-on');
-        c.onclick = () => {
-            if (state.tags.has(tag)) { state.tags.delete(tag); c.classList.remove('is-on'); }
-            else { state.tags.add(tag); c.classList.add('is-on'); }
-            syncQS(); render();
-        };
-        return c;
-    }
-
     function syncQS() {
         const p = new URLSearchParams();
         if (state.q) p.set('q', state.q);
-        if (state.tags.size) p.set('tags', [...state.tags].join(','));
         if (state.sort !== 'newest') p.set('sort', state.sort);
+        if (state.view !== 'grid') p.set('view', state.view);
         const u = location.pathname + (p.toString() ? ('?' + p.toString()) : '');
         history.replaceState(null, '', u);
     }
 
-    function render() {
+    function render(d = currentData) {
         list.setAttribute('aria-busy', 'true');
         list.innerHTML = '';
-        let rows = data.slice();
+        let rows = d.slice();
 
         const q = (state.q || '').trim().toLowerCase();
         if (q) rows = rows.filter(p => (p.title + p.desc + p.tags.join(' ')).toLowerCase().includes(q));
-
-        const tags = [...state.tags];
-        if (tags.length) {
-            const favOn = state.tags.has('favorites');
-            rows = rows.filter(p => {
-                const hasAll = tags.filter(t => t !== 'favorites').every(t => p.tags.includes(t));
-                return (favOn ? favs.has(p.id) : true) && (tags.some(t => t !== 'favorites') ? hasAll : true);
-            });
-        }
 
         if (state.sort === 'az') rows.sort((a, b) => a.title.localeCompare(b.title));
         else if (state.sort === 'oldest') rows.sort((a, b) => (a.date || '').localeCompare(b.date || ''));
@@ -106,30 +85,44 @@ export default (function initProjectsGallery() {
 
             list.appendChild(n);
         }
-        list.className = 'pp-grid';
+        list.className = (state.view === 'list') ? 'pp-list' : 'pp-grid';
         list.setAttribute('aria-busy', 'false');
     }
 
-    let data = [], favs = new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
+    let currentData = [], favs = new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
     const qs = new URLSearchParams(location.search);
-    const state = { q: qs.get('q') || '', tags: new Set((qs.get('tags') || '').split(',').filter(Boolean)), sort: qs.get('sort') || 'newest', view: 'grid' };
+    const state = { q: qs.get('q') || '', sort: qs.get('sort') || 'newest', view: (qs.get('view') || 'grid') };
+
+    function setView(view){
+        state.view = (view === 'list') ? 'list' : 'grid';
+        if (btnGrid) { btnGrid.classList.toggle('is-active', state.view==='grid'); btnGrid.setAttribute('aria-pressed', String(state.view==='grid')); }
+        if (btnList) { btnList.classList.toggle('is-active', state.view==='list'); btnList.setAttribute('aria-pressed', String(state.view==='list')); }
+        syncQS(); render(currentData);
+    }
 
     // boot
     (async () => {
         const external = await loadExternal();
-        data = (external && external.length) ? external : loadInline();
+        currentData = (external && external.length) ? external : loadInline();
 
         // UI wireup
-        const allTags = [...new Set(data.flatMap(p => p.tags))].sort();
-        if (chipsWrap) {
-            const favChip = chip('favorites', '★ Favorites'); chipsWrap.append(favChip);
-            allTags.forEach(t => chipsWrap.append(chip(t)));
-        }
         if (input) input.value = state.q;
-        if (sortSel) sortSel.onchange = e => { state.sort = e.target.value; syncQS(); render(); };
-        if (input) input.oninput = e => { state.q = e.target.value; syncQS(); render(); };
+        if (sortSel) sortSel.onchange = e => { state.sort = e.target.value; syncQS(); render(currentData); };
+        if (btnGrid) btnGrid.onclick = () => setView('grid');
+        if (btnList) btnList.onclick = () => setView('list');
+        if (btnGo) btnGo.onclick = () => { state.q = (input?.value || ''); syncQS(); render(currentData); };
+        if (input) input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); state.q = input.value; syncQS(); render(currentData); }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.target === input) return;
+            if (e.key.toLowerCase() === 'g') setView('grid');
+            if (e.key.toLowerCase() === 'l') setView('list');
+            if (e.key === '/') { e.preventDefault(); input?.focus(); }
+        });
 
-        if (!data.length) { list.innerHTML = '<p class="pp-empty">No projects found. Populate <code>/assets/data/projects.json</code> or <code>#pp-data</code>.</p>'; return; }
-        render();
+        if (!currentData.length) { list.innerHTML = '<p class="pp-empty">No projects found. Populate <code>/assets/data/projects.json</code> or <code>#pp-data</code>.</p>'; return; }
+        setView(state.view);
+        render(currentData);
     })();
 })();
