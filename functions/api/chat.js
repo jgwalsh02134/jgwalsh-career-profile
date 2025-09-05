@@ -24,9 +24,9 @@ export async function onRequestPost({ request, env }) {
       });
     }
 
-    const defaultPrompt = `
+  const defaultPrompt = `
 You are the onsite assistant for https://jgwalsh.com/projects.
-Be concise and helpful. Prefer site-relative links (/projects-folder/...).
+Be concise and helpful. Prefer site-relative links (/projects/...).
 If unsure, say so and point to the closest on-site resource.
 Keep answers to 2–5 sentences unless asked for detail.`;
 

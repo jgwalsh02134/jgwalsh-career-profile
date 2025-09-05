@@ -10,9 +10,9 @@
     "year": 2025,
     "tech": ["HTML", "CSS", "JS"],
     "links": {
-      "primary": "/projects-folder/index.html",
+      "primary": "/projects/",
       "github": "https://github.com/jgwalsh02134/jgwalsh-career-profile",
-      "demo": "/projects-folder/index.html",
+      "demo": "/projects/",
       "pdf": null,
       "dashboard": null
     },
@@ -148,9 +148,9 @@
     "year": 2024,
     "tech": ["HTML", "CSS", "JS"],
     "links": {
-      "primary": "/projects-folder/threat-triage/index.html",
+      "primary": "/projects/threat-triage/",
       "github": null,
-      "demo": "/projects-folder/threat-triage/index.html",
+      "demo": "/projects/threat-triage/",
       "pdf": null,
       "dashboard": null
     },
@@ -171,9 +171,9 @@
     "year": 2024,
     "tech": ["HTML", "CSS", "JS"],
     "links": {
-      "primary": "/projects-folder/deception-explorer/index.html",
+      "primary": "/projects/deception-explorer/",
       "github": null,
-      "demo": "/projects-folder/deception-explorer/index.html",
+      "demo": "/projects/deception-explorer/",
       "pdf": null,
       "dashboard": null
     },
@@ -194,9 +194,9 @@
     "year": 2024,
     "tech": ["HTML", "CSS", "JS"],
     "links": {
-      "primary": "/projects-folder/city-incident-pulse/index.html",
+      "primary": "/projects/city-incident-pulse/index.html",
       "github": null,
-      "demo": "/projects-folder/city-incident-pulse/index.html",
+      "demo": "/projects/city-incident-pulse/index.html",
       "pdf": null,
       "dashboard": null
     },
@@ -217,9 +217,9 @@
     "year": 2024,
     "tech": ["HTML", "CSS", "JS"],
     "links": {
-      "primary": "/projects-folder/interview-sim/index.html",
+      "primary": "/projects/interview-sim/",
       "github": null,
-      "demo": "/projects-folder/interview-sim/index.html",
+      "demo": "/projects/interview-sim/",
       "pdf": null,
       "dashboard": null
     },
@@ -240,9 +240,9 @@
     "year": 2024,
     "tech": ["HTML", "CSS", "JS"],
     "links": {
-      "primary": "/projects-folder/Vision%20Data/index.html",
+      "primary": "/projects/Vision%20Data/index.html",
       "github": null,
-      "demo": "/projects-folder/Vision%20Data/index.html",
+      "demo": "/projects/Vision%20Data/index.html",
       "pdf": null,
       "dashboard": null
     },
@@ -251,7 +251,10 @@
     "cta": "Open",
     "featured": false,
     "order": 100
-  }
+  },
+  { "id": "deception-explorer-simple", "title": "Deception Explorer", "url": "/projects/deception-explorer/", "desc": "Behavioral deception patterns, interactive.", "tags": ["behavioral","tools"], "date": "2025-09-05" },
+  { "id": "interview-sim-simple", "title": "Interview Simulator", "url": "/projects/interview-sim/", "desc": "Scenario-based interview practice.", "tags": ["simulation","training"], "date": "2025-09-05" },
+  { "id": "threat-triage-simple", "title": "Threat Triage", "url": "/projects/threat-triage/", "desc": "Structured triage workflow demo.", "tags": ["investigations","workflow"], "date": "2025-09-05" }
 ]
 
 
