@@ -1,56 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interactive Projects Gallery</title>
-  <script src="/assets/js/theme.js" defer></script>
-  <link rel="stylesheet" href="/assets/css/style.css?v=proj1">
-  <meta name="color-scheme" content="light dark">
-  <link rel="canonical" href="https://jgwalsh.com/projects/gallery/" />
-  <style>
-    .site-header {
-      background: #f8fafc;
-      border-bottom: 1px solid rgba(0, 0, 0, .08);
-      padding: .6rem 1rem
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .site-header {
-        background: #0f1522;
-        border-bottom-color: rgba(255, 255, 255, .12)
-      }
-    }
-
-    .site-header nav a {
-      margin-right: .75rem;
-      text-decoration: none
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Interactive Project Gallery — jgwalsh.com</title>
+  <meta name="description" content="Index of interactive experiments and tools." />
+  <link rel="stylesheet" href="/assets/css/style.css?v=proj_fix2" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_fix2" />
 </head>
-
-<body>
-  <header class="site-header" role="banner">
-    <nav aria-label="Main">
-      <a href="/">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/resume.html">Résumé</a>
-      <a href="/projects/" aria-current="page" class="font-bold text-navy">Projects</a>
-      <a href="/contact.html">Contact</a>
-      <button id="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">Theme</button>
-    </nav>
+<body class="safe-pad">
+  <header class="header-wrap">
+    <div class="container" style="padding-block:1rem;">
+      <a href="/projects/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block">← Back to Projects</a>
+      <h1 style="margin:.75rem 0 0">Interactive Project Gallery</h1>
+      <p class="muted">Interactive prototypes and tools.</p>
+    </div>
   </header>
-  <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.25rem;">
-    <a href="/projects/"
-      style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
-      Back to Projects</a>
-  </nav>
 
-  <main style="max-width:960px;margin:0 auto;padding:0 1rem 2rem;">
-    <h1>Interactive Projects Gallery</h1>
-    <p>Content coming soon.</p>
+  <main class="container" style="padding-block:1rem 2rem;">
+    <section class="pp-grid" style="margin-block:1rem 1.5rem;">
+      <article class="pp-card">
+        <a class="pp-thumb" href="/projects/threat-triage/"><img class="pp-thumb-img" alt="Threat Triage thumbnail" loading="lazy" decoding="async" src="/assets/images/projects/threat-triage.jpg" /></a>
+        <div class="pp-body">
+          <h2 class="pp-title"><a class="pp-link" href="/projects/threat-triage/">Threat Triage</a></h2>
+          <p class="pp-desc">Structured triage workflow demo.</p>
+          <ul class="pp-tagsline"><li class="pp-tag">investigations</li><li class="pp-tag">workflow</li></ul>
+        </div>
+      </article>
+
+      <article class="pp-card">
+        <a class="pp-thumb" href="/projects/interview-sim/"><img class="pp-thumb-img" alt="Interview Simulator thumbnail" loading="lazy" decoding="async" src="/assets/images/projects/interview-sim.jpg" /></a>
+        <div class="pp-body">
+          <h2 class="pp-title"><a class="pp-link" href="/projects/interview-sim/">Interview Simulator</a></h2>
+          <p class="pp-desc">Scenario-based interview practice.</p>
+          <ul class="pp-tagsline"><li class="pp-tag">simulation</li><li class="pp-tag">training</li></ul>
+        </div>
+      </article>
+
+      <article class="pp-card">
+        <a class="pp-thumb" href="/projects/deception-explorer/"><img class="pp-thumb-img" alt="Deception Explorer thumbnail" loading="lazy" decoding="async" src="/assets/images/projects/deception-explorer.jpg" /></a>
+        <div class="pp-body">
+          <h2 class="pp-title"><a class="pp-link" href="/projects/deception-explorer/">Deception Explorer</a></h2>
+        <p class="pp-desc">Behavioral deception patterns (exploratory).</p>
+          <ul class="pp-tagsline"><li class="pp-tag">behavioral</li><li class="pp-tag">tools</li></ul>
+        </div>
+      </article>
+    </section>
   </main>
-</body>
 
+  <footer class="container" style="padding-block:1rem 2rem;">
+    <div class="text-center">
+      <a href="/projects/" class="pp-btn">← Back to Projects</a>
+    </div>
+  </footer>
+</body>
 </html>
