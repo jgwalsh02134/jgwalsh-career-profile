@@ -6,3 +6,6 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+/assets/data/*
+  Cache-Control: no-cache, no-store, must-revalidate

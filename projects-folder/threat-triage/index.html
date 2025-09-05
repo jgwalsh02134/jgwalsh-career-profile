@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <title>Behavioral Threat Triage — Deterministic Intake</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="canonical" href="https://jgwalsh.com/projects-folder/threat-triage/" />
-  <link rel="stylesheet" href="../styles.css" />
+  <meta name="robots" content="noindex" />
+  <link rel="canonical" href="https://jgwalsh.com/projects/threat-triage/" />
+  <meta http-equiv="refresh" content="0; url=/projects/threat-triage/" />
   <style>
     :root{ --low:#10b981; --mod:#f59e0b; --elev:#ef4444; --crit:#7f1d1d; --card:#ffffff; --muted:#6b7280; --border:#e5e7eb; --bg:#fafafa; }
     .container{max-width:1000px;margin:0 auto;padding:24px;}
@@ -42,41 +43,7 @@
     @media (max-width:640px) { .win95-body { padding:16px 16px 24px; } }
   </style>
 </head>
-<body class="retro-win">
-  <main class="container">
-    <div class="win95-window" role="group" aria-label="Behavioral Threat Triage Window">
-      <div class="win95-titlebar"><span>Behavioral Threat Triage</span>
-        <div class="controls" aria-hidden="true">
-          <button tabindex="-1" aria-label="Minimize">_</button>
-          <button tabindex="-1" aria-label="Maximize">▢</button>
-          <button tabindex="-1" aria-label="Close">×</button>
-        </div>
-      </div>
-      <div class="win95-body">
-        <nav>
-          <a href="/projects-folder/" class="btn" aria-label="Back to Projects">← Back</a>
-        </nav>
-        <header class="grid" aria-labelledby="page-title">
-      <h1 id="page-title" style="margin:0;">Behavioral Threat Triage</h1>
-      <p class="muted" id="intro-copy">
-        This project simulates the first step a behavioral threat-assessment team would take when a threatening message is received.
-        It scans the text for validated risk factors (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues), assigns a banded risk level,
-        and produces a clear action plan: immediate, next 24–72h, and follow-up steps. The goal is to show how psychology and structured
-        professional judgment can be translated into transparent, auditable decision-support tools for law enforcement and security contexts.
-      </p>
-      <div class="row">
-        <button id="printBtn" class="btn secondary" aria-label="Print this case study">Print Case Study</button>
-        <button id="copyReport" class="btn secondary" aria-label="Copy report (Markdown)">Copy Report</button>
-        <button id="downloadBtn" class="btn secondary" aria-label="Download JSON result">Download JSON</button>
-        <span id="diag" class="note" aria-live="polite"></span>
-      </div>
-        </header>
-
-    <!-- Demo -->
-    <section class="panel grid" id="demo" aria-labelledby="demo-title">
-      <h2 id="demo-title" style="margin:0;">Live Demo (Automatic)</h2>
-
-      <!-- Example cases -->
+<body><p style="font:14px system-ui;margin:40px">Moved to <a href="/projects/threat-triage/">/projects/threat-triage/</a></p>
       <label for="caseSelect"><strong>Load Example Case:</strong></label>
       <select id="caseSelect" aria-label="Select a real case narrative" onchange="window.__ttSetFromSelect && window.__ttSetFromSelect(this)">
   <option value="">-- Select a case --</option>
