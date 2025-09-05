@@ -142,6 +142,7 @@
   display:inline-block; padding:.65rem 1rem; border:1px solid var(--bd);
   border-radius:10px; text-decoration:none; background:var(--bg); color:var(--ink);
 }
+.projects-cta .cta-ico{ width:18px; height:18px; display:block; }
 .projects-cta .cta-btn:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
 
 /* --------------------- 1) Component layer (scoped) ------------------------ */
@@ -660,3 +661,63 @@
 /* A11y & preferences */
 :focus-visible{ outline:2px solid var(--ring,#3b82f6); outline-offset:2px; }
 @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+
+/* ===== Layout width + safe-areas (mobile/tablet/desktop) ===== */
+.container, .projects-pro{ width:min(100% - 2rem, 72rem); margin-inline:auto; }
+.safe-pad{
+  padding-top: max(env(safe-area-inset-top), 0px);
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  padding-left: max(env(safe-area-inset-left), 0px);
+  padding-right: max(env(safe-area-inset-right), 0px);
+}
+
+/* ===== HERO SEARCH (prominent, clean) ===== */
+.pp-hero{ display:flex; justify-content:center; margin-block: 12px 12px; }
+.pp-hero-inner{
+  display:flex; gap:10px; align-items:center; width:100%;
+  max-width: 880px; /* large but centered */
+}
+.pp-input-hero{
+  flex:1; min-height: 44px; border-radius: 999px; padding: .65rem 1rem;
+  border:1px solid var(--bd); background:var(--bg); color:var(--ink);
+  box-shadow: 0 4px 16px rgba(0,0,0,.06);
+}
+.pp-input-hero::placeholder{ opacity:.7; }
+.pp-btn-hero{
+  min-height:44px; border-radius:999px; padding:.65rem 1rem; cursor:pointer;
+  border:1px solid var(--bd); background:var(--bg); color:var(--ink);
+}
+@media (max-width:640px){
+  .pp-hero-inner{ gap:8px; }
+  .pp-btn-hero{ padding:.55rem .9rem; }
+}
+
+/* ===== Controls row under hero (sort + view only) ===== */
+.pp-actions{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-block: 6px 10px; }
+.pp-view .pp-btn.is-active{ outline:2px solid var(--brand); outline-offset:2px; }
+
+/* ===== Grid/List cards ===== */
+.pp-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:18px; }
+@media (max-width:640px){ .pp-grid{ grid-template-columns: 1fr; } }
+.pp-list{ display:block; }
+.pp-list .pp-card{ display:flex; flex-direction:row; gap:16px; }
+.pp-list .pp-thumb{ width: 280px; min-height:100%; }
+
+/* ===== Card spacing ===== */
+.pp-card{ background:var(--card); border:1px solid var(--bd); border-radius:14px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; min-height:180px; }
+.pp-body{ padding:16px; }
+
+/* ===== CTA with icon ===== */
+.projects-cta{ display:flex; justify-content:center; margin-block: 22px 10px; }
+.projects-cta .cta-btn{
+  display:inline-flex; gap:8px; align-items:center; font-weight:600;
+  padding:.65rem 1rem; border:1px solid var(--bd); border-radius:10px;
+  background:var(--bg); color:var(--ink); text-decoration:none;
+}
+.projects-cta .cta-ico{ width:18px; height:18px; display:block; }
+.projects-cta .cta-btn:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+
+/* ===== Footer tighten (remove extra whitespace below) ===== */
+footer{ margin-bottom: 0 !important; padding-bottom: 1rem; }
+body{ margin:0; }
+html, body{ height:auto; }

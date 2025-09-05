@@ -9,8 +9,8 @@
   <meta name="description" content="A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives." />
   <link rel="canonical" href="/projects/" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/assets/css/style.css?v=proj_fix8" />
-  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_fix8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=proj_ui1" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_ui1" />
   <script src="/assets/js/theme.js" defer></script>
 </head>
 
@@ -42,16 +42,17 @@
 
   <main class="container safe-pad" id="main-content" style="padding-block:1.25rem 2rem;">
   <!-- Enhanced Projects (projects-pro) Section -->
-  <section class="projects-pro" aria-labelledby="pp-heading">
-    <h2 id="pp-heading" class="visually-hidden">Projects (Enhanced)</h2>
-    
+    <section class="projects-pro" aria-labelledby="pp-heading">
+      <h2 id="pp-heading" class="visually-hidden">Projects (Enhanced)</h2>
+      <!-- HERO SEARCH -->
+      <section class="pp-hero" aria-label="Search projects">
+        <div class="pp-hero-inner">
+          <input id="pp-search" class="pp-input pp-input-hero" type="search"
+                 placeholder="Search projects…" aria-label="Search projects" />
+          <button id="pp-search-go" class="pp-btn pp-btn-hero" type="button" aria-label="Run search">Enter</button>
+        </div>
+      </section>
     <div class="pp-actions" role="region" aria-label="Project controls">
-      <div class="pp-searchwrap">
-        <input id="pp-search" class="pp-input" type="search" placeholder="Search projects…" aria-label="Search projects" />
-        <button id="pp-search-go" class="pp-btn" type="button" aria-label="Run search">Enter</button>
-      </div>
-
-      <label for="pp-sort" class="sr-only">Sort</label>
       <select id="pp-sort" class="pp-select" aria-label="Sort projects">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
@@ -91,12 +92,16 @@
     <script type="application/json" id="pp-data">[]</script>
 
     <section class="projects-cta" aria-label="Assistant">
-      <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt" class="cta-btn" target="_blank" rel="noopener">Investigator GPT</a>
+      <a href="https://chatgpt.com/g/g-6885b0c65ea88191a9727465b8fe4b3e-investigator-gpt"
+         class="cta-btn" target="_blank" rel="noopener">
+        <img class="cta-ico" src="/assets/icons/b&w-chatgpt-2.svg" alt="" aria-hidden="true">
+        <span>Investigator GPT</span>
+      </a>
     </section>
 
     <!-- Renderer moved to external module to avoid TS HTML Problems -->
     <script type="module">
-      import initProjectsGallery from "/assets/js/projects-gallery.js?v=proj_fix8";
+      import initProjectsGallery from "/assets/js/projects-gallery.js?v=proj_ui1";
       initProjectsGallery;
     </script>
   </section>
@@ -127,6 +132,17 @@
       </div>
     </div>
   </footer>
+  <script>
+  (function navMenu(){
+    const btn = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    if(!btn || !menu) return;
+    btn.addEventListener('click', () => {
+      const open = !menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  })();
+  </script>
 </body>
 
 </html>
