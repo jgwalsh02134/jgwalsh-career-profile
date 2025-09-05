@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Add / update a Featured Projects grid inside projects.html (idempotent).
+# Legacy helper: Add / update a Featured Projects grid inside projects.html (idempotent). Prefer editing /projects/index.html now.
 # Creates branch feat/projects-grid off latest main.
 
 set -euo pipefail
 
 BRANCH="feat/projects-grid"
-HTML="projects.html"
+HTML="projects.html" # legacy file name; new gallery lives at /projects/
 FRAG="scripts/_projects_grid.fragment.html"
 
 # 0) Preconditions
@@ -70,7 +70,7 @@ cat > "$FRAG" <<'HTML'
 <!-- PROJECTS:END -->
 HTML
 
-# 2) Insert or replace the projects grid in projects.html
+# 2) Insert or replace the projects grid in projects.html (legacy)
 python3 - <<'PY'
 import re, pathlib
 html_path = pathlib.Path("projects.html")
@@ -98,7 +98,7 @@ git add "$HTML" "$FRAG"
 if git diff --cached --quiet; then
   echo "No changes to commit (grid already up to date)."
 else
-  git commit -m "feat(projects): add featured projects grid to projects.html"
+  git commit -m "feat(projects): add featured projects grid to /projects/ (legacy script)"
 fi
 
 git push -u origin "$BRANCH"

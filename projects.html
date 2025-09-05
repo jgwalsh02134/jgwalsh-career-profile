@@ -151,7 +151,7 @@
   function asSystemContextFromIndex(items) {
     if (!items.length) return '';
     const lines = items.map(i => `• ${i.title} → ${i.href}`);
-    return `Canonical site links (use these EXACT paths when linking):\n${lines.join('\n')}\nTop-level: /, /about.html, /resume.html, /projects.html, /contact.html`;
+  return `Canonical site links (use these EXACT paths when linking):\n${lines.join('\n')}\nTop-level: /, /about.html, /resume.html, /projects/, /contact.html`;
   }
 
   form.addEventListener('submit', async (e) => {
@@ -264,7 +264,7 @@
         <a href="/index.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Home</a>
         <a href="/about.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">About</a>
         <a href="/resume.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Résumé</a>
-        <a href="/projects.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy" aria-current="page">Projects</a><a href="/contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
+  <a href="/projects/" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1 font-bold text-navy" aria-current="page">Projects</a><a href="/contact.html" class="hover:text-navy transition focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1">Contact</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false">
           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
         </button>
@@ -274,7 +274,7 @@
       <a href="/index.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Home</a>
       <a href="/about.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">About</a>
       <a href="/resume.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Résumé</a>
-      <a href="/projects.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy" aria-current="page">Projects</a><a href="/contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
+  <a href="/projects/" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded font-bold text-navy" aria-current="page">Projects</a><a href="/contact.html" class="block py-2 text-sm hover:text-navy focus:outline-none focus:ring-2 focus:ring-sage rounded">Contact</a>
       <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border border-slate-200 dark:border-slate-700 text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark theme">
         <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
       </button>
