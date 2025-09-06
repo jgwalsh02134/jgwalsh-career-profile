@@ -845,62 +845,124 @@
 }
 
 /* Hero */
-.projects-hero{ text-align:center; margin: 1.25rem 0 1.5rem; }
-.projects-hero__title{
+.projects-hero {
+  text-align: center;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.projects-hero__title {
   font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.25rem);
   letter-spacing: .2px;
   margin: 0;
   color: var(--ink);
 }
-.projects-hero__sub{
+
+.projects-hero__sub {
   color: var(--muted);
   margin: .4rem 0 .9rem;
 }
-.projects-hero__cta{
-  display:inline-block; padding:.6rem 1rem; border:1px solid var(--bd);
-  border-radius:10px; background: var(--card); color: var(--ink);
-  text-decoration:none; font-weight:600;
+
+.projects-hero__cta {
+  display: inline-block;
+  padding: .6rem 1rem;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
 }
-.projects-hero__cta:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+
+.projects-hero__cta:hover {
+  background: color-mix(in hsl, var(--brand) 10%, var(--bg));
+}
 
 /* Gallery controls sizing on small screens */
-.pp-actions{ gap: 8px; align-items:center; }
-.pp-input{ min-width:min(280px, 80vw); }
+.pp-actions {
+  gap: 8px;
+  align-items: center;
+}
+
+.pp-input {
+  min-width: min(280px, 80vw);
+}
 
 /* Cards: slightly tighter, crisper hover */
-.pp-grid{ gap: 16px; }
-.pp-card{
+.pp-grid {
+  gap: 16px;
+}
+
+.pp-card {
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
-.pp-card:hover{ transform: translateY(-2px); }
+
+.pp-card:hover {
+  transform: translateY(-2px);
+}
 
 /* List view: media-object layout */
-.pp-list .pp-card{ display:flex; flex-direction:row; align-items:stretch; gap: 14px; }
-.pp-list .pp-thumb{ width: 300px; min-height: 100%; }
+.pp-list .pp-card {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.pp-list .pp-thumb {
+  width: 300px;
+  min-height: 100%;
+}
 
 /* Hide Grid/List controls on mobile; keep on tablet/desktop */
-@media (max-width:640px){ .pp-view{ display:none !important; } }
+@media (max-width:640px) {
+  .pp-view {
+    display: none !important;
+  }
+}
 
 /* ===== Quick Links section ===== */
-.projects-links{ margin: 1.5rem 0 2.25rem; }
-.links-head{ text-align:center; margin: 0 0 .75rem; }
-.links-head h2{
+.projects-links {
+  margin: 1.5rem 0 2.25rem;
+}
+
+.links-head {
+  text-align: center;
+  margin: 0 0 .75rem;
+}
+
+.links-head h2 {
   font-size: clamp(1.1rem, .95rem + 1.2vw, 1.4rem);
   margin: 0 0 .25rem;
   color: var(--ink);
 }
-.links-sub{ color: var(--muted); margin: 0; }
 
-.links-grid{
+.links-sub {
+  color: var(--muted);
+  margin: 0;
+}
+
+.links-grid {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(2, minmax(0,1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-@media (min-width:768px){ .links-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-@media (min-width:1024px){ .links-grid{ grid-template-columns: repeat(5, minmax(0,1fr)); } }
 
-.link-tile{
-  display:flex; align-items:center; gap:10px;
+@media (min-width:768px) {
+  .links-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width:1024px) {
+  .links-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.link-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-height: 56px;
   padding: 12px 14px;
   border: 1px solid var(--bd);
@@ -912,17 +974,34 @@
   box-shadow: var(--shadow);
   transition: transform .14s ease, background .14s ease;
 }
-.link-tile:hover{ transform: translateY(-1px); background: color-mix(in hsl, var(--brand) 6%, var(--card)); }
-.link-icon{
-  width: 22px; height: 22px; display:block; object-fit: contain;
+
+.link-tile:hover {
+  transform: translateY(-1px);
+  background: color-mix(in hsl, var(--brand) 6%, var(--card));
 }
-.link-label{ line-height:1.2; }
+
+.link-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
+}
+
+.link-label {
+  line-height: 1.2;
+}
 
 /* Focus-visible (keyboard) */
-.link-tile:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
+.link-tile:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
 /* Dark mode safety for icons */
-.dark .link-icon{ filter: none !important; mix-blend-mode: normal !important; }
+.dark .link-icon {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
 
 /* Hero (redundant-safe) + mobile hide view controls */
 .projects-hero {
