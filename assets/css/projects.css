@@ -1,3 +1,7 @@
+.container{ width:min(100% - 2rem, 72rem); margin-inline:auto; }
+
+/* Remove legacy stacked CTA sections on /projects/ */
+.projects-cta{ display:none !important; }
 /* ==========================================================================
    Projects Gallery — Advanced, production-grade CSS
    - Fluid type & spacing (clamp(), min(), max(), calc())
