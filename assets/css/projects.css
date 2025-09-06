@@ -852,11 +852,15 @@
 }
 
 /* Fallback: if dark asset is missing, slightly invert to improve contrast on dark bg */
-@supports not (content: url(foo.svg)) { /* safeguard no-op; content supported broadly */ }
+@supports not (content: url(foo.svg)) {
+  /* safeguard no-op; content supported broadly */
+}
+
 /* Soft contrast lift if dark-specific asset not yet provided */
 .dark .cta-icon.gpt-icon:not([src$='-dark.svg']) {
   filter: brightness(1.15) contrast(1.1);
 }
+
 @media (prefers-color-scheme: dark) {
   .cta-icon.gpt-icon:not([src$='-dark.svg']) {
     filter: brightness(1.15) contrast(1.1);
