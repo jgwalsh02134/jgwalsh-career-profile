@@ -2381,6 +2381,16 @@ main.container .projects-cta {
   color: var(--muted);
 }
 
+/* === Investigator GPT icon: theme-aware swap === */
+.cta-icon-wrap { display:inline-block; line-height:0; }
+.gpt-icon { width: 18px; height: 18px; display:inline-block; vertical-align:middle; }
+/* Default (light) shows light icon; hide dark icon */
+.gpt-icon--dark  { display:none; }
+.gpt-icon--light { display:inline-block; }
+/* Dark mode: show dark icon; hide light icon */
+.dark .gpt-icon--dark  { display:inline-block; }
+.dark .gpt-icon--light { display:none; }
+
 .aca-tags {
   display: flex;
   gap: 6px;
