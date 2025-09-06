@@ -1215,6 +1215,14 @@
   padding: .2rem .5rem;
   color: var(--muted);
 }
+/* === Projects hero (top) (append duplicate-safe) === */
+.projects-hero{ text-align:center; margin:1rem 0 1.25rem; }
+.projects-hero__title{ font-size:clamp(1.6rem,1.1rem + 2.2vw,2.25rem); margin:0; color:var(--ink); }
+.projects-hero__sub{ color:var(--muted); margin:.35rem 0 .8rem; }
+.projects-hero__cta{ display:inline-block; padding:.6rem 1rem; border:1px solid var(--bd); border-radius:10px; background:var(--card); color:var(--ink); text-decoration:none; font-weight:600; }
+.projects-hero__cta:hover{ background:color-mix(in hsl,var(--brand) 10%,var(--bg)); }
+.pp-tags, .pp-chip{ display:none !important; }
+@media (max-width:640px){ #pp-view.pp-view{ display:none !important; } }
 
 /* Thumbnails 16:9 crop */
 .pp-thumb {

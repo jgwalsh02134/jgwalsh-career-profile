@@ -74,9 +74,9 @@
           <option value="oldest">Oldest</option>
           <option value="az">A → Z</option>
         </select>
-        <div class="pp-view" role="group" aria-label="View mode">
-          <button id="pp-view-grid" data-view="grid" aria-pressed="true">Grid</button>
-          <button id="pp-view-list" data-view="list" aria-pressed="false">List</button>
+        <div class="pp-view" id="pp-view" role="group" aria-label="View mode">
+          <button id="pp-view-grid" class="pp-btn is-active" data-view="grid" aria-pressed="true" title="Grid view (g)">Grid</button>
+          <button id="pp-view-list" class="pp-btn" data-view="list" aria-pressed="false" title="List view (l)">List</button>
         </div>
       </div>
       <div id="pp-results" class="pp-grid" role="list" aria-live="polite" aria-busy="true"></div>
@@ -119,20 +119,24 @@
           function loadInline() { try { return JSON.parse($('#pp-data')?.textContent || '[]'); } catch { return []; } }
 
           const qs = new URLSearchParams(location.search);
-          const state = { q: qs.get('q') || '', sort: qs.get('sort') || 'newest', view: 'grid' };
+          const mqlMobile = matchMedia('(max-width: 640px)');
+          const state = { q: qs.get('q') || '', sort: qs.get('sort') || 'newest', view: (qs.get('view') === 'list' ? 'list' : 'grid') };
 
           function syncQS() {
             const p = new URLSearchParams();
             if (state.q) p.set('q', state.q);
             if (state.sort !== 'newest') p.set('sort', state.sort);
+            if (state.view !== 'grid' && !mqlMobile.matches) p.set('view', state.view); else p.delete('view');
             history.replaceState(null, '', location.pathname + (p.toString() ? ('?' + p.toString()) : ''));
           }
           function setView(v) {
+            if (mqlMobile.matches) v = 'grid';
             state.view = (v === 'list') ? 'list' : 'grid';
             btnGrid?.classList.toggle('is-active', state.view === 'grid');
             btnGrid?.setAttribute('aria-pressed', String(state.view === 'grid'));
             btnList?.classList.toggle('is-active', state.view === 'list');
             btnList?.setAttribute('aria-pressed', String(state.view === 'list'));
+            syncQS();
             render(currentData);
           }
 
@@ -140,7 +144,7 @@
             list.setAttribute('aria-busy', 'true'); list.innerHTML = '';
             let rows = data.slice();
             const q = (state.q || '').trim().toLowerCase();
-            if (q) rows = rows.filter(p => (p.title + p.desc).toLowerCase().includes(q));
+            if (q) rows = rows.filter(p => (p.title + p.desc + (Array.isArray(p.tags)?p.tags.join(' '):'')).toLowerCase().includes(q));
             if (state.sort === 'az') rows.sort((a, b) => a.title.localeCompare(b.title));
             else if (state.sort === 'oldest') rows.sort((a, b) => (a.date || '').localeCompare(b.date || '')); else rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
             if (!rows.length) { list.innerHTML = '<p class="pp-empty">No matches. Clear search or change sort.</p>'; list.setAttribute('aria-busy', 'false'); return; }
@@ -150,12 +154,22 @@
               link.href = p.url; link.textContent = p.title; link.title = p.title;
               const th = n.querySelector('.pp-thumb'); if (th) th.href = p.url;
               const img = n.querySelector('.pp-thumb-img');
-              if (img) { img.src = p.thumb || '/assets/images/projects/placeholder.svg'; img.alt = (p.thumb_alt || p.title + ' thumbnail'); img.referrerPolicy = 'no-referrer'; }
+              if (img) { img.src = p.thumb || '/assets/images/projects/placeholder.svg'; img.alt = (p.thumb_alt || (p.title + ' thumbnail')).trim(); img.referrerPolicy = 'no-referrer'; img.loading='lazy'; img.decoding='async'; }
               const ds = n.querySelector('.pp-desc'); if (ds) ds.textContent = p.desc || '';
               list.appendChild(n);
             }
             list.className = (state.view === 'list') ? 'pp-list' : 'pp-grid';
             list.setAttribute('aria-busy', 'false');
+          }
+
+          function applyMobileMode() {
+            const viewGroup = document.getElementById('pp-view');
+            if (mqlMobile.matches) {
+              state.view = 'grid';
+              viewGroup?.setAttribute('aria-hidden', 'true');
+            } else {
+              viewGroup?.removeAttribute('aria-hidden');
+            }
           }
 
           let currentData = [];
@@ -169,7 +183,16 @@
             input?.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); state.q = input.value; syncQS(); render(currentData); } });
             btnGrid?.addEventListener('click', () => setView('grid'));
             btnList?.addEventListener('click', () => setView('list'));
-            setView('grid'); render(currentData);
+            applyMobileMode();
+            setView(state.view);
+            render(currentData);
+            mqlMobile.addEventListener?.('change', () => { applyMobileMode(); setView('grid'); });
+            document.addEventListener('keydown', e => {
+              if (mqlMobile.matches) return;
+              const k = e.key.toLowerCase();
+              if (k === 'g') { e.preventDefault(); setView('grid'); }
+              else if (k === 'l') { e.preventDefault(); setView('list'); }
+            });
           })();
         })();
       </script>
