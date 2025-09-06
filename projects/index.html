@@ -63,13 +63,14 @@
 
     <section class="projects-search" aria-label="Search projects">
       <div class="projects-search__inner">
-        <input id="pp-search" class="pp-input projects-search__input" type="search" placeholder="Search projects…" aria-label="Search projects" />
+        <input id="pp-search" class="pp-input projects-search__input" type="search" placeholder="Search projects…"
+          aria-label="Search projects" />
       </div>
     </section>
     <!-- Enhanced Projects (projects-pro) Section -->
     <section class="projects-pro" aria-labelledby="pp-heading">
       <h2 id="pp-heading" class="visually-hidden">Projects</h2>
-  <div class="pp-actions" role="region" aria-label="Project controls">
+      <div class="pp-actions" role="region" aria-label="Project controls">
         <select id="pp-sort" aria-label="Sort projects">
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
@@ -440,16 +441,16 @@
   </script>
   <!-- /Floating Chat -->
   <script>
-    (function rotateTaglines(){
+    (function rotateTaglines() {
       const el = document.getElementById('projects-hero-rotator');
-      if(!el) return;
+      if (!el) return;
       const lines = [
         'Ideas in action.',
         'Insight in motion.',
         'From concept to impact.'
       ];
       let i = 0;
-      setInterval(()=>{ i = (i + 1) % lines.length; el.textContent = lines[i]; }, 3500);
+      setInterval(() => { i = (i + 1) % lines.length; el.textContent = lines[i]; }, 3500);
     })();
   </script>
 </body>

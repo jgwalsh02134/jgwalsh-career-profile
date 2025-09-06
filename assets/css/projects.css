@@ -835,38 +835,43 @@
 }
 
 /* ===== Projects Hub hero (refined) ===== */
-.projects-hero{
-  text-align:center;
+.projects-hero {
+  text-align: center;
   margin: 1.2rem 0 1.35rem;
   max-width: 72rem;
   padding-inline: 1rem;
   margin-inline: auto;
 }
-.projects-hero__title{
+
+.projects-hero__title {
   font-size: clamp(1.75rem, 1.2rem + 2.6vw, 2.5rem);
   font-weight: 700;
   letter-spacing: .2px;
   margin: 0 0 .25rem;
   color: var(--ink);
 }
-.projects-hero__sub{
+
+.projects-hero__sub {
   color: var(--muted);
   margin: 0;
-  min-height: 1.5em; /* avoid jump when text changes */
+  min-height: 1.5em;
+  /* avoid jump when text changes */
 }
 
 /* ===== Prominent, centered search bar ===== */
-.projects-search{
+.projects-search {
   max-width: 72rem;
   margin-inline: auto;
   padding-inline: 1rem;
   margin-bottom: .75rem;
 }
-.projects-search__inner{
+
+.projects-search__inner {
   display: flex;
   justify-content: center;
 }
-.projects-search__input{
+
+.projects-search__input {
   inline-size: min(720px, 90vw);
   border-radius: 12px;
   padding: .75rem 1rem;
@@ -874,15 +879,20 @@
   border: 1px solid var(--bd);
   background: var(--bg);
   color: var(--ink);
-  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
 }
-.projects-search__input::placeholder{ color: var(--muted); }
+
+.projects-search__input::placeholder {
+  color: var(--muted);
+}
 
 /* Keep pp-actions for sort/view; remove extra spacing if the search input was moved out */
-.pp-actions{ margin-top: .25rem; }
+.pp-actions {
+  margin-top: .25rem;
+}
 
 /* Optional: refine Grid/List buttons to sit more evenly below the search row */
-.pp-view .pp-btn{
+.pp-view .pp-btn {
   padding: .5rem .7rem;
   border-radius: 10px;
 }
