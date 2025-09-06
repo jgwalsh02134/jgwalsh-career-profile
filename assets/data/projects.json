@@ -36,8 +36,8 @@
     "desc": "Datasets, documents, and references.",
     "tags": ["resources", "docs", "data"],
     "date": "2025-06-01",
-    "thumb": "/assets/images/projects/resource-center.jpg",
-    "thumb_alt": "Documents and database icon"
+    "thumb": "/assets/images/projects/thumbnails/resource-center-simple.png",
+    "thumb_alt": "Resource Center project card"
   },
   {
     "id": "source-code",
