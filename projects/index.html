@@ -10,63 +10,42 @@
     content="A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives." />
   <link rel="canonical" href="/projects/" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/assets/css/style.css?v=hdr_v2">
-  <link rel="stylesheet" href="/assets/css/projects.css?v=hdr_v2">
-  <script src="/assets/js/theme.js?v=hdr_v2" defer></script>
+  <link rel="stylesheet" href="/assets/css/style.css?v=proj_hdr_only">
+  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_hdr_only">
+  <script src="/assets/js/theme.js?v=proj_hdr_only" defer></script>
 </head>
 
 <body style="background:var(--bg); color:var(--text);">
-  <header
-    class="site-header sticky top-0 z-50 bg-gray-50/85 dark:bg-slate-900/75 backdrop-blur header-wrap border-b border-slate-200/60 dark:border-slate-800/60">
-    <div class="container flex items-center justify-between gap-3 px-4 py-3">
-      <a href="/" class="brand flex items-center gap-2 text-navy text-xl font-semibold leading-none">
-        <!-- Optional brand mark; keep if the file exists -->
-        <img src="/assets/icons/jgw-mark.svg" alt="" aria-hidden="true" class="brand-mark" />
-        <span>James Gregory Walsh</span>
-      </a>
-
-      <!-- Desktop nav -->
-      <nav class="main-nav hidden sm:flex items-center gap-4 text-sm text-slate-700" aria-label="Main navigation">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/about.html" class="nav-link">About</a>
-        <a href="/resume.html" class="nav-link">Résumé</a>
-        <a href="/projects/" class="nav-link is-current" aria-current="page">Projects</a>
-        <a href="/contact.html" class="nav-link">Contact</a>
-
-        <!-- Desktop theme toggle -->
+  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
+    <div class="container px-4 py-5 flex justify-between items-center">
+      <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+      <div class="sm:hidden">
+        <button id="mobile-menu-button" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
+          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
+        <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
+        <a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a>
+        <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a>
+        <a href="/projects/" class="hover:text-navy px-2 py-1 rounded font-bold text-navy" aria-current="page">Projects</a>
+        <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
           <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
         </button>
       </nav>
-
-      <!-- Mobile hamburger -->
-      <button id="mobile-menu-button"
-        class="sm:hidden rounded px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-sage"
-        aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-      </button>
     </div>
-
-    <!-- Mobile drawer -->
     <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
-      <nav class="mobile-nav flex flex-col gap-1 pt-2">
-        <a href="/" class="mobile-link">Home</a>
-        <a href="/about.html" class="mobile-link">About</a>
-        <a href="/resume.html" class="mobile-link">Résumé</a>
-        <a href="/projects/" class="mobile-link is-current" aria-current="page">Projects</a>
-        <a href="/contact.html" class="mobile-link">Contact</a>
-      </nav>
-
-      <hr class="my-3 border-slate-200 dark:border-slate-800" />
-
-      <!-- Mobile theme toggle -->
-      <button id="theme-toggle-mobile" class="theme-toggle w-full justify-start mt-1" type="button" aria-pressed="false"
-        aria-label="Switch theme">
+      <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
+      <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a>
+      <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a>
+      <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy" aria-current="page">Projects</a>
+      <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a>
+      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch theme">
         <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-        <span class="sr-only">Toggle theme</span>
       </button>
     </div>
   </header>
@@ -243,15 +222,29 @@
       </div>
     </div>
   </footer>
-  <script>
-    (function navMenu() {
-      const btn = document.getElementById('mobile-menu-button');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      btn.addEventListener('click', () => {
-        const open = !menu.classList.toggle('hidden');
-        btn.setAttribute('aria-expanded', String(open));
-      });
+  <style>
+    /* Local /projects/ header-only toggle visuals (cache resilient) */
+    .theme-toggle { position:relative; display:inline-flex; align-items:center; gap:.5rem; }
+    .theme-toggle .switch__track { width:44px; height:24px; border:1px solid var(--bd); border-radius:9999px; background:var(--chip); display:inline-block; }
+    .theme-toggle .switch__thumb { width:18px; height:18px; border-radius:9999px; background:var(--ink); position:relative; left:3px; top:3px; transition:transform .18s ease; display:inline-block; }
+    .theme-toggle[aria-pressed="true"] .switch__thumb { transform:translateX(18px); }
+    .dark .theme-toggle .switch__track { background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
+    .dark .theme-toggle .switch__thumb { background:#fff; }
+  </style>
+  <script type="module">
+    (function(){
+      const root=document.documentElement, KEY='theme';
+      const desk=document.getElementById('theme-toggle');
+      const mob=document.getElementById('theme-toggle-mobile');
+      const mBtn=document.getElementById('mobile-menu-button');
+      const menu=document.getElementById('mobile-menu');
+      const reflect=()=>{ const on=root.classList.contains('dark'); desk?.setAttribute('aria-pressed',String(on)); mob?.setAttribute('aria-pressed',String(on)); };
+      const set=t=>{ t==='dark'?root.classList.add('dark'):root.classList.remove('dark'); reflect(); try{localStorage.setItem(KEY,t);}catch{} };
+      const toggle=()=> set(root.classList.contains('dark')?'light':'dark');
+      try{ const saved=localStorage.getItem(KEY); if(saved==='dark'||saved==='light'){ set(saved); } else { set(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); } }catch{ set('light'); }
+      desk?.addEventListener('click',toggle); mob?.addEventListener('click',toggle);
+      mBtn?.addEventListener('click',()=>{ const open=!menu.classList.toggle('hidden'); mBtn.setAttribute('aria-expanded',String(open)); });
+      new MutationObserver(reflect).observe(root,{attributes:true,attributeFilter:['class']});
     })();
   </script>
 </body>
