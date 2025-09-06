@@ -826,6 +826,79 @@ svg {
 .dark .theme-toggle .switch__thumb {
   background: #fff;
 }
+/* === Résumé sheet: dark-mode readability === */
+.resume-sheet{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.dark .resume-sheet{ background: var(--card); color: var(--ink); }
+
+/* Make all standard text readable inside the sheet */
+.dark .resume-sheet p,
+.dark .resume-sheet li,
+.dark .resume-sheet dd { color: var(--ink); }
+
+/* Headings & subtitles inside the sheet */
+.dark .resume-sheet h1,
+.dark .resume-sheet h2,
+.dark .resume-sheet h3,
+.dark .resume-sheet h4 { color: var(--ink); }
+.dark .resume-sheet .subtitle,
+.dark .resume-sheet .lead,
+.dark .resume-sheet small { color: var(--muted); }
+
+/* Lists, markers and spacing */
+.resume-sheet ul, .resume-sheet ol { padding-left: 1.15rem; }
+.dark .resume-sheet li::marker { color: var(--muted); }
+
+/* Dividers */
+.dark .resume-sheet hr { border-color: var(--bd); opacity: 1; }
+
+/* Tables (if present) */
+.dark .resume-sheet table { width:100%; border-collapse: collapse; border-color: var(--bd); }
+.dark .resume-sheet th, 
+.dark .resume-sheet td { border-color: var(--bd); }
+.dark .resume-sheet thead th {
+  background: color-mix(in hsl, var(--card) 60%, var(--bg));
+  color: var(--ink);
+}
+.dark .resume-sheet tbody tr:nth-child(2n){
+  background: color-mix(in hsl, var(--card) 85%, var(--bg));
+}
+
+/* Code / pre / quotes */
+.dark .resume-sheet code{
+  background: color-mix(in hsl, var(--card) 80%, var(--bg));
+  border: 1px solid var(--bd);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: .1rem .3rem;
+}
+.dark .resume-sheet pre{
+  background: color-mix(in hsl, var(--card) 70%, var(--bg));
+  border: 1px solid var(--bd);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: .75rem;
+  overflow:auto;
+}
+.dark .resume-sheet blockquote{
+  color: var(--muted);
+  border-left: 3px solid var(--ring);
+  padding-left: .75rem;
+  margin-left: 0;
+}
+
+/* Ensure links are visible */
+.dark .resume-sheet a{
+  color: color-mix(in hsl, var(--brand) 85%, white 0%);
+  text-decoration: none;
+}
+.dark .resume-sheet a:hover{ text-decoration: underline; text-underline-offset: 2px; }
 
 /* =========================================================
    Dark-mode readability polish (site-wide, non-destructive)
