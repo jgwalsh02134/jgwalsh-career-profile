@@ -899,6 +899,80 @@ svg {
   text-decoration: none;
 }
 .dark .resume-sheet a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+/* === Dark-mode readability: Home + Contact (scoped) === */
+
+/* 1) Home: Core Competencies section */
+.dark .core-competencies { 
+  background: #111827;      /* deep slate backdrop */
+  color: #e5e7eb;           /* light gray text */
+}
+
+/* Headings + body text inside the section */
+.dark .core-competencies h2,
+.dark .core-competencies h3 { color: #f3f4f6; }
+.dark .core-competencies p,
+.dark .core-competencies li { color: #d1d5db; }
+.dark .core-competencies li::marker { color: var(--muted); }
+
+/* Cards inside Core Competencies */
+.dark .core-competencies .card,
+.dark .core-competencies .competency-card,
+.dark .core-competencies .resume-card,
+.dark .core-competencies .section {
+  background: #1f2937;       /* dark card surface */
+  border: 1px solid #374151; /* subtle border */
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  color: #f9fafb;            /* near-white text */
+}
+
+/* Links in Core Competencies */
+.dark .core-competencies a {
+  color: color-mix(in hsl, var(--brand) 85%, white 0%);
+  text-decoration: none;
+}
+.dark .core-competencies a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* 2) Contact: main contact card */
+.contact-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.dark .contact-card { background: #1f2937; border-color: #374151; color: #f9fafb; }
+.dark .contact-card h1,
+.dark .contact-card h2,
+.dark .contact-card h3 { color: #f3f4f6; }
+.dark .contact-card p,
+.dark .contact-card li,
+.dark .contact-card label { color: #e5e7eb; }
+.dark .contact-card small,
+.dark .contact-card .muted { color: var(--muted); }
+.dark .contact-card a { color: #93c5fd; text-decoration: none; }
+.dark .contact-card a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.dark .contact-card hr { border-color: var(--bd); opacity: 1; }
+
+/* Ensure icons/logos remain natural in dark mode */
+.dark .contact-card img,
+.dark .contact-card svg { filter:none !important; mix-blend-mode:normal !important; }
+
+/* Safety: drawer visibility + toggle visuals (harmless if duplicates already exist) */
+#mobile-menu.hidden { display: none; }
+.theme-toggle { position:relative; display:inline-flex; align-items:center; gap:.5rem; cursor:pointer; }
+.theme-toggle .switch__track {
+  width:44px; height:24px; border:1px solid var(--bd);
+  border-radius:9999px; background: var(--chip); display:inline-block; transition:background .2s ease;
+}
+.theme-toggle .switch__thumb {
+  width:18px; height:18px; border-radius:50%;
+  position:absolute; top:3px; left:3px; background: var(--ink);
+  transition: transform .2s ease;
+}
+.theme-toggle[aria-pressed="true"] .switch__thumb { transform: translateX(20px); }
+.dark .theme-toggle .switch__track { background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
+.dark .theme-toggle .switch__thumb { background:#fff; }
 /* === Home sheet: dark-mode readability === */
 .home-sheet{  background: transparent; }
 .dark .home-sheet .section,
