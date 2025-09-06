@@ -63,6 +63,12 @@ html[data-theme="dark"] {
   --footer-border: #242832;
 }
 
+/* Threat Triage: page layout & footer fix (scoped) */
+.triage-page{ min-height:100svh; display:flex; flex-direction:column; }
+.triage-footer{ padding:1rem 1rem 1.25rem; border-top:1px solid var(--border); background: var(--bg); color: var(--muted); }
+.triage-footer .footer-links a{ color: var(--text); text-decoration:none; }
+.triage-footer .footer-links a:hover{ text-decoration: underline; text-underline-offset:2px; }
+
 /* --- Layout & Structure --- */
 .flex {
   display: flex;

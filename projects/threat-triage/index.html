@@ -289,7 +289,7 @@
       style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
       Back to Projects</a>
   </nav>
-  <main class="container">
+  <main id="triage-main" class="container triage-page">
     <div class="win95-window" role="group" aria-label="Behavioral Threat Triage Window">
       <div class="win95-titlebar"><span>Behavioral Threat Triage</span>
         <div class="controls" aria-hidden="true">
@@ -327,26 +327,10 @@
           <h2 id="demo-title" style="margin:0;">Live Demo (Automatic)</h2>
 
           <!-- Example cases -->
-          <label for="caseSelect"><strong>Load Example Case:</strong></label>
-          <select id="caseSelect" aria-label="Select a real case narrative"
-            onchange="window.__ttSetFromSelect && window.__ttSetFromSelect(this)">
+          <label for="exampleSelect"><strong>Load Example Case:</strong></label>
+          <select id="exampleSelect" aria-label="Select an example case">
             <option value="">-- Select a case --</option>
-            <option value="virginia"
-              data-text="I’ll get him back tomorrow. He’ll be sorry he ever messed with me. Everyone will see what happens at school.">
-              Virginia School Threat
-            </option>
-            <option value="disability"
-              data-text="I might as well bring something to school. People laugh at me every day. Maybe then they’ll take me seriously.">
-              Student With Disability — Non-Specific Threat
-            </option>
-            <option value="employee"
-              data-text="At the front desk the terminated employee shouted: 'Tell the CEO he’s a dead man walking. You’ll all regret this.'">
-              Ex-Employee Lobby Threat
-            </option>
-            <option value="apalachee"
-              data-text="Nobody cares now, but they will after tomorrow. I’ll make sure my name is remembered like the others.">
-              Apalachee HS Leakage
-            </option>
+            <option>Virginia School Threat</option>
           </select>
           <p id="caseNote" class="note"></p>
           <label for="narrative"><strong>Narrative</strong></label>
@@ -556,7 +540,17 @@
   </main>
 
   <!-- Updated script path after relocation -->
-  <script type="module" src="/assets/js/threat-triage.js?v=fix1"></script>
+  <footer class="site-footer triage-footer">
+    <div class="max-w-4xl mx-auto text-center space-y-3">
+      <div>© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div class="footer-links">
+        <a href="mailto:jgwalsh@proton.me">Email</a> ·
+        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script type="module" src="/assets/js/threat-triage.js?v=fix2"></script>
   <script>document.getElementById('printBtn')?.addEventListener('click', () => window.print());</script>
   <!-- Floating Chat (Threat Triage only) -->
   <style>
