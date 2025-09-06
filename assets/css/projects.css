@@ -1012,3 +1012,43 @@ main.container .projects-cta{ display:none !important; }
 
 /* Ensure thumbnails/icons aren't altered in dark mode */
 .pp-thumb-img, .cta-group img{ filter:none !important; mix-blend-mode:normal !important; }
+/* === Albany Crime Analysis hub (responsive) === */
+:root{
+  --fs-0: clamp(.9rem, .86rem + .25vw, 1rem);
+  --fs-1: clamp(1rem, .96rem + .35vw, 1.125rem);
+  --fs-2: clamp(1.1rem, 1rem + .6vw, 1.3rem);
+}
+.container{ width:min(100% - 2rem, 72rem); margin-inline:auto; }
+.safe-pad{
+  padding-top: max(env(safe-area-inset-top), 0px);
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  padding-left: max(env(safe-area-inset-left), 0px);
+  padding-right: max(env(safe-area-inset-right), 0px);
+}
+
+/* Banner */
+.aca-banner{ margin: 0 0 1.1rem; }
+.aca-banner-img{ display:block; width:100%; height:auto; border-radius:12px; box-shadow: var(--shadow); filter:none !important; mix-blend-mode:normal !important; }
+
+/* Title + subtitle */
+.aca-header .pp-h1{ font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem); line-height:1.15; }
+.aca-header .pp-sub{ color: var(--muted); font-size: var(--fs-1); }
+
+/* Grid */
+.aca-grid{ display:grid; gap:14px; grid-template-columns: 1fr; margin-block: 10px 14px; }
+@media (min-width:640px){ .aca-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); gap:16px; } }
+@media (min-width:1024px){ .aca-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); gap:18px; } }
+
+/* Cards */
+.aca-card{ background: var(--card); border:1px solid var(--bd); border-radius:14px; box-shadow: var(--shadow); padding:16px; }
+.aca-title{ margin:0 0 6px; font-size: var(--fs-2); }
+.aca-link{ color: var(--ink); text-decoration:none; }
+.aca-link:hover{ text-decoration:underline; text-underline-offset:2px; }
+.aca-desc{ margin:.25rem 0; color: var(--muted); font-size: var(--fs-1); }
+.aca-tags{ display:flex; gap:6px; flex-wrap:wrap; list-style:none; margin:.35rem 0 0; padding:0; }
+.aca-tags li{ font-size:.8rem; border:1px solid var(--bd); border-radius:999px; padding:.2rem .5rem; color: var(--muted); }
+
+/* Focus & bottom spacing */
+:focus-visible{ outline:2px solid var(--ring,#3b82f6); outline-offset:2px; }
+.site-footer{ margin-bottom:0; padding-bottom: 12px; }
+#main-content{ padding-bottom: 1.25rem; }

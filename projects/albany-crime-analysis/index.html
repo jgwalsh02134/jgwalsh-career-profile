@@ -3,71 +3,122 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
   <title>Albany Crime Analysis — jgwalsh.com</title>
   <meta name="description" content="Central hub for Albany, NY crime analysis: interactive visualizations and the downloadable 2021–2024 report PDF." />
-  <link rel="stylesheet" href="/assets/css/style.css?v=proj_fix2" />
-  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_fix2" />
-  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=aca3" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=aca3" />
+  <script src="/assets/js/theme.js" defer></script>
 </head>
 <body class="safe-pad">
-  <header class="header-wrap">
-    <div class="container" style="padding-block:1rem;">
-      <a href="/projects/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block">← Back to Projects</a>
-      <h1 style="margin:.75rem 0 0">Albany Crime Analysis</h1>
-      <p class="muted">All visualizations and the 2021–2024 report PDF in one place.</p>
+  <!-- Header (same pattern as rest of site) -->
+  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
+    <div class="container px-4 py-5 flex justify-between items-center">
+      <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+      <div class="sm:hidden">
+        <button id="mobile-menu-button" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
+                aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
+        <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
+        <a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a>
+        <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a>
+        <a href="/projects/" class="hover:text-navy px-2 py-1 rounded font-bold text-navy" aria-current="page">Projects</a>
+        <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
+          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        </button>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
+      <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
+      <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a>
+      <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a>
+      <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy" aria-current="page">Projects</a>
+      <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a>
+      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch theme">
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+      </button>
     </div>
   </header>
 
-  <main class="container" style="padding-block:1rem 2rem;">
-    <section class="stack-md" style="margin-block:1rem 1.5rem;">
+  <main id="main-content" class="container safe-pad" style="padding-block:1.25rem 2rem;">
+    <!-- Breadcrumb -->
+    <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.0rem;">
+      <a href="/projects/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">← Back to Projects</a>
+    </nav>
+
+    <!-- Banner -->
+    <section class="aca-banner" aria-label="Albany Crime Analysis banner">
+      <img src="/assets/images/projects/albany-crime-analysis/ACA-banner-1.png"
+           alt="Albany Crime Analysis banner" class="aca-banner-img" loading="lazy" decoding="async">
+    </section>
+
+    <!-- Page title -->
+    <header class="aca-header" style="margin:0 0 10px;">
+      <h1 class="pp-h1" style="margin:.25rem 0;">Albany Crime Analysis</h1>
+      <p class="pp-sub">All visualizations and the 2021–2024 PDF, in one place.</p>
+    </header>
+
+    <!-- Hub grid -->
+    <section class="aca-grid" aria-label="Albany Crime Analysis items">
       <!-- PDF -->
-      <article class="pp-card">
-        <div class="pp-body">
-          <h2 class="pp-title"><a href="/projects/albany-crime-report-2021-2024.pdf">Crime Analysis Report (2021–2024) — PDF</a></h2>
-          <p class="pp-desc">Download the full report (PDF).</p>
-          <ul class="pp-tagsline"><li class="pp-tag">PDF</li><li class="pp-tag">report</li></ul>
-        </div>
+      <article class="aca-card">
+        <h2 class="aca-title"><a class="aca-link" href="/projects/albany-crime-report-2021-2024.pdf">Crime Analysis Report (2021–2024) — PDF</a></h2>
+        <p class="aca-desc">Download the full report.</p>
+        <ul class="aca-tags"><li>pdf</li><li>report</li></ul>
       </article>
 
       <!-- Visualizations -->
-      <article class="pp-card">
-        <div class="pp-body">
-          <h2 class="pp-title"><a href="/interactive_crime_arrest_trends.html">Interactive Crime Arrest Trends</a></h2>
-          <p class="pp-desc">Explore arrest patterns over time.</p>
-          <ul class="pp-tagsline"><li class="pp-tag">timeseries</li><li class="pp-tag">visualization</li></ul>
-        </div>
+      <article class="aca-card">
+        <h2 class="aca-title"><a class="aca-link" href="/interactive_crime_arrest_trends.html">Interactive Crime Arrest Trends</a></h2>
+        <p class="aca-desc">Explore arrest patterns over time.</p>
+        <ul class="aca-tags"><li>timeseries</li><li>visualization</li></ul>
       </article>
 
-      <article class="pp-card">
-        <div class="pp-body">
-          <h2 class="pp-title"><a href="/interactive_neighborhood_treemap.html">Neighborhood Treemap</a></h2>
-          <p class="pp-desc">Incidents by area and category.</p>
-          <ul class="pp-tagsline"><li class="pp-tag">geography</li><li class="pp-tag">visualization</li></ul>
-        </div>
+      <article class="aca-card">
+        <h2 class="aca-title"><a class="aca-link" href="/interactive_neighborhood_treemap.html">Neighborhood Treemap</a></h2>
+        <p class="aca-desc">Incidents by area and category.</p>
+        <ul class="aca-tags"><li>geography</li><li>visualization</li></ul>
       </article>
 
-      <article class="pp-card">
-        <div class="pp-body">
-          <h2 class="pp-title"><a href="/interactive_violent_crime_sunburst.html">Violent Crime Sunburst</a></h2>
-          <p class="pp-desc">Hierarchical view of violent offenses.</p>
-          <ul class="pp-tagsline"><li class="pp-tag">hierarchy</li><li class="pp-tag">visualization</li></ul>
-        </div>
+      <article class="aca-card">
+        <h2 class="aca-title"><a class="aca-link" href="/interactive_violent_crime_sunburst.html">Violent Crime Sunburst</a></h2>
+        <p class="aca-desc">Hierarchical view of violent offenses.</p>
+        <ul class="aca-tags"><li>hierarchy</li><li>visualization</li></ul>
       </article>
 
-      <article class="pp-card">
-        <div class="pp-body">
-          <h2 class="pp-title"><a href="/case_resolution_sankey_2024.html">Case Resolution Sankey (2024)</a></h2>
-          <p class="pp-desc">Flow from report to outcome.</p>
-          <ul class="pp-tagsline"><li class="pp-tag">flow</li><li class="pp-tag">visualization</li></ul>
-        </div>
+      <article class="aca-card">
+        <h2 class="aca-title"><a class="aca-link" href="/case_resolution_sankey_2024.html">Case Resolution Sankey (2024)</a></h2>
+        <p class="aca-desc">Flow from report to outcome.</p>
+        <ul class="aca-tags"><li>flow</li><li>visualization</li></ul>
       </article>
     </section>
   </main>
 
-  <footer class="container" style="padding-block:1rem 2rem;">
-    <div class="text-center">
-      <a href="/projects/" class="pp-btn">← Back to Projects</a>
+  <footer class="site-footer container" style="padding-block:1rem 1.25rem;">
+    <div class="text-center" style="font-size:.95rem;color:inherit;">
+      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div style="margin-top:.35rem;">
+        <a href="mailto:jgwalsh@proton.me">Email</a> ·
+        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="/contact.html">Contact</a>
+      </div>
     </div>
   </footer>
+
+  <!-- Mobile menu wiring -->
+  <script>
+  (function navMenu(){
+    const btn=document.getElementById('mobile-menu-button');
+    const menu=document.getElementById('mobile-menu');
+    if(!btn||!menu) return;
+    btn.addEventListener('click',()=>{const open=!menu.classList.toggle('hidden');btn.setAttribute('aria-expanded',String(open));});
+  })();
+  </script>
 </body>
 </html>
