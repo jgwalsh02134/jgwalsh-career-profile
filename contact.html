@@ -48,13 +48,15 @@
   <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=hdr_fix1" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=hdr_fix1" />
   <script src="/assets/js/theme.js" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css?v=proj1">
+  
 
   <script type="application/ld+json">
   {
@@ -103,45 +105,30 @@
     class="sr-only focus:not-sr-only focus:bg-indigo-600 focus:text-white focus:p-2 focus:rounded">Skip to main
     content</a>
 
-  <header class="bg-slate-50/80 backdrop-blur-sm shadow-sm sticky top-0 w-full z-50">
-    <div class="max-w-6xl mx-auto px-4 py-5 flex justify-between items-center">
-      <a href="index.html" class="text-2xl font-semibold text-indigo-600">James Gregory Walsh</a>
-      <div class="sm:hidden">
-        <button onclick="toggleMenu()"
-          class="text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1"
-          aria-controls="mobile-menu" aria-expanded="false">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-          </svg>
-          <span class="sr-only">Toggle menu</span>
-        </button>
-      </div>
-      <nav class="hidden sm:flex space-x-6 text-sm" role="navigation" aria-label="Main navigation">
-        <a href="about.html"
-          class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">About</a>
-        <a href="resume.html"
-          class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Résumé</a>
-        <a href="/projects/"
-          class="hover:text-indigo-600 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Projects</a><a
-          href="contact.html"
-          class="text-indigo-600 font-semibold transition focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 py-1">Contact</a>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark theme"
-          aria-pressed="false">
-          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-        </button>
-      </nav>
+  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
+  <div class="container px-4 py-5 flex justify-between items-center">
+    <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+    <div class="sm:hidden">
+      <button id="mobile-menu-button" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
-    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4" role="navigation" aria-label="Mobile navigation">
-      <a href="about.html"
-        class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">About</a>
-      <a href="resume.html"
-        class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Résumé</a>
-      <a href="/projects/"
-        class="block py-2 text-sm hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Projects</a><a
-        href="contact.html"
-        class="block py-2 text-sm text-indigo-600 font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded">Contact</a>
-    </div>
-  </header>
+    <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
+      <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
+      <a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a>
+      <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a>
+      <a href="/projects/" class="hover:text-navy px-2 py-1 rounded">Projects</a>
+      <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded font-bold text-navy" aria-current="page">Contact</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false"><span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span></button>
+    </nav>
+  </div>
+  <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
+    <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
+    <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a>
+    <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a>
+    <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded">Projects</a>
+    <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy" aria-current="page">Contact</a>
+    <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch theme"><span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span></button>
+  </div>
+</header>
 
   <main id="main-content" class="flex-grow flex items-center justify-center py-12 px-4 animate-fade-in">
     <div class="w-full max-w-md bg-white rounded-xl shadow-lg ring-1 ring-slate-200/70 p-8 space-y-6">
