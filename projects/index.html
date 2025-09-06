@@ -75,8 +75,10 @@
           <option value="az">A → Z</option>
         </select>
         <div class="pp-view" id="pp-view" role="group" aria-label="View mode">
-          <button id="pp-view-grid" class="pp-btn is-active" data-view="grid" aria-pressed="true" title="Grid view (g)">Grid</button>
-          <button id="pp-view-list" class="pp-btn" data-view="list" aria-pressed="false" title="List view (l)">List</button>
+          <button id="pp-view-grid" class="pp-btn is-active" data-view="grid" aria-pressed="true"
+            title="Grid view (g)">Grid</button>
+          <button id="pp-view-list" class="pp-btn" data-view="list" aria-pressed="false"
+            title="List view (l)">List</button>
         </div>
       </div>
       <div id="pp-results" class="pp-grid" role="list" aria-live="polite" aria-busy="true"></div>
@@ -144,7 +146,7 @@
             list.setAttribute('aria-busy', 'true'); list.innerHTML = '';
             let rows = data.slice();
             const q = (state.q || '').trim().toLowerCase();
-            if (q) rows = rows.filter(p => (p.title + p.desc + (Array.isArray(p.tags)?p.tags.join(' '):'')).toLowerCase().includes(q));
+            if (q) rows = rows.filter(p => (p.title + p.desc + (Array.isArray(p.tags) ? p.tags.join(' ') : '')).toLowerCase().includes(q));
             if (state.sort === 'az') rows.sort((a, b) => a.title.localeCompare(b.title));
             else if (state.sort === 'oldest') rows.sort((a, b) => (a.date || '').localeCompare(b.date || '')); else rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
             if (!rows.length) { list.innerHTML = '<p class="pp-empty">No matches. Clear search or change sort.</p>'; list.setAttribute('aria-busy', 'false'); return; }
@@ -154,7 +156,7 @@
               link.href = p.url; link.textContent = p.title; link.title = p.title;
               const th = n.querySelector('.pp-thumb'); if (th) th.href = p.url;
               const img = n.querySelector('.pp-thumb-img');
-              if (img) { img.src = p.thumb || '/assets/images/projects/placeholder.svg'; img.alt = (p.thumb_alt || (p.title + ' thumbnail')).trim(); img.referrerPolicy = 'no-referrer'; img.loading='lazy'; img.decoding='async'; }
+              if (img) { img.src = p.thumb || '/assets/images/projects/placeholder.svg'; img.alt = (p.thumb_alt || (p.title + ' thumbnail')).trim(); img.referrerPolicy = 'no-referrer'; img.loading = 'lazy'; img.decoding = 'async'; }
               const ds = n.querySelector('.pp-desc'); if (ds) ds.textContent = p.desc || '';
               list.appendChild(n);
             }
