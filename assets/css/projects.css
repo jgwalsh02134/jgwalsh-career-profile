@@ -752,3 +752,103 @@ body::after { content: none !important; }
     display: none !important;
   }
 }
+/* ===== Dark-mode legibility overrides (supports OS dark AND site toggle .dark) ===== */
+@media (prefers-color-scheme: dark){
+  :root{
+    /* high-contrast tokens for dark */
+    --bg: #0b0f17;
+    --ink: #e6e9ef;           /* primary text */
+    --muted: #b6c2d1;         /* secondary text */
+    --card: #121826;          /* card background */
+    --bd: rgba(255,255,255,.14);
+    --soft: rgba(255,255,255,.08);
+    --brand: #8ea6ff;
+    --ring: #8fb3ff;
+    --fav: #f8c75a;
+    --shadow: 0 18px 40px rgba(0,0,0,.6);
+  }
+}
+
+/* If the site uses a theme toggle that adds .dark, mirror the same contrasts */
+.dark :root,
+.dark{
+  --bg: #0b0f17;
+  --ink: #e6e9ef;
+  --muted: #b6c2d1;
+  --card: #121826;
+  --bd: rgba(255,255,255,.14);
+  --soft: rgba(255,255,255,.08);
+  --brand: #8ea6ff;
+  --ring: #8fb3ff;
+  --fav: #f8c75a;
+  --shadow: 0 18px 40px rgba(0,0,0,.6);
+}
+
+/* Page background + base text */
+.dark body,
+@media (prefers-color-scheme: dark){ body{ background: var(--bg); color: var(--ink); } }
+
+/* Cards */
+.dark .pp-card,
+@media (prefers-color-scheme: dark){ .pp-card{ background: var(--card); border-color: var(--bd); box-shadow: var(--shadow); } }
+
+/* Titles + links */
+.dark .pp-title a,
+@media (prefers-color-scheme: dark){ .pp-title a{ color: var(--ink); } }
+
+/* Descriptions */
+.dark .pp-desc,
+@media (prefers-color-scheme: dark){ .pp-desc{ color: var(--muted); } }
+
+/* Tags (chips under each card) */
+.dark .pp-tagsline .pp-tag,
+@media (prefers-color-scheme: dark){ .pp-tagsline .pp-tag{ color: var(--muted); border-color: var(--bd); background: color-mix(in hsl, var(--card) 70%, var(--bg)); } }
+
+/* Controls (search, select, buttons) */
+.dark #pp-search,
+.dark #pp-search-go,
+.dark .pp-input,
+.dark .pp-select,
+.dark .pp-btn,
+@media (prefers-color-scheme: dark){
+  #pp-search, #pp-search-go, .pp-input, .pp-select, .pp-btn{
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--bd);
+  }
+}
+.dark #pp-search::placeholder,
+@media (prefers-color-scheme: dark){ #pp-search::placeholder{ color: color-mix(in hsl, var(--ink) 55%, transparent); } }
+
+/* View toggles — active outline visible in dark */
+.dark .pp-view .pp-btn.is-active,
+@media (prefers-color-scheme: dark){ .pp-view .pp-btn.is-active{ outline:2px solid var(--ring); outline-offset:2px; } }
+
+/* CTA (Investigator GPT) */
+.dark .projects-cta .cta-btn,
+@media (prefers-color-scheme: dark){ .projects-cta .cta-btn{ background: var(--bg); color: var(--ink); border-color: var(--bd); } }
+.dark .projects-cta .cta-btn:hover,
+@media (prefers-color-scheme: dark){ .projects-cta .cta-btn:hover{ background: color-mix(in hsl, var(--brand) 12%, var(--bg)); } }
+
+/* Card icons (favorite/star, copy) should inherit text color */
+.pp-icon svg{ fill: currentColor; stroke: currentColor; }
+
+/* Focus rings readable in dark */
+.dark :focus-visible,
+@media (prefers-color-scheme: dark){ :focus-visible{ outline: 2px solid var(--ring); outline-offset: 2px; } }
+
+/* Keep thumbnails untouched (do NOT alter images) */
+
+/* Footer text contrast */
+.dark footer,
+@media (prefers-color-scheme: dark){ footer{ color: var(--muted); } }
+
+/* Ensure dropdown arrow/text is readable in selects */
+.dark select,
+@media (prefers-color-scheme: dark){ select{ color: var(--ink); background-color: var(--bg); } }
+
+/* Make grid/list container class switch visible in dark too */
+.dark .pp-grid,
+@media (prefers-color-scheme: dark){ .pp-grid{ background: transparent; } }
+.dark .pp-list .pp-card,
+@media (prefers-color-scheme: dark){ .pp-list .pp-card{ background: var(--card); } }
