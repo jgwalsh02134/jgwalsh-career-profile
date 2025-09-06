@@ -834,6 +834,35 @@
   outline-offset: 2px;
 }
 
+/* === Investigator GPT icon: theme-aware swap (light vs dark) === */
+/* Default (light) already uses bw-chatgpt-2.svg. Provide dark variant when available. */
+.cta-icon.gpt-icon {
+  transition: filter .15s ease;
+}
+
+/* If you add a dedicated dark icon asset later (e.g., chatgpt-dark.svg), just swap URL here */
+@media (prefers-color-scheme: dark) {
+  .cta-icon.gpt-icon {
+    content: url(/assets/icons/bw-chatgpt-2-dark.svg);
+  }
+}
+
+.dark .cta-icon.gpt-icon {
+  content: url(/assets/icons/bw-chatgpt-2-dark.svg);
+}
+
+/* Fallback: if dark asset is missing, slightly invert to improve contrast on dark bg */
+@supports not (content: url(foo.svg)) { /* safeguard no-op; content supported broadly */ }
+/* Soft contrast lift if dark-specific asset not yet provided */
+.dark .cta-icon.gpt-icon:not([src$='-dark.svg']) {
+  filter: brightness(1.15) contrast(1.1);
+}
+@media (prefers-color-scheme: dark) {
+  .cta-icon.gpt-icon:not([src$='-dark.svg']) {
+    filter: brightness(1.15) contrast(1.1);
+  }
+}
+
 /* === Layout restore (proj_layout2) === */
 /* Center container */
 .container {
