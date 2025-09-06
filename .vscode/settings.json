@@ -1,6 +1,13 @@
 {
-    "javascript.validate.enable": true,
-    "typescript.validate.enable": true,
-    "js/ts.implicitProjectConfig.checkJs": false,
-    "editor.formatOnSave": true
+  "javascript.validate.enable": true,
+  "typescript.validate.enable": true,
+  "js/ts.implicitProjectConfig.checkJs": false,
+  "editor.formatOnSave": true,
+  "files.associations": {
+    "_headers": "plaintext",
+    "_redirects": "plaintext"
+  },
+  "markdownlint.config": {
+    "default": true
+  }
 }
