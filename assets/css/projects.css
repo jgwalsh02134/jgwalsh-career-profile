@@ -840,12 +840,18 @@
 
 /* Layout: all CTAs in the projects CTA group use a consistent row layout */
 .cta-group .cta-item {
-  display: inline-flex;             /* row layout */
-  align-items: center;              /* center icon + text vertically */
-  gap: 10px;                        /* space between icon and label */
-  min-height: 44px;                 /* comfortable tap target */
-  padding: 10px 14px;               /* inner button padding */
-  line-height: 1.15;                /* avoid tall text lines */
+  display: inline-flex;
+  /* row layout */
+  align-items: center;
+  /* center icon + text vertically */
+  gap: 10px;
+  /* space between icon and label */
+  min-height: 44px;
+  /* comfortable tap target */
+  padding: 10px 14px;
+  /* inner button padding */
+  line-height: 1.15;
+  /* avoid tall text lines */
 }
 
 /* Icon container: fixed box so different icons align the same */
@@ -858,23 +864,41 @@
 /* Ensure images don't carry baseline gap and don't stretch */
 .cta-group img.cta-icon,
 .cta-group .gpt-icon {
-  display: block;                   /* removes baseline descent gap */
+  display: block;
+  /* removes baseline descent gap */
   width: 100%;
   height: 100%;
-  object-fit: contain;              /* keep native aspect ratio */
+  object-fit: contain;
+  /* keep native aspect ratio */
 }
 
 /* GPT theme-aware swap (keep both images in markup) */
-.gpt-icon--dark  { display: none; }
-.gpt-icon--light { display: block; }
-.dark .gpt-icon--dark  { display: block; }
-.dark .gpt-icon--light { display: none; }
+.gpt-icon--dark {
+  display: none;
+}
+
+.gpt-icon--light {
+  display: block;
+}
+
+.dark .gpt-icon--dark {
+  display: block;
+}
+
+.dark .gpt-icon--light {
+  display: none;
+}
 
 /* Optional: consistent font weight for labels */
-.cta-group .cta-item .cta-label { font-weight: 600; }
+.cta-group .cta-item .cta-label {
+  font-weight: 600;
+}
 
 /* Keep hover/focus from existing styles; ensure focus ring is visible */
-.cta-group .cta-item:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.cta-group .cta-item:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
 /* === Investigator GPT icon: theme-aware swap (light vs dark) === */
 /* Default (light) already uses bw-chatgpt-2.svg. Provide dark variant when available. */
