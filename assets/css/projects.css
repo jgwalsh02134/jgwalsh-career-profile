@@ -852,3 +852,51 @@ body::after { content: none !important; }
 @media (prefers-color-scheme: dark){ .pp-grid{ background: transparent; } }
 .dark .pp-list .pp-card,
 @media (prefers-color-scheme: dark){ .pp-list .pp-card{ background: var(--card); } }
+/* CTA group: responsive grid */
+.cta-group{
+  display:grid;
+  grid-template-columns: repeat(1, minmax(0,1fr));
+  gap:12px;
+  width:min(100% - 2rem, 56rem);
+  margin: 18px auto 10px;
+}
+@media (min-width: 640px){  /* tablets */
+  .cta-group{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (min-width: 1024px){ /* desktop */
+  .cta-group{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+@media (min-width: 1280px){ /* large desktop */
+  .cta-group{ grid-template-columns: repeat(5, minmax(0,1fr)); }
+}
+
+/* CTA buttons */
+.cta-item{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  height:44px;
+  border:1px solid var(--bd);
+  border-radius:12px;
+  background:var(--bg);
+  color:var(--ink);
+  text-decoration:none;
+  font-weight:600;
+  padding-inline: 0.75rem;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.cta-item img{
+  width:18px; height:18px; display:block;
+  filter:none; mix-blend-mode:normal; /* keep icons clean in dark mode */
+}
+.cta-item:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+.cta-item:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
+
+/* Dark mode contrast */
+@media (prefers-color-scheme: dark){
+  .cta-item{ background: var(--bg); color: var(--ink); border-color: var(--bd); }
+  .cta-item:hover{ background: color-mix(in hsl, var(--brand) 12%, var(--bg)); }
+}
+.dark .cta-item{ background: var(--bg); color: var(--ink); border-color: var(--bd); }
+.dark .cta-item:hover{ background: color-mix(in hsl, var(--brand) 12%, var(--bg)); }
