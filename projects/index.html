@@ -54,37 +54,37 @@
     <section class="projects-pro" aria-labelledby="pp-heading">
       <h2 id="pp-heading" class="visually-hidden">Projects</h2>
       <div class="pp-actions" role="region" aria-label="Project controls">
-  <div class="pp-searchwrap">
-    <input id="pp-search" type="search" placeholder="Search projects…" aria-label="Search projects">
-    <button id="pp-search-go" type="button">Enter</button>
-  </div>
-  <select id="pp-sort" aria-label="Sort projects">
-    <option value="newest">Newest</option>
-    <option value="oldest">Oldest</option>
-    <option value="az">A → Z</option>
-  </select>
-  <div class="pp-view" role="group" aria-label="View mode">
-    <button id="pp-view-grid" data-view="grid" aria-pressed="true">Grid</button>
-    <button id="pp-view-list" data-view="list" aria-pressed="false">List</button>
-  </div>
-</div>
+        <div class="pp-searchwrap">
+          <input id="pp-search" type="search" placeholder="Search projects…" aria-label="Search projects">
+          <button id="pp-search-go" type="button">Enter</button>
+        </div>
+        <select id="pp-sort" aria-label="Sort projects">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="az">A → Z</option>
+        </select>
+        <div class="pp-view" role="group" aria-label="View mode">
+          <button id="pp-view-grid" data-view="grid" aria-pressed="true">Grid</button>
+          <button id="pp-view-list" data-view="list" aria-pressed="false">List</button>
+        </div>
+      </div>
       <div id="pp-results" class="pp-grid" role="list" aria-live="polite" aria-busy="true"></div>
 
-<template id="pp-card">
-  <article class="pp-card" role="listitem" data-project-card>
-    <a class="pp-thumb" target="_self" rel="noopener">
-      <img class="pp-thumb-img" alt="" loading="lazy" decoding="async" />
-    </a>
-    <div class="pp-body">
-      <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
-      <p class="pp-desc"></p>
-      <ul class="pp-tagsline" aria-label="Tags"></ul>
-    </div>
-  </article>
-</template>
+      <template id="pp-card">
+        <article class="pp-card" role="listitem" data-project-card>
+          <a class="pp-thumb" target="_self" rel="noopener">
+            <img class="pp-thumb-img" alt="" loading="lazy" decoding="async" />
+          </a>
+          <div class="pp-body">
+            <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
+            <p class="pp-desc"></p>
+            <ul class="pp-tagsline" aria-label="Tags"></ul>
+          </div>
+        </article>
+      </template>
 
-<!-- Inline fallback data (copy of JSON) so cards render even if fetch fails) -->
-<script type="application/json" id="pp-data">[
+      <!-- Inline fallback data (copy of JSON) so cards render even if fetch fails) -->
+      <script type="application/json" id="pp-data">[
   {"id":"albany-crime-analysis","title":"Albany Crime Analysis","url":"/projects/albany-crime-analysis/","desc":"Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.","tags":["crime","dashboard","report","visualization","albany"],"date":"2025-09-05","thumb":"/assets/images/projects/thumbnails/albany-crime-analysis-5.png","thumb_alt":"Albany Crime Analysis project card"},
   {"id":"psyber-nexus","title":"Psyber Nexus","url":"/projects/psyber-nexus/","desc":"Applied behavioral + cyber investigations hub.","tags":["investigations","behavioral","tools"],"date":"2025-09-02","thumb":"/assets/images/projects/thumbnails/psyber-nexus-project-card-3.png","thumb_alt":"Psyber Nexus project card"},
   {"id":"project-gallery","title":"Interactive Project Gallery","url":"/projects/gallery/","desc":"Index of interactive experiments and tools (Threat Triage, Interview Sim, Deception Explorer).","tags":["gallery","showcase"],"date":"2025-09-05","thumb":"/assets/images/projects/thumbnails/interactive-project-gal-8.png","thumb_alt":"Interactive Project Gallery project card"},
@@ -92,77 +92,79 @@
   {"id":"source-code","title":"Source Code & Contributions","url":"https://github.com/jgwalsh02134/jgwalsh-career-profile","desc":"Public repo for this site and related experiments.","tags":["code","github"],"date":"2025-09-05","thumb":"/assets/images/projects/thumbnails/source-code-con-2.png","thumb_alt":"Source Code & Contributions project card"}
 ]</script>
 
-<script type="module">
-(function(){
-  const $=(s,e=document)=>e.querySelector(s);
-  const list=$('#pp-results'), tpl=$('#pp-card'), sortSel=$('#pp-sort'), input=$('#pp-search');
-  const btnGo=$('#pp-search-go'), btnGrid=$('#pp-view-grid'), btnList=$('#pp-view-list');
-  const FAVORITES_KEY='pp:favorites';
-  if(!list||!tpl) return;
+      <script type="module">
+        (function () {
+          const $ = (s, e = document) => e.querySelector(s);
+          const list = $('#pp-results'), tpl = $('#pp-card'), sortSel = $('#pp-sort'), input = $('#pp-search');
+          const btnGo = $('#pp-search-go'), btnGrid = $('#pp-view-grid'), btnList = $('#pp-view-list');
+          const FAVORITES_KEY = 'pp:favorites';
+          if (!list || !tpl) return;
 
-  async function loadExternal(){
-    try{ const r=await fetch('/assets/data/projects.json',{cache:'no-cache'}); if(!r.ok) return null;
-      const j=await r.json(); return Array.isArray(j)?j:null; }catch{ return null; }
-  }
-  function loadInline(){ try{ return JSON.parse($('#pp-data')?.textContent||'[]'); }catch{ return []; } }
+          async function loadExternal() {
+            try {
+              const r = await fetch('/assets/data/projects.json', { cache: 'no-cache' }); if (!r.ok) return null;
+              const j = await r.json(); return Array.isArray(j) ? j : null;
+            } catch { return null; }
+          }
+          function loadInline() { try { return JSON.parse($('#pp-data')?.textContent || '[]'); } catch { return []; } }
 
-  const qs=new URLSearchParams(location.search);
-  const state={ q:qs.get('q')||'', sort:qs.get('sort')||'newest', view:'grid' };
+          const qs = new URLSearchParams(location.search);
+          const state = { q: qs.get('q') || '', sort: qs.get('sort') || 'newest', view: 'grid' };
 
-  function syncQS(){
-    const p=new URLSearchParams();
-    if(state.q) p.set('q',state.q);
-    if(state.sort!=='newest') p.set('sort',state.sort);
-    history.replaceState(null,'',location.pathname+(p.toString()?('?'+p.toString()):''));
-  }
-  function setView(v){
-    state.view=(v==='list')?'list':'grid';
-    btnGrid?.classList.toggle('is-active',state.view==='grid');
-    btnGrid?.setAttribute('aria-pressed',String(state.view==='grid'));
-    btnList?.classList.toggle('is-active',state.view==='list');
-    btnList?.setAttribute('aria-pressed',String(state.view==='list'));
-    render(currentData);
-  }
+          function syncQS() {
+            const p = new URLSearchParams();
+            if (state.q) p.set('q', state.q);
+            if (state.sort !== 'newest') p.set('sort', state.sort);
+            history.replaceState(null, '', location.pathname + (p.toString() ? ('?' + p.toString()) : ''));
+          }
+          function setView(v) {
+            state.view = (v === 'list') ? 'list' : 'grid';
+            btnGrid?.classList.toggle('is-active', state.view === 'grid');
+            btnGrid?.setAttribute('aria-pressed', String(state.view === 'grid'));
+            btnList?.classList.toggle('is-active', state.view === 'list');
+            btnList?.setAttribute('aria-pressed', String(state.view === 'list'));
+            render(currentData);
+          }
 
-  function render(data){
-    list.setAttribute('aria-busy','true'); list.innerHTML='';
-    let rows=data.slice();
-    const q=(state.q||'').trim().toLowerCase();
-    if(q) rows=rows.filter(p=>(p.title+p.desc+p.tags.join(' ')).toLowerCase().includes(q));
-    if(state.sort==='az') rows.sort((a,b)=>a.title.localeCompare(b.title));
-    else if(state.sort==='oldest') rows.sort((a,b)=>(a.date||'').localeCompare(b.date||'')); else rows.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-    if(!rows.length){ list.innerHTML='<p class="pp-empty">No matches. Clear search or change sort.</p>'; list.setAttribute('aria-busy','false'); return; }
+          function render(data) {
+            list.setAttribute('aria-busy', 'true'); list.innerHTML = '';
+            let rows = data.slice();
+            const q = (state.q || '').trim().toLowerCase();
+            if (q) rows = rows.filter(p => (p.title + p.desc + p.tags.join(' ')).toLowerCase().includes(q));
+            if (state.sort === 'az') rows.sort((a, b) => a.title.localeCompare(b.title));
+            else if (state.sort === 'oldest') rows.sort((a, b) => (a.date || '').localeCompare(b.date || '')); else rows.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            if (!rows.length) { list.innerHTML = '<p class="pp-empty">No matches. Clear search or change sort.</p>'; list.setAttribute('aria-busy', 'false'); return; }
 
-    for(const p of rows){
-      const n=tpl.content.firstElementChild.cloneNode(true);
-      const link=n.querySelector('.pp-link'), th=n.querySelector('.pp-thumb'), img=n.querySelector('.pp-thumb-img');
-      const ds=n.querySelector('.pp-desc'), tl=n.querySelector('.pp-tagsline');
-      if(link){ link.href=p.url; link.textContent=p.title; link.title=p.title; }
-      if(th){ th.href=p.url; }
-      if(img){ img.src=p.thumb||'/assets/images/projects/placeholder.svg'; img.alt=(p.thumb_alt||p.title+' thumbnail'); img.referrerPolicy='no-referrer'; }
-      if(ds){ ds.textContent=p.desc||''; }
-      if(tl&&Array.isArray(p.tags)){ p.tags.forEach(t=>{ const li=document.createElement('li'); li.className='pp-tag'; li.textContent=t; tl.appendChild(li); }); }
-      list.appendChild(n);
-    }
-    list.className=(state.view==='list')?'pp-list':'pp-grid';
-    list.setAttribute('aria-busy','false');
-  }
+            for (const p of rows) {
+              const n = tpl.content.firstElementChild.cloneNode(true);
+              const link = n.querySelector('.pp-link'), th = n.querySelector('.pp-thumb'), img = n.querySelector('.pp-thumb-img');
+              const ds = n.querySelector('.pp-desc'), tl = n.querySelector('.pp-tagsline');
+              if (link) { link.href = p.url; link.textContent = p.title; link.title = p.title; }
+              if (th) { th.href = p.url; }
+              if (img) { img.src = p.thumb || '/assets/images/projects/placeholder.svg'; img.alt = (p.thumb_alt || p.title + ' thumbnail'); img.referrerPolicy = 'no-referrer'; }
+              if (ds) { ds.textContent = p.desc || ''; }
+              if (tl && Array.isArray(p.tags)) { p.tags.forEach(t => { const li = document.createElement('li'); li.className = 'pp-tag'; li.textContent = t; tl.appendChild(li); }); }
+              list.appendChild(n);
+            }
+            list.className = (state.view === 'list') ? 'pp-list' : 'pp-grid';
+            list.setAttribute('aria-busy', 'false');
+          }
 
-  let currentData=[];
-  (async()=>{
-    const ext=await loadExternal();
-    currentData=(ext&&ext.length)?ext:loadInline();
-    if(!currentData.length){ list.innerHTML='<p class="pp-empty">No projects found. Populate <code>/assets/data/projects.json</code>.</p>'; return; }
-    sortSel?.addEventListener('change',e=>{ state.sort=e.target.value; syncQS(); render(currentData); });
-    input?.addEventListener('input',e=>{ state.q=e.target.value; syncQS(); render(currentData); });
-    btnGo?.addEventListener('click',()=>{ state.q=input?.value||''; syncQS(); render(currentData); });
-    input?.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); state.q=input.value; syncQS(); render(currentData); }});
-    btnGrid?.addEventListener('click',()=>setView('grid'));
-    btnList?.addEventListener('click',()=>setView('list'));
-    setView('grid'); render(currentData);
-  })();
-})();
-</script>
+          let currentData = [];
+          (async () => {
+            const ext = await loadExternal();
+            currentData = (ext && ext.length) ? ext : loadInline();
+            if (!currentData.length) { list.innerHTML = '<p class="pp-empty">No projects found. Populate <code>/assets/data/projects.json</code>.</p>'; return; }
+            sortSel?.addEventListener('change', e => { state.sort = e.target.value; syncQS(); render(currentData); });
+            input?.addEventListener('input', e => { state.q = e.target.value; syncQS(); render(currentData); });
+            btnGo?.addEventListener('click', () => { state.q = input?.value || ''; syncQS(); render(currentData); });
+            input?.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); state.q = input.value; syncQS(); render(currentData); } });
+            btnGrid?.addEventListener('click', () => setView('grid'));
+            btnList?.addEventListener('click', () => setView('list'));
+            setView('grid'); render(currentData);
+          })();
+        })();
+      </script>
 
       <section class="cta-group" aria-label="Quick links">
         <a class="cta-item tile" href="https://notes.jgwalsh.com/" target="_blank" rel="noopener">
