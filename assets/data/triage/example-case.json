@@ -1,10 +1,25 @@
 {
-  "caseId": "EX-2025-001",
-  "title": "Example: Suspicious online exchange",
-  "date": "2025-08-18",
-  "location": "Albany, NY",
-  "narrative": "Subject A communicated with Subject B on Platform X. Messages included threats, doxxing hints, and references to previous incidents. The conversation escalated around 22:15 EST.\n\nCollected artifacts: screenshots, message IDs.\n\nRequested: entity extraction (people, orgs, handles), keyword clusters, timeline, and a brief risk summary.",
-  "tags": ["threats","online-harassment","doxxing"],
-  "entities": { "people": ["Subject A","Subject B"], "orgs": ["Platform X"], "handles": ["@handleA"] },
-  "notes": "Demonstration record for UI testing."
+    "caseId": "EX-2025-001",
+    "title": "Example: Suspicious online exchange",
+    "date": "2025-08-18",
+    "location": "Albany, NY",
+    "narrative": "Subject A communicated with Subject B on Platform X. Messages included threats, doxxing hints, and references to previous incidents. The conversation escalated around 22:15 EST.\n\nCollected artifacts: screenshots, message IDs.\n\nRequested: entity extraction (people, orgs, handles), keyword clusters, timeline, and a brief risk summary.",
+    "tags": [
+        "threats",
+        "online-harassment",
+        "doxxing"
+    ],
+    "entities": {
+        "people": [
+            "Subject A",
+            "Subject B"
+        ],
+        "orgs": [
+            "Platform X"
+        ],
+        "handles": [
+            "@handleA"
+        ]
+    },
+    "notes": "Demonstration record for UI testing."
 }
