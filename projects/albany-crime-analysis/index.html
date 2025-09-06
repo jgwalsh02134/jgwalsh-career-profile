@@ -5,12 +5,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
-  <title>Albany Crime Analysis — jgwalsh.com</title>
-  <meta name="description"
-    content="Central hub for Albany, NY crime analysis: interactive visualizations and the downloadable 2021–2024 report PDF." />
-  <link rel="stylesheet" href="/assets/css/style.css?v=hdr_u1" />
-  <link rel="stylesheet" href="/assets/css/projects.css?v=hdr_u1" />
-  <script src="/assets/js/theme.js?v=hdr_u1" defer></script>
+  <title>Albany Crime Analysis</title>
+  <meta name="description" content="Central hub for Albany, NY crime analysis: PDF + interactive visualizations." />
+  <meta property="og:title" content="Albany Crime Analysis" />
+  <meta property="og:description" content="Central hub for Albany, NY crime analysis: PDF + interactive visualizations." />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://jgwalsh.com/projects/albany-crime-analysis/" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=aca_ui2" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=aca_ui2" />
+  <script src="/assets/js/theme.js?v=aca_ui2" defer></script>
 </head>
 
 <body class="safe-pad">
@@ -53,72 +57,78 @@
     </div>
   </header>
 
-  <main id="main-content" class="container safe-pad" style="padding-block:1.25rem 2rem;">
-    <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1rem;">
-      <a href="/projects/"
-        style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
-        Back to Projects</a>
+  <main id="main-content" class="container safe-pad" style="padding-block:1.1rem 2rem;">
+    <nav class="aca-breadcrumb" aria-label="Breadcrumb">
+      <a href="/projects/" class="aca-back"><span aria-hidden="true">←</span> Projects</a>
     </nav>
 
     <section class="aca-banner" aria-label="Albany Crime Analysis banner">
-      <img src="/assets/images/projects/albany-crime-analysis/ACA-banner-1.png" alt="Albany Crime Analysis banner"
-        class="aca-banner-img" loading="lazy" decoding="async">
+      <img src="/assets/images/projects/albany-crime-analysis/ACA-banner-1.png"
+        alt="Stylized Albany skyline banner for the Albany Crime Analysis hub"
+        class="aca-banner-img" loading="lazy" decoding="async" />
     </section>
 
-    <header class="aca-header" style="margin:0 0 10px;">
-      <h1 class="pp-h1" style="margin:.25rem 0;">Albany Crime Analysis</h1>
+    <section class="aca-actions" aria-label="Quick actions">
+      <a class="aca-btn" href="/projects/albany-crime-report-2021-2024.pdf">Download PDF</a>
+      <a class="aca-btn aca-btn--ghost" href="#visuals">View Visualizations</a>
+    </section>
+
+    <header class="aca-header">
+      <h1 class="pp-h1">Albany Crime Analysis</h1>
       <p class="pp-sub">All visualizations and the 2021–2024 PDF, in one place.</p>
     </header>
 
-    <section class="aca-grid" aria-label="Albany Crime Analysis items">
+    <section class="aca-grid" id="visuals" aria-label="Albany Crime Analysis items">
+      <!-- PDF card -->
       <article class="aca-card">
-        <h2 class="aca-title"><a class="aca-link" href="/projects/albany-crime-report-2021-2024.pdf">Crime Analysis
-            Report (2021–2024) — PDF</a></h2>
-        <p class="aca-desc">Download the full report.</p>
-        <ul class="aca-tags">
-          <li>pdf</li>
-          <li>report</li>
-        </ul>
+        <a class="aca-link" href="/projects/albany-crime-report-2021-2024.pdf">
+          <h2 class="aca-title">Crime Analysis Report (2021–2024)</h2>
+          <p class="aca-desc">Download the full report.</p>
+          <ul class="aca-pills" aria-label="File type">
+            <li class="aca-pill">PDF</li>
+          </ul>
+        </a>
+      </article>
+
+      <!-- Visualizations -->
+      <article class="aca-card">
+        <a class="aca-link" href="/interactive_crime_arrest_trends.html">
+          <h2 class="aca-title">Interactive Crime Arrest Trends</h2>
+          <p class="aca-desc">Explore arrest patterns over time.</p>
+          <ul class="aca-pills" aria-label="Tags">
+            <li class="aca-pill">timeseries</li><li class="aca-pill aca-pill--muted">viz</li>
+          </ul>
+        </a>
       </article>
 
       <article class="aca-card">
-        <h2 class="aca-title"><a class="aca-link" href="/interactive_crime_arrest_trends.html">Interactive Crime Arrest
-            Trends</a></h2>
-        <p class="aca-desc">Explore arrest patterns over time.</p>
-        <ul class="aca-tags">
-          <li>timeseries</li>
-          <li>visualization</li>
-        </ul>
+        <a class="aca-link" href="/interactive_neighborhood_treemap.html">
+          <h2 class="aca-title">Neighborhood Treemap</h2>
+          <p class="aca-desc">Incidents by area and category.</p>
+          <ul class="aca-pills" aria-label="Tags">
+            <li class="aca-pill">geography</li><li class="aca-pill aca-pill--muted">viz</li>
+          </ul>
+        </a>
       </article>
 
       <article class="aca-card">
-        <h2 class="aca-title"><a class="aca-link" href="/interactive_neighborhood_treemap.html">Neighborhood Treemap</a>
-        </h2>
-        <p class="aca-desc">Incidents by area and category.</p>
-        <ul class="aca-tags">
-          <li>geography</li>
-          <li>visualization</li>
-        </ul>
+        <a class="aca-link" href="/interactive_violent_crime_sunburst.html">
+          <h2 class="aca-title">Violent Crime Sunburst</h2>
+          <p class="aca-desc">Hierarchical view of violent offenses.</p>
+          <ul class="aca-pills" aria-label="Tags">
+            <li class="aca-pill">hierarchy</li><li class="aca-pill aca-pill--muted">viz</li>
+          </ul>
+        </a>
       </article>
 
       <article class="aca-card">
-        <h2 class="aca-title"><a class="aca-link" href="/interactive_violent_crime_sunburst.html">Violent Crime
-            Sunburst</a></h2>
-        <p class="aca-desc">Hierarchical view of violent offenses.</p>
-        <ul class="aca-tags">
-          <li>hierarchy</li>
-          <li>visualization</li>
-        </ul>
-      </article>
-
-      <article class="aca-card">
-        <h2 class="aca-title"><a class="aca-link" href="/case_resolution_sankey_2024.html">Case Resolution Sankey
-            (2024)</a></h2>
-        <p class="aca-desc">Flow from report to outcome.</p>
-        <ul class="aca-tags">
-          <li>flow</li>
-          <li>visualization</li>
-        </ul>
+        <a class="aca-link" href="/case_resolution_sankey_2024.html">
+          <h2 class="aca-title">Case Resolution Sankey (2024)</h2>
+          <p class="aca-desc">Flow from report to outcome.</p>
+          <ul class="aca-pills" aria-label="Tags">
+            <li class="aca-pill">flow</li><li class="aca-pill aca-pill--muted">viz</li>
+          </ul>
+        </a>
       </article>
     </section>
   </main>

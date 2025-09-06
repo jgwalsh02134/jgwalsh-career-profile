@@ -833,6 +833,42 @@
   outline: 2px solid var(--ring, #3b82f6);
   outline-offset: 2px;
 }
+/* ====== ACA hub: responsive & dark-mode readable ====== */
+/* breadcrumb */
+.aca-breadcrumb{ margin:.5rem 0 1rem }
+.aca-back{ text-decoration:none; font-weight:600; padding:.35rem .6rem; border:1px solid var(--bd); border-radius:10px; color:var(--ink) }
+.aca-back:hover{ background: color-mix(in hsl, var(--brand) 8%, var(--bg)) }
+/* banner */
+.aca-banner{ margin: .25rem 0 1rem }
+.aca-banner-img{ display:block; width:100%; height:auto; border-radius:12px; box-shadow: var(--shadow); object-fit:cover }
+/* quick actions */
+.aca-actions{ display:flex; gap:10px; flex-wrap:wrap; margin: .25rem 0 1rem }
+.aca-btn{ display:inline-block; padding:.6rem .9rem; border-radius:10px; border:1px solid var(--bd); background:var(--card); color:var(--ink); text-decoration:none; font-weight:600 }
+.aca-btn--ghost{ background:transparent }
+.aca-btn:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)) }
+/* header text */
+.aca-header .pp-h1{ font-size: clamp(1.4rem, 1rem + 2.5vw, 2.2rem); margin:.25rem 0 }
+.aca-header .pp-sub{ color: var(--muted); margin: .25rem 0 .5rem }
+/* grid: 1 → 2 → 3 */
+.aca-grid{ display:grid; gap:14px; grid-template-columns:1fr; margin-block: .5rem 1.25rem }
+@media (min-width:640px){ .aca-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px } }
+@media (min-width:1024px){ .aca-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px } }
+/* cards */
+.aca-card{ background: var(--card); border: 1px solid var(--bd); border-radius: 14px; box-shadow: var(--shadow); transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease; }
+.aca-card:hover{ transform: translateY(-2px) }
+.aca-link{ display:block; padding:14px; color:var(--ink); text-decoration:none }
+.aca-link:focus-visible{ outline:2px solid var(--ring); outline-offset:3px; border-radius:12px }
+.aca-title{ margin:0 0 .25rem; font-size: clamp(1rem, .96rem + .3vw, 1.15rem) }
+.aca-desc{ margin:.2rem 0 .4rem; color: var(--muted) }
+/* pills */
+.aca-pills{ display:flex; gap:6px; flex-wrap:wrap; list-style:none; padding:0; margin:0 }
+.aca-pill{ font-size:.82rem; padding:.2rem .5rem; border-radius:9999px; border:1px solid var(--bd); background: color-mix(in hsl, var(--card) 85%, var(--bg)); color: var(--ink); }
+.aca-pill--muted{ color: var(--muted); background: color-mix(in hsl, var(--card) 70%, var(--bg)); }
+/* dark-mode safety */
+.dark .aca-pill--muted{ color: var(--muted) }
+.dark .aca-desc{ color: var(--muted) }
+/* mobile sticky back */
+@media (max-width: 640px){ .aca-breadcrumb{ position: sticky; top: calc(env(safe-area-inset-top) + 8px); z-index: 20 } .aca-back{ background:var(--bg); backdrop-filter: blur(6px) } }
 
 /* =============================
    CTA buttons: icon + label fix
