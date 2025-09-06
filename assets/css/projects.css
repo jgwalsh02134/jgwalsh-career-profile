@@ -947,3 +947,68 @@ body::after { content: none !important; }
 }
 .dark .cta-item.tile{ background:var(--bg); color:var(--ink); border-color:var(--bd); }
 .dark .cta-item.tile:hover{ background: color-mix(in hsl, var(--brand) 12%, var(--bg)); }
+/* === CTA TILES: high-specificity to override old rules === */
+main.container .cta-group{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:12px;
+  width:min(100% - 2rem, 56rem);
+  margin: 20px auto 10px;
+}
+@media (min-width:640px){  /* tablet */
+  main.container .cta-group{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (min-width:1024px){ /* desktop */
+  main.container .cta-group{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+@media (min-width:1280px){ /* wide */
+  main.container .cta-group{ grid-template-columns: repeat(5, minmax(0,1fr)); }
+}
+
+main.container .cta-group .cta-item.tile{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; min-height:112px;
+  border:1px solid var(--bd);
+  border-radius:14px;
+  background:var(--bg);
+  color:var(--ink);
+  text-decoration:none; font-weight:600;
+  padding:14px 12px;
+  transition: background .12s ease, border-color .12s ease, transform .12s ease;
+}
+main.container .cta-group .cta-item.tile img{
+  width:48px; height:48px; display:block;
+  filter:none !important; mix-blend-mode:normal !important;   /* keep crisp in dark */
+}
+main.container .cta-group .cta-item.tile .cta-label{
+  font-size: clamp(.9rem, .85rem + .2vw, 1rem);
+  line-height:1.15; text-align:center;
+}
+main.container .cta-group .cta-item.tile:hover{
+  background: color-mix(in hsl, var(--brand) 10%, var(--bg));
+}
+main.container .cta-group .cta-item.tile:focus-visible{
+  outline:2px solid var(--ring); outline-offset:2px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark){
+  main.container .cta-group .cta-item.tile{
+    background:var(--bg); color:var(--ink); border-color:var(--bd);
+  }
+  main.container .cta-group .cta-item.tile:hover{
+    background: color-mix(in hsl, var(--brand) 12%, var(--bg));
+  }
+}
+.dark main.container .cta-group .cta-item.tile{
+  background:var(--bg); color:var(--ink); border-color:var(--bd);
+}
+.dark main.container .cta-group .cta-item.tile:hover{
+  background: color-mix(in hsl, var(--brand) 12%, var(--bg));
+}
+
+/* Hide any legacy stacked CTA blocks if they still exist on this page */
+main.container .projects-cta{ display:none !important; }
+
+/* Ensure thumbnails/icons aren't altered in dark mode */
+.pp-thumb-img, .cta-group img{ filter:none !important; mix-blend-mode:normal !important; }
