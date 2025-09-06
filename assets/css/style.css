@@ -840,3 +840,22 @@ svg {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
+
+/* == /projects/ header helpers == */
+/* Ensure the drawer actually hides when the 'hidden' class is present */
+#mobile-menu.hidden { display: none; }
+
+/* Theme toggle visual states (desktop + mobile) */
+.theme-toggle{ position:relative; display:inline-flex; align-items:center; gap:.5rem; }
+.theme-toggle .switch__track{
+  width:44px; height:24px; border:1px solid var(--bd);
+  border-radius:9999px; background:var(--chip); display:inline-block;
+}
+.theme-toggle .switch__thumb{
+  width:18px; height:18px; border-radius:9999px; background:var(--ink);
+  position:relative; left:3px; top:3px; display:inline-block;
+  transition: transform .18s ease;  /* makes the thumb slide */
+}
+.theme-toggle[aria-pressed="true"] .switch__thumb{ transform: translateX(18px); }
+.dark .theme-toggle .switch__track{ background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
+.dark .theme-toggle .switch__thumb{ background:#fff; }
