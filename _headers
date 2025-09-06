@@ -1,15 +1,10 @@
 /* 
-  Content-Type: text/html; charset=UTF-8
   Cache-Control: no-store, max-age=0
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-*/
+ */
 
 /assets/data/*
   Cache-Control: no-cache, no-store, must-revalidate
-
-# (Optional) Add any other per-path headers below using the same format:
-# /some/path/*
-#   Header-Name: value
