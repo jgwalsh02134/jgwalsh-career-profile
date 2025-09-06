@@ -26,8 +26,8 @@
     "desc": "Index of interactive experiments and tools (Threat Triage, Interview Sim, Deception Explorer).",
     "tags": ["gallery", "showcase"],
     "date": "2025-09-05",
-    "thumb": "/assets/images/projects/project-gallery.jpg",
-    "thumb_alt": "Grid of interface thumbnails"
+    "thumb": "/assets/images/projects/thumbnails/interactive-project-gal-8.png",
+    "thumb_alt": "Interactive Project Gallery project card"
   },
   {
     "id": "resource-center",
