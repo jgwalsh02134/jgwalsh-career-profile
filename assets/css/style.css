@@ -826,23 +826,37 @@ svg {
 .dark .theme-toggle .switch__thumb {
   background: #fff;
 }
+
 /* === Résumé page (dark-mode readability) === */
-.dark #resume-page { background: var(--bg); color: var(--ink); }
+.dark #resume-page {
+  background: var(--bg);
+  color: var(--ink);
+}
 
 /* Headings and subheads */
-.dark #resume-page h1, 
-.dark #resume-page h2, 
-.dark #resume-page h3, 
-.dark #resume-page h4 { color: var(--ink); }
+.dark #resume-page h1,
+.dark #resume-page h2,
+.dark #resume-page h3,
+.dark #resume-page h4 {
+  color: var(--ink);
+}
+
 .dark #resume-page .subtitle,
-.dark #resume-page .lead { color: var(--muted); }
+.dark #resume-page .lead {
+  color: var(--muted);
+}
 
 /* Paragraph rhythm */
-#resume-page p { line-height: 1.6; }
-#resume-page p + p { margin-top: .65rem; }
+#resume-page p {
+  line-height: 1.6;
+}
+
+#resume-page p+p {
+  margin-top: .65rem;
+}
 
 /* “Card” wrappers for big sections (add class resume-section or resume-card in markup when possible) */
-#resume-page .resume-section, 
+#resume-page .resume-section,
 #resume-page .resume-card,
 #resume-page .section,
 #resume-page .card {
@@ -855,25 +869,44 @@ svg {
 }
 
 /* Links: higher contrast in dark */
-.dark #resume-page a { 
+.dark #resume-page a {
   color: color-mix(in hsl, var(--brand) 85%, white 0%);
   text-decoration: none;
 }
-.dark #resume-page a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+.dark #resume-page a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 /* Lists */
 .dark #resume-page ul,
-.dark #resume-page ol { color: var(--ink); padding-left: 1.15rem; }
-.dark #resume-page li::marker { color: var(--muted); }
+.dark #resume-page ol {
+  color: var(--ink);
+  padding-left: 1.15rem;
+}
+
+.dark #resume-page li::marker {
+  color: var(--muted);
+}
 
 /* Tables */
-.dark #resume-page table { width: 100%; border-collapse: collapse; border-color: var(--bd); }
-.dark #resume-page th, 
-.dark #resume-page td { border-color: var(--bd); }
+.dark #resume-page table {
+  width: 100%;
+  border-collapse: collapse;
+  border-color: var(--bd);
+}
+
+.dark #resume-page th,
+.dark #resume-page td {
+  border-color: var(--bd);
+}
+
 .dark #resume-page thead th {
   background: color-mix(in hsl, var(--card) 60%, var(--bg));
   color: var(--ink);
 }
+
 .dark #resume-page tbody tr:nth-child(2n) {
   background: color-mix(in hsl, var(--card) 85%, var(--bg));
 }
@@ -886,6 +919,7 @@ svg {
   border-radius: 6px;
   padding: .1rem .3rem;
 }
+
 .dark #resume-page pre {
   background: color-mix(in hsl, var(--card) 70%, var(--bg));
   border: 1px solid var(--bd);
@@ -894,6 +928,7 @@ svg {
   padding: .75rem;
   overflow: auto;
 }
+
 .dark #resume-page blockquote {
   color: var(--muted);
   border-left: 3px solid var(--ring);
@@ -907,42 +942,88 @@ svg {
   color: #fff;
   border: 1px solid color-mix(in hsl, var(--brand) 60%, #000);
 }
+
 .dark #resume-page .btn-outline {
   background: transparent;
   color: var(--ink);
   border: 1px solid var(--bd);
 }
-.dark #resume-page .btn-primary:hover { filter: brightness(1.05); }
-.dark #resume-page .btn-outline:hover { background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+
+.dark #resume-page .btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.dark #resume-page .btn-outline:hover {
+  background: color-mix(in hsl, var(--brand) 10%, var(--bg));
+}
 
 /* Ensure logos/images are not inverted in dark */
-.dark #resume-page img, 
-.dark #resume-page svg, 
-.dark #resume-page .logo { filter: none !important; mix-blend-mode: normal !important; }
+.dark #resume-page img,
+.dark #resume-page svg,
+.dark #resume-page .logo {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
 
 /* Divider visibility */
-.dark #resume-page hr { border-color: var(--bd); opacity: 1; }
+.dark #resume-page hr {
+  border-color: var(--bd);
+  opacity: 1;
+}
 
 /* Focus visibility */
-#resume-page :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+#resume-page :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
 /* Drawer visibility (used by theme.js) — harmless site-wide */
-#mobile-menu.hidden { display: none; }
+#mobile-menu.hidden {
+  display: none;
+}
 
 /* Theme toggle visuals (shared) — harmless site-wide */
-.theme-toggle { position:relative; display:inline-flex; align-items:center; gap:.5rem; cursor:pointer; }
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  cursor: pointer;
+}
+
 .theme-toggle .switch__track {
-  width:44px; height:24px; border:1px solid var(--bd);
-  border-radius:9999px; background:var(--chip); display:inline-block; transition:background .2s ease;
+  width: 44px;
+  height: 24px;
+  border: 1px solid var(--bd);
+  border-radius: 9999px;
+  background: var(--chip);
+  display: inline-block;
+  transition: background .2s ease;
 }
+
 .theme-toggle .switch__thumb {
-  width:18px; height:18px; border-radius:50%;
-  position:absolute; top:3px; left:3px; background:var(--ink);
-  transition:transform .2s ease;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  background: var(--ink);
+  transition: transform .2s ease;
 }
-.theme-toggle[aria-pressed="true"] .switch__thumb { transform:translateX(20px); }
-.dark .theme-toggle .switch__track { background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
-.dark .theme-toggle .switch__thumb { background:#fff; }
+
+.theme-toggle[aria-pressed="true"] .switch__thumb {
+  transform: translateX(20px);
+}
+
+.dark .theme-toggle .switch__track {
+  background: color-mix(in hsl, var(--brand) 25%, var(--bg));
+  border-color: var(--bd);
+}
+
+.dark .theme-toggle .switch__thumb {
+  background: #fff;
+}
 
 /* === /projects/ ensured slider + drawer visibility (hdr_clean1) === */
 #mobile-menu.hidden {
