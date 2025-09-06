@@ -349,10 +349,8 @@
             </option>
           </select>
           <p id="caseNote" class="note"></p>
-          <label for="narrative"><strong>Enter narrative text</strong> <span class="muted">(3–10 sentences; no
-              PII)</span></label>
-          <textarea id="narrative" aria-describedby="narrative-help"
-            placeholder="Example: 'Tomorrow at 8am they will regret it. I bought what I need and I have the keys to get in through the service door. You'll see.'"></textarea>
+          <label for="narrative"><strong>Narrative</strong></label>
+          <textarea id="narrative" name="narrative" rows="8" class="triage-input" aria-describedby="narrative-help" placeholder="Type or paste the narrative…"></textarea>
           <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.
           </p>
           <div class="card" id="narrativeViewCard" style="display:none;">
@@ -360,18 +358,14 @@
             <div id="narrativeView" class="note" style="line-height:1.6;"></div>
           </div>
 
-          <div class="row">
-            <button id="run" class="btn">Run Triage</button>
-            <label class="row" style="gap:6px;">
-              <input type="checkbox" id="aiAssist" />
-              <span class="muted">AI-assist explanations</span>
-            </label>
-            <label class="row" style="gap:6px;">
-              <input type="checkbox" id="showRubric" aria-controls="rubricCard" />
-              <span class="muted">Show rubric JSON</span>
-            </label>
-            <button id="clearText" class="btn secondary">Clear</button>
+          <div class="row" style="align-items:flex-end;">
+            <button id="btnLoadExample" class="btn" type="button">Load Example</button>
+            <button id="btnAnalyze" class="btn" type="button">Analyze (AI)</button>
+            <button id="btnCopy" class="btn secondary" type="button">Copy Narrative</button>
+            <button id="btnExport" class="btn secondary" type="button">Export JSON</button>
+            <button id="btnClear" class="btn secondary" type="button">Clear All</button>
           </div>
+          <p class="note" style="margin-top:4px;">Chars: <span id="countNarrative">0</span></p>
           <!-- Diagnostics Bar (added per run reliability spec) -->
           <div id="tt-diag" class="note" style="margin-top:8px;">
             <strong>Status:</strong> <span id="tt-status">idle</span> •
@@ -561,7 +555,7 @@
   </main>
 
   <!-- Updated script path after relocation -->
-  <script type="module" src="./widget.js?v=online-fix-2" defer></script>
+  <script type="module" src="/assets/js/threat-triage.js?v=fix1"></script>
   <script>document.getElementById('printBtn')?.addEventListener('click', () => window.print());</script>
   <!-- Floating Chat (Threat Triage only) -->
   <style>
