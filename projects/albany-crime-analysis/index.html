@@ -6,21 +6,20 @@
   <meta name="color-scheme" content="light dark" />
   <title>Albany Crime Analysis — jgwalsh.com</title>
   <meta name="description" content="Central hub for Albany, NY crime analysis: interactive visualizations and the downloadable 2021–2024 report PDF." />
-  <link rel="stylesheet" href="/assets/css/style.css?v=aca3" />
-  <link rel="stylesheet" href="/assets/css/projects.css?v=aca3" />
+  <!-- Load site CSS (root-absolute) and bump versions to bust cache -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=aca4" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=aca4" />
   <script src="/assets/js/theme.js" defer></script>
 </head>
 <body class="safe-pad">
-  <!-- Header (same pattern as rest of site) -->
+  <!-- Standard site header with theme toggle + mobile menu -->
   <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
     <div class="container px-4 py-5 flex justify-between items-center">
       <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
       <div class="sm:hidden">
         <button id="mobile-menu-button" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
                 aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
       <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
@@ -48,7 +47,7 @@
 
   <main id="main-content" class="container safe-pad" style="padding-block:1.25rem 2rem;">
     <!-- Breadcrumb -->
-    <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.0rem;">
+    <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1rem;">
       <a href="/projects/" style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">← Back to Projects</a>
     </nav>
 
@@ -58,22 +57,20 @@
            alt="Albany Crime Analysis banner" class="aca-banner-img" loading="lazy" decoding="async">
     </section>
 
-    <!-- Page title -->
+    <!-- Title -->
     <header class="aca-header" style="margin:0 0 10px;">
       <h1 class="pp-h1" style="margin:.25rem 0;">Albany Crime Analysis</h1>
       <p class="pp-sub">All visualizations and the 2021–2024 PDF, in one place.</p>
     </header>
 
-    <!-- Hub grid -->
+    <!-- Responsive grid: PDF + 4 visualizations -->
     <section class="aca-grid" aria-label="Albany Crime Analysis items">
-      <!-- PDF -->
       <article class="aca-card">
         <h2 class="aca-title"><a class="aca-link" href="/projects/albany-crime-report-2021-2024.pdf">Crime Analysis Report (2021–2024) — PDF</a></h2>
         <p class="aca-desc">Download the full report.</p>
         <ul class="aca-tags"><li>pdf</li><li>report</li></ul>
       </article>
 
-      <!-- Visualizations -->
       <article class="aca-card">
         <h2 class="aca-title"><a class="aca-link" href="/interactive_crime_arrest_trends.html">Interactive Crime Arrest Trends</a></h2>
         <p class="aca-desc">Explore arrest patterns over time.</p>
