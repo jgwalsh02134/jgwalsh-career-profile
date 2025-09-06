@@ -82,29 +82,41 @@
 
   <!-- Header -->
   <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
-  <div class="container px-4 py-5 flex justify-between items-center">
-    <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
-    <div class="sm:hidden">
-      <button id="mobile-menu-button" class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="container px-4 py-5 flex justify-between items-center">
+      <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+      <div class="sm:hidden">
+        <button id="mobile-menu-button"
+          class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
+          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu"><svg width="24" height="24"
+            viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg></button>
+      </div>
+      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
+        <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
+        <a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a>
+        <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded font-bold text-navy"
+          aria-current="page">Résumé</a>
+        <a href="/projects/" class="hover:text-navy px-2 py-1 rounded">Projects</a>
+        <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme"
+          aria-pressed="false"><span class="switch__track" aria-hidden="true"><span
+              class="switch__thumb"></span></span></button>
+      </nav>
     </div>
-    <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
-      <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
-      <a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a>
-      <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded font-bold text-navy" aria-current="page">Résumé</a>
-      <a href="/projects/" class="hover:text-navy px-2 py-1 rounded">Projects</a>
-      <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a>
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false"><span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span></button>
-    </nav>
-  </div>
-  <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
-    <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
-    <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a>
-    <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy" aria-current="page">Résumé</a>
-    <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded">Projects</a>
-    <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a>
-    <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button" aria-pressed="false" aria-label="Switch theme"><span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span></button>
-  </div>
-</header>
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
+      <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
+      <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a>
+      <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy"
+        aria-current="page">Résumé</a>
+      <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded">Projects</a>
+      <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a>
+      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button"
+        aria-pressed="false" aria-label="Switch theme"><span class="switch__track" aria-hidden="true"><span
+            class="switch__thumb"></span></span></button>
+    </div>
+  </header>
 
   <!-- Main Content -->
   <main id="main-content" class="flex-grow py-12 sm:py-16">
