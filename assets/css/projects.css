@@ -846,38 +846,66 @@
 }
 
 /* 2) Hero spacing & typography */
-.projects-hero{
-  text-align:center;
+.projects-hero {
+  text-align: center;
   margin: 1.25rem 0 1.75rem;
 }
-.projects-hero__title{
+
+.projects-hero__title {
   font-size: clamp(1.65rem, 1.1rem + 2.4vw, 2.35rem);
   letter-spacing: .2px;
   margin: 0;
   color: var(--ink);
 }
-.projects-hero__sub{
+
+.projects-hero__sub {
   color: var(--muted);
   margin: .45rem 0 .95rem;
 }
-.projects-hero__cta{
-  display:inline-block; padding:.65rem 1.05rem; border:1px solid var(--bd);
-  border-radius:12px; background: var(--card); color: var(--ink);
-  text-decoration:none; font-weight:600;
+
+.projects-hero__cta {
+  display: inline-block;
+  padding: .65rem 1.05rem;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
   transition: background .15s ease, transform .15s ease;
 }
-.projects-hero__cta:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); transform: translateY(-1px); }
+
+.projects-hero__cta:hover {
+  background: color-mix(in hsl, var(--brand) 10%, var(--bg));
+  transform: translateY(-1px);
+}
 
 /* 3) Controls: make search a touch wider; tighten button spacing */
-.pp-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin: 0 0 .6rem; }
-.pp-input{ min-width: min(320px, 80vw); }
-.pp-select, .pp-btn{ border-radius: 10px; padding: .55rem .7rem; }
+.pp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 .6rem;
+}
+
+.pp-input {
+  min-width: min(320px, 80vw);
+}
+
+.pp-select,
+.pp-btn {
+  border-radius: 10px;
+  padding: .55rem .7rem;
+}
 
 /* 4) Grid view: more breathing room between cards */
-.pp-grid{ gap: 20px; }
+.pp-grid {
+  gap: 20px;
+}
 
 /* 5) Card design: softer edges, deeper shadow on hover, better padding */
-.pp-card{
+.pp-card {
   background: var(--card);
   border: 1px solid var(--bd);
   border-radius: 16px;
@@ -888,69 +916,186 @@
   min-height: 190px;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
 }
-.pp-card:hover{ transform: translateY(-3px); }
-.pp-body{ padding: 16px; }
-.pp-top{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+
+.pp-card:hover {
+  transform: translateY(-3px);
+}
+
+.pp-body {
+  padding: 16px;
+}
+
+.pp-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
 
 /* Stronger typography */
-.pp-title{ font-size: 1.08rem; margin:.15rem 0 .25rem; }
-.pp-desc{ margin:.35rem 0 .5rem; color: var(--muted); }
+.pp-title {
+  font-size: 1.08rem;
+  margin: .15rem 0 .25rem;
+}
+
+.pp-desc {
+  margin: .35rem 0 .5rem;
+  color: var(--muted);
+}
 
 /* Thumbnail: keep 16:9 crop and ensure it never looks squashed */
-.pp-thumb{ display:block; inline-size:100%; aspect-ratio:16/9; overflow:hidden; background:linear-gradient(135deg,var(--soft),transparent), radial-gradient(ellipse at 85% 90%,var(--soft),transparent); }
-.pp-thumb-img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+.pp-thumb {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--soft), transparent), radial-gradient(ellipse at 85% 90%, var(--soft), transparent);
+}
+
+.pp-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
 
 /* 6) Tag pills: slightly brighter text and tighter padding */
-.pp-tagsline{ display:flex; flex-wrap:wrap; gap:6px; margin:.25rem 0 0; padding:0; list-style:none; }
-.pp-tag{
-  font-size:.82rem; line-height:1;
-  padding:.25rem .55rem; border-radius:9999px;
-  border:1px solid var(--bd); color: var(--muted);
+.pp-tagsline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: .25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pp-tag {
+  font-size: .82rem;
+  line-height: 1;
+  padding: .25rem .55rem;
+  border-radius: 9999px;
+  border: 1px solid var(--bd);
+  color: var(--muted);
   background: color-mix(in hsl, var(--card) 82%, var(--bg));
 }
-.dark .pp-tag{ color:#d1d5db; }
+
+.dark .pp-tag {
+  color: #d1d5db;
+}
 
 /* 7) List view: media-object layout with roomy image column */
-.pp-list{ display:block; }
-.pp-list .pp-card{ flex-direction: row; align-items: stretch; gap: 16px; }
-.pp-list .pp-thumb{ width: 320px; min-height: 100%; border-right: 1px solid var(--bd); }
-@media (max-width: 900px){
-  .pp-list .pp-thumb{ width: 260px; }
+.pp-list {
+  display: block;
+}
+
+.pp-list .pp-card {
+  flex-direction: row;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.pp-list .pp-thumb {
+  width: 320px;
+  min-height: 100%;
+  border-right: 1px solid var(--bd);
+}
+
+@media (max-width: 900px) {
+  .pp-list .pp-thumb {
+    width: 260px;
+  }
 }
 
 /* 8) View controls hidden on mobile (UI is grid-only there) */
-@media (max-width:640px){ .pp-view{ display:none !important; } }
+@media (max-width:640px) {
+  .pp-view {
+    display: none !important;
+  }
+}
 
 /* 9) Quick Links: stronger section identity & spacing */
-.projects-links{ margin: 1.75rem 0 2.5rem; }
-.links-head{ text-align:center; margin: 0 0 .85rem; }
-.links-head h2{
-  font-size: clamp(1.1rem, .95rem + 1.2vw, 1.35rem);
-  margin: 0 0 .3rem; color: var(--ink);
+.projects-links {
+  margin: 1.75rem 0 2.5rem;
 }
-.links-sub{ color: var(--muted); margin: 0; }
+
+.links-head {
+  text-align: center;
+  margin: 0 0 .85rem;
+}
+
+.links-head h2 {
+  font-size: clamp(1.1rem, .95rem + 1.2vw, 1.35rem);
+  margin: 0 0 .3rem;
+  color: var(--ink);
+}
+
+.links-sub {
+  color: var(--muted);
+  margin: 0;
+}
 
 /* Grid of link tiles */
-.links-grid{ display:grid; gap: 12px; grid-template-columns: repeat(2, minmax(0,1fr)); }
-@media (min-width:768px){ .links-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); } }
-@media (min-width:1024px){ .links-grid{ grid-template-columns: repeat(5, minmax(0,1fr)); } }
+.links-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 
-.link-tile{
-  display:flex; align-items:center; gap:10px;
-  min-height: 56px; padding: 12px 14px;
-  border:1px solid var(--bd); border-radius:12px;
-  background: var(--card); color: var(--ink);
-  text-decoration:none; font-weight:600;
+@media (min-width:768px) {
+  .links-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width:1024px) {
+  .links-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.link-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 12px 14px;
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600;
   box-shadow: var(--shadow);
   transition: transform .14s ease, background .14s ease, box-shadow .14s ease;
 }
-.link-tile:hover{ transform: translateY(-1px); background: color-mix(in hsl, var(--brand) 6%, var(--card)); }
-.link-icon{ width: 22px; height: 22px; display:block; object-fit: contain; }
-.link-label{ line-height:1.2; }
-.link-tile:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
+
+.link-tile:hover {
+  transform: translateY(-1px);
+  background: color-mix(in hsl, var(--brand) 6%, var(--card));
+}
+
+.link-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
+}
+
+.link-label {
+  line-height: 1.2;
+}
+
+.link-tile:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
 /* 10) Dark-mode safety for icons */
-.dark .link-icon{ filter:none !important; mix-blend-mode:normal !important; }
+.dark .link-icon {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
 
 /* ===== Projects page polish ===== */
 /* Container & rhythm */
