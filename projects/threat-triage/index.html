@@ -565,38 +565,135 @@
   <script>document.getElementById('printBtn')?.addEventListener('click', () => window.print());</script>
   <!-- Floating Chat (Threat Triage only) -->
   <style>
-    .triage-chat-launcher{position:fixed;right:16px;bottom:16px;z-index:1000;width:56px;height:56px;border:none;border-radius:9999px;background:#111;color:#fff;box-shadow:0 10px 25px rgba(0,0,0,.25);cursor:pointer}
-    .triage-chat-panel{position:fixed;right:16px;bottom:80px;z-index:1000;width:min(420px,92vw);max-height:min(70vh,700px);display:none;flex-direction:column;border-radius:14px;background:#fff;color:#111;box-shadow:0 18px 40px rgba(0,0,0,.28);border:1px solid rgba(0,0,0,.08);overflow:hidden}
-    .triage-chat-header{padding:10px 12px;font-weight:600;border-bottom:1px solid #eee}
-    .triage-chat-body{padding:10px;overflow:auto;display:flex;flex-direction:column;gap:10px}
-    .triage-msg{padding:10px 12px;border-radius:10px;max-width:85%}
-    .triage-user{align-self:flex-end;background:#0b5fff;color:#fff}
-    .triage-bot{align-self:flex-start;background:#f3f3f3}
-    .triage-chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid #eee}
-    .triage-chat-input{flex:1;padding:10px 12px;border:1px solid #ddd;border-radius:10px}
-    .triage-send-btn{padding:10px 14px;border:none;border-radius:10px;background:#111;color:#fff;cursor:pointer}
-    @media (prefers-color-scheme: dark){
-      .triage-chat-panel{background:#151515;color:#e8e8e8;border-color:rgba(255,255,255,.12)}
-      .triage-chat-header{border-bottom-color:rgba(255,255,255,.12)}
-      .triage-msg.triage-bot{background:#222;color:#e8e8e8}
-      .triage-chat-input{background:#111;color:#e8e8e8;border-color:#333}
-      .triage-send-btn,.triage-chat-launcher{background:#e8e8e8;color:#111}
+    .triage-chat-launcher {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1000;
+      width: 56px;
+      height: 56px;
+      border: none;
+      border-radius: 9999px;
+      background: #111;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
+      cursor: pointer
+    }
+
+    .triage-chat-panel {
+      position: fixed;
+      right: 16px;
+      bottom: 80px;
+      z-index: 1000;
+      width: min(420px, 92vw);
+      max-height: min(70vh, 700px);
+      display: none;
+      flex-direction: column;
+      border-radius: 14px;
+      background: #fff;
+      color: #111;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+      border: 1px solid rgba(0, 0, 0, .08);
+      overflow: hidden
+    }
+
+    .triage-chat-header {
+      padding: 10px 12px;
+      font-weight: 600;
+      border-bottom: 1px solid #eee
+    }
+
+    .triage-chat-body {
+      padding: 10px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .triage-msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      max-width: 85%
+    }
+
+    .triage-user {
+      align-self: flex-end;
+      background: #0b5fff;
+      color: #fff
+    }
+
+    .triage-bot {
+      align-self: flex-start;
+      background: #f3f3f3
+    }
+
+    .triage-chat-form {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid #eee
+    }
+
+    .triage-chat-input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px
+    }
+
+    .triage-send-btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      cursor: pointer
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .triage-chat-panel {
+        background: #151515;
+        color: #e8e8e8;
+        border-color: rgba(255, 255, 255, .12)
+      }
+
+      .triage-chat-header {
+        border-bottom-color: rgba(255, 255, 255, .12)
+      }
+
+      .triage-msg.triage-bot {
+        background: #222;
+        color: #e8e8e8
+      }
+
+      .triage-chat-input {
+        background: #111;
+        color: #e8e8e8;
+        border-color: #333
+      }
+
+      .triage-send-btn,
+      .triage-chat-launcher {
+        background: #e8e8e8;
+        color: #111
+      }
     }
   </style>
   <script type="module">
-    const ENDPOINT="/api/triage-chat"; // Threat Triage endpoint (uses OPENAI_API_KEY)
-    const btn=Object.assign(document.createElement('button'),{className:'triage-chat-launcher',textContent:'✦',ariaLabel:'Open chat'});
-    const panel=document.createElement('div'); panel.className='triage-chat-panel';
-    panel.innerHTML=`\n    <div class="triage-chat-header">Ask about Threat Triage</div>\n    <div class="triage-chat-body" id="triage-body">\n      <div class="triage-msg triage-bot">Hi! I can help you explore the Threat Triage tools and docs.</div>\n    </div>\n    <form class="triage-chat-form" id="triage-form">\n      <input class="triage-chat-input" id="triage-input" placeholder="Type your question…" autocomplete="off" />\n      <button class="triage-send-btn">Send</button>\n    </form>`;
-    document.body.append(btn,panel);
-    const bodyEl=panel.querySelector('#triage-body');
-    const form=panel.querySelector('#triage-form');
-    const input=panel.querySelector('#triage-input');
-    function sanitize(html){ const temp=document.createElement('div'); temp.innerHTML=html; temp.querySelectorAll('*').forEach(el=>{ const tag=el.tagName.toLowerCase(); if(tag==='a'){ const raw=el.getAttribute('href')||''; try{ const url=new URL(raw,location.origin); const isRel=raw.startsWith('/'); const same=url.origin===location.origin; if(!isRel && !same){ el.replaceWith(document.createTextNode(el.textContent||'')); return; } el.setAttribute('target','_self'); el.setAttribute('rel','noopener'); }catch{ el.replaceWith(document.createTextNode(el.textContent||'')); } } else { el.replaceWith(document.createTextNode(el.textContent||'')); } }); return temp.innerHTML; }
-    function add(role,text){ const d=document.createElement('div'); d.className=`triage-msg ${role==='user'?'triage-user':'triage-bot'}`; d.innerHTML = role==='assistant' ? sanitize(String(text??'')) : String(text??''); bodyEl.appendChild(d); bodyEl.scrollTop=bodyEl.scrollHeight; }
-    let thread=[{role:'assistant',content:'Hello! How can I help with Threat Triage?'}];
-    btn.addEventListener('click',()=>{ panel.style.display = panel.style.display==='flex' ? 'none' : 'flex'; if(panel.style.display==='flex') input.focus(); });
-    form.addEventListener('submit', async (e)=>{ e.preventDefault(); const q=input.value.trim(); if(!q) return; add('user', q); input.value=''; const payload={ messages:[...thread, {role:'user', content:q}] }; try{ const res=await fetch(ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }); const json=await res.json(); const reply=json?.choices?.[0]?.message?.content || 'No content returned.'; add('assistant', reply); thread=[...payload.messages, {role:'assistant', content:reply}]; }catch(err){ console.error(err); add('assistant','Sorry—something went wrong. Try again.'); } });
+    const ENDPOINT = "/api/triage-chat"; // Threat Triage endpoint (uses OPENAI_API_KEY)
+    const btn = Object.assign(document.createElement('button'), { className: 'triage-chat-launcher', textContent: '✦', ariaLabel: 'Open chat' });
+    const panel = document.createElement('div'); panel.className = 'triage-chat-panel';
+    panel.innerHTML = `\n    <div class="triage-chat-header">Ask about Threat Triage</div>\n    <div class="triage-chat-body" id="triage-body">\n      <div class="triage-msg triage-bot">Hi! I can help you explore the Threat Triage tools and docs.</div>\n    </div>\n    <form class="triage-chat-form" id="triage-form">\n      <input class="triage-chat-input" id="triage-input" placeholder="Type your question…" autocomplete="off" />\n      <button class="triage-send-btn">Send</button>\n    </form>`;
+    document.body.append(btn, panel);
+    const bodyEl = panel.querySelector('#triage-body');
+    const form = panel.querySelector('#triage-form');
+    const input = panel.querySelector('#triage-input');
+    function sanitize(html) { const temp = document.createElement('div'); temp.innerHTML = html; temp.querySelectorAll('*').forEach(el => { const tag = el.tagName.toLowerCase(); if (tag === 'a') { const raw = el.getAttribute('href') || ''; try { const url = new URL(raw, location.origin); const isRel = raw.startsWith('/'); const same = url.origin === location.origin; if (!isRel && !same) { el.replaceWith(document.createTextNode(el.textContent || '')); return; } el.setAttribute('target', '_self'); el.setAttribute('rel', 'noopener'); } catch { el.replaceWith(document.createTextNode(el.textContent || '')); } } else { el.replaceWith(document.createTextNode(el.textContent || '')); } }); return temp.innerHTML; }
+    function add(role, text) { const d = document.createElement('div'); d.className = `triage-msg ${role === 'user' ? 'triage-user' : 'triage-bot'}`; d.innerHTML = role === 'assistant' ? sanitize(String(text ?? '')) : String(text ?? ''); bodyEl.appendChild(d); bodyEl.scrollTop = bodyEl.scrollHeight; }
+    let thread = [{ role: 'assistant', content: 'Hello! How can I help with Threat Triage?' }];
+    btn.addEventListener('click', () => { panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex'; if (panel.style.display === 'flex') input.focus(); });
+    form.addEventListener('submit', async (e) => { e.preventDefault(); const q = input.value.trim(); if (!q) return; add('user', q); input.value = ''; const payload = { messages: [...thread, { role: 'user', content: q }] }; try { const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const json = await res.json(); const reply = json?.choices?.[0]?.message?.content || 'No content returned.'; add('assistant', reply); thread = [...payload.messages, { role: 'assistant', content: reply }]; } catch (err) { console.error(err); add('assistant', 'Sorry—something went wrong. Try again.'); } });
   </script>
   <!-- /Floating Chat (Threat Triage) -->
 </body>
