@@ -826,6 +826,15 @@ svg {
 .dark .theme-toggle .switch__thumb {
   background: #fff;
 }
+/* === /projects/ ensured slider + drawer visibility (hdr_clean1) === */
+#mobile-menu.hidden{display:none;}
+.theme-toggle{position:relative;display:inline-flex;align-items:center;gap:.5rem;}
+.theme-toggle .switch__track{width:44px;height:24px;border:1px solid var(--bd);border-radius:9999px;background:var(--chip);display:inline-block;}
+.theme-toggle .switch__thumb{width:18px;height:18px;border-radius:9999px;background:var(--ink);position:relative;left:3px;top:3px;display:inline-block;transition:transform .18s ease;}
+.theme-toggle[aria-pressed="true"] .switch__thumb{transform:translateX(18px);}
+.dark .theme-toggle .switch__track{background:color-mix(in hsl, var(--brand) 25%, var(--bg));border-color:var(--bd);}
+.dark .theme-toggle .switch__thumb{background:#fff;}
+@media (prefers-reduced-motion: reduce){ .theme-toggle .switch__thumb{ transition:none; } }
 
 /* Safe-area insets for iOS notch */
 @supports (padding: max(0px)) {

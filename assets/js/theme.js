@@ -1,47 +1,42 @@
-/* Site-wide theme toggle + mobile menu wiring (singleton, idempotent) */
-(function () {
-  if (window.__themeInit) return; // prevent duplicate binding
+/* Theme toggle + mobile drawer (singleton) */
+(function(){
+  if (window.__themeInit) return;
   window.__themeInit = true;
 
-  const root = document.documentElement;
-  const LS = 'theme';
-  const $ = id => document.getElementById(id);
+  const root=document.documentElement, LS='theme';
+  const $=id=>document.getElementById(id);
+  const btn=$('theme-toggle'), btnM=$('theme-toggle-mobile');
+  const mmb=$('mobile-menu-button'), mm=$('mobile-menu');
+  const prefers=matchMedia('(prefers-color-scheme: dark)');
 
-  const btn = $('theme-toggle');
-  const btnM = $('theme-toggle-mobile');
-  const mmb = $('mobile-menu-button');
-  const mm = $('mobile-menu');
-  const prefers = matchMedia('(prefers-color-scheme: dark)');
-
-  const get = () => {
-    try { const v = localStorage.getItem(LS); if (v === 'light' || v === 'dark') return v; } catch { }
-    return prefers.matches ? 'dark' : 'light';
-  };
-
-  const reflect = () => {
-    const on = root.classList.contains('dark');
+  const reflect=()=>{ const on=root.classList.contains('dark');
     btn?.setAttribute('aria-pressed', String(on));
-    btnM?.setAttribute('aria-pressed', String(on));
-  };
+    btnM?.setAttribute('aria-pressed', String(on)); };
 
-  const set = (t) => {
-    if (t === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
+  const set=t=>{
+    t==='dark'?root.classList.add('dark'):root.classList.remove('dark');
     reflect();
-    try { localStorage.setItem(LS, t); } catch { }
+    try{ localStorage.setItem(LS,t); }catch{};
   };
 
-  const toggle = () => set(root.classList.contains('dark') ? 'light' : 'dark');
+  const get=()=>{
+    try{ const v=localStorage.getItem(LS); if(v==='light'||v==='dark') return v; }catch{};
+    return prefers.matches?'dark':'light';
+  };
 
-  const bindOnce = (el, type, fn) => { if (!el || el.dataset.bound === '1') return; el.addEventListener(type, fn, { passive: true }); el.dataset.bound = '1'; };
+  const toggle=()=> set(root.classList.contains('dark')?'light':'dark');
 
-  // Initialize theme from storage / OS
+  // init + follow OS if no saved pref
   set(get());
+  prefers.addEventListener?.('change',()=>{ try{ if(!localStorage.getItem(LS)) set(prefers.matches?'dark':'light'); }catch{} });
 
-  prefers.addEventListener?.('change', () => { try { if (!localStorage.getItem(LS)) set(prefers.matches ? 'dark' : 'light'); } catch { } });
+  // bind once helpers
+  const bindOnce=(el,ev,fn)=>{ if(!el||el.dataset.bound==='1') return; el.addEventListener(ev,fn,{passive:true}); el.dataset.bound='1'; };
 
-  bindOnce(btn, 'click', toggle);
-  bindOnce(btnM, 'click', toggle);
-  bindOnce(mmb, 'click', () => { const open = !mm.classList.toggle('hidden'); mmb.setAttribute('aria-expanded', String(open)); });
+  bindOnce(btn,'click',toggle);
+  bindOnce(btnM,'click',toggle);
+  bindOnce(mmb,'click',()=>{ const open=!mm.classList.toggle('hidden'); mmb.setAttribute('aria-expanded', String(open)); });
 
-  new MutationObserver(reflect).observe(root, { attributes: true, attributeFilter: ['class'] });
+  // keep UI in sync if classes change elsewhere
+  new MutationObserver(reflect).observe(root,{attributes:true,attributeFilter:['class']});
 })();
