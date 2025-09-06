@@ -1,34 +1,35 @@
 /* Site-wide theme toggle + mobile menu wiring */
-(function () {
-  const root = document.documentElement, LS = 'theme';
-  const prefers = matchMedia('(prefers-color-scheme: dark)');
+(function(){
+  const root=document.documentElement, LS='theme';
+  const prefers=matchMedia('(prefers-color-scheme: dark)');
 
-  const btn = document.getElementById('theme-toggle');
-  const btnM = document.getElementById('theme-toggle-mobile');
-  const mmb = document.getElementById('mobile-menu-button');
-  const mm = document.getElementById('mobile-menu');
+  const btn=document.getElementById('theme-toggle');
+  const btnM=document.getElementById('theme-toggle-mobile');
+  const mmb=document.getElementById('mobile-menu-button');
+  const mm=document.getElementById('mobile-menu');
 
-  const get = () => { try { const v = localStorage.getItem(LS); if (v === 'light' || v === 'dark') return v; } catch { } return prefers.matches ? 'dark' : 'light'; };
-  const set = t => {
-    t === 'dark' ? root.classList.add('dark') : root.classList.remove('dark');
-    btn?.setAttribute('aria-pressed', String(t === 'dark'));
-    btnM?.setAttribute('aria-pressed', String(t === 'dark'));
-    try { localStorage.setItem(LS, t); } catch { }
+  const get=()=>{ try{const v=localStorage.getItem(LS); if(v==='light'||v==='dark') return v;}catch{} return prefers.matches?'dark':'light'; };
+  const set=t=>{
+    t==='dark'?root.classList.add('dark'):root.classList.remove('dark');
+    btn?.setAttribute('aria-pressed', String(t==='dark'));
+    btnM?.setAttribute('aria-pressed', String(t==='dark'));
+    try{ localStorage.setItem(LS,t); }catch{}
   };
-  const toggle = () => set(root.classList.contains('dark') ? 'light' : 'dark');
+  const toggle=()=> set(root.classList.contains('dark')?'light':'dark');
 
   set(get());
-  prefers.addEventListener?.('change', () => { if (!localStorage.getItem(LS)) set(prefers.matches ? 'dark' : 'light'); });
+  prefers.addEventListener?.('change', ()=>{ if(!localStorage.getItem(LS)) set(prefers.matches?'dark':'light'); });
 
   btn?.addEventListener('click', toggle);
   btnM?.addEventListener('click', toggle);
 
-  mmb?.addEventListener('click', () => {
-    const open = !mm.classList.toggle('hidden');
+  mmb?.addEventListener('click', ()=>{
+    const open=!mm.classList.toggle('hidden');
     mmb.setAttribute('aria-expanded', String(open));
   });
 })();
-btnM?.addEventListener('click', toggle);
+
+
 
 
 
