@@ -826,6 +826,120 @@ svg {
 .dark .theme-toggle .switch__thumb {
   background: #fff;
 }
+/* =========================================================
+   Dark-mode readability polish (site-wide, non-destructive)
+   ========================================================= */
+
+/* Base legibility */
+.dark body { background: var(--bg); color: var(--ink); }
+.dark p, .dark li, .dark dd { color: var(--ink); }
+.dark .muted, .dark .subtitle, .dark .lead, .dark small { color: var(--muted); }
+
+/* Reading rhythm */
+:root { --lh-body: 1.6; --space-paragraph: .65rem; }
+body { line-height: var(--lh-body); }
+p + p { margin-top: var(--space-paragraph); }
+h1, h2, h3, h4 { line-height: 1.2; margin-top: 1rem; margin-bottom: .5rem; }
+
+/* Links: higher contrast + clearer affordance */
+.dark a { color: color-mix(in hsl, var(--brand) 85%, white 0%); text-decoration: none; }
+.dark a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* “Card” containers used across pages (resume sections, long blocks) */
+.resume-section, .resume-card, .section, .card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+/* Dividers */
+.dark hr { border-color: var(--bd); opacity: 1; }
+
+/* Lists */
+.dark ul, .dark ol { color: var(--ink); padding-left: 1.15rem; }
+.dark li::marker { color: var(--muted); }
+
+/* Tables */
+.dark table { width: 100%; border-collapse: collapse; border-color: var(--bd); }
+.dark th, .dark td { border-color: var(--bd); }
+.dark thead th { background: color-mix(in hsl, var(--card) 60%, var(--bg)); color: var(--ink); }
+.dark tbody tr:nth-child(2n) { background: color-mix(in hsl, var(--card) 85%, var(--bg)); }
+
+/* Code / pre / quote blocks */
+.dark code {
+  background: color-mix(in hsl, var(--card) 80%, var(--bg));
+  border: 1px solid var(--bd);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: .1rem .3rem;
+}
+.dark pre {
+  background: color-mix(in hsl, var(--card) 70%, var(--bg));
+  border: 1px solid var(--bd);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: .75rem;
+  overflow: auto;
+}
+.dark blockquote {
+  color: var(--muted);
+  border-left: 3px solid var(--ring);
+  padding-left: .75rem;
+  margin-left: 0;
+}
+
+/* Buttons (common) */
+.dark .btn-primary {
+  background: var(--brand);
+  color: #fff;
+  border: 1px solid color-mix(in hsl, var(--brand) 60%, #000);
+}
+.dark .btn-outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--bd);
+}
+.dark .btn-primary:hover { filter: brightness(1.05); }
+.dark .btn-outline:hover { background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+
+/* Projects page tag pills (brighter in dark) */
+.dark .pp-tagsline .pp-tag {
+  background: color-mix(in hsl, var(--card) 80%, var(--bg));
+  border: 1px solid var(--bd);
+  color: #E5E7EB; /* light gray for readability */
+}
+
+/* Prevent images/logos from inverting in dark */
+.dark img, .dark svg, .dark .logo { filter: none !important; mix-blend-mode: normal !important; }
+
+/* Focus visibility */
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+/* Mobile drawer visibility (used by theme.js) */
+#mobile-menu.hidden { display: none; }
+
+/* Theme toggle visuals (desktop + mobile) */
+.theme-toggle { position: relative; display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; }
+.theme-toggle .switch__track {
+  width: 44px; height: 24px; border: 1px solid var(--bd);
+  border-radius: 9999px; background: var(--chip); display: inline-block; transition: background .2s ease;
+}
+.theme-toggle .switch__thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  position: absolute; top: 3px; left: 3px; background: var(--ink);
+  transition: transform .2s ease;
+}
+.theme-toggle[aria-pressed="true"] .switch__thumb { transform: translateX(20px); }
+.dark .theme-toggle .switch__track { background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
+.dark .theme-toggle .switch__thumb { background: #fff; }
+
+/* Optional: higher-contrast preference */
+@media (prefers-contrast: more) {
+  .dark a { text-decoration: underline; }
+  :focus-visible { outline-width: 3px; }
+}
 
 /* === Résumé page (dark-mode readability) === */
 .dark #resume-page {
