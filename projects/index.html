@@ -93,10 +93,16 @@
               <h3 class="pp-title"><a class="pp-link" target="_self" rel="noopener"></a></h3>
               <div class="pp-meta">
                 <button class="pp-icon pp-fav" title="Favorite (f)" aria-pressed="false" aria-label="Toggle favorite">
-                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path class="pp-star" d="M12 .587l3.668 7.568L24 9.75l-6 5.854 1.416 8.264L12 19.771l-7.416 4.097L6 15.604 0 9.75l8.332-1.595z"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path class="pp-star"
+                      d="M12 .587l3.668 7.568L24 9.75l-6 5.854 1.416 8.264L12 19.771l-7.416 4.097L6 15.604 0 9.75l8.332-1.595z" />
+                  </svg>
                 </button>
                 <button class="pp-icon pp-share" title="Copy link" aria-label="Copy link">
-                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a3 3 0 0 0-2.816 1.983l-6.07-3.035a3 3 0 1 0-.248 1.01l6.07 3.036a3 3 0 1 0 .064-1.012z"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M18 8a3 3 0 0 0-2.816 1.983l-6.07-3.035a3 3 0 1 0-.248 1.01l6.07 3.036a3 3 0 1 0 .064-1.012z" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -104,7 +110,9 @@
             <ul class="pp-tagsline" aria-label="Tags"></ul>
             <div class="pp-foot">
               <span class="pp-updated">
-                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5l4 2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 8v5l4 2" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
                 <time class="pp-updated-time"></time>
               </span>
             </div>
@@ -159,11 +167,11 @@
             render(currentData);
           }
 
-          function fmtDate(iso){
-            if(!iso) return '';
-            const d=new Date(iso);
-            if(Number.isNaN(d.getTime())) return '';
-            return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'2-digit'});
+          function fmtDate(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return '';
+            return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
           }
 
           function render(data) {
@@ -183,10 +191,10 @@
               if (img) { img.src = p.thumb || '/assets/images/projects/placeholder.svg'; img.alt = (p.thumb_alt || (p.title + ' thumbnail')).trim(); img.referrerPolicy = 'no-referrer'; img.loading = 'lazy'; img.decoding = 'async'; }
               const ds = n.querySelector('.pp-desc'); if (ds) ds.textContent = p.desc || '';
               const updatedEl = n.querySelector('.pp-updated-time');
-              if(updatedEl){
+              if (updatedEl) {
                 const when = p.updated || p.date || '';
                 updatedEl.textContent = when ? `Updated ${fmtDate(when)}` : '';
-                if(when) updatedEl.setAttribute('datetime', when);
+                if (when) updatedEl.setAttribute('datetime', when);
               }
               list.appendChild(n);
             }
