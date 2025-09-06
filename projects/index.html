@@ -56,19 +56,20 @@
   </header>
 
   <main id="main-content" class="container safe-pad" style="padding-block:1.25rem 2rem;">
-    <section class="projects-hero" aria-label="Projects & Portfolio">
-      <h1 class="projects-hero__title">Projects &amp; Portfolio</h1>
-      <p class="projects-hero__sub">Browse the upgraded, data-driven gallery.</p>
-      <a href="/projects/" class="projects-hero__cta">Open Projects Gallery</a>
+    <section class="projects-hero" aria-label="Projects Hub">
+      <h1 class="projects-hero__title">Projects Hub</h1>
+      <p id="projects-hero-rotator" class="projects-hero__sub" aria-live="polite">Ideas in action.</p>
+    </section>
+
+    <section class="projects-search" aria-label="Search projects">
+      <div class="projects-search__inner">
+        <input id="pp-search" class="pp-input projects-search__input" type="search" placeholder="Search projects…" aria-label="Search projects" />
+      </div>
     </section>
     <!-- Enhanced Projects (projects-pro) Section -->
     <section class="projects-pro" aria-labelledby="pp-heading">
       <h2 id="pp-heading" class="visually-hidden">Projects</h2>
-      <div class="pp-actions" role="region" aria-label="Project controls">
-        <div class="pp-searchwrap">
-          <input id="pp-search" type="search" placeholder="Search projects…" aria-label="Search projects">
-          <button id="pp-search-go" type="button">Enter</button>
-        </div>
+  <div class="pp-actions" role="region" aria-label="Project controls">
         <select id="pp-sort" aria-label="Sort projects">
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
@@ -438,6 +439,19 @@
     form.addEventListener('submit', async (e) => { e.preventDefault(); const q = input.value.trim(); if (!q) return; add('user', q); input.value = ''; const payload = { messages: [...thread, { role: 'user', content: q }] }; try { const res = await fetch(WORKER_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const json = await res.json(); const reply = json?.choices?.[0]?.message?.content || 'No content returned.'; add('assistant', reply); thread = [...payload.messages, { role: 'assistant', content: reply }]; } catch (err) { console.error(err); add('assistant', 'Sorry—something went wrong. Try again.'); } });
   </script>
   <!-- /Floating Chat -->
+  <script>
+    (function rotateTaglines(){
+      const el = document.getElementById('projects-hero-rotator');
+      if(!el) return;
+      const lines = [
+        'Ideas in action.',
+        'Insight in motion.',
+        'From concept to impact.'
+      ];
+      let i = 0;
+      setInterval(()=>{ i = (i + 1) % lines.length; el.textContent = lines[i]; }, 3500);
+    })();
+  </script>
 </body>
 
 </html>
