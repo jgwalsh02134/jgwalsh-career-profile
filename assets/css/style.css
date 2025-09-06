@@ -936,6 +936,44 @@ svg {
   transform: translateX(20px);
   background: #fff;
 }
+/* === Résumé dark-mode polish (scoped but generic) === */
+.dark body{ background: var(--bg); color: var(--ink); }
+.dark h1,.dark h2,.dark h3,.dark h4{ color: var(--ink); }
+.dark .subtitle,.dark .lead{ color: var(--muted); }
+.resume-section,
+.resume-card{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+.dark hr{ border-color: var(--bd); opacity: 1; }
+.dark ul,.dark ol{ color: var(--ink); }
+.dark li::marker{ color: var(--muted); }
+.dark a{ color: color-mix(in hsl, var(--brand) 85%, white 0%); text-decoration: none; }
+.dark a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+.resume-chip,.tag,.badge{
+  background: color-mix(in hsl, var(--card) 70%, var(--bg));
+  border: 1px solid var(--bd);
+  color: var(--muted);
+  border-radius: 9999px;
+  padding: .2rem .5rem;
+  display: inline-block;
+}
+.dark table{ border-color: var(--bd); }
+.dark th,.dark td{ border-color: var(--bd); }
+.dark thead th{ background: color-mix(in hsl, var(--card) 60%, var(--bg)); color: var(--ink); }
+.dark tbody tr:nth-child(2n){ background: color-mix(in hsl, var(--card) 85%, var(--bg)); }
+.dark code{ background: color-mix(in hsl, var(--card) 80%, var(--bg)); border: 1px solid var(--bd); color: var(--ink); }
+.dark pre{ background: color-mix(in hsl, var(--card) 70%, var(--bg)); border: 1px solid var(--bd); color: var(--ink); }
+.dark blockquote{ border-left: 3px solid var(--ring); color: var(--muted); }
+.dark .btn-primary{ background: var(--brand); color: #fff; border: 1px solid color-mix(in hsl, var(--brand) 60%, #000); }
+.dark .btn-outline{ background: transparent; color: var(--ink); border: 1px solid var(--bd); }
+.dark .btn-primary:hover{ filter: brightness(1.05); }
+.dark .btn-outline:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+.dark img,.dark svg,.dark .logo { filter: none !important; mix-blend-mode: normal !important; }
+:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
+.resume-section{ padding: 16px; margin-block: 12px; }
 
 /* /projects/ slider enforcement (2025-09-06a) */
 #mobile-menu.hidden {
