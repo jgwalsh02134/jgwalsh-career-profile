@@ -899,6 +899,48 @@ svg {
   text-decoration: none;
 }
 .dark .resume-sheet a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+/* === Home sheet: dark-mode readability === */
+.home-sheet{  background: transparent; }
+.dark .home-sheet .section,
+.dark .home-sheet .card,
+.dark .home-sheet .competency-card{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.dark .home-sheet h1,.dark .home-sheet h2,.dark .home-sheet h3{ color: var(--ink); }
+.dark .home-sheet p,.dark .home-sheet li{ color: var(--ink); }
+.dark .home-sheet li::marker{ color: var(--muted); }
+.dark .home-sheet a{ color: color-mix(in hsl, var(--brand) 85%, white 0%); }
+.dark .home-sheet a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+
+/* === Contact card: dark-mode readability === */
+.contact-card{
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.dark .contact-card{ background: var(--card); color: var(--ink); }
+.dark .contact-card h1,.dark .contact-card h2,.dark .contact-card h3{ color: var(--ink); }
+.dark .contact-card p,.dark .contact-card li,.dark .contact-card label{ color: var(--ink); }
+.dark .contact-card small,.dark .contact-card .muted{ color: var(--muted); }
+.dark .contact-card a{ color: color-mix(in hsl, var(--brand) 85%, white 0%); text-decoration: none; }
+.dark .contact-card a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+.dark .contact-card hr{ border-color: var(--bd); opacity: 1; }
+.dark .contact-card img,.dark .contact-card svg{ filter:none !important; mix-blend-mode:normal !important; }
+
+/* drawer + toggle visuals (already present elsewhere; safe repeat) */
+#mobile-menu.hidden{ display: none; }
+.theme-toggle{ position:relative; display:inline-flex; align-items:center; gap:.5rem; cursor:pointer; }
+.theme-toggle .switch__track{ width:44px; height:24px; border:1px solid var(--bd); border-radius:9999px; background: var(--chip); display:inline-block; transition:background .2s ease; }
+.theme-toggle .switch__thumb{ width:18px; height:18px; border-radius:50%; position:absolute; top:3px; left:3px; background: var(--ink); transition: transform .2s ease; }
+.theme-toggle[aria-pressed="true"] .switch__thumb{ transform: translateX(20px); }
+.dark .theme-toggle .switch__track{ background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
+.dark .theme-toggle .switch__thumb{ background:#fff; }
 
 /* =========================================================
    Dark-mode readability polish (site-wide, non-destructive)
