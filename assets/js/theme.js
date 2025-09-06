@@ -1,66 +1,47 @@
-/* Site-wide theme toggle + mobile menu wiring */
-(function () {
-  const root = document.documentElement, LS = 'theme';
-  const prefers = matchMedia('(prefers-color-scheme: dark)');
-/* Site-wide theme toggle + mobile menu wiring (desktop+mobile) */
+/* Site-wide theme toggle + mobile menu wiring (singleton, idempotent) */
 (function(){
-  const root=document.documentElement, LS='theme';
-  const prefers=matchMedia('(prefers-color-scheme: dark)');
+  if(window.__themeInit) return; // prevent duplicate binding
+  window.__themeInit = true;
 
-  const btn=document.getElementById('theme-toggle');
-  const btnM=document.getElementById('theme-toggle-mobile');
-  const mmb=document.getElementById('mobile-menu-button');
-  const mm=document.getElementById('mobile-menu');
+  const root = document.documentElement;
+  const LS   = 'theme';
+  const $    = id => document.getElementById(id);
 
-  const get=()=>{ try{const v=localStorage.getItem(LS); if(v==='light'||v==='dark') return v;}catch{} return prefers.matches?'dark':'light'; };
-  const set=t=>{
-    t==='dark'?root.classList.add('dark'):root.classList.remove('dark');
-    btn?.setAttribute('aria-pressed', String(t==='dark'));
-    btnM?.setAttribute('aria-pressed', String(t==='dark'));
-    try{ localStorage.setItem(LS,t); }catch{}
+  const btn  = $('theme-toggle');
+  const btnM = $('theme-toggle-mobile');
+  const mmb  = $('mobile-menu-button');
+  const mm   = $('mobile-menu');
+  const prefers = matchMedia('(prefers-color-scheme: dark)');
+
+  const get = () => {
+    try { const v = localStorage.getItem(LS); if(v==='light'||v==='dark') return v; } catch {}
+    return prefers.matches ? 'dark' : 'light';
   };
-  const toggle=()=> set(root.classList.contains('dark')?'light':'dark');
 
-  // init + follow OS only if user hasn’t chosen
-  set(get());
-  prefers.addEventListener?.('change', ()=>{ if(!localStorage.getItem(LS)) set(prefers.matches?'dark':'light'); });
-
-  // toggles
-  btn?.addEventListener('click', toggle);
-  btnM?.addEventListener('click', toggle);
-
-  // mobile drawer
-  mmb?.addEventListener('click', ()=>{
-    const open=!mm.classList.toggle('hidden');
-    mmb.setAttribute('aria-expanded', String(open));
-  });
-})();
-  const btn = document.getElementById('theme-toggle');
-  const btnM = document.getElementById('theme-toggle-mobile');
-  const mmb = document.getElementById('mobile-menu-button');
-  const mm = document.getElementById('mobile-menu');
-
-  const get = () => { try { const v = localStorage.getItem(LS); if (v === 'light' || v === 'dark') return v; } catch { } return prefers.matches ? 'dark' : 'light'; };
-  const set = t => {
-    t === 'dark' ? root.classList.add('dark') : root.classList.remove('dark');
-    btn?.setAttribute('aria-pressed', String(t === 'dark'));
-    btnM?.setAttribute('aria-pressed', String(t === 'dark'));
-    try { localStorage.setItem(LS, t); } catch { }
+  const reflect = () => {
+    const on = root.classList.contains('dark');
+    btn?.setAttribute('aria-pressed', String(on));
+    btnM?.setAttribute('aria-pressed', String(on));
   };
+
+  const set = (t) => {
+    if(t==='dark') root.classList.add('dark'); else root.classList.remove('dark');
+    reflect();
+    try { localStorage.setItem(LS,t); } catch {}
+  };
+
   const toggle = () => set(root.classList.contains('dark') ? 'light' : 'dark');
 
+  const bindOnce = (el,type,fn)=>{ if(!el||el.dataset.bound==='1') return; el.addEventListener(type,fn,{passive:true}); el.dataset.bound='1'; };
+
+  // Initialize theme from storage / OS
   set(get());
-  prefers.addEventListener?.('change', () => { if (!localStorage.getItem(LS)) set(prefers.matches ? 'dark' : 'light'); });
 
-  btn?.addEventListener('click', toggle);
-  btnM?.addEventListener('click', toggle);
+  prefers.addEventListener?.('change',()=>{ try { if(!localStorage.getItem(LS)) set(prefers.matches?'dark':'light'); } catch {} });
 
-  mmb?.addEventListener('click', () => {
-    const open = !mm.classList.toggle('hidden');
-    mmb.setAttribute('aria-expanded', String(open));
-  });
+  bindOnce(btn,'click',toggle);
+  bindOnce(btnM,'click',toggle);
+  bindOnce(mmb,'click',()=>{ const open=!mm.classList.toggle('hidden'); mmb.setAttribute('aria-expanded',String(open)); });
+
+  new MutationObserver(reflect).observe(root,{attributes:true,attributeFilter:['class']});
 })();
-
-
-
-

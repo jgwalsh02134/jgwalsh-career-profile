@@ -10,9 +10,9 @@
     content="A selection of projects demonstrating analysis, research, visualization, and psych-tech initiatives." />
   <link rel="canonical" href="/projects/" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/assets/css/style.css?v=proj_hdr_fix" />
-  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_hdr_fix" />
-  <script src="/assets/js/theme.js?v=proj_hdr_fix" defer></script>
+  <link rel="stylesheet" href="/assets/css/style.css?v=hdr_clean" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=hdr_clean" />
+  <script src="/assets/js/theme.js?v=hdr_clean" defer></script>
 </head>
 
 <body style="background:var(--bg); color:var(--text);">
@@ -227,65 +227,6 @@
       </div>
     </div>
   </footer>
-  <style>
-    /* Local /projects/ header-only toggle visuals (cache resilient) */
-    .theme-toggle {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-    }
-
-    .theme-toggle .switch__track {
-      width: 44px;
-      height: 24px;
-      border: 1px solid var(--bd);
-      border-radius: 9999px;
-      background: var(--chip);
-      display: inline-block;
-    }
-
-    .theme-toggle .switch__thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 9999px;
-      background: var(--ink);
-      position: relative;
-      left: 3px;
-      top: 3px;
-      transition: transform .18s ease;
-      display: inline-block;
-    }
-
-    .theme-toggle[aria-pressed="true"] .switch__thumb {
-      transform: translateX(18px);
-    }
-
-    .dark .theme-toggle .switch__track {
-      background: color-mix(in hsl, var(--brand) 25%, var(--bg));
-      border-color: var(--bd);
-    }
-
-    .dark .theme-toggle .switch__thumb {
-      background: #fff;
-    }
-  </style>
-  <script type="module">
-    (function () {
-      const root = document.documentElement, KEY = 'theme';
-      const desk = document.getElementById('theme-toggle');
-      const mob = document.getElementById('theme-toggle-mobile');
-      const mBtn = document.getElementById('mobile-menu-button');
-      const menu = document.getElementById('mobile-menu');
-      const reflect = () => { const on = root.classList.contains('dark'); desk?.setAttribute('aria-pressed', String(on)); mob?.setAttribute('aria-pressed', String(on)); };
-      const set = t => { t === 'dark' ? root.classList.add('dark') : root.classList.remove('dark'); reflect(); try { localStorage.setItem(KEY, t); } catch { } };
-      const toggle = () => set(root.classList.contains('dark') ? 'light' : 'dark');
-      try { const saved = localStorage.getItem(KEY); if (saved === 'dark' || saved === 'light') { set(saved); } else { set(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } } catch { set('light'); }
-      desk?.addEventListener('click', toggle); mob?.addEventListener('click', toggle);
-      mBtn?.addEventListener('click', () => { const open = !menu.classList.toggle('hidden'); mBtn.setAttribute('aria-expanded', String(open)); });
-      new MutationObserver(reflect).observe(root, { attributes: true, attributeFilter: ['class'] });
-    })();
-  </script>
 </body>
 
 </html>
