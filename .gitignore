@@ -2,3 +2,11 @@
 .cfpages-dist/
 *.bak
 node_modules/
+
+# editor temp files
+*.tmp
+*.tmp.*
+*.tmp.html
+*.tmp.new
+*~
+.#*
