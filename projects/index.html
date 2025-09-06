@@ -16,59 +16,60 @@
 </head>
 
 <body style="background:var(--bg); color:var(--text);">
-  <header class="site-header sticky top-0 z-50 bg-gray-50/85 dark:bg-slate-900/75 backdrop-blur header-wrap border-b border-slate-200/60 dark:border-slate-800/60">
-  <div class="container flex items-center justify-between gap-3 px-4 py-3">
-    <a href="/" class="brand flex items-center gap-2 text-navy text-xl font-semibold leading-none">
-      <!-- Optional brand mark; keep if the file exists -->
-      <img src="/assets/icons/jgw-mark.svg" alt="" aria-hidden="true" class="brand-mark" />
-      <span>James Gregory Walsh</span>
-    </a>
+  <header
+    class="site-header sticky top-0 z-50 bg-gray-50/85 dark:bg-slate-900/75 backdrop-blur header-wrap border-b border-slate-200/60 dark:border-slate-800/60">
+    <div class="container flex items-center justify-between gap-3 px-4 py-3">
+      <a href="/" class="brand flex items-center gap-2 text-navy text-xl font-semibold leading-none">
+        <!-- Optional brand mark; keep if the file exists -->
+        <img src="/assets/icons/jgw-mark.svg" alt="" aria-hidden="true" class="brand-mark" />
+        <span>James Gregory Walsh</span>
+      </a>
 
-    <!-- Desktop nav -->
-    <nav class="main-nav hidden sm:flex items-center gap-4 text-sm text-slate-700" aria-label="Main navigation">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/about.html" class="nav-link">About</a>
-      <a href="/resume.html" class="nav-link">Résumé</a>
-      <a href="/projects/" class="nav-link is-current" aria-current="page">Projects</a>
-      <a href="/contact.html" class="nav-link">Contact</a>
+      <!-- Desktop nav -->
+      <nav class="main-nav hidden sm:flex items-center gap-4 text-sm text-slate-700" aria-label="Main navigation">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/about.html" class="nav-link">About</a>
+        <a href="/resume.html" class="nav-link">Résumé</a>
+        <a href="/projects/" class="nav-link is-current" aria-current="page">Projects</a>
+        <a href="/contact.html" class="nav-link">Contact</a>
 
-      <!-- Desktop theme toggle -->
-      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
-        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        <!-- Desktop theme toggle -->
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
+          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        </button>
+      </nav>
+
+      <!-- Mobile hamburger -->
+      <button id="mobile-menu-button"
+        class="sm:hidden rounded px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-sage"
+        aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
       </button>
-    </nav>
+    </div>
 
-    <!-- Mobile hamburger -->
-    <button id="mobile-menu-button"
-            class="sm:hidden rounded px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-sage"
-            aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
+    <!-- Mobile drawer -->
+    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
+      <nav class="mobile-nav flex flex-col gap-1 pt-2">
+        <a href="/" class="mobile-link">Home</a>
+        <a href="/about.html" class="mobile-link">About</a>
+        <a href="/resume.html" class="mobile-link">Résumé</a>
+        <a href="/projects/" class="mobile-link is-current" aria-current="page">Projects</a>
+        <a href="/contact.html" class="mobile-link">Contact</a>
+      </nav>
 
-  <!-- Mobile drawer -->
-  <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
-    <nav class="mobile-nav flex flex-col gap-1 pt-2">
-      <a href="/" class="mobile-link">Home</a>
-      <a href="/about.html" class="mobile-link">About</a>
-      <a href="/resume.html" class="mobile-link">Résumé</a>
-      <a href="/projects/" class="mobile-link is-current" aria-current="page">Projects</a>
-      <a href="/contact.html" class="mobile-link">Contact</a>
-    </nav>
+      <hr class="my-3 border-slate-200 dark:border-slate-800" />
 
-    <hr class="my-3 border-slate-200 dark:border-slate-800" />
-
-    <!-- Mobile theme toggle -->
-    <button id="theme-toggle-mobile"
-            class="theme-toggle w-full justify-start mt-1"
-            type="button" aria-pressed="false" aria-label="Switch theme">
-      <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-      <span class="sr-only">Toggle theme</span>
-    </button>
-  </div>
-</header>
+      <!-- Mobile theme toggle -->
+      <button id="theme-toggle-mobile" class="theme-toggle w-full justify-start mt-1" type="button" aria-pressed="false"
+        aria-label="Switch theme">
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        <span class="sr-only">Toggle theme</span>
+      </button>
+    </div>
+  </header>
 
   <main id="main-content" class="container safe-pad" style="padding-block:1.25rem 2rem;">
     <!-- Enhanced Projects (projects-pro) Section -->
