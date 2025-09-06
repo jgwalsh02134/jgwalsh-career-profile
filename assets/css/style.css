@@ -1116,14 +1116,27 @@ svg {
 }
 
 /* === Résumé dark-mode polish (scoped) === */
-.dark body{ background: var(--bg); color: var(--ink); }
+.dark body {
+  background: var(--bg);
+  color: var(--ink);
+}
 
 /* Headings / subheads */
-.dark h1, .dark h2, .dark h3, .dark h4{ color: var(--ink); }
-.dark .lead, .dark .subtitle{ color: var(--muted); }
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4 {
+  color: var(--ink);
+}
+
+.dark .lead,
+.dark .subtitle {
+  color: var(--muted);
+}
 
 /* Section wrappers / cards (add .resume-section/.resume-card classes in your markup if not present) */
-.resume-section, .resume-card{
+.resume-section,
+.resume-card {
   background: var(--card);
   border: 1px solid var(--bd);
   border-radius: 14px;
@@ -1133,81 +1146,147 @@ svg {
 }
 
 /* Links (higher contrast in dark) */
-.dark a{
+.dark a {
   color: color-mix(in hsl, var(--brand) 85%, white 0%);
   text-decoration: none;
 }
-.dark a:hover{ text-decoration: underline; text-underline-offset: 2px; }
+
+.dark a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
 /* Lists */
-.dark ul, .dark ol{ color: var(--ink); }
-.dark li::marker{ color: var(--muted); }
+.dark ul,
+.dark ol {
+  color: var(--ink);
+}
+
+.dark li::marker {
+  color: var(--muted);
+}
 
 /* Tables */
-.dark table{ border-color: var(--bd); }
-.dark th, .dark td{ border-color: var(--bd); }
-.dark thead th{
+.dark table {
+  border-color: var(--bd);
+}
+
+.dark th,
+.dark td {
+  border-color: var(--bd);
+}
+
+.dark thead th {
   background: color-mix(in hsl, var(--card) 60%, var(--bg));
   color: var(--ink);
 }
-.dark tbody tr:nth-child(2n){
+
+.dark tbody tr:nth-child(2n) {
   background: color-mix(in hsl, var(--card) 85%, var(--bg));
 }
 
 /* Code / pre / quotes */
-.dark code{
+.dark code {
   background: color-mix(in hsl, var(--card) 80%, var(--bg));
   border: 1px solid var(--bd);
   color: var(--ink);
   border-radius: 6px;
   padding: .1rem .3rem;
 }
-.dark pre{
+
+.dark pre {
   background: color-mix(in hsl, var(--card) 70%, var(--bg));
   border: 1px solid var(--bd);
   color: var(--ink);
   border-radius: 8px;
   padding: .75rem;
-  overflow:auto;
+  overflow: auto;
 }
-.dark blockquote{
+
+.dark blockquote {
   color: var(--muted);
   border-left: 3px solid var(--ring);
   padding-left: .75rem;
 }
 
 /* Buttons */
-.dark .btn-primary{
+.dark .btn-primary {
   background: var(--brand);
   color: #fff;
   border: 1px solid color-mix(in hsl, var(--brand) 60%, #000);
 }
-.dark .btn-outline{
+
+.dark .btn-outline {
   background: transparent;
   color: var(--ink);
   border: 1px solid var(--bd);
 }
-.dark .btn-primary:hover{ filter: brightness(1.05); }
-.dark .btn-outline:hover{ background: color-mix(in hsl, var(--brand) 10%, var(--bg)); }
+
+.dark .btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.dark .btn-outline:hover {
+  background: color-mix(in hsl, var(--brand) 10%, var(--bg));
+}
 
 /* Avoid accidental image inversion in dark */
-.dark img, .dark svg, .dark .logo { filter: none !important; mix-blend-mode: normal !important; }
+.dark img,
+.dark svg,
+.dark .logo {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
 
 /* Focus visibility */
-:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
 /* Ensure the header toggle looks correct */
-#mobile-menu.hidden{ display:none }
-.theme-toggle{ position:relative; display:inline-flex; align-items:center; gap:.5rem; cursor:pointer; }
-.theme-toggle .switch__track{
-  width:44px; height:24px; border:1px solid var(--bd);
-  border-radius:9999px; background:var(--chip); display:inline-block; transition:background .2s ease;
+#mobile-menu.hidden {
+  display: none
 }
-.theme-toggle .switch__thumb{
-  width:18px; height:18px; border-radius:50%;
-  position:absolute; top:3px; left:3px; background:var(--ink);
-  transition:transform .2s ease;
+
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  cursor: pointer;
 }
-.theme-toggle[aria-pressed="true"] .switch__thumb{ transform:translateX(20px) }
-.dark .theme-toggle .switch__track{ background: color-mix(in hsl, var(--brand) 25%, var(--bg)); border-color: var(--bd); }
-.dark .theme-toggle .switch__thumb{ background:#fff; }
+
+.theme-toggle .switch__track {
+  width: 44px;
+  height: 24px;
+  border: 1px solid var(--bd);
+  border-radius: 9999px;
+  background: var(--chip);
+  display: inline-block;
+  transition: background .2s ease;
+}
+
+.theme-toggle .switch__thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  background: var(--ink);
+  transition: transform .2s ease;
+}
+
+.theme-toggle[aria-pressed="true"] .switch__thumb {
+  transform: translateX(20px)
+}
+
+.dark .theme-toggle .switch__track {
+  background: color-mix(in hsl, var(--brand) 25%, var(--bg));
+  border-color: var(--bd);
+}
+
+.dark .theme-toggle .switch__thumb {
+  background: #fff;
+}
