@@ -1,72 +1,7 @@
 [
-  {
-    "id": "albany-crime-analysis",
-    "title": "Albany Crime Analysis",
-    "url": "/projects/albany-crime-analysis/",
-    "desc": "Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.",
-    "tags": [
-      "crime",
-      "dashboard",
-      "report",
-      "visualization",
-      "albany"
-    ],
-    "date": "2025-09-05",
-    "thumb": "/assets/images/projects/thumbnails/albany-crime-analysis-5.png",
-    "thumb_alt": "Albany Crime Analysis project card"
-  },
-  {
-    "id": "psyber-nexus",
-    "title": "Psyber Nexus",
-    "url": "/projects/psyber-nexus/",
-    "desc": "Applied behavioral + cyber investigations hub.",
-    "tags": [
-      "investigations",
-      "behavioral",
-      "tools"
-    ],
-    "date": "2025-09-02",
-    "thumb": "/assets/images/projects/thumbnails/psyber-nexus-project-card-3.png",
-    "thumb_alt": "Psyber Nexus project card"
-  },
-  {
-    "id": "project-gallery",
-    "title": "Interactive Project Gallery",
-    "url": "/projects/gallery/",
-    "desc": "Index of interactive experiments and tools (Threat Triage, Interview Sim, Deception Explorer).",
-    "tags": [
-      "gallery",
-      "showcase"
-    ],
-    "date": "2025-09-05",
-    "thumb": "/assets/images/projects/thumbnails/interactive-project-gal-8.png",
-    "thumb_alt": "Interactive Project Gallery project card"
-  },
-  {
-    "id": "resource-center",
-    "title": "Resource Center",
-    "url": "/resources/",
-    "desc": "Datasets, documents, and references.",
-    "tags": [
-      "resources",
-      "docs",
-      "data"
-    ],
-    "date": "2025-06-01",
-    "thumb": "/assets/images/projects/thumbnails/resource-center-simple.png",
-    "thumb_alt": "Resource Center project card"
-  },
-  {
-    "id": "source-code",
-    "title": "Source Code & Contributions",
-    "url": "https://github.com/jgwalsh02134/jgwalsh-career-profile",
-    "desc": "Public repo for this site and related experiments.",
-    "tags": [
-      "code",
-      "github"
-    ],
-    "date": "2025-09-05",
-    "thumb": "/assets/images/projects/thumbnails/source-code-con-2.png",
-    "thumb_alt": "Source Code & Contributions project card"
-  }
+  { "id": "albany-crime-analysis", "title": "Albany Crime Analysis", "url": "/projects/albany-crime-analysis/", "desc": "Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.", "tags": ["crime", "dashboard", "report", "visualization", "albany"], "date": "2025-09-05", "thumb": "/assets/images/projects/thumbnails/albany-crime-analysis-5.png", "thumb_alt": "Albany Crime Analysis project card" },
+  { "id": "psyber-nexus", "title": "Psyber Nexus", "url": "/projects/psyber-nexus/", "desc": "Applied behavioral + cyber investigations hub.", "tags": ["investigations", "behavioral", "tools"], "date": "2025-09-02", "thumb": "/assets/images/projects/thumbnails/psyber-nexus-project-card-3.png", "thumb_alt": "Psyber Nexus project card" },
+  { "id": "project-gallery", "title": "Interactive Project Gallery", "url": "/projects/gallery/", "desc": "Index of interactive experiments and tools (Threat Triage, Interview Sim, Deception Explorer).", "tags": ["gallery", "showcase"], "date": "2025-09-05", "thumb": "/assets/images/projects/thumbnails/interactive-project-gal-8.png", "thumb_alt": "Interactive Project Gallery project card" },
+  { "id": "resource-center", "title": "Resource Center", "url": "/resources/", "desc": "Datasets, documents, and references.", "tags": ["resources", "docs", "data"], "date": "2025-06-01", "thumb": "/assets/images/projects/thumbnails/resource-center-simple.png", "thumb_alt": "Resource Center project card" },
+  { "id": "source-code", "title": "Source Code & Contributions", "url": "https://github.com/jgwalsh02134/jgwalsh-career-profile", "desc": "Public repo for this site and related experiments.", "tags": ["code", "github"], "date": "2025-09-05", "thumb": "/assets/images/projects/thumbnails/source-code-con-2.png", "thumb_alt": "Source Code & Contributions project card" }
 ]
