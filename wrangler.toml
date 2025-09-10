@@ -1,8 +1,7 @@
-name = "jgwalsh-career-profile"
-compatibility_date = "2025-08-31"
+name = "jgwalsh-career-profile-worker"
+main = "worker.js"
+compatibility_date = "2025-09-09"
 
-[dev]
-port = 8788
-
-[pages]
-pages_build_output_dir = "."
+[assets]
+directory = "public"
+binding   = "ASSETS"
