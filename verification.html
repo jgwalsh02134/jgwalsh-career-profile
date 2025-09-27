@@ -11,7 +11,7 @@
   <!-- 2 ▸ LinkedIn badge script (async, non‑blocking) -->
   <script src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
 
-  <!-- 3 ▸ JSON‑LD for search engines & resume parsers -->
+  <!-- 3 ▸ JSON‑LD for search engines & resume parsers. This ensures all credential data is preserved for parsing. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,7 +41,7 @@
   }
   </script>
 
-  <!-- 4 ▸ Minimal “retro desktop” styling -->
+  <!-- 4 ▸ Minimal “retro desktop” styling (Style 6 preserved) -->
   <style>
     /* Window‑frame look */
     body {
@@ -70,6 +70,13 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+    /* Style for the inline SVG in the title bar */
+    .title-bar svg {
+        vertical-align: middle;
+        margin-right: 8px;
+        width: 24px;
+        height: 24px;
+    }
     .content {
       padding: 1.25rem 1.5rem;
     }
@@ -93,8 +100,6 @@
       font-weight: bold;
       margin-bottom: 0.3rem;
     }
-    figure { margin: 1.5rem 0; }
-    figcaption { font-size: 0.8rem; text-align: center; }
     a { color: #000083; }
     footer {
       margin-top: 2rem;
@@ -102,8 +107,56 @@
       text-align: center;
     }
 
+    /* New styles for the text-based snapshot (replacing the image) */
+    .linkedin-snapshot {
+        /* Apply a modern, clean sans-serif font stack */
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        border: 1px solid #000;
+        padding: 1rem;
+        margin: 1.5rem 0;
+        background: #f0f0f0; /* Slightly off-white background */
+    }
+    .linkedin-snapshot h3 {
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem 0;
+    }
+    .linkedin-snapshot .meta {
+        font-size: 0.9rem;
+        color: #555;
+        margin: 0 0 0.5rem 0;
+    }
+    .linkedin-snapshot h4 {
+        border-top: 1px solid #ccc;
+        padding-top: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        font-weight: bold;
+        /* Custom style to align the checkmark icon */
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .verification-item {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px dashed #ccc;
+    }
+    .verification-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .verification-item p {
+        margin: 0.25rem 0;
+        font-size: 0.95rem;
+    }
+    .verification-item small {
+        font-size: 0.75rem;
+        color: #555;
+    }
+
     /* Media & embeds */
-    img { max-width: 100%; height: auto; }
     .LI-profile-badge { max-width: 100%; }
 
     /* Responsive tweaks */
@@ -117,11 +170,10 @@
         font-size: 0.85rem;
         padding: 6px 8px;
       }
-      .title-bar img { width: 20px; height: 20px; }
+      .title-bar svg { width: 20px; height: 20px; }
       .content { padding: 1rem; }
       table { font-size: 0.85rem; }
       th, td { padding: 6px; }
-      figcaption { font-size: 0.75rem; }
     }
 
     @media (min-width: 481px) and (max-width: 1024px) {
@@ -135,7 +187,13 @@
 <body>
   <div class="window">
     <!-- Retro title bar -->
-  <div class="title-bar"><img src="assets/icons/use-jobs.svg" alt="Verification Icon" width="24" height="24" style="vertical-align:middle;margin-right:8px;">Verified Credentials – J. Gregory Walsh</div>
+  <div class="title-bar">
+      <!-- New inline US flag SVG -->
+      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+          <path fill="#ECEFF1" d="M1.998 10H45.998V37H1.998z"></path><path fill="#F44336" d="M2 10H46V13H2zM2 16H46V19H2zM2 22H46V25H2zM2 28H46V31H2zM2 34H46V37H2z"></path><path fill="#3F51B5" d="M2 10H23V25H2z"></path><g><path fill="#FFF" d="M4.25 12L4.713 12.988 5.75 13.146 5 13.916 5.178 15 4.25 14.488 3.322 15 3.5 13.916 2.75 13.146 3.787 12.988zM8.25 12L8.713 12.988 9.75 13.146 9 13.916 9.178 15 8.25 14.488 7.322 15 7.5 13.916 6.75 13.146 7.787 12.988zM12.25 12L12.713 12.988 13.75 13.146 13 13.916 13.178 15 12.25 14.488 11.322 15 11.5 13.916 10.75 13.146 11.787 12.988zM16.25 12L16.713 12.988 17.75 13.146 17 13.916 17.178 15 16.25 14.488 15.322 15 15.5 13.916 14.75 13.146 15.787 12.988zM20 12L20.463 12.988 21.5 13.146 20.75 13.916 20.928 15 20 14.488 19.072 15 19.25 13.916 18.5 13.146 19.537 12.988zM4.25 20L4.713 20.988 5.75 21.146 5 21.916 5.178 23 4.25 22.488 3.322 23 3.5 21.916 2.75 21.146 3.787 20.988zM8.25 20L8.713 20.988 9.75 21.146 9 21.916 9.178 23 8.25 22.488 7.322 23 7.5 21.916 6.75 21.146 7.787 20.988zM12.25 20L12.713 20.988 13.75 21.146 13 21.916 13.178 23 12.25 22.488 11.322 23 11.5 21.916 10.75 21.146 11.787 20.988zM16.25 20L16.713 20.988 17.75 21.146 17 21.916 17.178 23 16.25 22.488 15.322 23 15.5 21.916 14.75 21.146 15.787 20.988zM20 20L20.463 20.988 21.5 21.146 20.75 21.916 20.928 23 20 22.488 19.072 23 19.25 21.916 18.5 21.146 19.537 20.988zM5.25 16L5.713 16.988 6.75 17.146 6 17.916 6.178 19 5.25 18.488 4.322 19 4.5 17.916 3.75 17.146 4.787 16.988zM9.25 16L9.713 16.988 10.75 17.146 10 17.916 10.178 19 9.25 18.488 8.322 19 8.5 17.916 7.75 17.146 8.787 16.988zM13.25 16L13.713 16.988 14.75 17.146 14 17.916 14.178 19 13.25 18.488 12.322 19 12.5 17.916 11.75 17.146 12.787 16.988zM17.25 16L17.713 16.988 18.75 17.146 18 17.916 18.178 19 17.25 18.488 16.322 19 16.5 17.916 15.75 17.146 16.787 16.988zM21 16L21.463 16.988 22.5 17.146 21.75 17.916 21.928 19 21 18.488 20.072 19 20.25 17.916 19.5 17.146 20.537 16.988z"></path></g>
+      </svg>
+      Verified Credentials – J. Gregory Walsh
+  </div>
 
     <div class="content">
       <!-- LinkedIn Badge -->
@@ -150,7 +208,7 @@
            href="https://www.linkedin.com/in/jgregorywalsh/">J. Gregory Walsh</a>
       </div>
 
-      <!-- Human‑readable credentials -->
+      <!-- Human‑readable credentials table -->
       <table>
         <caption>Current Third‑Party Verifications<br><small>(last updated 2025‑08‑01)</small></caption>
         <thead>
@@ -168,7 +226,8 @@
           </tr>
           <tr>
             <td><strong>Siena University</strong></td>
-            <td>j11wals@siena.edu (.edu e‑mail)</td>
+            <!-- Updated Siena email to alum address -->
+            <td>j11wals@alum.siena.edu (.edu e‑mail)</td>
             <td>2024‑02‑25</td>
           </tr>
           <tr>
@@ -179,13 +238,40 @@
         </tbody>
       </table>
 
-      <!-- Screenshot for visual proof -->
-      <figure>
-  <img src="assets/linkedin-verification.png"
-             alt="LinkedIn verification screenshot showing education and identity badges"
-             style="width:100%;border:1px solid #999;">
-        <figcaption>LinkedIn “Verifications” panel as of 2025‑08‑01</figcaption>
-      </figure>
+      <!-- Textual representation of the LinkedIn verification snapshot -->
+      <div class="linkedin-snapshot">
+        <h3>J. Gregory Walsh</h3>
+        <p class="meta">Joined December 2012</p>
+        <p class="meta">Contact information: Updated over 1 year ago</p>
+
+        <!-- The shield/checkmark SVG is now placed next to "Verifications" -->
+        <h4 style="display:flex; align-items:center;">
+          Verifications
+          <!-- SVG Checkmark/Shield Icon from previous step, scaled and colored black -->
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0 0 24 24" style="fill:#000000;">
+            <path d="M 12 1.8105469 L 11.378906 2.1660156 C 11.378906 2.1660156 8.2330138 3.9433594 4.25 3.9433594 L 3 3.9433594 L 3 12.470703 C 3 15.837822 5.3020163 18.232316 7.4023438 19.720703 C 9.5026712 21.20909 11.587891 21.929687 11.587891 21.929688 L 12 22.074219 L 12.412109 21.929688 C 12.412109 21.929688 14.497343 21.208944 16.597656 19.720703 C 18.697969 18.232462 21 15.837426 21 12.470703 L 21 3.9453125 L 19.75 3.9453125 C 15.766837 3.9443979 12.621094 2.1660156 12.621094 2.1660156 L 12 1.8105469 z M 12 4.6054688 C 12.695717 4.972949 15.005889 6.0389675 18.5 6.3203125 L 18.5 12.470703 C 18.5 14.67898 16.927031 16.424132 15.152344 17.681641 C 13.58292 18.793704 12.344712 19.222524 12 19.351562 C 11.655293 19.222525 10.417067 18.793796 8.8476562 17.681641 C 7.0729838 16.424028 5.5 14.679584 5.5 12.470703 L 5.5 6.3183594 C 8.9941886 6.0376814 11.304262 4.9729473 12 4.6054688 z M 15.248047 7.7324219 L 14.365234 8.6171875 L 11 11.980469 L 10.121094 11.103516 L 9.2382812 10.220703 L 7.4707031 11.988281 L 8.3535156 12.871094 L 11 15.517578 L 16.132812 10.384766 L 17.017578 9.5019531 L 15.248047 7.7324219 z"></path>
+          </svg>
+        </h4>
+
+        <div class="verification-item">
+          <strong>Educational institution</strong>
+          <p>Siena University: Verified association using email</p>
+          <small>j11wals@alum.siena.edu • Over 1 year ago</small>
+        </div>
+
+        <div class="verification-item">
+          <strong>Identity</strong>
+          <p>Verified by CLEAR using government ID</p>
+          <small>Over 1 year ago</small>
+        </div>
+
+        <div class="verification-item">
+          <strong>Educational institution</strong>
+          <p>Boston University: Verified association using email</p>
+          <small>jgwalsh@bu.edu • Over 5 years ago</small>
+        </div>
+      </div>
+      <!-- End of Textual representation -->
 
       <p>
         You can verify these credentials directly on my LinkedIn profile or learn more about
