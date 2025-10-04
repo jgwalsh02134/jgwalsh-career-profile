@@ -57,6 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#btnClear')?.addEventListener('click', clearAll);
     $('#btnCopy')?.addEventListener('click', copyNarrative);
     $('#btnExport')?.addEventListener('click', exportJSON);
-    $('#btnAnalyze')?.addEventListener('click', analyzeWithAI);
+    $('#btnAnalyze')?.addEventListener('click', async () => {
+        try {
+            if (typeof window.runTriageOnce === 'function') {
+                await window.runTriageOnce();
+            } else {
+                await analyzeWithAI();
+            }
+        } catch (e) {
+            console.error(e);
+            toast('Analyze failed.');
+        }
+    });
     wireCounters();
 });
