@@ -12,21 +12,16 @@ export async function onRequestPost({ request, env }) {
       messages: [{ role: "system", content: sys }, ...messages].slice(-30),
       temperature: typeof incoming?.temperature === "number" ? incoming.temperature : 0.2,
     };
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
+    const upstream = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
-    const ct = (r.headers.get("content-type") || "").toLowerCase();
-    if (!ct.includes("application/json")) {
-      const text = await r.text();
-      return jsonShape(text ? `Upstream non-JSON response (${r.status}).` : "Empty response from upstream.", r.ok ? 200 : r.status || 502);
-    }
-    const data = await r.json();
-    const text = data?.choices?.[0]?.message?.content ?? data?.error?.message ?? "";
-    if (!text) return jsonShape("No content available. Try rephrasing your question.", r.ok ? 200 : r.status || 500);
-    return new Response(JSON.stringify({ choices: [{ message: { content: String(text) } }] }), {
-      status: r.ok ? 200 : r.status || 500,
+    const upstreamText = await upstream.text();
+    let parsed; try { parsed = JSON.parse(upstreamText); } catch { parsed = null; }
+    const replyText = parsed?.choices?.[0]?.message?.content ?? parsed?.error?.message ?? upstreamText ?? "No content returned.";
+    return new Response(JSON.stringify({ choices: [{ message: { content: String(replyText) } }] }), {
+      status: upstream.ok ? 200 : upstream.status || 500,
       headers: { "Content-Type": "application/json", ...cors() },
     });
   } catch (e) { return jsonShape(e?.message || "chat error", 500); }
