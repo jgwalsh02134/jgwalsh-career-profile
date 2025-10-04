@@ -4,7 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Blog — jgwalsh.com</title>
-  <meta name="description" content="Psychology, data analysis, and investigative notes." />
+  <link rel="canonical" href="https://jgwalsh.com/blog/">
+  <meta name="description" content="Articles at the intersection of psychology, technology, AI, finance, law, and law enforcement—where human behavior meets data and decision-making." />
+
+  <!-- Basic OG -->
+  <meta property="og:title" content="Blog — jgwalsh.com">
+  <meta property="og:description" content="Behavioral insight + data analysis across AI/tech, finance, markets, and law enforcement.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jgwalsh.com/blog/">
+
   <style>
     :root{
       --bg:#fff; --fg:#111; --muted:#666; --line:#e5e5e5; --accent:#000;
@@ -12,58 +20,112 @@
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
     }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0e0e0e; --fg:#f5f5f5; --muted:#b7b7b7; --line:#2a2a2a; --accent:#fff; }
+    }
     *{box-sizing:border-box}
     html,body{background:var(--bg); color:var(--fg); margin:0; padding:0; font-family:var(--sans)}
     a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--fg)}
-    a:hover{background:var(--fg); color:#fff}
-    header{position:sticky; top:0; backdrop-filter:saturate(120%) blur(6px); background:rgba(255,255,255,.9); border-bottom:1px solid var(--line); z-index:10;}
+    a:hover, a:focus-visible{background:var(--fg); color:#fff; outline:none}
+    img{max-width:100%; height:auto}
+
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(120%) blur(6px);
+      background:rgba(255,255,255,.9);
+      border-bottom:1px solid var(--line);
+    }
+    @media (prefers-color-scheme: dark){
+      header{ background:rgba(14,14,14,.9); }
+    }
     .wrap{max-width:1100px; margin:0 auto; padding:16px}
+
     .brand{display:flex; align-items:center; gap:12px}
-    .brand .logo{width:28px; height:28px; border:2px solid var(--fg); border-radius:6px; box-shadow:var(--shadow)}
+    .brand-link{display:flex; align-items:center; gap:12px; border:0}
+    .logo{width:28px; height:28px; border:2px solid var(--fg); border-radius:6px; box-shadow:var(--shadow)}
     .brand h1{font-family:var(--mono); font-size:18px; margin:0; letter-spacing:.4px}
-    .toolbar{display:grid; gap:10px; grid-template-columns: 1fr; padding:16px 0; border-bottom:1px dashed var(--line)}
+
+    .toolbar{display:grid; gap:10px; grid-template-columns: 1fr; padding:16px 0; border-top:1px dashed var(--line)}
     @media(min-width:720px){ .toolbar{grid-template-columns: 1fr auto auto} }
-    .field{display:flex; align-items:center; gap:8px; border:1px solid var(--fg); border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow)}
-    .field input, .field select{border:0; outline:0; width:100%; font:inherit; background:transparent}
-    .tags{display:flex; gap:8px; flex-wrap:wrap}
-    .tag{border:1px solid var(--fg); padding:6px 10px; border-radius:999px; font-family:var(--mono); cursor:pointer; user-select:none}
+    .field{
+      display:flex; align-items:center; gap:8px; border:1px solid var(--fg);
+      border-radius:12px; padding:10px 12px; background:var(--bg); box-shadow:var(--shadow)
+    }
+    .field input, .field select{border:0; outline:0; width:100%; font:inherit; background:transparent; color:var(--fg)}
+    .field input::placeholder{color:var(--muted)}
+
+    .intro{margin:16px 0 8px 0}
+    .intro h2{font-size:20px; margin:.25rem 0 .5rem 0; font-family:var(--mono)}
+    .intro p{color:var(--fg); line-height:1.55}
+
+    .tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .tag{
+      border:1px solid var(--fg); padding:6px 10px; border-radius:999px; font-family:var(--mono);
+      cursor:pointer; user-select:none; background:transparent
+    }
     .tag.active{background:var(--fg); color:#fff}
+
     .grid{display:grid; gap:16px; grid-template-columns:1fr}
     @media(min-width:720px){ .grid{grid-template-columns:1fr 1fr} }
     @media(min-width:1040px){ .grid{grid-template-columns:1fr 1fr 1fr} }
-    article{border:2px solid var(--fg); border-radius:var(--radius); padding:18px; background:#fff; box-shadow:var(--shadow)}
+
+    article.card{
+      border:2px solid var(--fg); border-radius:var(--radius); padding:14px; background:var(--bg); box-shadow:var(--shadow)
+    }
+    .thumb-wrap{position:relative; border:1px solid var(--fg); border-radius:12px; overflow:hidden; margin-bottom:10px; background:var(--bg)}
+    .thumb-wrap::after{content:""; display:block; aspect-ratio:16/9;}
+    .thumb-wrap img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+    @media (prefers-reduced-data: reduce) { .thumb-wrap img{object-fit:contain} }
+
     article h2{margin:0 0 6px 0; font-size:20px; line-height:1.2}
-    .meta{color:var(--muted); font-family:var(--mono); font-size:12px; margin-bottom:10px}
-    .excerpt{color:#222; line-height:1.5}
-    .card-actions{margin-top:12px}
+    .meta{color:var(--muted); font-family:var(--mono); font-size:12px; margin:6px 0 10px}
+    .excerpt{color:var(--fg); line-height:1.5; margin:0 0 6px 0}
+    .card-actions{margin-top:10px}
     .pill{display:inline-block; font-family:var(--mono); font-size:12px; border:1px solid var(--fg); border-radius:999px; padding:4px 8px; margin-right:6px}
+
     .pager{display:flex; gap:10px; justify-content:center; margin:22px 0}
-    .btn{border:2px solid var(--fg); background:#fff; border-radius:12px; padding:8px 12px; font-family:var(--mono); cursor:pointer; box-shadow:var(--shadow)}
+    .btn{border:2px solid var(--fg); background:transparent; border-radius:12px; padding:8px 12px; font-family:var(--mono); cursor:pointer; box-shadow:var(--shadow)}
     .btn[disabled]{opacity:.35; cursor:not-allowed}
+
     footer{border-top:1px solid var(--line); margin-top:24px; color:var(--muted); font-family:var(--mono)}
+    .footer-links{display:flex; gap:12px; flex-wrap:wrap}
   </style>
 </head>
 <body>
-<header>
+<header role="banner">
   <div class="wrap">
     <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <h1>Blog — jgwalsh.com</h1>
+      <!-- Home link wraps logo + title -->
+      <a href="/" aria-label="jgwalsh.com — Home" class="brand-link">
+        <div class="logo" aria-hidden="true"></div>
+        <h1>Blog — jgwalsh.com</h1>
+      </a>
     </div>
+
+    <!-- Blog intro -->
+    <section class="intro" aria-labelledby="intro-heading">
+      <h2 id="intro-heading">Exploring Human Behavior in a Data-Driven World</h2>
+      <p>
+        The <strong>jgwalsh.com Blog</strong> examines psychology where it intersects with the systems that shape modern life—technology, AI, finance, markets, crime, and law enforcement.
+        Each article connects behavioral insight with empirical analysis to reveal the human element behind algorithms, incentives, and institutions.
+      </p>
+    </section>
+
+    <!-- Controls -->
     <div class="toolbar" id="toolbar">
-      <label class="field" title="Search posts">
+      <label class="field" title="Search posts" for="q">
         <span style="font-family:var(--mono)">/</span>
-        <input id="q" type="search" placeholder="Search title, summary, or tag…" autocomplete="off">
+        <input id="q" type="search" placeholder="Search title, summary, or tag…" autocomplete="off" aria-label="Search posts">
       </label>
       <label class="field" title="Sort">
-        <select id="sort">
+        <select id="sort" aria-label="Sort">
           <option value="newest">Newest first</option>
           <option value="oldest">Oldest first</option>
           <option value="title">Title A→Z</option>
         </select>
       </label>
       <label class="field" title="Items per page">
-        <select id="pageSize">
+        <select id="pageSize" aria-label="Items per page">
           <option>9</option>
           <option>12</option>
           <option selected>18</option>
@@ -71,31 +133,44 @@
         </select>
       </label>
     </div>
-    <div class="wrap" style="padding-top:8px">
+
+    <!-- Tag bar -->
+    <div class="wrap" style="padding-top:8px; padding-left:0; padding-right:0">
       <div class="tags" id="tagBar" aria-label="Tags"></div>
     </div>
   </div>
 </header>
 
-<main class="wrap" style="padding-top:16px">
+<main class="wrap" style="padding-top:16px" role="main">
   <section id="results" class="grid" aria-live="polite"></section>
-  <nav class="pager">
+
+  <nav class="pager" aria-label="Pagination">
     <button class="btn" id="prev">Prev</button>
     <div class="btn" id="pageInfo" aria-live="polite">Page 1</div>
     <button class="btn" id="next">Next</button>
   </nav>
 </main>
 
-<footer class="wrap">
-  <p>© <span id="y"></span> James Gregory Walsh — Psychology • Data • Investigative Work</p>
+<footer class="wrap" role="contentinfo">
+  <div class="footer-links">
+    <a href="/" aria-label="Back to jgwalsh.com">← Back to jgwalsh.com</a>
+    <a href="/blog/" aria-current="page">Blog home</a>
+  </div>
+  <p style="margin-top:8px">© <span id="y"></span> James Gregory Walsh — Psychology • Data • Investigative Work</p>
+  <noscript><p class="meta">JavaScript is required to load the post list.</p></noscript>
 </footer>
 
 <script>
+  // —— Config
   const POSTS_INDEX_URL = '/data/blog/posts.json';
+  const THUMB_FALLBACK = '/data/blog/thumbs/placeholder.svg';
+
+  // —— State
   let allPosts = [];
   let activeTag = null;
   let currentPage = 1;
 
+  // —— Helpers
   const $ = s => document.querySelector(s);
   const fmtDate = iso => new Date(iso + 'T00:00:00').toLocaleDateString(undefined, {year:'numeric', month:'short', day:'2-digit'});
   const toSlug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
@@ -104,16 +179,18 @@
     const q = $('#q').value.trim().toLowerCase();
     const sort = $('#sort').value;
     let out = posts.slice();
+
     if (activeTag) out = out.filter(p => (p.tags||[]).includes(activeTag));
     if (q) out = out.filter(p =>
       (p.title||'').toLowerCase().includes(q) ||
       (p.summary||'').toLowerCase().includes(q) ||
       (p.tags||[]).join(' ').toLowerCase().includes(q)
     );
+
     out.sort((a,b)=>{
       if (sort==='oldest') return (a.date>b.date)?1:-1;
       if (sort==='title') return a.title.localeCompare(b.title);
-      return (a.date<b.date)?1:-1;
+      return (a.date<b.date)?1:-1; // newest
     });
     return out;
   }
@@ -123,11 +200,13 @@
     const tags = new Set();
     posts.forEach(p => (p.tags||[]).forEach(t => tags.add(t)));
     const all = Array.from(tags).sort((a,b)=>a.localeCompare(b));
+
     tagBar.innerHTML = '';
     const mk = (t,label=t)=>{
       const el = document.createElement('button');
       el.className = 'tag' + ((activeTag===t)?' active':'');
       el.textContent = label;
+      el.type = 'button';
       el.onclick = ()=>{
         activeTag = (activeTag===t)?null:t;
         currentPage = 1;
@@ -136,10 +215,32 @@
       };
       return el;
     };
+
     if (all.length){
       tagBar.appendChild(mk(null,'All'));
       all.forEach(t => tagBar.appendChild(mk(t)));
     }
+  }
+
+  function card(p){
+    const url = p.url || `/blog/post.html?slug=${encodeURIComponent(p.slug||toSlug(p.title))}`;
+    const tagPills = (p.tags||[]).map(t=>`<span class="pill">${t}</span>`).join(' ');
+    const thumb = p.thumb || THUMB_FALLBACK;
+    const alt = p.thumbAlt || (p.title ? `${p.title} — thumbnail` : 'Post thumbnail');
+
+    return `
+      <article class="card">
+        <a href="${url}" style="border:0">
+          <div class="thumb-wrap">
+            <img src="${thumb}" alt="${alt}" loading="lazy" decoding="async" width="1280" height="720">
+          </div>
+          <h2>${p.title}</h2>
+        </a>
+        <div class="meta">${fmtDate(p.date)} · ${p.readingTime || '~3 min'} · ${p.author || 'JG Walsh'}</div>
+        <p class="excerpt">${p.summary||''}</p>
+        <div class="card-actions">${tagPills}</div>
+      </article>
+    `;
   }
 
   function render(){
@@ -150,25 +251,14 @@
     currentPage = Math.min(currentPage, totalPages);
     const start = (currentPage-1)*pageSize;
     const page = posts.slice(start, start+pageSize);
+
     results.innerHTML = page.map(p=>card(p)).join('') || `<p class="meta">No posts match your filters.</p>`;
     $('#prev').disabled = currentPage<=1;
     $('#next').disabled = currentPage>=totalPages;
-    $('#pageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
+    $('#pageInfo').textContent = \`Page \${currentPage} / \${totalPages}\`;
   }
 
-  function card(p){
-    const url = p.url || `/blog/post.html?slug=${encodeURIComponent(p.slug||toSlug(p.title))}`;
-    const tagPills = (p.tags||[]).map(t=>`<span class="pill">${t}</span>`).join(' ');
-    return `
-      <article>
-        <h2><a href="${url}">${p.title}</a></h2>
-        <div class="meta">${fmtDate(p.date)} · ${p.readingTime || '~3 min'} · ${p.author || 'JG Walsh'}</div>
-        <p class="excerpt">${p.summary||''}</p>
-        <div class="card-actions">${tagPills}</div>
-      </article>
-    `;
-  }
-
+  // —— Router state in URL
   function persistState(){
     const params = new URLSearchParams(location.search);
     const q = $('#q').value.trim();
@@ -180,7 +270,6 @@
     const qs = params.toString();
     history.replaceState(null, '', qs ? ('?'+qs) : location.pathname);
   }
-
   function loadStateFromURL(){
     const params = new URLSearchParams(location.search);
     $('#q').value = params.get('q') || '';
@@ -190,11 +279,16 @@
     currentPage = parseInt(params.get('p')||'1',10);
   }
 
+  // —— Init
   (async function init(){
     $('#y').textContent = new Date().getFullYear();
+
     loadStateFromURL();
     document.addEventListener('keydown', e=>{
-      if (e.key==='/' && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); $('#q').focus(); }
+      // Quick focus shortcut for search
+      if (e.key==='/' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
+        e.preventDefault(); $('#q').focus();
+      }
     });
     $('#q').addEventListener('input', ()=>{ currentPage=1; persistState(); render(); });
     $('#sort').addEventListener('change', ()=>{ currentPage=1; persistState(); render(); });
