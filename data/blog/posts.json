@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Welcome to the Blog",
+    "slug": "welcome-to-the-blog",
+    "date": "2025-10-04",
+    "summary": "What I’ll publish here: field notes on psychology, data, and investigative craft.",
+    "tags": ["intro", "site"],
+    "readingTime": "2 min",
+    "author": "JG Walsh",
+    "bodyUrl": "/data/blog/welcome-to-the-blog.html"
+  }
+]

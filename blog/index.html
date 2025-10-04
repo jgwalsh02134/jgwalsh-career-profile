@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — jgwalsh.com</title>
+  <meta name="description" content="Psychology, data analysis, and investigative notes." />
+  <style>
+    :root{
+      --bg:#fff; --fg:#111; --muted:#666; --line:#e5e5e5; --accent:#000;
+      --radius:16px; --shadow:0 2px 0 #000;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    html,body{background:var(--bg); color:var(--fg); margin:0; padding:0; font-family:var(--sans)}
+    a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--fg)}
+    a:hover{background:var(--fg); color:#fff}
+    header{position:sticky; top:0; backdrop-filter:saturate(120%) blur(6px); background:rgba(255,255,255,.9); border-bottom:1px solid var(--line); z-index:10;}
+    .wrap{max-width:1100px; margin:0 auto; padding:16px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand .logo{width:28px; height:28px; border:2px solid var(--fg); border-radius:6px; box-shadow:var(--shadow)}
+    .brand h1{font-family:var(--mono); font-size:18px; margin:0; letter-spacing:.4px}
+    .toolbar{display:grid; gap:10px; grid-template-columns: 1fr; padding:16px 0; border-bottom:1px dashed var(--line)}
+    @media(min-width:720px){ .toolbar{grid-template-columns: 1fr auto auto} }
+    .field{display:flex; align-items:center; gap:8px; border:1px solid var(--fg); border-radius:12px; padding:10px 12px; background:#fff; box-shadow:var(--shadow)}
+    .field input, .field select{border:0; outline:0; width:100%; font:inherit; background:transparent}
+    .tags{display:flex; gap:8px; flex-wrap:wrap}
+    .tag{border:1px solid var(--fg); padding:6px 10px; border-radius:999px; font-family:var(--mono); cursor:pointer; user-select:none}
+    .tag.active{background:var(--fg); color:#fff}
+    .grid{display:grid; gap:16px; grid-template-columns:1fr}
+    @media(min-width:720px){ .grid{grid-template-columns:1fr 1fr} }
+    @media(min-width:1040px){ .grid{grid-template-columns:1fr 1fr 1fr} }
+    article{border:2px solid var(--fg); border-radius:var(--radius); padding:18px; background:#fff; box-shadow:var(--shadow)}
+    article h2{margin:0 0 6px 0; font-size:20px; line-height:1.2}
+    .meta{color:var(--muted); font-family:var(--mono); font-size:12px; margin-bottom:10px}
+    .excerpt{color:#222; line-height:1.5}
+    .card-actions{margin-top:12px}
+    .pill{display:inline-block; font-family:var(--mono); font-size:12px; border:1px solid var(--fg); border-radius:999px; padding:4px 8px; margin-right:6px}
+    .pager{display:flex; gap:10px; justify-content:center; margin:22px 0}
+    .btn{border:2px solid var(--fg); background:#fff; border-radius:12px; padding:8px 12px; font-family:var(--mono); cursor:pointer; box-shadow:var(--shadow)}
+    .btn[disabled]{opacity:.35; cursor:not-allowed}
+    footer{border-top:1px solid var(--line); margin-top:24px; color:var(--muted); font-family:var(--mono)}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <h1>Blog — jgwalsh.com</h1>
+    </div>
+    <div class="toolbar" id="toolbar">
+      <label class="field" title="Search posts">
+        <span style="font-family:var(--mono)">/</span>
+        <input id="q" type="search" placeholder="Search title, summary, or tag…" autocomplete="off">
+      </label>
+      <label class="field" title="Sort">
+        <select id="sort">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A→Z</option>
+        </select>
+      </label>
+      <label class="field" title="Items per page">
+        <select id="pageSize">
+          <option>9</option>
+          <option>12</option>
+          <option selected>18</option>
+          <option>24</option>
+        </select>
+      </label>
+    </div>
+    <div class="wrap" style="padding-top:8px">
+      <div class="tags" id="tagBar" aria-label="Tags"></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" style="padding-top:16px">
+  <section id="results" class="grid" aria-live="polite"></section>
+  <nav class="pager">
+    <button class="btn" id="prev">Prev</button>
+    <div class="btn" id="pageInfo" aria-live="polite">Page 1</div>
+    <button class="btn" id="next">Next</button>
+  </nav>
+</main>
+
+<footer class="wrap">
+  <p>© <span id="y"></span> James Gregory Walsh — Psychology • Data • Investigative Work</p>
+</footer>
+
+<script>
+  const POSTS_INDEX_URL = '/data/blog/posts.json';
+  let allPosts = [];
+  let activeTag = null;
+  let currentPage = 1;
+
+  const $ = s => document.querySelector(s);
+  const fmtDate = iso => new Date(iso + 'T00:00:00').toLocaleDateString(undefined, {year:'numeric', month:'short', day:'2-digit'});
+  const toSlug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+
+  function filterSort(posts){
+    const q = $('#q').value.trim().toLowerCase();
+    const sort = $('#sort').value;
+    let out = posts.slice();
+    if (activeTag) out = out.filter(p => (p.tags||[]).includes(activeTag));
+    if (q) out = out.filter(p =>
+      (p.title||'').toLowerCase().includes(q) ||
+      (p.summary||'').toLowerCase().includes(q) ||
+      (p.tags||[]).join(' ').toLowerCase().includes(q)
+    );
+    out.sort((a,b)=>{
+      if (sort==='oldest') return (a.date>b.date)?1:-1;
+      if (sort==='title') return a.title.localeCompare(b.title);
+      return (a.date<b.date)?1:-1;
+    });
+    return out;
+  }
+
+  function renderTags(posts){
+    const tagBar = $('#tagBar');
+    const tags = new Set();
+    posts.forEach(p => (p.tags||[]).forEach(t => tags.add(t)));
+    const all = Array.from(tags).sort((a,b)=>a.localeCompare(b));
+    tagBar.innerHTML = '';
+    const mk = (t,label=t)=>{
+      const el = document.createElement('button');
+      el.className = 'tag' + ((activeTag===t)?' active':'');
+      el.textContent = label;
+      el.onclick = ()=>{
+        activeTag = (activeTag===t)?null:t;
+        currentPage = 1;
+        persistState();
+        render();
+      };
+      return el;
+    };
+    if (all.length){
+      tagBar.appendChild(mk(null,'All'));
+      all.forEach(t => tagBar.appendChild(mk(t)));
+    }
+  }
+
+  function render(){
+    const results = $('#results');
+    const pageSize = parseInt($('#pageSize').value,10);
+    const posts = filterSort(allPosts);
+    const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+    currentPage = Math.min(currentPage, totalPages);
+    const start = (currentPage-1)*pageSize;
+    const page = posts.slice(start, start+pageSize);
+    results.innerHTML = page.map(p=>card(p)).join('') || `<p class="meta">No posts match your filters.</p>`;
+    $('#prev').disabled = currentPage<=1;
+    $('#next').disabled = currentPage>=totalPages;
+    $('#pageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
+  }
+
+  function card(p){
+    const url = p.url || `/blog/post.html?slug=${encodeURIComponent(p.slug||toSlug(p.title))}`;
+    const tagPills = (p.tags||[]).map(t=>`<span class="pill">${t}</span>`).join(' ');
+    return `
+      <article>
+        <h2><a href="${url}">${p.title}</a></h2>
+        <div class="meta">${fmtDate(p.date)} · ${p.readingTime || '~3 min'} · ${p.author || 'JG Walsh'}</div>
+        <p class="excerpt">${p.summary||''}</p>
+        <div class="card-actions">${tagPills}</div>
+      </article>
+    `;
+  }
+
+  function persistState(){
+    const params = new URLSearchParams(location.search);
+    const q = $('#q').value.trim();
+    if (q) params.set('q', q); else params.delete('q');
+    if (activeTag) params.set('tag', activeTag); else params.delete('tag');
+    params.set('sort', $('#sort').value);
+    params.set('n', $('#pageSize').value);
+    params.set('p', String(currentPage));
+    const qs = params.toString();
+    history.replaceState(null, '', qs ? ('?'+qs) : location.pathname);
+  }
+
+  function loadStateFromURL(){
+    const params = new URLSearchParams(location.search);
+    $('#q').value = params.get('q') || '';
+    $('#sort').value = params.get('sort') || 'newest';
+    $('#pageSize').value = params.get('n') || '18';
+    activeTag = params.get('tag');
+    currentPage = parseInt(params.get('p')||'1',10);
+  }
+
+  (async function init(){
+    $('#y').textContent = new Date().getFullYear();
+    loadStateFromURL();
+    document.addEventListener('keydown', e=>{
+      if (e.key==='/' && document.activeElement.tagName!=='INPUT'){ e.preventDefault(); $('#q').focus(); }
+    });
+    $('#q').addEventListener('input', ()=>{ currentPage=1; persistState(); render(); });
+    $('#sort').addEventListener('change', ()=>{ currentPage=1; persistState(); render(); });
+    $('#pageSize').addEventListener('change', ()=>{ currentPage=1; persistState(); render(); });
+    $('#prev').onclick = ()=>{ if(currentPage>1){ currentPage--; persistState(); render(); } };
+    $('#next').onclick = ()=>{ currentPage++; persistState(); render(); };
+
+    try{
+      const res = await fetch(POSTS_INDEX_URL, {cache:'no-store'});
+      if(!res.ok) throw new Error('posts.json not found');
+      allPosts = await res.json();
+      allPosts.forEach(p=>{ p.slug = p.slug || toSlug(p.title); });
+      renderTags(allPosts);
+      render();
+    }catch(err){
+      document.getElementById('results').innerHTML = `<p class="meta">Error loading posts: ${err.message}</p>`;
+    }
+  })();
+</script>
+</body>
+</html>

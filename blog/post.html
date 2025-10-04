@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title id="t">Post — jgwalsh.com</title>
+  <style>
+    :root{ --fg:#111; --line:#e5e5e5; --mono: ui-monospace, Menlo, Consolas, monospace; --sans: -apple-system, Inter, Roboto, Arial, sans-serif; }
+    body{margin:0; font-family:var(--sans); color:var(--fg)}
+    .wrap{max-width:840px; margin:0 auto; padding:20px}
+    header{border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:16px}
+    a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--fg)}
+    a:hover{background:var(--fg); color:#fff}
+    .meta{font-family:var(--mono); color:#666; font-size:13px}
+    article{line-height:1.6}
+    article img{max-width:100%; border:1px solid var(--fg)}
+    .back{display:inline-block; margin-top:24px; font-family:var(--mono)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="/blog/">&larr; Blog</a>
+      <h1 id="title">Loading…</h1>
+      <div class="meta" id="meta"></div>
+    </header>
+    <article id="content">Please wait…</article>
+    <p><a class="back" href="/blog/">&larr; Back to all posts</a></p>
+  </div>
+<script>
+(async function(){
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('slug');
+  if(!slug){ location.href = '/blog/'; return; }
+  const idx = await fetch('/data/blog/posts.json', {cache:'no-store'}).then(r=>r.json());
+  const post = idx.find(p => (p.slug||'')===slug);
+  if(!post){ document.getElementById('content').textContent = 'Post not found.'; return; }
+  document.getElementById('title').textContent = post.title;
+  document.getElementById('t').textContent = post.title + ' — jgwalsh.com';
+  document.getElementById('meta').textContent =
+    new Date(post.date+'T00:00:00').toLocaleDateString(undefined, {year:'numeric', month:'long', day:'2-digit'}) +
+    (post.author ? (' — ' + post.author) : '') +
+    (post.tags?.length ? (' — ' + post.tags.join(', ')) : '');
+  const bodyUrl = post.bodyUrl || (`/data/blog/${encodeURIComponent(slug)}.html`);
+  const res = await fetch(bodyUrl, {cache:'no-store'});
+  document.getElementById('content').innerHTML = res.ok ? await res.text() : 'Missing post body file.';
+})();
+</script>
+</body>
+</html>
