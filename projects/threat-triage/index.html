@@ -350,6 +350,7 @@
             <button id="btnExport" class="btn secondary" type="button">Export JSON</button>
             <button id="btnClear" class="btn secondary" type="button">Clear All</button>
           </div>
+          <div id="aiResult" style="display:none;margin-top:10px;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fff;"></div>
           <p class="note" style="margin-top:4px;">Chars: <span id="countNarrative">0</span></p>
           <!-- Diagnostics Bar (added per run reliability spec) -->
           <div id="tt-diag" class="note" style="margin-top:8px;">
@@ -538,6 +539,50 @@
       </div>
     </div>
   </main>
+  <!-- Failsafe binder: ensure Analyze (AI) posts to /api/triage and shows the result -->
+  <script type="module">
+    (function(){
+      const ENDPOINT = "/api/triage";
+      const analyzeBtn = document.getElementById("btnAnalyze");
+      const ta = document.getElementById("narrative");
+      const out = document.getElementById("aiResult");
+      if(!analyzeBtn || !ta){ console.warn("[TT] binder: missing btnAnalyze or narrative"); return; }
+
+      async function callTriage(text){
+        try{
+          out.style.display = "block";
+          out.textContent = "Contacting /api/triage…";
+          console.log("[TT] POST", ENDPOINT, {chars: (text||"").length});
+          const res = await fetch(ENDPOINT, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({
+              model: "gpt-4o-mini",
+              messages: [
+                { role: "system", content: "You assist with behavioral threat triage. Be concise and structured." },
+                { role: "user", content: text || "" }
+              ]
+            })
+          });
+          const raw = await res.text();
+          console.log("[TT] /api/triage status:", res.status, "raw:", raw.slice(0,300));
+          let parsed; try { parsed = JSON.parse(raw); } catch(e){ parsed = null; }
+          const reply = parsed?.choices?.[0]?.message?.content || parsed?.error?.message || raw || "No content returned.";
+          out.textContent = reply;
+        }catch(err){
+          console.error("[TT] triage error", err);
+          out.style.display = "block";
+          out.textContent = "Error calling /api/triage: " + (err?.message || String(err));
+        }
+      }
+
+      analyzeBtn.addEventListener("click", () => {
+        const text = (ta && ta.value || "").trim();
+        if(!text){ out.style.display = "block"; out.textContent = "Please enter or load a narrative first."; return; }
+        callTriage(text);
+      }, { passive:false });
+    })();
+  </script>
   <script type="module">
     import { analyzeWithAI } from "/assets/triage/ai.js";
     // Example hook:
