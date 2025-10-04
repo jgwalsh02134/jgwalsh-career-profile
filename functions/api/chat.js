@@ -1,3 +1,4 @@
+// Clean single implementation (chat/completions)
 export async function onRequestOptions() {
   return new Response(null, { headers: corsHeaders() });
 }
