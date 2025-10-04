@@ -161,151 +161,145 @@
 </footer>
 
 <script>
-  // —— Config
-  const POSTS_INDEX_URL = '/data/blog/posts.json';
-  const THUMB_FALLBACK = '/data/blog/thumbs/placeholder.svg';
+  (function(){
+    var POSTS_INDEX_URL = "/data/blog/posts.json";
+    var THUMB_FALLBACK = "/data/blog/thumbs/placeholder.svg";
+    var allPosts = [];
+    var activeTag = null;
+    var currentPage = 1;
 
-  // —— State
-  let allPosts = [];
-  let activeTag = null;
-  let currentPage = 1;
+    function $(s){ return document.querySelector(s); }
+    function fmtDate(iso){ var d=new Date(String(iso||"")+"T00:00:00"); return d.toLocaleDateString(undefined,{year:"numeric", month:"short", day:"2-digit"}); }
+    function toSlug(s){ return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,""); }
+    function escapeHtml(s){ s = String(s==null?"":s); return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function escapeAttr(s){ s = String(s==null?"":s); return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
-  // —— Helpers
-  const $ = s => document.querySelector(s);
-  const fmtDate = iso => new Date(iso + 'T00:00:00').toLocaleDateString(undefined, {year:'numeric', month:'short', day:'2-digit'});
-  const toSlug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-
-  function filterSort(posts){
-    const q = $('#q').value.trim().toLowerCase();
-    const sort = $('#sort').value;
-    let out = posts.slice();
-
-    if (activeTag) out = out.filter(p => (p.tags||[]).includes(activeTag));
-    if (q) out = out.filter(p =>
-      (p.title||'').toLowerCase().includes(q) ||
-      (p.summary||'').toLowerCase().includes(q) ||
-      (p.tags||[]).join(' ').toLowerCase().includes(q)
-    );
-
-    out.sort((a,b)=>{
-      if (sort==='oldest') return (a.date>b.date)?1:-1;
-      if (sort==='title') return a.title.localeCompare(b.title);
-      return (a.date<b.date)?1:-1; // newest
-    });
-    return out;
-  }
-
-  function renderTags(posts){
-    const tagBar = $('#tagBar');
-    const tags = new Set();
-    posts.forEach(p => (p.tags||[]).forEach(t => tags.add(t)));
-    const all = Array.from(tags).sort((a,b)=>a.localeCompare(b));
-
-    tagBar.innerHTML = '';
-    const mk = (t,label=t)=>{
-      const el = document.createElement('button');
-      el.className = 'tag' + ((activeTag===t)?' active':'');
-      el.textContent = label;
-      el.type = 'button';
-      el.onclick = ()=>{
-        activeTag = (activeTag===t)?null:t;
-        currentPage = 1;
-        persistState();
-        render();
-      };
-      return el;
-    };
-
-    if (all.length){
-      tagBar.appendChild(mk(null,'All'));
-      all.forEach(t => tagBar.appendChild(mk(t)));
+    function filterSort(posts){
+      var q = $("#q").value.replace(/^\s+|\s+$/g, "").toLowerCase();
+      var sort = $("#sort").value;
+      var out = posts.slice();
+      if (activeTag) out = out.filter(function(p){ return (p.tags||[]).indexOf(activeTag) !== -1; });
+      if (q) out = out.filter(function(p){
+        var title = String(p.title||"").toLowerCase();
+        var summary = String(p.summary||"").toLowerCase();
+        var tags = (p.tags||[]).join(" ").toLowerCase();
+        return title.indexOf(q)!==-1 || summary.indexOf(q)!==-1 || tags.indexOf(q)!==-1;
+      });
+      out.sort(function(a,b){
+        if (sort === "oldest") return (a.date > b.date) ? 1 : -1;
+        if (sort === "title") return String(a.title||"").localeCompare(String(b.title||""));
+        return (a.date < b.date) ? 1 : -1;
+      });
+      return out;
     }
-  }
 
-  function card(p){
-    const url = p.url || `/blog/post.html?slug=${encodeURIComponent(p.slug||toSlug(p.title))}`;
-    const tagPills = (p.tags||[]).map(t=>`<span class="pill">${t}</span>`).join(' ');
-    const thumb = p.thumb || THUMB_FALLBACK;
-    const alt = p.thumbAlt || (p.title ? `${p.title} — thumbnail` : 'Post thumbnail');
-
-    return `
-      <article class="card">
-        <a href="${url}" style="border:0">
-          <div class="thumb-wrap">
-            <img src="${thumb}" alt="${alt}" loading="lazy" decoding="async" width="1280" height="720">
-          </div>
-          <h2>${p.title}</h2>
-        </a>
-        <div class="meta">${fmtDate(p.date)} · ${p.readingTime || '~3 min'} · ${p.author || 'JG Walsh'}</div>
-        <p class="excerpt">${p.summary||''}</p>
-        <div class="card-actions">${tagPills}</div>
-      </article>
-    `;
-  }
-
-  function render(){
-    const results = $('#results');
-    const pageSize = parseInt($('#pageSize').value,10);
-    const posts = filterSort(allPosts);
-    const totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
-    currentPage = Math.min(currentPage, totalPages);
-    const start = (currentPage-1)*pageSize;
-    const page = posts.slice(start, start+pageSize);
-
-    results.innerHTML = page.map(p=>card(p)).join('') || `<p class="meta">No posts match your filters.</p>`;
-    $('#prev').disabled = currentPage<=1;
-    $('#next').disabled = currentPage>=totalPages;
-    $('#pageInfo').textContent = \`Page \${currentPage} / \${totalPages}\`;
-  }
-
-  // —— Router state in URL
-  function persistState(){
-    const params = new URLSearchParams(location.search);
-    const q = $('#q').value.trim();
-    if (q) params.set('q', q); else params.delete('q');
-    if (activeTag) params.set('tag', activeTag); else params.delete('tag');
-    params.set('sort', $('#sort').value);
-    params.set('n', $('#pageSize').value);
-    params.set('p', String(currentPage));
-    const qs = params.toString();
-    history.replaceState(null, '', qs ? ('?'+qs) : location.pathname);
-  }
-  function loadStateFromURL(){
-    const params = new URLSearchParams(location.search);
-    $('#q').value = params.get('q') || '';
-    $('#sort').value = params.get('sort') || 'newest';
-    $('#pageSize').value = params.get('n') || '18';
-    activeTag = params.get('tag');
-    currentPage = parseInt(params.get('p')||'1',10);
-  }
-
-  // —— Init
-  (async function init(){
-    $('#y').textContent = new Date().getFullYear();
-
-    loadStateFromURL();
-    document.addEventListener('keydown', e=>{
-      // Quick focus shortcut for search
-      if (e.key==='/' && document.activeElement.tagName!=='INPUT' && document.activeElement.tagName!=='TEXTAREA'){
-        e.preventDefault(); $('#q').focus();
+    function renderTags(posts){
+      var tagBar = $("#tagBar");
+      var tags = {};
+      posts.forEach(function(p){ (p.tags||[]).forEach(function(t){ tags[t]=true; }); });
+      var all = Object.keys(tags).sort(function(a,b){ return a.localeCompare(b); });
+      tagBar.innerHTML = "";
+      function mk(t,label){
+        var el = document.createElement("button");
+        el.className = "tag" + ((activeTag===t)?" active":"");
+        el.textContent = label;
+        el.type = "button";
+        el.onclick = function(){ activeTag = (activeTag===t)?null:t; currentPage=1; persistState(); render(); };
+        return el;
       }
-    });
-    $('#q').addEventListener('input', ()=>{ currentPage=1; persistState(); render(); });
-    $('#sort').addEventListener('change', ()=>{ currentPage=1; persistState(); render(); });
-    $('#pageSize').addEventListener('change', ()=>{ currentPage=1; persistState(); render(); });
-    $('#prev').onclick = ()=>{ if(currentPage>1){ currentPage--; persistState(); render(); } };
-    $('#next').onclick = ()=>{ currentPage++; persistState(); render(); };
-
-    try{
-      const res = await fetch(POSTS_INDEX_URL, {cache:'no-store'});
-      if(!res.ok) throw new Error('posts.json not found');
-      allPosts = await res.json();
-      allPosts.forEach(p=>{ p.slug = p.slug || toSlug(p.title); });
-      renderTags(allPosts);
-      render();
-    }catch(err){
-      document.getElementById('results').innerHTML = `<p class="meta">Error loading posts: ${err.message}</p>`;
+      if (all.length){
+        tagBar.appendChild(mk(null,"All"));
+        all.forEach(function(t){ tagBar.appendChild(mk(t,t)); });
+      }
     }
+
+    function card(p){
+      var url = p.url || ("/blog/post.html?slug=" + encodeURIComponent(p.slug || toSlug(p.title)));
+      var thumb = p.thumb || THUMB_FALLBACK;
+      var alt = p.thumbAlt || (p.title ? (p.title + " - thumbnail") : "Post thumbnail");
+      var tagPills = (p.tags||[]).map(function(t){ return '<span class="pill">' + escapeHtml(t) + '</span>'; }).join(' ');
+      var metaPieces = [];
+      metaPieces.push(fmtDate(p.date));
+      if (p.readingTime || p.reading_time) metaPieces.push(String(p.readingTime || p.reading_time));
+      metaPieces.push(String(p.author || "JG Walsh"));
+      var metaStr = escapeHtml(metaPieces.join(" - "));
+      var html = ''
+        + '<article class="card">'
+        +   '<a href="' + escapeAttr(url) + '" style="border:0">'
+        +     '<div class="thumb-wrap">'
+        +       '<img src="' + escapeAttr(thumb) + '" alt="' + escapeAttr(alt) + '" loading="lazy" decoding="async" width="1280" height="720">'
+        +     '</div>'
+        +     '<h2>' + escapeHtml(p.title||'') + '</h2>'
+        +   '</a>'
+        +   '<div class="meta">' + metaStr + '</div>'
+        +   '<p class="excerpt">' + escapeHtml(p.summary||'') + '</p>'
+        +   '<div class="card-actions">' + tagPills + '</div>'
+        + '</article>';
+      return html;
+    }
+
+    function render(){
+      var results = $("#results");
+      var pageSize = parseInt($("#pageSize").value,10);
+      var posts = filterSort(allPosts);
+      var totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
+      currentPage = Math.min(currentPage, totalPages);
+      var start = (currentPage-1)*pageSize;
+      var page = posts.slice(start, start+pageSize);
+      if (page.length === 0){
+        results.innerHTML = '<p class="meta">No posts match your filters.</p>';
+      } else {
+        var html = [];
+        for (var i=0;i<page.length;i++){ html.push(card(page[i])); }
+        results.innerHTML = html.join("");
+      }
+      $("#prev").disabled = currentPage<=1;
+      $("#next").disabled = currentPage>=totalPages;
+      $("#pageInfo").textContent = 'Page ' + String(currentPage) + ' / ' + String(totalPages);
+    }
+
+    function persistState(){
+      var params = new URLSearchParams(location.search);
+      var q = $("#q").value.replace(/^\s+|\s+$/g, "");
+      if (q) params.set("q", q); else params.delete("q");
+      if (activeTag) params.set("tag", activeTag); else params.delete("tag");
+      params.set("sort", $("#sort").value);
+      params.set("n", $("#pageSize").value);
+      params.set("p", String(currentPage));
+      var qs = params.toString();
+      history.replaceState(null, "", qs ? ("?"+qs) : location.pathname);
+    }
+    function loadStateFromURL(){
+      var params = new URLSearchParams(location.search);
+      $("#q").value = params.get("q") || "";
+      $("#sort").value = params.get("sort") || "newest";
+      $("#pageSize").value = params.get("n") || "18";
+      activeTag = params.get("tag");
+      currentPage = parseInt(params.get("p")||"1",10);
+    }
+
+    (function init(){
+      $("#y").textContent = new Date().getFullYear();
+      loadStateFromURL();
+      document.addEventListener("keydown", function(e){
+        if (e.key === "/" && String(document.activeElement.tagName||"") !== "INPUT" && String(document.activeElement.tagName||"") !== "TEXTAREA"){ e.preventDefault(); $("#q").focus(); }
+      });
+      $("#q").addEventListener("input", function(){ currentPage=1; persistState(); render(); });
+      $("#sort").addEventListener("change", function(){ currentPage=1; persistState(); render(); });
+      $("#pageSize").addEventListener("change", function(){ currentPage=1; persistState(); render(); });
+      $("#prev").onclick = function(){ if(currentPage>1){ currentPage--; persistState(); render(); } };
+      $("#next").onclick = function(){ currentPage++; persistState(); render(); };
+
+      fetch(POSTS_INDEX_URL, {cache:"no-store"})
+        .then(function(res){ if(!res.ok) throw new Error("posts.json not found"); return res.json(); })
+        .then(function(json){
+          allPosts = json || [];
+          allPosts.forEach(function(p){ p.slug = p.slug || toSlug(p.title); });
+          renderTags(allPosts);
+          render();
+        })
+        .catch(function(err){ document.getElementById("results").innerHTML = '<p class="meta">Error loading posts: ' + escapeHtml(err && err.message ? err.message : String(err)) + '</p>'; });
+    })();
   })();
 </script>
 </body>
