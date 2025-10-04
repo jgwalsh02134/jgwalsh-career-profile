@@ -1,0 +1,48 @@
+{
+  "projects": [
+    {
+      "id": "albany-crime-analysis",
+      "title": "Albany Crime Analysis",
+      "summary": "Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.",
+      "status": "live",
+      "category": ["Investigations","Data"],
+      "tags": ["Albany","crime","dashboard"],
+      "lastUpdated": "2025-09-04",
+      "thumbnail": "/assets/img/projects/albany-crime.png",
+      "links": { "demo": "/projects/albany-crime-analysis/", "repo": "https://github.com/jgwalsh/albany-crime-analysis" }
+    },
+    {
+      "id": "gallery",
+      "title": "Interactive Project Gallery",
+      "summary": "Index of interactive experiments & tools (Threat Triage, Interview Sim, Deception Explorer).",
+      "status": "beta",
+      "category": ["Tools","Design"],
+      "tags": ["UI","experiments","LLM"],
+      "lastUpdated": "2025-09-04",
+      "thumbnail": "/assets/img/projects/gallery.png",
+      "links": { "demo": "/projects/gallery/" }
+    },
+    {
+      "id": "psyber-nexus",
+      "title": "Psyber Nexus",
+      "summary": "Applied behavioral + cyber investigations hub.",
+      "status": "alpha",
+      "category": ["Investigations","Data"],
+      "tags": ["behavioral","influence","mapping"],
+      "lastUpdated": "2025-09-01",
+      "thumbnail": "/assets/img/projects/psyber-nexus.png",
+      "links": { "demo": "/projects/psyber-nexus/" }
+    },
+    {
+      "id": "resource-center",
+      "title": "Resource Center",
+      "summary": "Datasets, documents, and references.",
+      "status": "live",
+      "category": ["Data"],
+      "tags": ["datasets","docs","references"],
+      "lastUpdated": "2025-05-31",
+      "thumbnail": "/assets/img/projects/resource-center.png",
+      "links": { "demo": "/projects/resources/" }
+    }
+  ]
+}

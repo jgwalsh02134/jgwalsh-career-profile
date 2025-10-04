@@ -284,6 +284,10 @@
       </ul>
     </section>
   </main>
+  <section id="projects-root"></section>
+  <div id="site-chat-root"></div>
+  <script type="module" src="/assets/projects-hub/assets/index.js"></script>
+  <script type="module">import("/assets/chatbot/client.js").then(m=>m.mountChat({endpoint:"/api/chat"}));</script>
 
   <footer
     class="site-footer bg-gray-100 dark:bg-slate-950 text-sm text-gray-600 dark:text-slate-400 border-t pt-8 pb-6 px-4 mt-auto">

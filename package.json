@@ -1,0 +1,31 @@
+{
+  "name": "jgwalsh-career-profile",
+  "version": "1.0.0",
+  "description": "![GitHub](https://img.shields.io/badge/Repository-GitHub-181717?logo=github&logoColor=white) ![Cloudflare Pages](https://img.shields.io/badge/Hosted_on-Cloudflare_Pages-F38020?logo=cloudflare&logoColor=white)",
+  "main": "worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgwalsh02134/jgwalsh-career-profile.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jgwalsh02134/jgwalsh-career-profile/issues"
+  },
+  "homepage": "https://github.com/jgwalsh02134/jgwalsh-career-profile#readme",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.1.9"
+  },
+  "dependencies": {
+    "lucide-react": "^0.544.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
