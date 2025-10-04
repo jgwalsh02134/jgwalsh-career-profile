@@ -3,47 +3,190 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title id="t">Post — jgwalsh.com</title>
+  <link id="canonical" rel="canonical" href="https://jgwalsh.com/blog/post.html">
+  <meta name="description" content="An article on psychology, data, and decision-making from jgwalsh.com." />
+
+  <!-- Default OG/Twitter; will be refined by JS once post loads -->
+  <meta property="og:title" content="jgwalsh.com — Blog Post" />
+  <meta property="og:description" content="Behavioral insight and data analysis." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://jgwalsh.com/blog/post.html" />
+  <meta property="og:image" content="/data/blog/thumbs/placeholder.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="jgwalsh.com — Blog Post" />
+  <meta name="twitter:description" content="Behavioral insight and data analysis." />
+  <meta name="twitter:image" content="/data/blog/thumbs/placeholder.svg" />
+
   <style>
-    :root{ --fg:#111; --line:#e5e5e5; --mono: ui-monospace, Menlo, Consolas, monospace; --sans: -apple-system, Inter, Roboto, Arial, sans-serif; }
-    body{margin:0; font-family:var(--sans); color:var(--fg)}
-    .wrap{max-width:840px; margin:0 auto; padding:20px}
-    header{border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:16px}
+    :root{
+      --bg:#ffffff; --fg:#111; --muted:#666; --line:#e5e5e5; --mono: ui-monospace, Menlo, Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      --radius:14px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0e0e0e; --fg:#f5f5f5; --muted:#b7b7b7; --line:#2a2a2a; }
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans)}
     a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--fg)}
-    a:hover{background:var(--fg); color:#fff}
-    .meta{font-family:var(--mono); color:#666; font-size:13px}
-    article{line-height:1.6}
-    article img{max-width:100%; border:1px solid var(--fg)}
+    a:hover, a:focus-visible{background:var(--fg); color:#fff; outline:none}
+    img{max-width:100%; height:auto}
+
+    .wrap{max-width:860px; margin:0 auto; padding:20px}
+    header{border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:18px}
+
+    .crumbs{font-family:var(--mono); font-size:13px; color:var(--muted); margin-bottom:.25rem}
+    .crumbs a{border-bottom:1px dashed var(--fg)}
+    h1{font-size:clamp(26px, 4vw, 34px); line-height:1.15; margin:.25rem 0 .25rem}
+
+    .meta{font-family:var(--mono); color:var(--muted); font-size:13px; margin-bottom:10px}
+    .byline{display:inline}
+    .tag{display:inline-block; margin-left:6px; border:1px solid var(--fg); padding:2px 6px; border-radius:999px; font-size:11px}
+
+    .hero{margin:10px 0 16px 0}
+    .hero img{display:block; width:100%; border:1px solid var(--fg); border-radius:12px}
+
+    article{line-height:1.65; font-size:17px}
+    article h2{font-size:clamp(20px, 3vw, 26px); margin-top:1.25rem}
+    article h3{font-size:clamp(18px, 2.6vw, 22px); margin-top:1rem}
+    article p{margin:.8rem 0}
+    article ul, article ol{padding-left:1.25rem}
+    article blockquote{
+      margin:1rem 0; padding:.75rem 1rem; border-left:4px solid var(--fg); background:rgba(0,0,0,.03)
+    }
+    @media (prefers-color-scheme: dark){
+      article blockquote{ background:rgba(255,255,255,.05) }
+    }
+    article code, pre code{
+      font-family:var(--mono); font-size:.95em; background:rgba(0,0,0,.06); padding:.15em .35em; border-radius:6px
+    }
+    @media (prefers-color-scheme: dark){
+      article code, pre code{ background:rgba(255,255,255,.07) }
+    }
+    pre{
+      overflow:auto; padding:12px; border:1px solid var(--line); border-radius:12px; background:rgba(0,0,0,.04)
+    }
+    table{
+      width:100%; border-collapse:collapse; margin:1rem 0; font-size:.98em
+    }
+    th, td{border:1px solid var(--line); padding:.55rem .6rem; text-align:left}
+    thead th{background:rgba(0,0,0,.05)}
+    @media (prefers-color-scheme: dark){
+      thead th{background:rgba(255,255,255,.06)}
+    }
+
     .back{display:inline-block; margin-top:24px; font-family:var(--mono)}
+    footer{border-top:1px solid var(--line); margin-top:28px; padding-top:12px}
+    .footer-links{display:flex; gap:12px; flex-wrap:wrap; font-family:var(--mono)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <a href="/blog/">&larr; Blog</a>
+    <header role="banner">
+      <nav class="crumbs" aria-label="Breadcrumbs">
+        <a href="/">jgwalsh.com</a> &nbsp;/&nbsp; <a href="/blog/">Blog</a>
+      </nav>
       <h1 id="title">Loading…</h1>
       <div class="meta" id="meta"></div>
+      <figure class="hero" id="heroFigure" hidden>
+        <img id="heroImg" alt="">
+        <figcaption class="meta" id="heroCap" style="font-size:12px"></figcaption>
+      </figure>
     </header>
-    <article id="content">Please wait…</article>
-    <p><a class="back" href="/blog/">&larr; Back to all posts</a></p>
+
+    <article id="content" aria-live="polite">Please wait…</article>
+
+    <p class="back">
+      <a href="/blog/">&larr; Back to all posts</a>
+    </p>
+
+    <footer role="contentinfo">
+      <div class="footer-links">
+        <a href="/">← Back to jgwalsh.com</a>
+        <a href="/blog/">Blog home</a>
+      </div>
+    </footer>
+
+    <noscript><p class="meta">JavaScript is required to load this article.</p></noscript>
   </div>
+
 <script>
 (async function(){
-  const params = new URLSearchParams(location.search);
-  const slug = params.get('slug');
+  const qs = new URLSearchParams(location.search);
+  const slug = qs.get('slug');
   if(!slug){ location.href = '/blog/'; return; }
-  const idx = await fetch('/data/blog/posts.json', {cache:'no-store'}).then(r=>r.json());
-  const post = idx.find(p => (p.slug||'')===slug);
-  if(!post){ document.getElementById('content').textContent = 'Post not found.'; return; }
-  document.getElementById('title').textContent = post.title;
-  document.getElementById('t').textContent = post.title + ' — jgwalsh.com';
-  document.getElementById('meta').textContent =
-    new Date(post.date+'T00:00:00').toLocaleDateString(undefined, {year:'numeric', month:'long', day:'2-digit'}) +
-    (post.author ? (' — ' + post.author) : '') +
-    (post.tags?.length ? (' — ' + post.tags.join(', ')) : '');
+
+  // Fetch manifest
+  let manifest;
+  try{
+    manifest = await fetch('/data/blog/posts.json', {cache:'no-store'}).then(r=>r.json());
+  }catch(e){
+    document.getElementById('content').textContent = 'Error loading manifest.';
+    return;
+  }
+
+  const post = manifest.find(p => (p.slug||'') === slug);
+  if(!post){
+    document.getElementById('content').textContent = 'Post not found.';
+    return;
+  }
+
+  // ---- Title & meta header
+  const titleEl = document.getElementById('title');
+  const titleTag = document.getElementById('t');
+  titleEl.textContent = post.title || 'Untitled';
+  titleTag.textContent = (post.title || 'Post') + ' — jgwalsh.com';
+
+  const metaEl = document.getElementById('meta');
+  const dateStr = post.date ? new Date(post.date+'T00:00:00').toLocaleDateString(undefined, {year:'numeric', month:'long', day:'2-digit'}) : '';
+  const bits = [dateStr, post.author || 'JG Walsh', post.readingTime || '~3 min'].filter(Boolean);
+  metaEl.innerHTML = bits.join(' &middot; ') +
+    (post.tags?.length ? ' &nbsp; ' + post.tags.map(t=>`<span class="tag">${t}</span>`).join(' ') : '');
+
+  // ---- Hero image (optional)
+  const heroUrl = post.hero || post.thumb;
+  if (heroUrl){
+    const fig = document.getElementById('heroFigure');
+    const img = document.getElementById('heroImg');
+    const cap = document.getElementById('heroCap');
+    img.src = heroUrl;
+    img.width = 1280; img.height = 720; // helps CLS
+    img.loading = 'eager'; img.decoding = 'async';
+    img.alt = post.heroAlt || post.thumbAlt || (post.title ? `${post.title} — hero image` : 'Post hero');
+    cap.textContent = post.heroAlt || '';
+    fig.hidden = false;
+  }
+
+  // ---- Load body HTML
   const bodyUrl = post.bodyUrl || (`/data/blog/${encodeURIComponent(slug)}.html`);
-  const res = await fetch(bodyUrl, {cache:'no-store'});
-  document.getElementById('content').innerHTML = res.ok ? await res.text() : 'Missing post body file.';
+  try{
+    const res = await fetch(bodyUrl, {cache:'no-store'});
+    const html = res.ok ? await res.text() : 'Missing post body file.';
+    document.getElementById('content').innerHTML = html;
+  }catch(e){
+    document.getElementById('content').textContent = 'Error loading post body.';
+  }
+
+  // ---- Canonical + social meta updates
+  const canonicalHref = `https://jgwalsh.com/blog/post.html?slug=${encodeURIComponent(slug)}`;
+  const setAttr = (sel, attr, val) => { const el = document.querySelector(sel); if(el) el.setAttribute(attr, val); };
+
+  setAttr('#canonical','href', canonicalHref);
+  setAttr('meta[property="og:url"]','content', canonicalHref);
+  setAttr('meta[property="og:title"]','content', post.title || 'jgwalsh.com — Blog Post');
+  setAttr('meta[name="twitter:title"]','content', post.title || 'jgwalsh.com — Blog Post');
+
+  const desc = post.summary || 'Behavioral insight and data analysis.';
+  setAttr('meta[name="description"]','content', desc);
+  setAttr('meta[property="og:description"]','content', desc);
+  setAttr('meta[name="twitter:description"]','content', desc);
+
+  const img = post.hero || post.thumb || '/data/blog/thumbs/placeholder.svg';
+  setAttr('meta[property="og:image"]','content', img);
+  setAttr('meta[name="twitter:image"]','content', img);
 })();
 </script>
 </body>
