@@ -48,7 +48,7 @@ function wireCounters() { const nar = $('#narrative'), out = $('#countNarrative'
 async function analyzeWithAI() {
     const nar = $('#narrative')?.value?.trim() || ''; if (!nar) return toast('Add a narrative first.');
     const prompt = [{ role: 'system', content: 'You are an analyst assisting with threat triage. Extract entities, summarize risk, and suggest next steps concisely.' }, { role: 'user', content: `Narrative:\n${nar}` }];
-    try { const r = await fetch('/api/triage-chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: prompt }) }); const j = await r.json(); const reply = j?.choices?.[0]?.message?.content || 'No content returned.'; setVal('notes', ($('#notes')?.value ? $('#notes').value + '\n\n' : '') + reply); toast('AI analysis added to notes.'); } catch (e) { console.error(e); toast('AI analysis failed.'); }
+    try { const r = await fetch('/api/triage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: prompt }) }); const j = await r.json(); const reply = j?.choices?.[0]?.message?.content || 'No content returned.'; setVal('notes', ($('#notes')?.value ? $('#notes').value + '\n\n' : '') + reply); toast('AI analysis added to notes.'); } catch (e) { console.error(e); toast('AI analysis failed.'); }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
