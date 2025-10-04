@@ -3,8 +3,11 @@
   <url><loc>$base/404.html</loc></url>
   <url><loc>$base/about.html</loc></url>
   <url><loc>$base/assets/favicon/</loc></url>
+  <url><loc>$base/blog/</loc></url>
+  <url><loc>$base/blog/post.html</loc></url>
   <url><loc>$base/case_resolution_sankey_2024.html</loc></url>
   <url><loc>$base/contact.html</loc></url>
+  <url><loc>$base/data/blog/welcome-to-the-blog.html</loc></url>
   <url><loc>$base/experience.html</loc></url>
   <url><loc>$base/functions/public/</loc></url>
   <url><loc>$base/</loc></url>
