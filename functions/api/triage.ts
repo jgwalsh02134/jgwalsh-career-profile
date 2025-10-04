@@ -4,7 +4,7 @@ export const onRequestOptions: PagesFunction = async () =>
 export const onRequestPost: PagesFunction = async ({ request, env }) => {
   try {
     const body = await request.json();
-    const apiKey = env.OPENAI_API_KEY; // for /projects/threat-triage
+    const apiKey = env.OPENAI_API_KEY; // used by /projects/threat-triage
     if (!apiKey) return json({ error: "Missing OPENAI_API_KEY" }, 500);
 
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -15,13 +15,9 @@ export const onRequestPost: PagesFunction = async ({ request, env }) => {
       },
       body: JSON.stringify(body)
     });
-
     return new Response(r.body, {
       status: r.status,
-      headers: {
-        ...corsHeaders(),
-        "Content-Type": r.headers.get("content-type") || "application/json"
-      }
+      headers: { ...corsHeaders(), "Content-Type": r.headers.get("content-type") || "application/json" }
     });
   } catch (e: any) {
     return json({ error: e?.message || "triage error" }, 500);

@@ -678,7 +678,7 @@
     }
   </style>
   <script type="module">
-    const ENDPOINT = "/api/triage-chat"; // Threat Triage endpoint (uses OPENAI_API_KEY)
+    const ENDPOINT = "/api/triage"; // Threat Triage endpoint (uses OPENAI_API_KEY)
     const btn = Object.assign(document.createElement('button'), { className: 'triage-chat-launcher', textContent: '✦', ariaLabel: 'Open chat' });
     const panel = document.createElement('div'); panel.className = 'triage-chat-panel';
     panel.innerHTML = `\n    <div class="triage-chat-header">Ask about Threat Triage</div>\n    <div class="triage-chat-body" id="triage-body">\n      <div class="triage-msg triage-bot">Hi! I can help you explore the Threat Triage tools and docs.</div>\n    </div>\n    <form class="triage-chat-form" id="triage-form">\n      <input class="triage-chat-input" id="triage-input" placeholder="Type your question…" autocomplete="off" />\n      <button class="triage-send-btn">Send</button>\n    </form>`;
