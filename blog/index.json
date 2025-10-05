@@ -1,0 +1,6 @@
+{
+  "_note": "blog/index.json — feed manifest for blog posts",
+  "version": 1,
+  "postsUrl": "/data/blog/posts.json",
+  "updated": "2025-10-04"
+}

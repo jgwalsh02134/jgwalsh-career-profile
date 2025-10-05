@@ -4,303 +4,98 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Blog — jgwalsh.com</title>
-  <link rel="canonical" href="https://jgwalsh.com/blog/">
+  <link rel="canonical" href="https://jgwalsh.com/blog/" />
   <meta name="description" content="Articles at the intersection of psychology, technology, AI, finance, law, and law enforcement—where human behavior meets data and decision-making." />
 
   <!-- Basic OG -->
-  <meta property="og:title" content="Blog — jgwalsh.com">
-  <meta property="og:description" content="Behavioral insight + data analysis across AI/tech, finance, markets, and law enforcement.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://jgwalsh.com/blog/">
+  <meta property="og:title" content="Blog — jgwalsh.com" />
+  <meta property="og:description" content="Behavioral insight + data analysis across AI/tech, finance, markets, and law enforcement." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://jgwalsh.com/blog/" />
 
-  <style>
-    :root{
-      --bg:#fff; --fg:#111; --muted:#666; --line:#e5e5e5; --accent:#000;
-      --radius:16px; --shadow:0 2px 0 #000;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{ --bg:#0e0e0e; --fg:#f5f5f5; --muted:#b7b7b7; --line:#2a2a2a; --accent:#fff; }
-    }
-    *{box-sizing:border-box}
-    html,body{background:var(--bg); color:var(--fg); margin:0; padding:0; font-family:var(--sans)}
-    a{color:var(--fg); text-decoration:none; border-bottom:1px solid var(--fg)}
-    a:hover, a:focus-visible{background:var(--fg); color:#fff; outline:none}
-    img{max-width:100%; height:auto}
-
-    header{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter:saturate(120%) blur(6px);
-      background:rgba(255,255,255,.9);
-      border-bottom:1px solid var(--line);
-    }
-    @media (prefers-color-scheme: dark){
-      header{ background:rgba(14,14,14,.9); }
-    }
-    .wrap{max-width:1100px; margin:0 auto; padding:16px}
-
-    .brand{display:flex; align-items:center; gap:12px}
-    .brand-link{display:flex; align-items:center; gap:12px; border:0}
-    .logo{width:28px; height:28px; border:2px solid var(--fg); border-radius:6px; box-shadow:var(--shadow)}
-    .brand h1{font-family:var(--mono); font-size:18px; margin:0; letter-spacing:.4px}
-
-    .toolbar{display:grid; gap:10px; grid-template-columns: 1fr; padding:16px 0; border-top:1px dashed var(--line)}
-    @media(min-width:720px){ .toolbar{grid-template-columns: 1fr auto auto} }
-    .field{
-      display:flex; align-items:center; gap:8px; border:1px solid var(--fg);
-      border-radius:12px; padding:10px 12px; background:var(--bg); box-shadow:var(--shadow)
-    }
-    .field input, .field select{border:0; outline:0; width:100%; font:inherit; background:transparent; color:var(--fg)}
-    .field input::placeholder{color:var(--muted)}
-
-    .intro{margin:16px 0 8px 0}
-    .intro h2{font-size:20px; margin:.25rem 0 .5rem 0; font-family:var(--mono)}
-    .intro p{color:var(--fg); line-height:1.55}
-
-    .tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
-    .tag{
-      border:1px solid var(--fg); padding:6px 10px; border-radius:999px; font-family:var(--mono);
-      cursor:pointer; user-select:none; background:transparent
-    }
-    .tag.active{background:var(--fg); color:#fff}
-
-    .grid{display:grid; gap:16px; grid-template-columns:1fr}
-    @media(min-width:720px){ .grid{grid-template-columns:1fr 1fr} }
-    @media(min-width:1040px){ .grid{grid-template-columns:1fr 1fr 1fr} }
-
-    article.card{
-      border:2px solid var(--fg); border-radius:var(--radius); padding:14px; background:var(--bg); box-shadow:var(--shadow)
-    }
-    .thumb-wrap{position:relative; border:1px solid var(--fg); border-radius:12px; overflow:hidden; margin-bottom:10px; background:var(--bg)}
-    .thumb-wrap::after{content:""; display:block; aspect-ratio:16/9;}
-    .thumb-wrap img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
-    @media (prefers-reduced-data: reduce) { .thumb-wrap img{object-fit:contain} }
-
-    article h2{margin:0 0 6px 0; font-size:20px; line-height:1.2}
-    .meta{color:var(--muted); font-family:var(--mono); font-size:12px; margin:6px 0 10px}
-    .excerpt{color:var(--fg); line-height:1.5; margin:0 0 6px 0}
-    .card-actions{margin-top:10px}
-    .pill{display:inline-block; font-family:var(--mono); font-size:12px; border:1px solid var(--fg); border-radius:999px; padding:4px 8px; margin-right:6px}
-
-    .pager{display:flex; gap:10px; justify-content:center; margin:22px 0}
-    .btn{border:2px solid var(--fg); background:transparent; border-radius:12px; padding:8px 12px; font-family:var(--mono); cursor:pointer; box-shadow:var(--shadow)}
-    .btn[disabled]{opacity:.35; cursor:not-allowed}
-
-    footer{border-top:1px solid var(--line); margin-top:24px; color:var(--muted); font-family:var(--mono)}
-    .footer-links{display:flex; gap:12px; flex-wrap:wrap}
-  </style>
+  <link rel="alternate" type="application/json" href="/blog/index.json" title="jgwalsh.com Blog feed" />
+  <link rel="preload" as="image" type="image/svg+xml" href="/assets/images/blog/blog-logo-1.svg" />
+  <link rel="stylesheet" href="/blog/blog.css" />
 </head>
-<body>
-<header role="banner">
-  <div class="wrap">
-    <div class="brand">
-      <!-- Home link wraps logo + title -->
-      <a href="/" aria-label="jgwalsh.com — Home" class="brand-link">
-        <img class="logo" src="/assets/images/blog/blog-logo-1.svg" alt="" aria-hidden="true">
-        <h1>Blog — jgwalsh.com</h1>
-      </a>
-    </div>
+<body data-page="blog-index">
+  <a class="skip-link" href="#blog-main">Skip to content</a>
 
-    <!-- Blog intro -->
-    <section class="intro" aria-labelledby="intro-heading">
-      <h2 id="intro-heading">Exploring Human Behavior in a Data-Driven World</h2>
-      <p>
-        The <strong>jgwalsh.com Blog</strong> examines psychology where it intersects with the systems that shape modern life—technology, AI, finance, markets, crime, and law enforcement.
-        Each article connects behavioral insight with empirical analysis to reveal the human element behind algorithms, incentives, and institutions.
-      </p>
+  <header class="site-header" role="banner">
+    <div class="layout-wrap">
+      <div class="brand">
+        <a class="brand__link" href="/" aria-label="jgwalsh.com — Home">
+          <img class="brand__logo" src="/assets/images/blog/blog-logo-1.svg" alt="" aria-hidden="true" />
+          <h1>Blog — jgwalsh.com</h1>
+        </a>
+      </div>
+
+      <section class="intro" aria-labelledby="intro-heading">
+        <h2 id="intro-heading">Exploring Human Behavior in a Data-Driven World</h2>
+        <p>
+          The <strong>jgwalsh.com Blog</strong> examines psychology where it intersects with the systems that shape modern life—technology, AI, finance, markets, crime, and law enforcement. Each article connects behavioral insight with empirical analysis to reveal the human element behind algorithms, incentives, and institutions.
+        </p>
+      </section>
+
+      <div class="toolbar" data-toolbar>
+        <label class="control" for="blog-search">
+          <span>Search</span>
+          <input id="blog-search" type="search" placeholder="Search title, summary, or tag…" autocomplete="off" aria-label="Search posts" />
+        </label>
+        <label class="control" for="blog-sort">
+          <span>Sort</span>
+          <select id="blog-sort" aria-label="Sort posts">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">Title A→Z</option>
+          </select>
+        </label>
+        <label class="control" for="blog-density">
+          <span>Density</span>
+          <select id="blog-density" aria-label="Change card density">
+            <option value="comfortable">Comfortable</option>
+            <option value="cozy">Cozy</option>
+            <option value="compact">Compact</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="tag-row" id="tagBar" aria-label="Filter by tag" role="group"></div>
+    </div>
+  </header>
+
+  <main id="blog-main" class="layout-wrap" role="main">
+    <section class="post-list" aria-live="polite">
+      <ul class="post-list__fallback" data-fallback aria-label="Blog posts">
+        <li>
+          <article>
+            <h2><a href="/blog/post.html?slug=welcome-to-the-blog">Welcome to the Blog</a></h2>
+            <p class="meta"><time datetime="2025-10-04">October 4, 2025</time> · 2 min · JG Walsh</p>
+            <p>What I’ll publish here: field notes on psychology, data, and investigative craft.</p>
+            <p class="meta">Tags: intro, site</p>
+          </article>
+        </li>
+      </ul>
+
+      <div class="post-grid" data-listing hidden aria-hidden="true"></div>
     </section>
 
-    <!-- Controls -->
-    <div class="toolbar" id="toolbar">
-      <label class="field" title="Search posts" for="q">
-        <span style="font-family:var(--mono)">/</span>
-        <input id="q" type="search" placeholder="Search title, summary, or tag…" autocomplete="off" aria-label="Search posts">
-      </label>
-      <label class="field" title="Sort">
-        <select id="sort" aria-label="Sort">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="title">Title A→Z</option>
-        </select>
-      </label>
-      <label class="field" title="Items per page">
-        <select id="pageSize" aria-label="Items per page">
-          <option>9</option>
-          <option>12</option>
-          <option selected>18</option>
-          <option>24</option>
-        </select>
-      </label>
+    <nav class="pager" data-pager aria-label="Pagination">
+      <button type="button" data-prev>Previous</button>
+      <span data-page-info>Page 1 of 1</span>
+      <button type="button" data-next>Next</button>
+    </nav>
+  </main>
+
+  <footer class="site-footer layout-wrap" role="contentinfo">
+    <div class="site-footer__links">
+      <a href="/">← Back to jgwalsh.com</a>
+      <a href="/blog/" aria-current="page">Blog home</a>
     </div>
+    <p>© <span data-year></span> James Gregory Walsh — Psychology • Data • Investigative Work</p>
+    <noscript><p>The enhanced layout requires JavaScript. A basic list of posts is shown above.</p></noscript>
+  </footer>
 
-    <!-- Tag bar -->
-    <div class="wrap" style="padding-top:8px; padding-left:0; padding-right:0">
-      <div class="tags" id="tagBar" aria-label="Tags"></div>
-    </div>
-  </div>
-</header>
-
-<main class="wrap" style="padding-top:16px" role="main">
-  <section id="results" class="grid" aria-live="polite"></section>
-
-  <nav class="pager" aria-label="Pagination">
-    <button class="btn" id="prev">Prev</button>
-    <div class="btn" id="pageInfo" aria-live="polite">Page 1</div>
-    <button class="btn" id="next">Next</button>
-  </nav>
-</main>
-
-<footer class="wrap" role="contentinfo">
-  <div class="footer-links">
-    <a href="/" aria-label="Back to jgwalsh.com">← Back to jgwalsh.com</a>
-    <a href="/blog/" aria-current="page">Blog home</a>
-  </div>
-  <p style="margin-top:8px">© <span id="y"></span> James Gregory Walsh — Psychology • Data • Investigative Work</p>
-  <noscript><p class="meta">JavaScript is required to load the post list.</p></noscript>
-</footer>
-
-<script>
-  (function(){
-    var POSTS_INDEX_URL = "/data/blog/posts.json";
-    var THUMB_FALLBACK = "/data/blog/thumbs/placeholder.svg";
-    var allPosts = [];
-    var activeTag = null;
-    var currentPage = 1;
-
-    function $(s){ return document.querySelector(s); }
-    function fmtDate(iso){ var d=new Date(String(iso||"")+"T00:00:00"); return d.toLocaleDateString(undefined,{year:"numeric", month:"short", day:"2-digit"}); }
-    function toSlug(s){ return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,""); }
-    function escapeHtml(s){ s = String(s==null?"":s); return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-    function escapeAttr(s){ s = String(s==null?"":s); return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
-    function filterSort(posts){
-      var q = $("#q").value.replace(/^\s+|\s+$/g, "").toLowerCase();
-      var sort = $("#sort").value;
-      var out = posts.slice();
-      if (activeTag) out = out.filter(function(p){ return (p.tags||[]).indexOf(activeTag) !== -1; });
-      if (q) out = out.filter(function(p){
-        var title = String(p.title||"").toLowerCase();
-        var summary = String(p.summary||"").toLowerCase();
-        var tags = (p.tags||[]).join(" ").toLowerCase();
-        return title.indexOf(q)!==-1 || summary.indexOf(q)!==-1 || tags.indexOf(q)!==-1;
-      });
-      out.sort(function(a,b){
-        if (sort === "oldest") return (a.date > b.date) ? 1 : -1;
-        if (sort === "title") return String(a.title||"").localeCompare(String(b.title||""));
-        return (a.date < b.date) ? 1 : -1;
-      });
-      return out;
-    }
-
-    function renderTags(posts){
-      var tagBar = $("#tagBar");
-      var tags = {};
-      posts.forEach(function(p){ (p.tags||[]).forEach(function(t){ tags[t]=true; }); });
-      var all = Object.keys(tags).sort(function(a,b){ return a.localeCompare(b); });
-      tagBar.innerHTML = "";
-      function mk(t,label){
-        var el = document.createElement("button");
-        el.className = "tag" + ((activeTag===t)?" active":"");
-        el.textContent = label;
-        el.type = "button";
-        el.onclick = function(){ activeTag = (activeTag===t)?null:t; currentPage=1; persistState(); render(); };
-        return el;
-      }
-      if (all.length){
-        tagBar.appendChild(mk(null,"All"));
-        all.forEach(function(t){ tagBar.appendChild(mk(t,t)); });
-      }
-    }
-
-    function card(p){
-      var url = p.url || ("/blog/post.html?slug=" + encodeURIComponent(p.slug || toSlug(p.title)));
-      var thumb = p.thumb || THUMB_FALLBACK;
-      var alt = p.thumbAlt || (p.title ? (p.title + " - thumbnail") : "Post thumbnail");
-      var tagPills = (p.tags||[]).map(function(t){ return '<span class="pill">' + escapeHtml(t) + '</span>'; }).join(' ');
-      var metaPieces = [];
-      metaPieces.push(fmtDate(p.date));
-      if (p.readingTime || p.reading_time) metaPieces.push(String(p.readingTime || p.reading_time));
-      metaPieces.push(String(p.author || "JG Walsh"));
-      var metaStr = escapeHtml(metaPieces.join(" - "));
-      var html = ''
-        + '<article class="card">'
-        +   '<a href="' + escapeAttr(url) + '" style="border:0">'
-        +     '<div class="thumb-wrap">'
-        +       '<img src="' + escapeAttr(thumb) + '" alt="' + escapeAttr(alt) + '" loading="lazy" decoding="async" width="1280" height="720">'
-        +     '</div>'
-        +     '<h2>' + escapeHtml(p.title||'') + '</h2>'
-        +   '</a>'
-        +   '<div class="meta">' + metaStr + '</div>'
-        +   '<p class="excerpt">' + escapeHtml(p.summary||'') + '</p>'
-        +   '<div class="card-actions">' + tagPills + '</div>'
-        + '</article>';
-      return html;
-    }
-
-    function render(){
-      var results = $("#results");
-      var pageSize = parseInt($("#pageSize").value,10);
-      var posts = filterSort(allPosts);
-      var totalPages = Math.max(1, Math.ceil(posts.length / pageSize));
-      currentPage = Math.min(currentPage, totalPages);
-      var start = (currentPage-1)*pageSize;
-      var page = posts.slice(start, start+pageSize);
-      if (page.length === 0){
-        results.innerHTML = '<p class="meta">No posts match your filters.</p>';
-      } else {
-        var html = [];
-        for (var i=0;i<page.length;i++){ html.push(card(page[i])); }
-        results.innerHTML = html.join("");
-      }
-      $("#prev").disabled = currentPage<=1;
-      $("#next").disabled = currentPage>=totalPages;
-      $("#pageInfo").textContent = 'Page ' + String(currentPage) + ' / ' + String(totalPages);
-    }
-
-    function persistState(){
-      var params = new URLSearchParams(location.search);
-      var q = $("#q").value.replace(/^\s+|\s+$/g, "");
-      if (q) params.set("q", q); else params.delete("q");
-      if (activeTag) params.set("tag", activeTag); else params.delete("tag");
-      params.set("sort", $("#sort").value);
-      params.set("n", $("#pageSize").value);
-      params.set("p", String(currentPage));
-      var qs = params.toString();
-      history.replaceState(null, "", qs ? ("?"+qs) : location.pathname);
-    }
-    function loadStateFromURL(){
-      var params = new URLSearchParams(location.search);
-      $("#q").value = params.get("q") || "";
-      $("#sort").value = params.get("sort") || "newest";
-      $("#pageSize").value = params.get("n") || "18";
-      activeTag = params.get("tag");
-      currentPage = parseInt(params.get("p")||"1",10);
-    }
-
-    (function init(){
-      $("#y").textContent = new Date().getFullYear();
-      loadStateFromURL();
-      document.addEventListener("keydown", function(e){
-        if (e.key === "/" && String(document.activeElement.tagName||"") !== "INPUT" && String(document.activeElement.tagName||"") !== "TEXTAREA"){ e.preventDefault(); $("#q").focus(); }
-      });
-      $("#q").addEventListener("input", function(){ currentPage=1; persistState(); render(); });
-      $("#sort").addEventListener("change", function(){ currentPage=1; persistState(); render(); });
-      $("#pageSize").addEventListener("change", function(){ currentPage=1; persistState(); render(); });
-      $("#prev").onclick = function(){ if(currentPage>1){ currentPage--; persistState(); render(); } };
-      $("#next").onclick = function(){ currentPage++; persistState(); render(); };
-
-      fetch(POSTS_INDEX_URL, {cache:"no-store"})
-        .then(function(res){ if(!res.ok) throw new Error("posts.json not found"); return res.json(); })
-        .then(function(json){
-          allPosts = json || [];
-          allPosts.forEach(function(p){ p.slug = p.slug || toSlug(p.title); });
-          renderTags(allPosts);
-          render();
-        })
-        .catch(function(err){ document.getElementById("results").innerHTML = '<p class="meta">Error loading posts: ' + escapeHtml(err && err.message ? err.message : String(err)) + '</p>'; });
-    })();
-  })();
-</script>
+  <script src="/blog/blog.js" defer></script>
+  <!-- blog/index.html — responsive blog index template -->
 </body>
 </html>
