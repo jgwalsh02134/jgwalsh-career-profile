@@ -452,38 +452,42 @@ select {
   flex-wrap: wrap;
 }
 
+.site-footer__copy {
+  display: block;
+  margin-top: var(--space-sm);
+  text-align: center;
+  font-size: var(--step--1);
+}
+
 .footer-badges {
+  margin-top: 12px;
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
-  flex-wrap: wrap;
-  margin-top: var(--space-sm);
+  justify-content: center;
+  gap: 8px;
 }
 
 .footer-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  padding: var(--space-2xs);
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.footer-badge img {
-  width: 100%;
-  height: 100%;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
+  display: inline-block;
+  filter: saturate(1.1) brightness(1);
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  opacity: 0.9;
 }
 
 .footer-badge:hover,
-.footer-badge:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 0.9rem 2rem rgba(15, 23, 42, 0.18);
+.footer-badges a:focus-visible .footer-badge {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .footer-badge {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 .blog-prose {
