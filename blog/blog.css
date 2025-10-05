@@ -452,6 +452,40 @@ select {
   flex-wrap: wrap;
 }
 
+.footer-badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  margin-top: var(--space-sm);
+}
+
+.footer-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: var(--space-2xs);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.footer-badge:hover,
+.footer-badge:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 0.9rem 2rem rgba(15, 23, 42, 0.18);
+}
+
 .blog-prose {
   font-size: var(--step-0);
   line-height: 1.7;
