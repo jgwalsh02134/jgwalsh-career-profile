@@ -452,38 +452,98 @@ select {
   flex-wrap: wrap;
 }
 
-.footer-badges {
+.site-footer__copy {
+  display: block;
+  margin-top: var(--space-sm);
+  text-align: center;
+  font-size: var(--step--1);
+}
+
+/* ========== Badge System ========== */
+.badge-row {
   display: flex;
-  align-items: center;
-  gap: var(--space-xs);
   flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
   margin-top: var(--space-sm);
 }
 
-.footer-badge {
+.badge {
+  --h: 26px;
+  --px: 10px;
+  --fg: #0b0f1a;
+  --bg: #e9eef4;
+  --bd: #d6dee8;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+  gap: 6px;
+  height: var(--h);
+  padding: 0 var(--px);
+  border: 1px solid var(--bd);
   background: var(--bg);
-  padding: var(--space-2xs);
-  box-shadow: var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: var(--fg);
+  border-radius: 9999px;
+  font: 600 12.5px/1.1 ui-sans-serif, system-ui, -apple-system, Inter, Roboto, Arial, sans-serif;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-.footer-badge img {
-  width: 100%;
-  height: 100%;
+.badge .i {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
   object-fit: contain;
 }
 
-.footer-badge:hover,
-.footer-badge:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 0.9rem 2rem rgba(15, 23, 42, 0.18);
+.badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 10px rgba(10, 18, 40, 0.08);
+}
+
+.badge:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.badge.--sm {
+  --h: 22px;
+  --px: 8px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .badge {
+    --h: 24px;
+    --px: 9px;
+  }
+}
+
+.badge.-siena {
+  --bg: #e7f5ed;
+  --bd: #cdebdc;
+  --fg: #006341;
+}
+
+.badge.-bu {
+  --bg: #ffe9ea;
+  --bd: #ffd4d7;
+  --fg: #cc0000;
+}
+
+.badge.-orcid {
+  --bg: #eaffe5;
+  --bd: #c6efbb;
+  --fg: #2e7d32;
+}
+
+.badge.-email {
+  --bg: #f5f3ff;
+  --bd: #e4e1ff;
+  --fg: #5b21b6;
 }
 
 .blog-prose {
