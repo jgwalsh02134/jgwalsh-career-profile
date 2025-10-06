@@ -68,13 +68,13 @@
         </label>
       </div>
 
-      <div class="tag-row" id="tagBar" aria-label="Filter by tag" role="group"></div>
+  <nav class="tag-row" id="tagBar" aria-label="Filter by tag"></nav>
     </div>
   </header>
 
   <main id="blog-main" class="layout-wrap" role="main">
     <section class="post-list" aria-live="polite">
-      <ul class="post-list__fallback" data-fallback aria-label="Blog posts" role="list">
+  <ul class="post-list__fallback" data-fallback aria-label="Blog posts">
         <li>
           <article>
             <h2><a href="/blog/post.html?slug=welcome-to-the-blog">Welcome to the Blog</a></h2>
@@ -101,20 +101,26 @@
       <a href="/blog/" aria-current="page">Blog home</a>
     </div>
     <small class="site-footer__copy">© <span data-year></span> James Gregory Walsh — Psychology and Data Analysis for Informed Decisions</small>
-    <div class="badge-row" aria-label="Profiles &amp; contacts">
-      <a class="badge -siena" href="mailto:j11wals@alum.siena.edu" title="Email (Siena Alumni)">
-        <img class="i" src="/assets/icons/SIENa-S-center.svg" alt="" aria-hidden="true" loading="lazy" />
-        Siena Alumni
-      </a>
-      <a class="badge -bu" href="mailto:jgwalsh@bu.edu" title="Email (Boston University)">
-        <img class="i" src="/assets/icons/bu-logo.svg" alt="" aria-hidden="true" loading="lazy" />
-        Boston University
-      </a>
-      <a class="badge -orcid" href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener noreferrer" title="ORCID Profile">
-        <img class="i" src="/assets/icons/ocid-logo.svg" alt="" aria-hidden="true" loading="lazy" />
-        ORCID: 0000-0002-4420-5724
-      </a>
-    </div>
+    <nav aria-label="Alumni &amp; profile badges">
+      <ul class="badges-wrap">
+        <li>
+          <a class="badge" href="mailto:j11wals@alum.siena.edu" aria-label="Email J.G. Walsh via Siena alumni">
+            <img src="/assets/icons/SIENa-S-center.svg" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </li>
+        <li>
+          <a class="badge" href="mailto:jgwalsh@bu.edu" aria-label="Email J.G. Walsh via Boston University">
+            <img src="/assets/icons/bu-logo.svg" alt="" aria-hidden="true" loading="lazy" />
+          </a>
+        </li>
+        <li>
+          <a class="badge badge--text" href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener noreferrer" aria-label="View the ORCID profile for J.G. Walsh">
+            <img src="/assets/icons/ocid-logo.svg" alt="" aria-hidden="true" loading="lazy" />
+            <span>ORCID&nbsp;0000-0002-4420-5724</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
     <noscript><p>The enhanced layout requires JavaScript. A basic list of posts is shown above.</p></noscript>
   </footer>
 
