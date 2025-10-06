@@ -168,11 +168,15 @@ article.card {
 [data-pager] button[disabled] { opacity: .35; cursor: not-allowed; }
 
 /* Footer badges */
-footer .footer-badges,
-.badge-row {
+.badges-wrap {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: var(--space-sm) 0 0;
 }
 
 /* Fade-in for results */
@@ -184,7 +188,7 @@ footer .footer-badges,
   .toolbar, [data-toolbar] { flex-direction: column; gap: 8px; }
   .toolbar select, .toolbar input, [data-toolbar] select, [data-toolbar] input { width: 100%; }
   .post-list article { margin: 0 0 16px; }
-  footer .footer-badges, .badge-row { flex-wrap: wrap; justify-content: center; }
+  .badges-wrap { flex-wrap: wrap; justify-content: center; }
   h1 { font-size: 1.5rem; line-height: 1.2; }
   h2 { font-size: 1.25rem; }
   p { font-size: 1rem; line-height: 1.5; }
