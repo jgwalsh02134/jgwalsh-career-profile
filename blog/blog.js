@@ -48,6 +48,9 @@
       }
     } catch (manifestError) {
       console.warn('Unable to load blog manifest:', manifestError);
+      if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+        console.info('You appear to be offline — showing fallback content if available.');
+      }
     }
 
     try {
@@ -234,7 +237,7 @@
       }
 
       if (pager) {
-        const hidePager = totalPages <= 1;
+        const hidePager = totalPages <= 1 && filtered.length <= pageSize;
         pager.style.display = hidePager ? 'none' : 'flex';
         pager.setAttribute('aria-hidden', hidePager ? 'true' : 'false');
       }
@@ -245,11 +248,13 @@
         return;
       }
 
-      const tags = new Set();
+      const tagCounts = new Map();
       allPosts.forEach((post) => {
-        (post.tags || []).forEach((tag) => tags.add(tag));
+        (post.tags || []).forEach((tag) => {
+          tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+        });
       });
-
+      const tags = new Set(tagCounts.keys());
       const sortedTags = Array.from(tags).sort((a, b) => a.localeCompare(b));
       tagBar.innerHTML = '';
 
@@ -261,7 +266,8 @@
       fragment.appendChild(allButton);
 
       sortedTags.forEach((tag) => {
-        const button = createTagButton(tag, tag);
+        const label = `${tag} (${tagCounts.get(tag) || 0})`;
+        const button = createTagButton(label, tag);
         buttons.push(button);
         fragment.appendChild(button);
       });

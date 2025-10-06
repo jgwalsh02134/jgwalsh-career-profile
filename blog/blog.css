@@ -191,6 +191,49 @@ footer .footer-badges,
 .footer-badge { width: 26px; height: 26px; object-fit: contain; }
 @media (max-width: 480px) { .footer-badge { width: 22px; height: 22px; } }
 
+/* === Mobile tightening & toolbar alignment === */
+@media (max-width: 480px) {
+  body { padding: 0 8px; }
+  .layout-wrap { padding: 0; }
+  .toolbar { padding: 8px; }
+  .post-card { padding: 0.85rem; }
+}
+
+/* Align toolbar labels & controls on wider screens */
+@media (min-width: 640px) {
+  .toolbar label.control {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .toolbar label.control span {
+    min-width: 70px;
+  }
+}
+
+/* Smoother horizontal scroll on tag row */
+.tag-row {
+  scroll-behavior: smooth;
+  padding-inline: var(--space-xs);
+}
+
+/* Safer thumbnail behavior: keep 16:9 but allow contain on very small screens */
+.post-card__thumb img {
+  object-fit: cover;
+  aspect-ratio: 16 / 9;
+}
+@media (max-width: 600px) {
+  .post-card__thumb img {
+    object-fit: contain;
+  }
+}
+
+/* Footer badges: normalize on narrow screens */
+@media (max-width: 480px) {
+  .badge { --h: 22px; --px: 6px; font-size: 11.5px; }
+  .badge .i { width: 12px; height: 12px; }
+}
+
 :root {
   color-scheme: light dark;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
