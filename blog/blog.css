@@ -4,8 +4,17 @@
 html, body {
   max-width: 100%;
 }
+
 body {
+  margin: 0;
+  color: var(--fg, #111);
+  font-family: var(--font-sans, -apple-system, Inter, Roboto, Arial, sans-serif);
+  background: var(--bg, #fff);
   overflow-x: hidden; /* remove horizontal scroll on small screens */
+  min-height: 100vh;
+  font-size: var(--step-0);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
 }
 
 /* Wrappers */
@@ -23,16 +32,17 @@ body {
   margin: 0;
 }
 .brand__link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  border: 0;
+  color: inherit;
 }
 .brand__logo {
   width: 28px;
   height: 28px;
-  display: inline-block;
+  display: block;
+  object-fit: contain;
 }
 
 /* Toolbar */
@@ -211,16 +221,20 @@ footer .footer-badges,
   }
 }
 
-/* Smoother horizontal scroll on tag row */
+/* Tag row layout */
 .tag-row {
-  scroll-behavior: smooth;
-  padding-inline: var(--space-xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
 }
 
-/* Safer thumbnail behavior: keep 16:9 but allow contain on very small screens */
+/* Post card thumbnail */
 .post-card__thumb img {
-  object-fit: cover;
-  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
 }
 @media (max-width: 600px) {
   .post-card__thumb img {
