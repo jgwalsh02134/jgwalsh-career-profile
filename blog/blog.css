@@ -474,24 +474,6 @@ select {
   min-height: 2.25rem;
 }
 
-.tag-row {
-  display: flex;
-  gap: var(--space-xs);
-  margin-top: var(--space-sm);
-  padding-bottom: var(--space-sm);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-}
-
-.tag-row::-webkit-scrollbar {
-  height: 0.45rem;
-}
-
-.tag-row::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 999px;
-}
-
 .tag-button {
   flex: 0 0 auto;
   border: 1px solid var(--border-strong);
