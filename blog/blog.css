@@ -40,10 +40,13 @@ body {
 [data-toolbar] {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
+  justify-content: center;
+  margin-top: 8px;
 }
-.control {
+.control,
+.field {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -54,6 +57,8 @@ body {
 }
 .control input,
 .control select,
+.field input,
+.field select,
 .toolbar input,
 .toolbar select {
   width: 100%;
@@ -62,6 +67,14 @@ body {
   outline: 0;
   background: transparent;
 }
+
+/* Grid (auto-fit columns) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 480px) { .grid { gap: 12px; } }
 
 /* Post lists */
 .post-list article {
@@ -162,7 +175,21 @@ footer .footer-badges,
   .toolbar select, .toolbar input, [data-toolbar] select, [data-toolbar] input { width: 100%; }
   .post-list article { margin: 0 0 16px; }
   footer .footer-badges, .badge-row { flex-wrap: wrap; justify-content: center; }
+  h1 { font-size: 1.5rem; line-height: 1.2; }
+  h2 { font-size: 1.25rem; }
+  p { font-size: 1rem; line-height: 1.5; }
 }
+
+/* Footer badges normalized */
+.footer-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.footer-badge { width: 26px; height: 26px; object-fit: contain; }
+@media (max-width: 480px) { .footer-badge { width: 22px; height: 22px; } }
 
 :root {
   color-scheme: light dark;
