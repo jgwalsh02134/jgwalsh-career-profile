@@ -30,20 +30,36 @@
   }
 
   async function loadPosts() {
+    const manifestResult = await loadFromManifest();
+    if (manifestResult) {
+      return manifestResult;
+    }
+
+    const fallbackResult = await loadFromFallback();
+    if (fallbackResult) {
+      return fallbackResult;
+    }
+
+    return { posts: [], source: FEED_FALLBACK_URL };
+  }
+
+  async function loadFromManifest() {
     try {
       const manifest = await fetchJson(FEED_MANIFEST_URL);
-      if (manifest) {
-        if (Array.isArray(manifest.posts)) {
-          return { posts: manifest.posts, source: FEED_MANIFEST_URL };
-        }
-        if (Array.isArray(manifest.items)) {
-          return { posts: manifest.items, source: FEED_MANIFEST_URL };
-        }
-        if (manifest.postsUrl) {
-          const posts = await fetchJson(manifest.postsUrl);
-          if (Array.isArray(posts)) {
-            return { posts, source: manifest.postsUrl };
-          }
+      if (!manifest) {
+        return null;
+      }
+
+      if (Array.isArray(manifest.posts)) {
+        return { posts: manifest.posts, source: FEED_MANIFEST_URL };
+      }
+      if (Array.isArray(manifest.items)) {
+        return { posts: manifest.items, source: FEED_MANIFEST_URL };
+      }
+      if (manifest.postsUrl) {
+        const posts = await fetchJson(manifest.postsUrl);
+        if (Array.isArray(posts)) {
+          return { posts, source: manifest.postsUrl };
         }
       }
     } catch (manifestError) {
@@ -52,7 +68,10 @@
         console.info('You appear to be offline — showing fallback content if available.');
       }
     }
+    return null;
+  }
 
+  async function loadFromFallback() {
     try {
       const posts = await fetchJson(FEED_FALLBACK_URL);
       if (Array.isArray(posts)) {
@@ -61,8 +80,7 @@
     } catch (postsError) {
       console.error('Unable to load blog posts:', postsError);
     }
-
-    return { posts: [], source: FEED_FALLBACK_URL };
+    return null;
   }
 
   async function fetchJson(url) {
@@ -93,7 +111,7 @@
     let activeTag = params.get('tag');
     let currentPage = parsePositiveInt(params.get('page')) || 1;
     let density = params.get('density');
-    if (!Object.prototype.hasOwnProperty.call(DENSITY_OPTIONS, density)) {
+    if (!Object.hasOwn(DENSITY_OPTIONS, density)) {
       density = 'comfortable';
     }
 
@@ -249,54 +267,58 @@
       }
 
       const tagCounts = new Map();
-      allPosts.forEach((post) => {
-        (post.tags || []).forEach((tag) => {
+      for (const post of allPosts) {
+        const tags = Array.isArray(post.tags) ? post.tags : [];
+        for (const tag of tags) {
           tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
-        });
-      });
+        }
+      }
       const tags = new Set(tagCounts.keys());
       const sortedTags = Array.from(tags).sort((a, b) => a.localeCompare(b));
       tagBar.innerHTML = '';
 
       const fragment = document.createDocumentFragment();
-      const buttons = [];
 
       const allButton = createTagButton('All', null);
-      buttons.push(allButton);
       fragment.appendChild(allButton);
 
       sortedTags.forEach((tag) => {
         const label = `${tag} (${tagCounts.get(tag) || 0})`;
         const button = createTagButton(label, tag);
-        buttons.push(button);
         fragment.appendChild(button);
       });
 
       tagBar.append(fragment);
       updateTagStates();
+    }
 
-      function createTagButton(label, value) {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'tag-button';
-        button.textContent = label;
-        button.addEventListener('click', () => {
-          activeTag = value === activeTag ? null : value;
-          currentPage = 1;
-          updateTagStates();
-          persistState();
-          render();
-        });
-        return button;
-      }
+    function createTagButton(label, value) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tag-button';
+      button.textContent = label;
+      button.dataset.value = value == null ? '' : String(value);
+      button.addEventListener('click', () => {
+        const val = value == null ? null : value;
+        activeTag = val === activeTag ? null : val;
+        currentPage = 1;
+        updateTagStates();
+        persistState();
+        render();
+      });
+      return button;
+    }
 
-      function updateTagStates() {
-        buttons.forEach((button) => {
-          const value = button.textContent === 'All' ? null : button.textContent;
-          const isActive = (value === null && activeTag == null) || value === activeTag;
-          button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        });
+    function updateTagStates() {
+      if (!tagBar) {
+        return;
       }
+      const buttons = tagBar.querySelectorAll('.tag-button');
+      buttons.forEach((button) => {
+        const val = button.dataset.value === '' ? null : button.dataset.value;
+        const isActive = (val === null && activeTag == null) || val === activeTag;
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
     }
 
     function persistState() {
