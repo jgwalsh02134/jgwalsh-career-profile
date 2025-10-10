@@ -10,3 +10,7 @@ node_modules/
 *.tmp.new
 *~
 .#*
+
+
+#Ignore windsurf AI rules
+.windsurfrules
