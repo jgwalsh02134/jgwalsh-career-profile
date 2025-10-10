@@ -1,0 +1,6 @@
+# Legacy vCard filenames -> canonical
+/assets/J.%20Gregory%20Walsh.vcf      /assets/j_gregory_walsh.vcf   301
+/assets/J.%20Gregory%20Walsh.VCF      /assets/j_gregory_walsh.vcf   301
+/assets/J. Gregory Walsh.vcf          /assets/j_gregory_walsh.vcf   301
+/assets/jgwalsh.vcf                   /assets/j_gregory_walsh.vcf   301
+/assets/jgwalsh-new.vcf               /assets/j_gregory_walsh.vcf   301
