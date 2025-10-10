@@ -7,3 +7,7 @@ node_modules/
 # === Oversize assets (>25 MiB) excluded for Cloudflare Pages ===
 cloudflare-worker/node_modules/@cloudflare/workerd-darwin-arm64/bin/workerd
 # === End oversize list (2025-09-03T02:24:11Z) ===
+
+# Exclude legacy vCards so redirects apply and only canonical vCard is deployed
+/assets/jgwalsh.vcf
+/assets/jgwalsh-new.vcf
