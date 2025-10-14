@@ -7,33 +7,81 @@
 /* --- Base & Root Configuration --- */
 :root {
   --color-navy: #1e3a8a;
-  --color-sage: #4b6e5d;
-  --color-lime-600: #65a30d;
-  --color-amber-500: #f59e0b;
-  --color-red-600: #dc2626;
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
+  --color-navy-700: #152859;
+  --color-slate-50: #f6f8fb;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cfd7e4;
+  --color-slate-700: #1f2937;
+  --color-slate-900: #0f172a;
   --color-white: #ffffff;
+  --color-teal-50: #e0f4f4;
+  --color-teal-100: #c0e8e8;
+  --color-teal-200: #9edada;
+  --color-teal-300: #6fc3c3;
+  --color-teal-400: #3aa9aa;
+  --color-teal-500: #008080;
+  --color-teal-600: #006a6a;
+  --color-teal-700: #004f4f;
 
-  /* Theme tokens */
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #555555;
-  --link: #0b5fff;
-  --border: #e6e6e6;
-  --btn-bg: #0b5fff;
-  --btn-text: #ffffff;
+  /* Core surfaces */
+  --bg: var(--color-slate-50);
+  --surface: var(--color-white);
+  --surface-muted: #eef3f9;
+  --surface-strong: #dce5f3;
 
-  /* Footer tokens */
-  --footer-bg: #f4f6f8;
-  --footer-text: #334155;
-  --footer-link: #0b5fff;
-  --footer-border: #e2e8f0;
+  /* Typography */
+  --text: var(--color-slate-900);
+  --muted: #475467;
+  --link: var(--color-navy);
+
+  /* Interaction tokens */
+  --border: var(--color-slate-300);
+  --btn-bg: var(--color-teal-500);
+  --btn-text: var(--color-white);
+  --ring: var(--color-teal-500);
+
+  /* Brand + accent system */
+  --brand: var(--color-navy);
+  --brand-strong: var(--color-navy-700);
+  --accent: var(--color-teal-500);
+  --accent-muted: var(--color-teal-100);
+  --accent-strong: var(--color-teal-600);
+
+  /* Content surfaces */
+  --ink: var(--text);
+  --ink-muted: var(--muted);
+  --card: var(--surface);
+  --card-muted: var(--surface-muted);
+  --bd: color-mix(in srgb, var(--border) 90%, transparent);
+  --shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+  --chip: color-mix(in srgb, var(--accent-muted) 65%, white 35%);
+  --chip-ink: var(--accent-strong);
+
+  /* Navigation + footer */
+  --nav-bg: rgba(255, 255, 255, 0.92);
+  --nav-border: rgba(15, 23, 42, 0.08);
+  --nav-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+  --nav-link: var(--ink);
+  --nav-link-hover: var(--accent);
+  --nav-link-active: var(--accent);
+  --footer-bg: var(--surface-muted);
+  --footer-text: #1f2937;
+  --footer-link: var(--accent);
+  --footer-border: color-mix(in srgb, var(--border) 80%, transparent);
+
+  /* Motion-safe layout cadence */
+  --grid-gap: clamp(1.25rem, 3vw, 2.5rem);
+
+  /* Tailored switches */
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-accent: var(--accent);
+  --switch-track-light: color-mix(in srgb, var(--accent-muted) 55%, white 45%);
+  --switch-track-dark: #223041;
+  --switch-thumb-light: var(--color-white);
+  --switch-thumb-dark: #0f141a;
+  --switch-track: var(--switch-track-light);
+  --switch-thumb: var(--switch-thumb-light);
 }
 
 html {
@@ -49,18 +97,45 @@ body {
 
 /* Dark theme */
 html[data-theme="dark"] {
-  --bg: #0f1115;
-  --text: #e6e8ee;
-  --muted: #a8adbb;
-  --link: #77a8ff;
-  --border: #262a33;
-  --btn-bg: #2a64ff;
-  --btn-text: #ffffff;
-
-  --footer-bg: #0e1014;
-  --footer-text: #d6d9e0;
-  --footer-link: #8fb3ff;
-  --footer-border: #242832;
+  --bg: #060b12;
+  --surface: #0f172a;
+  --surface-muted: #111d2e;
+  --surface-strong: #1f2a3d;
+  --text: #e3e9f5;
+  --muted: #9ba9c0;
+  --link: #9ec5ff;
+  --border: #1f2a3d;
+  --btn-bg: #199191;
+  --btn-text: #e7f8f8;
+  --ring: #2ab3b3;
+  --brand: #95b3ff;
+  --brand-strong: #6e8ae0;
+  --accent: #2ab3b3;
+  --accent-muted: #123f4d;
+  --accent-strong: #57d6d6;
+  --ink: var(--text);
+  --ink-muted: var(--muted);
+  --card: #101c2d;
+  --card-muted: #0f1a27;
+  --bd: rgba(148, 163, 184, 0.35);
+  --shadow: 0 28px 60px rgba(2, 6, 23, 0.65);
+  --chip: #12313f;
+  --chip-ink: #c8e8e8;
+  --nav-bg: rgba(6, 11, 18, 0.94);
+  --nav-border: rgba(148, 163, 184, 0.24);
+  --nav-shadow: 0 26px 52px rgba(2, 6, 23, 0.7);
+  --nav-link: var(--text);
+  --nav-link-hover: var(--accent);
+  --nav-link-active: var(--accent);
+  --footer-bg: #0a111b;
+  --footer-text: #d4deec;
+  --footer-link: #57d6d6;
+  --footer-border: rgba(87, 214, 214, 0.22);
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-accent: var(--accent);
+  --switch-track: var(--switch-track-dark);
+  --switch-thumb: var(--switch-thumb-dark);
 }
 
 /* Threat Triage: page layout & footer fix (scoped) */
@@ -476,22 +551,17 @@ footer a.icon-link:focus-visible {
 
 /* === Theme + switch tokens (safe defaults) === */
 :root {
-  --color-bg: #ffffff;
-  --color-text: #111111;
-  --color-accent: #008080;
-
-  --switch-track-light: #cfd5db;
-  --switch-track-dark: #33404d;
-  --switch-thumb-light: #ffffff;
-  --switch-thumb-dark: #0f141a;
+  --color-bg: var(--bg);
+  --color-text: var(--text);
+  --color-accent: var(--accent);
   /* aliases used by components */
   --switch-track: var(--switch-track-light);
   --switch-thumb: var(--switch-thumb-light);
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #0b0f14;
-  --color-text: #e9eef2;
+  --color-bg: var(--bg);
+  --color-text: var(--text);
   /* flip aliases in dark */
   --switch-track: var(--switch-track-dark);
   --switch-thumb: var(--switch-thumb-dark);
