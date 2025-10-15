@@ -54,6 +54,7 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=home_dm2" />
   <link rel="stylesheet" href="/assets/css/projects.css?v=home_dm2" />
   <script src="/assets/js/theme.js?v=home_dm2" defer></script>
+  <script src="/assets/js/navigation.js" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,55 +139,45 @@
     class="sr-only focus:not-sr-only focus:bg-indigo-600 focus:text-white focus:p-2 focus:rounded">Skip to main
     content</a>
 
-  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50">
-    <div class="site-header wrap">
-      <a href="/" class="brand text-2xl font-semibold text-navy">
-        <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." loading="lazy" />
+  <header class="bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/85 shadow-sm sticky top-0 w-full z-50 border-b border-slate-200/70 dark:border-slate-700/80" data-mobile-menu-container>
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-6">
+      <a href="https://jgwalsh.com/" class="flex items-center gap-3 text-2xl font-semibold text-navy tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">
+        <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." class="h-10 w-10" loading="lazy" />
         <span>James Gregory Walsh</span>
       </a>
-
-      <button id="mobile-menu-button"
-        class="sm:hidden text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
-        aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-      </button>
-
-      <nav class="main-nav hidden sm:flex text-sm text-slate-700" aria-label="Main navigation">
-        <ul class="flex items-center gap-4">
-          <li><a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a></li>
-          <li><a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a></li>
-          <li><a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a></li>
-          <li><a href="/projects/" class="hover:text-navy px-2 py-1 rounded font-bold text-navy" aria-current="page">Projects</a></li>
-          <li><a href="/blog/" class="hover:text-navy px-2 py-1 rounded">Blog</a></li>
-          <li><a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a></li>
-          <li>
-            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
-              <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-            </button>
-          </li>
-        </ul>
+      <div class="sm:hidden">
+        <button id="mobile-menu-button"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100"
+          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu" data-menu-toggle>
+          <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Toggle primary menu icon">
+            <title>Toggle primary navigation</title>
+            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+      <nav class="hidden sm:flex items-center gap-2 text-sm text-slate-700" aria-label="Primary navigation">
+        <a href="https://jgwalsh.com/" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-bold text-navy" aria-current="page">Home</a>
+        <a href="https://jgwalsh.com/about.html" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">About</a>
+        <a href="https://jgwalsh.com/resume.html" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Résumé</a>
+        <a href="https://jgwalsh.com/projects/" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Projects</a>
+        <a href="https://jgwalsh.com/blog/" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Blog</a>
+        <a href="https://jgwalsh.com/contact.html" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Contact</a>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
+          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        </button>
       </nav>
     </div>
-
-    <!-- Mobile drawer -->
-    <nav id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
-      <ul class="flex flex-col gap-2">
-        <li><a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a></li>
-        <li><a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a></li>
-        <li><a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a></li>
-        <li><a href="/projects/" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy" aria-current="page">Projects</a></li>
-        <li><a href="/blog/" class="block py-2 text-sm hover:text-navy rounded">Blog</a></li>
-        <li><a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a></li>
-        <li>
-          <button id="theme-toggle-mobile" class="w-full px-3 py-2 rounded border text-left theme-toggle" type="button"
-            aria-pressed="false" aria-label="Switch theme">
-            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-          </button>
-        </li>
-      </ul>
+    <nav id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700 space-y-1" aria-label="Primary mobile navigation" data-menu-panel hidden>
+      <a href="https://jgwalsh.com/" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-semibold text-navy" aria-current="page">Home</a>
+      <a href="https://jgwalsh.com/about.html" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">About</a>
+      <a href="https://jgwalsh.com/resume.html" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Résumé</a>
+      <a href="https://jgwalsh.com/projects/" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Projects</a>
+      <a href="https://jgwalsh.com/blog/" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Blog</a>
+      <a href="https://jgwalsh.com/contact.html" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Contact</a>
+      <button id="theme-toggle-mobile" class="mt-3 w-full rounded-full border border-slate-200 px-4 py-2 text-left theme-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700" type="button" aria-pressed="false" aria-label="Switch theme">
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+      </button>
     </nav>
   </header>
 
