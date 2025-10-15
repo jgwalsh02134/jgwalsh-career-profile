@@ -18,47 +18,57 @@
   <script src="/assets/js/theme.js?v=aca_ui2" defer></script>
 </head>
 
-<body class="safe-pad">
-  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
-    <div class="container px-4 py-5 flex justify-between items-center">
-      <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
-      <div class="sm:hidden">
-        <button id="mobile-menu-button"
-          class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
-          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
-        <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
-        <a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a>
-        <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a>
-        <a href="/projects/" class="hover:text-navy px-2 py-1 rounded font-bold text-navy"
-          aria-current="page">Projects</a>
-        <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a>
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
-          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-        </button>
+<body class="antialiased flex flex-col min-h-screen font-sans safe-pad">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/85 shadow-sm sticky top-0 w-full z-50 border-b border-slate-200/70 dark:border-slate-700/80 header-wrap">
+    <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+      <a href="https://jgwalsh.com/"
+        class="flex items-center gap-3 text-2xl font-semibold text-navy tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">
+        <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." class="h-10 w-10" width="48" height="48" decoding="async" />
+        <span>James Gregory Walsh</span>
+      </a>
+      <button id="nav-toggle" type="button" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"
+        class="relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100 md:hidden">
+        <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Toggle primary menu icon">
+          <title>Toggle primary navigation</title>
+          <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <nav id="primary-nav" hidden aria-label="Primary navigation"
+        class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white/95 px-6 pb-12 pt-24 text-lg text-slate-700 shadow-lg backdrop-blur dark:bg-slate-900/95 md:static md:inset-auto md:z-auto md:flex md:h-auto md:flex-row md:items-center md:gap-2 md:bg-transparent md:px-0 md:py-0 md:text-sm md:shadow-none md:backdrop-blur-0">
+        <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center gap-6 text-center md:mx-0 md:flex-row md:items-center md:justify-end md:gap-2 md:text-left">
+          <a href="https://jgwalsh.com/"
+            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Home</a>
+          <a href="https://jgwalsh.com/about.html"
+            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">About</a>
+          <a href="https://jgwalsh.com/resume.html"
+            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Résumé</a>
+          <a href="https://jgwalsh.com/projects/"
+            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-semibold text-navy md:px-3 md:py-2"
+            aria-current="page">Projects</a>
+          <a href="https://jgwalsh.com/blog/"
+            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Blog</a>
+          <a href="https://jgwalsh.com/contact.html"
+            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Contact</a>
+          <button id="theme-toggle" class="theme-toggle hidden md:inline-flex" type="button" aria-label="Switch theme"
+            aria-pressed="false">
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+          </button>
+          <button id="theme-toggle-mobile"
+            class="w-full rounded-full border border-slate-200 px-4 py-2 text-left theme-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 md:hidden"
+            type="button" aria-pressed="false" aria-label="Switch theme">
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+          </button>
+        </div>
       </nav>
     </div>
-    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
-      <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
-      <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a>
-      <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a>
-      <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy"
-        aria-current="page">Projects</a>
-      <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a>
-      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button"
-        aria-pressed="false" aria-label="Switch theme">
-        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-      </button>
-    </div>
   </header>
+  <script defer src="/assets/js/navigation.js"></script>
 
-  <main id="main-content" class="container safe-pad" style="padding-block:1.1rem 2rem;">
+  <main id="main-content" class="flex-grow">
+    <div class="container safe-pad" style="padding-block:1.1rem 2rem;">
     <nav class="aca-breadcrumb" aria-label="Breadcrumb">
       <a href="/projects/" class="aca-back"><span aria-hidden="true">←</span> Projects</a>
     </nav>
@@ -136,27 +146,42 @@
         </a>
       </article>
     </section>
+    </div>
   </main>
 
-  <footer class="site-footer container" style="padding-block:1rem 1.25rem;">
-    <div class="text-center" style="font-size:.95rem;color:inherit;">
-      <div class="text-navy">© 2025 James Gregory Walsh — All rights reserved.</div>
-      <div style="margin-top:.35rem;">
-        <a href="mailto:jgwalsh@proton.me">Email</a> ·
-        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener">GitHub</a> ·
-        <a href="/contact.html">Contact</a>
+  <footer class="w-full border-t">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 md:py-12 space-y-8">
+      <nav aria-label="Profiles and social links">
+        <ul class="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2" role="list">
+          <li>
+            <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="inline-flex items-center gap-2 py-2 px-2 min-h-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
+              <img src="https://iconsusa.org/assets/icons_copy/linkedin.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true" class="h-6 w-6">
+            </a>
+          </li>
+          <li>
+            <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener noreferrer" aria-label="USAJobs profile" class="inline-flex items-center gap-2 py-2 px-2 min-h-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
+              <img src="https://iconsusa.org/assets/icons_copy/icons8-usa.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true" class="h-6 w-6">
+            </a>
+          </li>
+          <li>
+            <a href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener noreferrer" aria-label="ORCID profile" class="inline-flex items-center gap-2 py-2 px-2 min-h-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
+              <img src="https://iconsusa.org/assets/icons_copy/orcid.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true" class="h-6 w-6">
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="mt-10 pt-6 border-t text-sm leading-relaxed md:flex md:items-center md:justify-between md:gap-6">
+        <div class="text-center md:text-left">
+          © 2025 James Gregory Walsh — All rights reserved.
+        </div>
+        <div class="flex justify-center items-center gap-2 mt-4 md:mt-0">
+          <span>Albany, NY</span>
+          <span aria-hidden="true">·</span>
+          <a href="mailto:jgwalsh@proton.me" class="hover:underline">jgwalsh@proton.me</a>
+        </div>
       </div>
     </div>
   </footer>
-
-  <script>
-    (function navMenu() {
-      const btn = document.getElementById('mobile-menu-button');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      btn.addEventListener('click', () => { const open = !menu.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open)); });
-    })();
-  </script>
 </body>
 
 </html>
