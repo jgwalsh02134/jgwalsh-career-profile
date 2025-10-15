@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About James Gregory Walsh – Behavioral Science, Analysis & Public Service Focus</title>
   <meta name="description"
     content="Background of James (J.) Gregory Walsh – psychology, clinical crisis work, behavioral analysis, quantitative research, and preparation for investigative & federal service roles." />
@@ -15,13 +15,13 @@
   <meta property="og:title" content="About James Gregory Walsh" />
   <meta property="og:description"
     content="Professional background of James Gregory Walsh: clinical crisis intervention, research methods, data analysis, and public safety orientation." />
-  <meta property="og:url" content="https://jgwalsh.com/about" />
+  <meta property="og:url" content="https://jgwalsh.com/about/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://jgwalsh.com/assets/favicon/favicon-192.png" />
   <meta property="og:image:alt" content="JGW monogram – About James Gregory Walsh" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://jgwalsh.com/assets/favicon/favicon-192.png" />
-  <link rel="canonical" href="https://jgwalsh.com/about" />
+  <link rel="canonical" href="https://jgwalsh.com/about/" />
   <link rel="me" href="https://www.linkedin.com/in/jgregorywalsh" />
   <link rel="me" href="https://github.com/jgwalsh02134" />
   <link rel="me" href="https://orcid.org/0000-0002-4420-5724" />
@@ -53,6 +53,7 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=hdr_u1" />
   <link rel="stylesheet" href="/assets/css/projects.css?v=hdr_u1" />
   <script src="/assets/js/theme.js?v=hdr_u1" defer></script>
+  <script src="/assets/js/navigation.js" defer></script>
 
   <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -107,44 +108,47 @@
     content</a>
 
   <!-- Header -->
-  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50 header-wrap">
-    <div class="container px-4 py-5 flex justify-between items-center">
-      <a href="/" class="text-2xl font-semibold text-navy">James Gregory Walsh</a>
+  <header class="bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/85 shadow-sm sticky top-0 w-full z-50 border-b border-slate-200/70 dark:border-slate-700/80 header-wrap" data-mobile-menu-container>
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-6">
+      <a href="https://jgwalsh.com/" class="flex items-center text-2xl font-semibold text-navy tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">
+        <span>James Gregory Walsh</span>
+      </a>
       <div class="sm:hidden">
         <button id="mobile-menu-button"
-          class="text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
-          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+          class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100"
+          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu" data-menu-toggle>
+          <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Toggle primary menu icon">
+            <title>Toggle primary navigation</title>
             <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
               stroke-linejoin="round" />
           </svg>
         </button>
       </div>
-      <nav class="hidden sm:flex space-x-6 text-sm text-slate-700" aria-label="Main navigation">
-        <a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a>
-        <a href="/about.html" class="hover:text-navy px-2 py-1 rounded font-bold text-navy"
+      <nav class="hidden sm:flex items-center gap-2 text-sm text-slate-700" aria-label="Primary navigation">
+        <a href="https://jgwalsh.com/" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Home</a>
+        <a href="https://jgwalsh.com/about.html" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-bold text-navy"
           aria-current="page">About</a>
-        <a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a>
-        <a href="/projects/" class="hover:text-navy px-2 py-1 rounded">Projects</a>
-        <a href="/blog/" class="hover:text-navy px-2 py-1 rounded">Blog</a>
-        <a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a>
+        <a href="https://jgwalsh.com/resume.html" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Résumé</a>
+        <a href="https://jgwalsh.com/projects/" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Projects</a>
+        <a href="https://jgwalsh.com/blog/" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Blog</a>
+        <a href="https://jgwalsh.com/contact.html" class="px-3 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Contact</a>
         <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme"
           aria-pressed="false"><span class="switch__track" aria-hidden="true"><span
               class="switch__thumb"></span></span></button>
       </nav>
     </div>
-    <div id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
-      <a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a>
-      <a href="/about.html" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy"
+    <nav id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700 space-y-1" aria-label="Primary mobile navigation" data-menu-panel hidden>
+      <a href="https://jgwalsh.com/" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Home</a>
+      <a href="https://jgwalsh.com/about.html" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-semibold text-navy"
         aria-current="page">About</a>
-      <a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a>
-      <a href="/projects/" class="block py-2 text-sm hover:text-navy rounded">Projects</a>
-      <a href="/blog/" class="block py-2 text-sm hover:text-navy rounded">Blog</a>
-      <a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a>
-      <button id="theme-toggle-mobile" class="mt-2 w-full px-3 py-2 rounded border text-left theme-toggle" type="button"
+      <a href="https://jgwalsh.com/resume.html" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Résumé</a>
+      <a href="https://jgwalsh.com/projects/" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Projects</a>
+      <a href="https://jgwalsh.com/blog/" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Blog</a>
+      <a href="https://jgwalsh.com/contact.html" class="block rounded-full px-4 py-2 text-sm transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">Contact</a>
+      <button id="theme-toggle-mobile" class="mt-3 w-full rounded-full border border-slate-200 px-4 py-2 text-left theme-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700" type="button"
         aria-pressed="false" aria-label="Switch theme"><span class="switch__track" aria-hidden="true"><span
             class="switch__thumb"></span></span></button>
-    </div>
+    </nav>
   </header>
 
   <!-- Main -->
@@ -194,7 +198,8 @@
           <div class="bg-slate-50 p-8 rounded-lg shadow-sm border border-slate-200">
             <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor" role="img" aria-label="Behavioral assessment icon">
+                <title>Behavioral assessment icon</title>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
@@ -207,7 +212,8 @@
           <div class="bg-slate-50 p-8 rounded-lg shadow-sm border border-slate-200">
             <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor" role="img" aria-label="Quantitative analysis icon">
+                <title>Quantitative analysis icon</title>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
               </svg>
@@ -220,7 +226,8 @@
           <div class="bg-slate-50 p-8 rounded-lg shadow-sm border border-slate-200">
             <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
+                stroke="currentColor" role="img" aria-label="Crisis readiness shield icon">
+                <title>Crisis readiness shield</title>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286zm0 13.036h.008v.008h-.008v-.008z" />
               </svg>
@@ -237,15 +244,29 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-100 text-sm text-slate-600 border-t pt-8 pb-6 px-4 mt-auto">
-    <div class="max-w-4xl mx-auto text-center space-y-4">
-      <div class="flex justify-center gap-6 mb-6">
-        <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener" aria-label="LinkedIn"><img
-            src="assets/icons/linkedin.svg" class="w-6 h-6" alt="LinkedIn" /></a>
-        <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener" aria-label="USAJobs"><img
-            src="assets/icons/usajobs.svg" class="w-6 h-6" alt="USAJobs" /></a>
-        <a href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener" aria-label="ORCID"><img
-            src="assets/icons/orcid.svg" class="w-6 h-6" alt="ORCID" /></a>
+  <footer class="bg-slate-100/90 dark:bg-slate-900/80 text-sm text-slate-600 dark:text-slate-300 border-t border-slate-200/60 dark:border-slate-700 pt-8 pb-6 px-4 mt-auto">
+    <div class="max-w-6xl mx-auto text-center space-y-4">
+      <nav class="flex justify-center gap-6 mb-6" aria-label="Professional profiles">
+        <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="LinkedIn profile">
+          <img
+            src="assets/icons/linkedin.svg" class="h-5 w-5" alt="LinkedIn logo" loading="lazy" />
+        </a>
+        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="GitHub profile">
+          <img
+            src="https://iconsusa.org/assets/icons_copy/github.svg" class="h-5 w-5" alt="GitHub logo" loading="lazy" />
+        </a>
+        <a href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="ORCID profile">
+          <img
+            src="assets/icons/orcid.svg" class="h-5 w-5" alt="ORCID iD logo" loading="lazy" />
+        </a>
+        <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="USAJobs profile">
+          <img
+            src="assets/icons/usajobs.svg" class="h-5 w-5" alt="USAJobs logo" loading="lazy" />
+        </a>
       </div>
       <div class="text-indigo-600">© 2025 James Gregory Walsh — All rights reserved.</div>
       <div class="flex justify-center gap-2">
