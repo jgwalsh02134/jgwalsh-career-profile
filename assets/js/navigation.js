@@ -1,5 +1,11 @@
 /* Global navigation interactions with accessible mobile menu focus trapping */
 (function () {
+  const doc = typeof globalThis !== 'undefined' && globalThis.document ? globalThis.document : null;
+
+  if (!doc) {
+    return;
+  }
+
   const focusableSelector = [
     'a[href]:not([tabindex="-1"])',
     'button:not([disabled]):not([tabindex="-1"])',
@@ -14,7 +20,7 @@
     return Array.from(panel.querySelectorAll(focusableSelector)).filter((node) => !node.hasAttribute('disabled'));
   };
 
-  const closeMenu = (container, panel, toggle, backdrop, lastFocus, handlers) => {
+  const closeMenu = (container, panel, toggle, backdrop, lastFocus, handlers, breakpoint) => {
     if (!panel || !toggle) return;
 
     panel.classList.add('hidden');
@@ -26,7 +32,7 @@
     toggle.dataset.state = 'closed';
 
     container?.classList.remove('is-nav-open');
-    document.body.classList.remove('overflow-hidden');
+    doc.body?.classList.remove('overflow-hidden');
 
     if (backdrop) {
       backdrop.classList.add('hidden');
@@ -34,10 +40,14 @@
     }
 
     panel.removeEventListener('keydown', handlers.trapFocus);
-    document.removeEventListener('keydown', handlers.handleEscape, true);
+    doc.removeEventListener('keydown', handlers.handleEscape, true);
 
     if (backdrop) {
       backdrop.removeEventListener('click', handlers.handleBackdropClick, true);
+    }
+
+    if (breakpoint?.removeEventListener) {
+      breakpoint.removeEventListener('change', handlers.handleBreakpointChange);
     }
 
     requestAnimationFrame(() => {
@@ -63,6 +73,7 @@
       backdrop.setAttribute('data-menu-backdrop', '');
       backdrop.className = 'mobile-menu-backdrop hidden';
       backdrop.setAttribute('hidden', '');
+      backdrop.setAttribute('aria-hidden', 'true');
       container.appendChild(backdrop);
     }
 
@@ -78,6 +89,7 @@
       trapFocus: null,
       handleEscape: null,
       handleBackdropClick: null,
+      handleBreakpointChange: null,
     };
 
     handlers.trapFocus = (event) => {
@@ -102,19 +114,29 @@
     handlers.handleEscape = (event) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers);
+        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
       }
     };
 
     handlers.handleBackdropClick = (event) => {
       if (event.target === backdrop) {
         event.preventDefault();
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers);
+        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
+      }
+    };
+
+    const breakpoint = typeof globalThis !== 'undefined' && typeof globalThis.matchMedia === 'function'
+      ? globalThis.matchMedia('(min-width: 640px)')
+      : null;
+
+    handlers.handleBreakpointChange = (event) => {
+      if (event.matches && !panel.classList.contains('hidden')) {
+        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
       }
     };
 
     const openMenu = () => {
-      lastFocus = document.activeElement;
+      lastFocus = doc.activeElement;
       panel.classList.remove('hidden');
       panel.removeAttribute('hidden');
       panel.dataset.state = 'open';
@@ -122,18 +144,19 @@
       toggle.setAttribute('aria-expanded', 'true');
       toggle.dataset.state = 'open';
       panel.setAttribute('aria-expanded', 'true');
-      document.body.classList.add('overflow-hidden');
+      doc.body?.classList.add('overflow-hidden');
       const focusable = getFocusable(panel);
       if (focusable.length) {
         requestAnimationFrame(() => focusable[0].focus());
       }
       panel.addEventListener('keydown', handlers.trapFocus);
-      document.addEventListener('keydown', handlers.handleEscape, true);
+      doc.addEventListener('keydown', handlers.handleEscape, true);
       if (backdrop) {
         backdrop.classList.remove('hidden');
         backdrop.removeAttribute('hidden');
         backdrop.addEventListener('click', handlers.handleBackdropClick, true);
       }
+      breakpoint?.addEventListener?.('change', handlers.handleBreakpointChange);
     };
 
     const toggleMenu = () => {
@@ -141,7 +164,7 @@
       if (isHidden) {
         openMenu();
       } else {
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers);
+        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
       }
     };
 
@@ -156,7 +179,7 @@
         toggleMenu();
       } else if (event.key === 'Escape') {
         event.preventDefault();
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers);
+        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
       }
     });
 
@@ -165,10 +188,12 @@
         panel.removeAttribute('hidden');
       }
     });
+
+    breakpoint?.addEventListener?.('change', handlers.handleBreakpointChange);
   };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const containers = document.querySelectorAll('[data-mobile-menu-container]');
+  doc.addEventListener('DOMContentLoaded', () => {
+    const containers = doc.querySelectorAll('[data-mobile-menu-container]');
     containers.forEach(bindMenu);
   });
 })();
