@@ -1,203 +1,138 @@
-/* Global navigation interactions with accessible mobile menu focus trapping */
+/* Navigation disclosure toggle */
 (function () {
-  const doc = typeof globalThis !== 'undefined' && globalThis.document ? globalThis.document : null;
+  const doc = typeof document !== 'undefined' ? document : null;
+  if (!doc) return;
 
-  if (!doc) {
-    return;
+  const btn = doc.getElementById('nav-toggle');
+  const nav = doc.getElementById('primary-nav');
+  if (!btn || !nav) return;
+
+  const win = typeof window !== 'undefined' ? window : null;
+  const mq = win && typeof win.matchMedia === 'function'
+    ? win.matchMedia('(min-width: 768px)')
+    : null;
+  const isDesktop = () => mq ? mq.matches : false;
+
+  let lastFocus = null;
+  let backdrop = null;
+  let ignoreClick = false;
+
+  const firstFocusable = () => nav.querySelector('a,button,[tabindex]:not([tabindex="-1"])');
+  const handleBackdropClick = () => closeNav();
+
+  function addBackdrop() {
+    if (isDesktop() || backdrop) return;
+    backdrop = doc.createElement('div');
+    backdrop.className = 'fixed inset-0 z-40 bg-black/30';
+    backdrop.setAttribute('data-backdrop', '');
+    backdrop.addEventListener('click', handleBackdropClick, { passive: true });
+    doc.body.appendChild(backdrop);
   }
 
-  const schedule = typeof globalThis !== 'undefined' && typeof globalThis.setTimeout === 'function'
-    ? (fn) => globalThis.setTimeout(fn, 0)
-    : (fn) => fn();
+  function removeBackdrop() {
+    if (!backdrop) return;
+    backdrop.removeEventListener('click', handleBackdropClick);
+    backdrop.remove();
+    backdrop = null;
+  }
 
-  const focusableSelector = [
-    'a[href]:not([tabindex="-1"])',
-    'button:not([disabled]):not([tabindex="-1"])',
-    'input:not([type="hidden"]):not([disabled]):not([tabindex="-1"])',
-    'select:not([disabled]):not([tabindex="-1"])',
-    'textarea:not([disabled]):not([tabindex="-1"])',
-    '[tabindex]:not([tabindex="-1"])'
-  ].join(',');
-
-  const getFocusable = (panel) => {
-    if (!panel) return [];
-    return Array.from(panel.querySelectorAll(focusableSelector)).filter((node) => !node.hasAttribute('disabled'));
-  };
-
-  const closeMenu = (container, panel, toggle, backdrop, lastFocus, handlers, breakpoint) => {
-    if (!panel || !toggle) return;
-
-    panel.classList.add('hidden');
-    panel.setAttribute('hidden', '');
-    panel.dataset.state = 'closed';
-    panel.setAttribute('aria-expanded', 'false');
-
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.dataset.state = 'closed';
-
-    container?.classList.remove('is-nav-open');
-    doc.body?.classList.remove('overflow-hidden');
-
-    if (backdrop) {
-      backdrop.classList.add('hidden');
-      backdrop.setAttribute('hidden', '');
+  function onKeydown(event) {
+    if (event.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+      event.preventDefault();
+      closeNav();
     }
+  }
 
-    panel.removeEventListener('keydown', handlers.trapFocus);
-    doc.removeEventListener('keydown', handlers.handleEscape, true);
+  function openNav() {
+    if (isDesktop()) return;
+    lastFocus = doc.activeElement;
+    nav.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    doc.body.classList.add('overflow-hidden');
+    const el = firstFocusable();
+    if (el && typeof el.focus === 'function') el.focus();
+    doc.addEventListener('keydown', onKeydown);
+    addBackdrop();
+  }
 
-    if (backdrop) {
-      backdrop.removeEventListener('click', handlers.handleBackdropClick, true);
-    }
-
-    if (breakpoint?.removeEventListener) {
-      breakpoint.removeEventListener('change', handlers.handleBreakpointChange);
-    }
-
-    schedule(() => {
+  function closeNav(options = {}) {
+    const { focus = true, keepVisible = false } = options;
+    nav.hidden = !keepVisible;
+    btn.setAttribute('aria-expanded', 'false');
+    doc.body.classList.remove('overflow-hidden');
+    doc.removeEventListener('keydown', onKeydown);
+    removeBackdrop();
+    if (focus) {
       if (lastFocus && typeof lastFocus.focus === 'function') {
         lastFocus.focus();
       } else {
-        toggle.focus();
+        btn.focus();
       }
-    });
-  };
-
-  const bindMenu = (container) => {
-    const toggle = container?.querySelector('[data-menu-toggle]');
-    if (!toggle) return;
-
-    const panelId = toggle.getAttribute('aria-controls');
-    const panel = container.querySelector(`#${panelId}`) || doc.getElementById(panelId);
-    if (!panel) return;
-
-    let backdrop = container.querySelector('[data-menu-backdrop]');
-    if (!backdrop) {
-      backdrop = doc.createElement('div');
-      backdrop.setAttribute('data-menu-backdrop', '');
-      backdrop.className = 'mobile-menu-backdrop hidden';
-      backdrop.setAttribute('hidden', '');
-      backdrop.setAttribute('aria-hidden', 'true');
-      container.appendChild(backdrop);
     }
+    lastFocus = null;
+  }
 
-    panel.classList.add('hidden');
-    panel.setAttribute('hidden', '');
-    panel.setAttribute('aria-expanded', 'false');
-    panel.dataset.state = 'closed';
-    toggle.dataset.state = 'closed';
+  function toggle() {
+    if (isDesktop()) return;
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    expanded ? closeNav() : openNav();
+  }
 
-    let lastFocus = null;
+  btn.setAttribute('aria-expanded', 'false');
 
-    const handlers = {
-      trapFocus: null,
-      handleEscape: null,
-      handleBackdropClick: null,
-      handleBreakpointChange: null,
-    };
-
-    handlers.trapFocus = (event) => {
-      if (event.key !== 'Tab') return;
-      const focusable = getFocusable(panel);
-      if (!focusable.length) {
-        event.preventDefault();
-        return;
-      }
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && doc.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && doc.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    handlers.handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
-      }
-    };
-
-    handlers.handleBackdropClick = (event) => {
-      if (event.target === backdrop) {
-        event.preventDefault();
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
-      }
-    };
-
-    const breakpoint = typeof globalThis !== 'undefined' && typeof globalThis.matchMedia === 'function'
-      ? globalThis.matchMedia('(min-width: 640px)')
-      : null;
-
-    handlers.handleBreakpointChange = (event) => {
-      if (event.matches && !panel.classList.contains('hidden')) {
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
-      }
-    };
-
-    const openMenu = () => {
-      lastFocus = doc.activeElement;
-      panel.classList.remove('hidden');
-      panel.removeAttribute('hidden');
-      panel.dataset.state = 'open';
-      container.classList.add('is-nav-open');
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.dataset.state = 'open';
-      panel.setAttribute('aria-expanded', 'true');
-      doc.body?.classList.add('overflow-hidden');
-      const focusable = getFocusable(panel);
-      if (focusable.length) {
-        schedule(() => focusable[0].focus());
-      }
-      panel.addEventListener('keydown', handlers.trapFocus);
-      doc.addEventListener('keydown', handlers.handleEscape, true);
-      if (backdrop) {
-        backdrop.classList.remove('hidden');
-        backdrop.removeAttribute('hidden');
-        backdrop.addEventListener('click', handlers.handleBackdropClick, true);
-      }
-      breakpoint?.addEventListener?.('change', handlers.handleBreakpointChange);
-    };
-
-    const toggleMenu = () => {
-      const isHidden = panel.classList.contains('hidden');
-      if (isHidden) {
-        openMenu();
-      } else {
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
-      }
-    };
-
-    toggle.addEventListener('click', (event) => {
-      event.preventDefault();
-      toggleMenu();
-    });
-
-    toggle.addEventListener('keydown', (event) => {
-      if (event.key === ' ' || event.key === 'Enter') {
-        event.preventDefault();
-        toggleMenu();
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        closeMenu(container, panel, toggle, backdrop, lastFocus, handlers, breakpoint);
-      }
-    });
-
-    panel.addEventListener('transitionend', () => {
-      if (!panel.classList.contains('hidden')) {
-        panel.removeAttribute('hidden');
-      }
-    });
-
-    breakpoint?.addEventListener?.('change', handlers.handleBreakpointChange);
-  };
-
-  doc.addEventListener('DOMContentLoaded', () => {
-    const containers = doc.querySelectorAll('[data-mobile-menu-container]');
-    containers.forEach(bindMenu);
+  btn.addEventListener('pointerup', (event) => {
+    const type = typeof event.pointerType === 'string' ? event.pointerType : 'mouse';
+    if (type === 'mouse') return;
+    ignoreClick = true;
+    toggle();
+    if (win && typeof win.setTimeout === 'function') {
+      win.setTimeout(() => { ignoreClick = false; }, 0);
+    }
   });
+
+  btn.addEventListener('click', (event) => {
+    event.preventDefault();
+    if (ignoreClick) {
+      ignoreClick = false;
+      return;
+    }
+    toggle();
+  });
+
+  nav.addEventListener('click', (event) => {
+    if (btn.getAttribute('aria-expanded') !== 'true') return;
+    const target = event.target.closest('a,button');
+    if (!target) return;
+    closeNav();
+  }, { capture: true });
+
+  const header = btn.closest('header');
+  if (header && getComputedStyle(header).overflow !== 'visible') {
+    header.style.overflow = 'visible';
+  }
+
+  function syncNav(context) {
+    const matches = context?.matches ?? isDesktop();
+    if (matches) {
+      closeNav({ focus: false, keepVisible: true });
+    } else if (btn.getAttribute('aria-expanded') !== 'true') {
+      nav.hidden = true;
+    }
+  }
+
+  if (!isDesktop()) {
+    nav.hidden = true;
+  }
+
+  if (mq) {
+    syncNav(mq);
+    const listener = (event) => syncNav(event);
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', listener);
+    } else if (typeof mq.addListener === 'function') {
+      mq.addListener(listener);
+    }
+  } else {
+    nav.hidden = false;
+  }
 })();
