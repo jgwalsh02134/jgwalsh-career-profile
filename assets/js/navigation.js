@@ -6,6 +6,10 @@
     return;
   }
 
+  const schedule = typeof globalThis !== 'undefined' && typeof globalThis.setTimeout === 'function'
+    ? (fn) => globalThis.setTimeout(fn, 0)
+    : (fn) => fn();
+
   const focusableSelector = [
     'a[href]:not([tabindex="-1"])',
     'button:not([disabled]):not([tabindex="-1"])',
@@ -50,7 +54,7 @@
       breakpoint.removeEventListener('change', handlers.handleBreakpointChange);
     }
 
-    requestAnimationFrame(() => {
+    schedule(() => {
       if (lastFocus && typeof lastFocus.focus === 'function') {
         lastFocus.focus();
       } else {
@@ -147,7 +151,7 @@
       doc.body?.classList.add('overflow-hidden');
       const focusable = getFocusable(panel);
       if (focusable.length) {
-        requestAnimationFrame(() => focusable[0].focus());
+        schedule(() => focusable[0].focus());
       }
       panel.addEventListener('keydown', handlers.trapFocus);
       doc.addEventListener('keydown', handlers.handleEscape, true);

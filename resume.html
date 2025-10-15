@@ -91,7 +91,7 @@
       <div class="sm:hidden">
         <button id="mobile-menu-button"
           class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100"
-          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu" data-menu-toggle>
+          aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu" data-menu-toggle type="button">
           <svg width="24" height="24" viewBox="0 0 24 24">
             <title>Toggle primary navigation</title>
             <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
@@ -276,24 +276,34 @@
 
   <!-- Footer -->
   <footer class="bg-slate-100/90 dark:bg-slate-900/80 text-sm text-slate-600 dark:text-slate-300 border-t border-slate-200/60 dark:border-slate-700 pt-8 pb-6 px-4 mt-auto">
-    <div class="max-w-6xl mx-auto text-center space-y-4">
-      <nav class="flex justify-center gap-6 mb-6" aria-label="Professional profiles">
-        <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener"
-          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="LinkedIn profile">
-          <img src="assets/icons/linkedin.svg" class="h-5 w-5" alt="LinkedIn logo" loading="lazy" />
-        </a>
-        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener"
-          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="GitHub profile">
-          <img src="assets/icons/github.svg" class="h-5 w-5" alt="GitHub logo" loading="lazy" />
-        </a>
-        <a href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener"
-          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="ORCID profile">
-          <img src="assets/icons/orcid.svg" class="h-5 w-5" alt="ORCID iD logo" loading="lazy" />
-        </a>
-        <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener"
-          class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200/60 bg-white/80 shadow-sm transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:bg-slate-800" aria-label="USAJobs profile">
-          <img src="assets/icons/usajobs.svg" class="h-5 w-5" alt="USAJobs logo" loading="lazy" />
-        </a>
+    <div class="wrap space-y-6 text-center">
+      <nav aria-label="Professional profiles">
+        <ul class="badges-wrap" role="list">
+          <li>
+            <a class="badge" href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener noreferrer"
+              aria-label="LinkedIn profile">
+              <img src="assets/icons/linkedin.svg" alt="LinkedIn logo" width="32" height="32" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li>
+            <a class="badge" href="https://github.com/jgwalsh02134" target="_blank" rel="noopener noreferrer"
+              aria-label="GitHub profile">
+              <img src="assets/icons/github.svg" alt="GitHub logo" width="32" height="32" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li>
+            <a class="badge" href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener noreferrer"
+              aria-label="ORCID profile">
+              <img src="assets/icons/orcid.svg" alt="ORCID iD logo" width="32" height="32" loading="lazy" decoding="async" />
+            </a>
+          </li>
+          <li>
+            <a class="badge" href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener noreferrer"
+              aria-label="USAJobs profile">
+              <img src="assets/icons/usajobs.svg" alt="USAJobs logo" width="32" height="32" loading="lazy" decoding="async" />
+            </a>
+          </li>
+        </ul>
       </nav>
       <div class="text-indigo-600">© 2025 James Gregory Walsh — All rights reserved.</div>
       <div class="flex justify-center items-center gap-2">
