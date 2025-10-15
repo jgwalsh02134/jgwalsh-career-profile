@@ -323,6 +323,10 @@ html[data-theme="dark"] {
   z-index: 50;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .grid {
   display: grid;
 }
@@ -612,243 +616,76 @@ footer,
   text-align: center;
 }
 
-footer a {
+footer .wrap,
+footer .wrap-b {
+  max-width: var(--grid-max);
+  margin: 0 auto;
+  padding: 0 var(--space-sm);
+}
+
+footer nav[aria-label="Profiles and social links"],
+footer nav[aria-label="Professional profiles"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3.5rem, 1fr));
+  gap: 0.75rem;
+  justify-items: center;
+}
+
+footer .badges-wrap,
+footer nav[aria-label="Profiles and social links"] .badges-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(3.5rem, 1fr));
+  gap: 0.75rem;
+  justify-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+footer .badges-wrap li {
+  display: flex;
+  justify-content: center;
+}
+
+footer .badge,
+footer nav[aria-label="Profiles and social links"] .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--footer-border);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+footer .badge:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+footer .badge:hover {
+  transform: translateY(-2px);
+}
+
+footer .badge img {
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+}
+
+footer a[target="_blank"] {
+  color: inherit;
+}
+
+footer a[target="_blank"]:focus-visible,
+footer a[target="_blank"]:hover {
   color: var(--footer-link);
 }
 
-/* Footer icon links: keep sizes and brand colors */
-footer a img,
-footer a svg {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  opacity: 1 !important;
-}
-
-/* Optional: larger tap targets without changing hrefs */
-footer a.icon-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-}
-
-footer a.icon-link:focus-visible {
-  outline: 2px solid var(--footer-link);
-  outline-offset: 3px;
-}
-
-/* === Theme + switch tokens (safe defaults) === */
-:root {
-  --color-bg: var(--bg);
-  --color-text: var(--text);
-  --color-accent: var(--accent);
-  /* aliases used by components */
-  --switch-track: var(--switch-track-light);
-  --switch-thumb: var(--switch-thumb-light);
-}
-
-:root[data-theme="dark"] {
-  --color-bg: var(--bg);
-  --color-text: var(--text);
-  /* flip aliases in dark */
-  --switch-track: var(--switch-track-dark);
-  --switch-thumb: var(--switch-thumb-dark);
-}
-
-/* Apply tokens (no global invert) */
-html,
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-}
-
-img,
-svg {
-  filter: none !important;
-  mix-blend-mode: normal !important;
-}
-
-/* --- Project card image safety --- */
-.project-card-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 280px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* --- GPT buttons row --- */
-.gpt-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-  align-items: center;
-  margin: 2rem auto 3rem;
-  max-width: 1100px;
-  padding: 0 1rem;
-}
-
-.gpt-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
-  text-decoration: none;
-  font-weight: 600;
-  border: 1px solid #d0d0d0;
-  border-radius: 10px;
-  background: #f8f8f8;
-  color: #111;
-  line-height: 1;
-  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-}
-
-.gpt-button:hover {
-  transform: translateY(-1px);
-  background: #f1f1f1;
-  border-color: #c0c0c0;
-}
-
-.gpt-icon {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-}
-
-.gpt-button:focus-visible {
-  outline: 2px solid #008080;
-  outline-offset: 2px;
-}
-
-/* === Sliding Switch === */
-.theme-toggle {
-  /* mobile-first sizing with clamp() scales on tablets/desktop */
-  --h: clamp(28px, 2.8vh, 34px);
-  --w: calc(var(--h) * 1.9);
-  --pad: 3px;
-  --thumb: calc(var(--h) - var(--pad)*2);
-  --speed: 220ms;
-  display: inline-flex;
-  align-items: center;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  padding: 6px 4px;
-  border-radius: 9999px;
-  position: relative;
-  touch-action: manipulation;
-}
-
-@media (max-width: 640px) {
-  .theme-toggle {
-    padding: 8px 6px;
-  }
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid var(--color-accent);
-  border-radius: 9999px;
-}
-
-.theme-toggle__track {
-  width: var(--w);
-  height: var(--h);
-  background: var(--switch-track);
-  border-radius: 9999px;
-  position: relative;
-  transition: background var(--speed) ease;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06);
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid var(--color-accent);
-  border-radius: 9999px;
-}
-
-.theme-toggle__thumb {
-  width: var(--thumb);
-  height: var(--thumb);
-  position: absolute;
-  top: var(--pad);
-  left: var(--pad);
-  border-radius: 50%;
-  background: var(--switch-thumb);
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  transition: left var(--speed) ease, background var(--speed) ease, transform var(--speed) ease;
-  will-change: left, transform;
-}
-
-:root[data-theme="dark"] .theme-toggle__thumb {
-  left: calc(var(--w) - var(--thumb) - var(--pad));
-  background: var(--switch-thumb-dark);
-}
-
-/* Icon sizing + crossfade */
-.theme-toggle__thumb .icon {
-  width: clamp(14px, 2.2vh, 16px);
-  height: clamp(14px, 2.2vh, 16px);
-  display: block;
-  transition: opacity var(--speed) ease, transform var(--speed) ease;
-}
-
-.theme-toggle__thumb .icon--sun {
-  fill: currentColor;
-  color: #f59e0b;
-  stroke: currentColor;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.theme-toggle__thumb .icon--moon {
-  fill: currentColor;
-  color: #cbd5e1;
-  opacity: 0;
-  transform: translateY(4px) scale(.92);
-}
-
-:root[data-theme="dark"] .theme-toggle__thumb .icon--sun {
-  opacity: 0;
-  transform: translateY(-4px) scale(.92);
-}
-
-:root[data-theme="dark"] .theme-toggle__thumb .icon--moon {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Subtle hover lift (respects motion prefs) */
-.theme-toggle:hover .theme-toggle__thumb {
-  transform: translateY(-1px);
-}
-
-:root[data-theme="dark"] .theme-toggle:hover .theme-toggle__thumb {
-  transform: translate(-1px, -1px);
-}
-
-@media(prefers-reduced-motion:reduce) {
-
-  .theme-toggle__thumb,
-  .theme-toggle__track,
-  .theme-toggle__thumb .icon {
-    transition: none;
-  }
-}
-
-/* === Minimal switch (no icons/text) === */
-/* Never invert imagery anywhere */
-img,
-svg {
-  filter: none !important;
-  mix-blend-mode: normal !important;
+footer a {
+  color: var(--footer-link);
 }
 
 /* Mobile-first sizing with clamp() */
