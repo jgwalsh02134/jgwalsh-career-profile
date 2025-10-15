@@ -64,12 +64,12 @@
     if (!toggle) return;
 
     const panelId = toggle.getAttribute('aria-controls');
-    const panel = container.querySelector(`#${panelId}`) || document.getElementById(panelId);
+    const panel = container.querySelector(`#${panelId}`) || doc.getElementById(panelId);
     if (!panel) return;
 
     let backdrop = container.querySelector('[data-menu-backdrop]');
     if (!backdrop) {
-      backdrop = document.createElement('div');
+      backdrop = doc.createElement('div');
       backdrop.setAttribute('data-menu-backdrop', '');
       backdrop.className = 'mobile-menu-backdrop hidden';
       backdrop.setAttribute('hidden', '');
@@ -102,10 +102,10 @@
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
 
-      if (event.shiftKey && document.activeElement === first) {
+      if (event.shiftKey && doc.activeElement === first) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
+      } else if (!event.shiftKey && doc.activeElement === last) {
         event.preventDefault();
         first.focus();
       }
