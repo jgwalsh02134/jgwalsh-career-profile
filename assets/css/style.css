@@ -684,6 +684,12 @@ footer a[target="_blank"]:hover {
   color: var(--footer-link);
 }
 
+footer a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  text-decoration: none;
+}
+
 footer a {
   color: var(--footer-link);
 }
