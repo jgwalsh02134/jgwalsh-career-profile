@@ -1,5 +1,0 @@
-node_modules/
-dist/
-.wrangler/
-__PREVIEW_DIFF_STEP1__/
-**/*.min.css

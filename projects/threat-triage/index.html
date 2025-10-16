@@ -2,200 +2,742 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <title>Behavioral Threat Triage</title>
-  <meta name="description" content="Structured triage workflow that applies validated behavioral threat indicators to prioritize investigative response." />
-  <meta property="og:title" content="Behavioral Threat Triage" />
-  <meta property="og:description" content="A deterministic intake prototype blending BTAM, TRAP-18, and HCR-20 to drive auditable threat decisions." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://jgwalsh.com/projects/threat-triage/" />
+  <meta charset="UTF-8" />
+  <title>Behavioral Threat Triage — Deterministic Intake</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="canonical" href="https://jgwalsh.com/projects/threat-triage/" />
-  <link rel="stylesheet" href="/assets/css/projects.css?v=proj_detail" />
-  <script src="/assets/js/theme.js?v=proj_detail" defer></script>
+  <link rel="stylesheet" href="/assets/css/style.css?v=proj1" />
+  <script src="/assets/js/theme.js" defer></script>
+  <meta name="color-scheme" content="light dark">
+  <style>
+    :root {
+      --low: #10b981;
+      --mod: #f59e0b;
+      --elev: #ef4444;
+      --crit: #7f1d1d;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #fafafa;
+    }
 
-  <link rel="icon" href="/assets/favicon.ico" />
-  <link rel="stylesheet" href="/assets/css/style.css" />
-  <script defer src="/assets/js/nav.js"></script>
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .panel {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 1px solid #111;
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      background: #111;
+      color: #fff;
+    }
+
+    .btn.secondary {
+      background: #fff;
+      color: #111;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 12px;
+    }
+
+    .badge.low {
+      border-color: var(--low);
+      color: var(--low);
+    }
+
+    .badge.mod {
+      border-color: var(--mod);
+      color: var(--mod);
+    }
+
+    .badge.elev {
+      border-color: var(--elev);
+      color: var(--elev);
+    }
+
+    .badge.crit {
+      border-color: var(--crit);
+      color: var(--crit);
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      background: var(--card);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 160px;
+      font: 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse
+    }
+
+    th,
+    td {
+      padding: 8px 10px;
+      border-top: 1px solid var(--border);
+      text-align: left;
+      font-size: 14px
+    }
+
+    th {
+      background: #f8fafc
+    }
+
+    @media (max-width:520px) {
+      .row {
+        gap: 8px
+      }
+
+      .btn {
+        padding: 8px 12px
+      }
+    }
+
+    /* Retro Windows 95 theme overrides */
+    body.retro-win {
+      background: #008080;
+      font-family: 'MS Sans Serif', 'Tahoma', 'Geneva', sans-serif;
+      margin: 0;
+    }
+
+    body.retro-win .container {
+      padding: 32px 24px 0;
+    }
+
+    .win95-window {
+      background: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .win95-titlebar {
+      background: linear-gradient(90deg, #000080, #1084d0);
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .win95-titlebar span {
+      user-select: none;
+    }
+
+    .win95-titlebar .controls {
+      display: flex;
+      gap: 4px;
+    }
+
+    .win95-titlebar .controls button {
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      font: inherit;
+      background: #c0c0c0;
+      border: 1px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf;
+      cursor: pointer;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .win95-titlebar .controls button:active {
+      border: 1px solid #404040;
+      border-right-color: #ffffff;
+      border-bottom-color: #ffffff;
+      box-shadow: inset -1px -1px 0 #dfdfdf, inset 1px 1px 0 #000;
+    }
+
+    .win95-body {
+      padding: 20px 24px 16px;
+    }
+
+    body.retro-win h1 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+
+    body.retro-win .card {
+      background: #dfdfdf;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      border-radius: 2px;
+      box-shadow: none;
+    }
+
+    body.retro-win .panel {
+      background: #dfdfdf;
+      border: 2px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      border-radius: 2px;
+    }
+
+    body.retro-win .btn {
+      background: #c0c0c0;
+      color: #000;
+      border: 1px solid #ffffff;
+      border-right-color: #404040;
+      border-bottom-color: #404040;
+      border-radius: 2px;
+      padding: 6px 14px;
+      font-size: 13px;
+      box-shadow: inset -1px -1px 0 #000, inset 1px 1px 0 #dfdfdf;
+      text-decoration: none;
+    }
+
+    body.retro-win .btn:active {
+      border: 1px solid #404040;
+      border-right-color: #ffffff;
+      border-bottom-color: #ffffff;
+      box-shadow: inset -1px -1px 0 #dfdfdf, inset 1px 1px 0 #000;
+    }
+
+    body.retro-win nav {
+      margin-bottom: 12px;
+    }
+
+    body.retro-win .muted {
+      color: #000;
+      opacity: 0.8;
+    }
+
+    body.retro-win #diag {
+      color: #000;
+    }
+
+    @media (max-width:640px) {
+      .win95-body {
+        padding: 16px 16px 24px;
+      }
+    }
+  </style>
 </head>
 
-<body class="antialiased flex flex-col min-h-screen font-sans">
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:bg-indigo-600 focus:text-white focus:p-2 focus:rounded">Skip to main content</a>
-
-  <header class="bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/85 shadow-sm sticky top-0 w-full z-50 border-b border-slate-200/70 dark:border-slate-700/80 header-wrap">
-    <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
-      <a href="https://jgwalsh.com/"
-        class="flex items-center gap-3 text-2xl font-semibold text-navy tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">
-        <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." class="h-10 w-10" width="48" height="48" decoding="async" />
-        <span>James Gregory Walsh</span>
-      </a>
-      <button id="nav-toggle" type="button" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"
-        class="relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100 md:hidden">
-        <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Toggle primary menu icon">
-          <title>Toggle primary navigation</title>
-          <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-      </button>
-      <nav id="primary-nav" hidden aria-label="Primary navigation"
-        class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white/95 px-6 pb-12 pt-24 text-lg text-slate-700 shadow-lg backdrop-blur dark:bg-slate-900/95 md:static md:inset-auto md:z-auto md:flex md:h-auto md:flex-row md:items-center md:gap-2 md:bg-transparent md:px-0 md:py-0 md:text-sm md:shadow-none md:backdrop-blur-0">
-        <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center gap-6 text-center md:mx-0 md:flex-row md:items-center md:justify-end md:gap-2 md:text-left">
-          <a href="https://jgwalsh.com/"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Home</a>
-          <a href="https://jgwalsh.com/about.html"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">About</a>
-          <a href="https://jgwalsh.com/resume.html"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Résumé</a>
-          <a href="https://jgwalsh.com/projects/"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-semibold text-navy md:px-3 md:py-2"
-            aria-current="page">Projects</a>
-          <a href="https://jgwalsh.com/blog/"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Blog</a>
-          <a href="https://jgwalsh.com/contact.html"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Contact</a>
-          <button id="theme-toggle" class="theme-toggle hidden md:inline-flex" type="button" aria-label="Switch theme"
-            aria-pressed="false">
-            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-          </button>
-          <button id="theme-toggle-mobile"
-            class="w-full rounded-full border border-slate-200 px-4 py-2 text-left theme-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 md:hidden"
-            type="button" aria-pressed="false" aria-label="Switch theme">
-            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-          </button>
-        </div>
-      </nav>
-    </div>
+<body class="retro-win">
+  <header class="site-header" role="banner"
+    style="background:#f8fafc;border-bottom:1px solid rgba(0,0,0,.08);padding:.6rem 1rem">
+    <nav aria-label="Main">
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/resume.html">Résumé</a>
+      <a href="/projects/" aria-current="page" class="font-bold text-navy">Projects</a>
+      <a href="/contact.html">Contact</a>
+      <button id="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">Theme</button>
+    </nav>
   </header>
-
-  <main id="main-content" class="flex-grow">
-    <section class="relative isolate overflow-hidden">
-      <img src="/assets/images/projects/threat-triage.jpg" alt="Threat triage dashboard" width="1920" height="640"
-        class="absolute inset-0 h-64 w-full object-cover sm:h-80 md:h-96" loading="lazy" decoding="async">
-      <div class="absolute inset-0 bg-slate-900/60"></div>
-      <div class="relative mx-auto flex h-64 flex-col justify-end gap-4 px-4 pb-8 pt-16 text-white sm:h-80 md:h-96 md:max-w-5xl">
-        <a href="/projects/" class="inline-flex items-center gap-2 text-sm font-medium text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 focus-visible:ring-white">
-          <span aria-hidden="true">←</span>
-          <span>Back to Projects</span>
-        </a>
-        <div>
-          <p class="text-sm uppercase tracking-[0.2em] text-white/70">Investigative Workflow</p>
-          <h1 class="text-3xl font-semibold sm:text-4xl md:text-5xl">Behavioral Threat Triage</h1>
-        </div>
-        <div class="flex flex-wrap items-center gap-2 text-sm font-medium text-white/90">
-          <span class="inline-flex items-center rounded-full border border-white/40 px-3 py-1">2025</span>
-          <span class="inline-flex items-center rounded-full border border-white/40 px-3 py-1">Live</span>
-          <span class="inline-flex items-center rounded-full border border-white/40 px-3 py-1">#investigative</span>
-          <span class="inline-flex items-center rounded-full border border-white/40 px-3 py-1">#risk</span>
-          <span class="inline-flex items-center rounded-full border border-white/40 px-3 py-1">#psychology</span>
+  <nav class="home-link" aria-label="Breadcrumb" style="margin:.75rem 0 1.25rem; padding: 0 1rem;">
+    <a href="/projects/"
+      style="text-decoration:none;border:1px solid rgba(0,0,0,.15);padding:.45rem .75rem;border-radius:10px;display:inline-block;">←
+      Back to Projects</a>
+  </nav>
+  <main id="triage-main" class="container triage-page">
+    <div class="win95-window" role="group" aria-label="Behavioral Threat Triage Window">
+      <div class="win95-titlebar"><span>Behavioral Threat Triage</span>
+        <div class="controls" aria-hidden="true">
+          <button tabindex="-1" aria-label="Minimize">_</button>
+          <button tabindex="-1" aria-label="Maximize">▢</button>
+          <button tabindex="-1" aria-label="Close">×</button>
         </div>
       </div>
-    </section>
+      <div class="win95-body">
+        <nav>
+          <a href="/projects/" class="btn" aria-label="Back to Projects">← Back</a>
+        </nav>
+        <header class="grid" aria-labelledby="page-title">
+          <h1 id="page-title" style="margin:0;">Behavioral Threat Triage</h1>
+          <p class="muted" id="intro-copy">
+            This project simulates the first step a behavioral threat-assessment team would take when a threatening
+            message is received.
+            It scans the text for validated risk factors (BTAM, TRAP-18, HCR-20, lexical aggression, protective cues),
+            assigns a banded risk level,
+            and produces a clear action plan: immediate, next 24–72h, and follow-up steps. The goal is to show how
+            psychology and structured
+            professional judgment can be translated into transparent, auditable decision-support tools for law
+            enforcement and security contexts.
+          </p>
+          <div class="row">
+            <button id="printBtn" class="btn secondary" aria-label="Print this case study">Print Case Study</button>
+            <button id="copyReport" class="btn secondary" aria-label="Copy report (Markdown)">Copy Report</button>
+            <button id="downloadBtn" class="btn secondary" aria-label="Download JSON result">Download JSON</button>
+            <span id="diag" class="note" aria-live="polite"></span>
+          </div>
+        </header>
 
-    <section class="mx-auto max-w-5xl px-4 py-12 space-y-10">
-      <div class="space-y-6 text-slate-700">
-        <p class="text-lg leading-relaxed">Behavioral Threat Triage codifies structured professional judgment for intake teams. The prototype ingests a narrative, highlights BTAM, TRAP-18, and HCR-20 indicators, and surfaces an auditable action plan that separates immediate tasks from 24–72 hour follow-ups. The objective is to show how applied psychology can power transparent decision-support tools for law enforcement and workplace safety units.</p>
-        <div class="flex flex-wrap items-center gap-3">
-          <a class="inline-flex items-center rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" href="https://demo.jgwalsh.com/threat-triage" rel="noopener noreferrer" target="_blank">Open live demo</a>
-          <a class="inline-flex items-center rounded-full border border-indigo-600 px-5 py-2 text-sm font-semibold text-indigo-600 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2" href="#capabilities">Explore features</a>
-        </div>
+        <!-- Demo -->
+        <section class="panel grid" id="demo" aria-labelledby="demo-title">
+          <h2 id="demo-title" style="margin:0;">Live Demo (Automatic)</h2>
+
+          <!-- Example cases -->
+          <label for="exampleSelect"><strong>Load Example Case:</strong></label>
+          <select id="exampleSelect" aria-label="Select an example case">
+            <option value="">-- Select a case --</option>
+            <option>Virginia School Threat</option>
+          </select>
+          <p id="caseNote" class="note"></p>
+          <label for="narrative"><strong>Narrative</strong></label>
+          <textarea id="narrative" name="narrative" rows="8" class="triage-input" aria-describedby="narrative-help"
+            placeholder="Type or paste the narrative…"></textarea>
+          <p id="narrative-help" class="note">Screening only. Signals ≠ proof. Do not use for diagnosis or profiling.
+          </p>
+          <div class="card" id="narrativeViewCard" style="display:none;">
+            <h3 style="margin:0 0 6px;">Narrative (Matched Highlights)</h3>
+            <div id="narrativeView" class="note" style="line-height:1.6;"></div>
+          </div>
+
+          <div class="row" style="align-items:flex-end;">
+            <button id="btnLoadExample" class="btn" type="button">Load Example</button>
+            <button id="btnAnalyze" class="btn" type="button">Analyze (AI)</button>
+            <button id="btnCopy" class="btn secondary" type="button">Copy Narrative</button>
+            <button id="btnExport" class="btn secondary" type="button">Export JSON</button>
+            <button id="btnClear" class="btn secondary" type="button">Clear All</button>
+          </div>
+          <div id="aiResult" style="display:none;margin-top:10px;padding:10px;border:1px solid #ddd;border-radius:8px;background:#fff;"></div>
+          <p class="note" style="margin-top:4px;">Chars: <span id="countNarrative">0</span></p>
+          <!-- Diagnostics Bar (added per run reliability spec) -->
+          <div id="tt-diag" class="note" style="margin-top:8px;">
+            <strong>Status:</strong> <span id="tt-status">idle</span> •
+            <strong>Error:</strong> <span id="tt-err">—</span>
+          </div>
+          <button id="ttRunTests" class="btn secondary" style="display:none;">Run Built-in Tests</button>
+
+          <div id="resultsArea" class="grid" style="display:none;" aria-live="polite">
+            <div class="card">
+              <h3 style="margin:0 0 6px;">Triage Summary</h3>
+              <div id="scoreBand" class="badge">Overall: —</div>
+              <div id="summary" style="margin-top:10px;"></div>
+              <div id="dampenNote" class="note"></div>
+            </div>
+            <div id="diagBar" class="note" style="margin-top:6px;">
+              <strong>Status:</strong> <span id="diagStatus">idle</span> •
+              <strong>AI:</strong> <span id="diagAI">off</span> •
+              <strong>Last error:</strong> <span id="diagErr">—</span>
+            </div>
+
+            <div class="card">
+              <h3 style="margin-top:0;">Scores & Indicators</h3>
+              <table aria-label="Subscores and indicator hits">
+                <thead>
+                  <tr>
+                    <th>Component</th>
+                    <th>Score</th>
+                    <th>Indicators Detected</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BTAM Core</td>
+                    <td id="btamScore">0</td>
+                    <td>
+                      <ul id="btamHits" class="note" style="margin:0;padding-left:18px;"></ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>TRAP-18 Subset</td>
+                    <td id="trapScore">0</td>
+                    <td>
+                      <ul id="trapHits" class="note" style="margin:0;padding-left:18px;"></ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>HCR-20 Context</td>
+                    <td id="hcrScore">0</td>
+                    <td>
+                      <ul id="hcrHits" class="note" style="margin:0;padding-left:18px;"></ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Lexical Aggression</td>
+                    <td id="lensScore">0</td>
+                    <td>
+                      <ul id="lensHits" class="note" style="margin:0;padding-left:18px;"></ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Protective Factors</td>
+                    <td id="protScore">0</td>
+                    <td>
+                      <ul id="protHits" class="note" style="margin:0;padding-left:18px;"></ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h3 style="margin-top:0;">Comprehensive Report</h3>
+              <div class="note">Plain-English explanation of scores and a breakdown of each indicator with highlighted
+                text.</div>
+
+              <!-- Narrative with highlights -->
+              <div class="card" id="narrativeViewCard" style="margin-top:8px; display:none;">
+                <h4 style="margin:0 0 6px;">Narrative (Matched Highlights)</h4>
+                <div id="narrativeView" style="line-height:1.6;"></div>
+              </div>
+
+              <!-- Executive summary + recommended actions -->
+              <div id="reportExecutive" class="grid" style="gap:10px; margin-top:12px;"></div>
+
+              <!-- Domain summaries -->
+              <details id="domainBTAM" open style="margin-top:8px;">
+                <summary><strong>BTAM (intake indicators)</strong></summary>
+                <ul id="btamExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+              </details>
+
+              <details id="domainTRAP" style="margin-top:6px;">
+                <summary><strong>TRAP-18 (warning behaviors)</strong></summary>
+                <ul id="trapExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+              </details>
+
+              <details id="domainHCR" style="margin-top:6px;">
+                <summary><strong>HCR-20 (contextual factors)</strong></summary>
+                <ul id="hcrExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+              </details>
+
+              <details id="domainLex" style="margin-top:6px;">
+                <summary><strong>Lexical aggression</strong></summary>
+                <ul id="lexExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+              </details>
+
+              <details id="domainProt" style="margin-top:6px;">
+                <summary><strong>Protective signals (reduce risk)</strong></summary>
+                <ul id="protExplain" class="note" style="margin:8px 0 0 18px;"></ul>
+              </details>
+
+              <!-- Indicator rationale list -->
+              <div class="card" style="margin-top:12px;">
+                <h4 style="margin:0 0 6px;">Indicator Rationale</h4>
+                <p class="note" style="margin:0 0 8px;">Each item explains why it contributed to the score, shows the
+                  exact matched text, and the weight applied.</p>
+                <ol id="rationaleList" style="margin:0 0 0 20px;"></ol>
+              </div>
+
+              <!-- Diagnostics (keep) -->
+              <div class="card" id="calcPanel" style="margin-top:12px;">
+                <details>
+                  <summary><strong>Diagnostics: Calculation Trace</strong></summary>
+                  <div class="note">Pattern-level matches, arithmetic, dampeners, banding.</div>
+                  <pre id="calcTrace" class="mono" style="white-space:pre-wrap;"></pre>
+                </details>
+              </div>
+            </div>
+            <div class="card" id="whyMatters">
+              <h3 style="margin:0 0 6px;">Why These Signals Matter</h3>
+              <div class="grid" style="gap:10px;">
+                <div><strong>BTAM</strong>: intake teams look for observable, actionable cues (direct threats,
+                  time/place, means). These drive immediate safety steps.</div>
+                <div><strong>TRAP-18</strong>: warning behaviors (fixation, identification, last-resort) mark escalation
+                  pathways before violence.</div>
+                <div><strong>HCR-20</strong>: context (history/clinical/risk) explains <em>why now</em> and informs risk
+                  management planning.</div>
+              </div>
+            </div>
+
+            <div class="card mono" id="rubricCard" style="display:none;"></div>
+            <div class="card" id="calcPanel">
+              <details>
+                <summary><strong>Diagnostics: Calculation Trace</strong></summary>
+                <div class="note">Pattern-level matches, arithmetic, dampeners, banding.</div>
+                <pre id="calcTrace" class="mono" style="white-space:pre-wrap;"></pre>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel grid" style="margin-top:24px;">
+          <details>
+            <summary><strong>Sources & References (APA)</strong></summary>
+            <div class="card note">
+              <p>Meloy, J. R., Hoffmann, J., Roshdi, K., & Guldimann, A. (2011). The role of warning behaviors in threat
+                assessment: An exploration and typology.</p>
+              <p>U.S. Secret Service & DHS. Behavioral Threat Assessment & Management (BTAM) guides.</p>
+              <p>Virginia DCJS (2014). Threat Assessment in Virginia Schools: Technical Report.</p>
+              <p>FBI Law Enforcement Bulletin. Threat Assessment Teams: Workplace & School Violence Prevention.</p>
+              <p>HCR-20 (historical/clinical/risk) contextual factors; protective-factor literature.</p>
+            </div>
+          </details>
+        </section>
+
+        <section class="panel grid" style="margin-top:24px;">
+          <details id="validationBlock">
+            <summary><strong>Validation Mode (built-in examples)</strong></summary>
+            <p class="note">Runs known examples with expected bands to demonstrate reliability. No personal data.</p>
+            <button id="runBenchmarks" class="btn secondary">Run Benchmarks</button>
+            <div class="card" style="margin-top:10px;">
+              <table style="width:100%;border-collapse:collapse">
+                <thead>
+                  <tr>
+                    <th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Case</th>
+                    <th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Expected</th>
+                    <th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Actual</th>
+                    <th style="text-align:left;padding:8px;border-top:1px solid #e5e7eb;">Result</th>
+                  </tr>
+                </thead>
+                <tbody id="benchBody"></tbody>
+              </table>
+            </div>
+          </details>
+        </section>
       </div>
-
-      <section id="capabilities" aria-label="Threat triage capabilities" class="grid gap-6 md:grid-cols-2">
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow">
-          <h2 class="text-xl font-semibold text-slate-900">Deterministic Intake</h2>
-          <p class="mt-2 text-sm text-slate-600">Narratives are parsed for validated behavioral indicators, banded, and routed with transparent justification for every recommendation.</p>
-          <div class="mt-4 flex flex-wrap items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">BTAM</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">TRAP-18</span>
-            <a class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-500" href="/projects/threat-triage/brief.pdf">Download brief</a>
-          </div>
-        </article>
-
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow">
-          <h2 class="text-xl font-semibold text-slate-900">Auditable Action Plans</h2>
-          <p class="mt-2 text-sm text-slate-600">Immediate, 24–72 hour, and follow-up steps are generated alongside protective factor notes to support multidisciplinary review boards.</p>
-          <div class="mt-4 flex flex-wrap items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">workflow</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">intake</span>
-            <a class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-500" href="https://demo.jgwalsh.com/threat-triage" rel="noopener noreferrer" target="_blank">See example</a>
-          </div>
-        </article>
-
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow">
-          <h2 class="text-xl font-semibold text-slate-900">Structured Notes</h2>
-          <p class="mt-2 text-sm text-slate-600">Investigators can capture structured notes and export JSON artifacts to synchronize with case management or learning systems.</p>
-          <div class="mt-4 flex flex-wrap items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">export</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">notes</span>
-            <a class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-500" href="/projects/threat-triage/brief.pdf">View schema</a>
-          </div>
-        </article>
-
-        <article class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow">
-          <h2 class="text-xl font-semibold text-slate-900">Reliability Diagnostics</h2>
-          <p class="mt-2 text-sm text-slate-600">Built-in diagnostics track AI assist usage, error states, and test scenarios to maintain compliance with policy and retention schedules.</p>
-          <div class="mt-4 flex flex-wrap items-center gap-2">
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">compliance</span>
-            <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">monitoring</span>
-            <a class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-500" href="/projects/gallery/">View gallery</a>
-          </div>
-        </article>
-      </section>
-
-      <section aria-label="Approach" class="space-y-4 text-slate-700">
-        <h2 class="text-2xl font-semibold text-slate-900">Approach</h2>
-        <p>The intake engine draws from case law, Secret Service behavioral threat research, and structured professional judgment models. Deterministic rules ensure repeatability, while diagnostics capture when generative AI assists are invoked, allowing supervisors to audit outputs.</p>
-        <p>The roadmap introduces joint analyst review, cross-case comparisons, and integrations with guardian follow-up teams—extending deterministic triage into a full-spectrum threat management workflow.</p>
-      </section>
-
-      <nav aria-label="More projects" class="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Previous</p>
-          <a href="/projects/gallery/" class="text-lg font-semibold text-indigo-600 hover:text-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">Interactive Project Gallery</a>
-        </div>
-        <div class="hidden h-12 w-px bg-slate-200 sm:block" aria-hidden="true"></div>
-        <div>
-          <p class="text-xs uppercase tracking-[0.2em] text-slate-500">Next</p>
-          <a href="/projects/interview-sim/" class="text-lg font-semibold text-indigo-600 hover:text-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">Interview Simulator</a>
-        </div>
-      </nav>
-    </section>
+    </div>
   </main>
+  <!-- Failsafe binder: ensure Analyze (AI) posts to /api/triage and shows the result -->
+  <script type="module">
+    (function(){
+      const ENDPOINT = "/api/triage";
+      const analyzeBtn = document.getElementById("btnAnalyze");
+      const ta = document.getElementById("narrative");
+      const out = document.getElementById("aiResult");
+      if(!analyzeBtn || !ta){ console.warn("[TT] binder: missing btnAnalyze or narrative"); return; }
 
-  <footer class="w-full border-t">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 md:py-12 space-y-8">
-      <nav aria-label="Profiles and social links">
-        <ul class="flex flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2" role="list">
-          <li>
-            <a href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" class="inline-flex items-center gap-2 py-2 px-2 min-h-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
-              <img src="https://iconsusa.org/assets/icons_copy/linkedin.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true" class="h-6 w-6">
-            </a>
-          </li>
-          <li>
-            <a href="https://www.usajobs.gov/applicant/profile/" target="_blank" rel="noopener noreferrer" aria-label="USAJobs profile" class="inline-flex items-center gap-2 py-2 px-2 min-h-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
-              <img src="https://iconsusa.org/assets/icons_copy/icons8-usa.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true" class="h-6 w-6">
-            </a>
-          </li>
-          <li>
-            <a href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener noreferrer" aria-label="ORCID profile" class="inline-flex items-center gap-2 py-2 px-2 min-h-[24px] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
-              <img src="https://iconsusa.org/assets/icons_copy/orcid.svg" alt="" width="24" height="24" loading="lazy" decoding="async" aria-hidden="true" class="h-6 w-6">
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="mt-10 pt-6 border-t text-sm leading-relaxed md:flex md:items-center md:justify-between md:gap-6">
-        <div class="text-center md:text-left">
-          © 2025 James Gregory Walsh — All rights reserved.
-        </div>
-        <div class="flex justify-center items-center gap-2 mt-4 md:mt-0">
-          <span>Albany, NY</span>
-          <span aria-hidden="true">·</span>
-          <a href="mailto:jgwalsh@proton.me" class="hover:underline">jgwalsh@proton.me</a>
-        </div>
+      async function callTriage(text){
+        try{
+          out.style.display = "block";
+          out.textContent = "Contacting /api/triage…";
+          console.log("[TT] POST", ENDPOINT, {chars: (text||"").length});
+          const res = await fetch(ENDPOINT, {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({
+              model: "gpt-4o-mini",
+              messages: [
+                { role: "system", content: "You assist with behavioral threat triage. Be concise and structured." },
+                { role: "user", content: text || "" }
+              ]
+            })
+          });
+          const raw = await res.text();
+          console.log("[TT] /api/triage status:", res.status, "raw:", raw.slice(0,300));
+          let parsed; try { parsed = JSON.parse(raw); } catch(e){ parsed = null; }
+          const reply = parsed?.choices?.[0]?.message?.content || parsed?.error?.message || raw || "No content returned.";
+          out.textContent = reply;
+        }catch(err){
+          console.error("[TT] triage error", err);
+          out.style.display = "block";
+          out.textContent = "Error calling /api/triage: " + (err?.message || String(err));
+        }
+      }
+
+      analyzeBtn.addEventListener("click", () => {
+        const text = (ta && ta.value || "").trim();
+        if(!text){ out.style.display = "block"; out.textContent = "Please enter or load a narrative first."; return; }
+        callTriage(text);
+      }, { passive:false });
+    })();
+  </script>
+  <script type="module">
+    import { analyzeWithAI } from "/assets/triage/ai.js";
+    // Example hook:
+    // document.getElementById('btnAnalyze')?.addEventListener('click', async () => {
+    //   const res = await analyzeWithAI({ model: "gpt-4o-mini", messages: [{ role: "user", content: "Analyze this text..." }] });
+    //   console.log(res);
+    // });
+  </script>
+
+  <!-- Updated script path after relocation -->
+  <footer class="site-footer triage-footer">
+    <div class="max-w-4xl mx-auto text-center space-y-3">
+      <div>© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div class="footer-links">
+        <a href="mailto:jgwalsh@proton.me">Email</a> ·
+        <a href="https://github.com/jgwalsh02134" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="/contact.html">Contact</a>
       </div>
     </div>
   </footer>
+  <script type="module" src="/assets/js/threat-triage.js?v=fix2"></script>
+  <script>document.getElementById('printBtn')?.addEventListener('click', () => window.print());</script>
+  <!-- Floating Chat (Threat Triage only) -->
+  <style>
+    .triage-chat-launcher {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 1000;
+      width: 56px;
+      height: 56px;
+      border: none;
+      border-radius: 9999px;
+      background: #111;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
+      cursor: pointer
+    }
+
+    .triage-chat-panel {
+      position: fixed;
+      right: 16px;
+      bottom: 80px;
+      z-index: 1000;
+      width: min(420px, 92vw);
+      max-height: min(70vh, 700px);
+      display: none;
+      flex-direction: column;
+      border-radius: 14px;
+      background: #fff;
+      color: #111;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .28);
+      border: 1px solid rgba(0, 0, 0, .08);
+      overflow: hidden
+    }
+
+    .triage-chat-header {
+      padding: 10px 12px;
+      font-weight: 600;
+      border-bottom: 1px solid #eee
+    }
+
+    .triage-chat-body {
+      padding: 10px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .triage-msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      max-width: 85%
+    }
+
+    .triage-user {
+      align-self: flex-end;
+      background: #0b5fff;
+      color: #fff
+    }
+
+    .triage-bot {
+      align-self: flex-start;
+      background: #f3f3f3
+    }
+
+    .triage-chat-form {
+      display: flex;
+      gap: 8px;
+      padding: 10px;
+      border-top: 1px solid #eee
+    }
+
+    .triage-chat-input {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 10px
+    }
+
+    .triage-send-btn {
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      cursor: pointer
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .triage-chat-panel {
+        background: #151515;
+        color: #e8e8e8;
+        border-color: rgba(255, 255, 255, .12)
+      }
+
+      .triage-chat-header {
+        border-bottom-color: rgba(255, 255, 255, .12)
+      }
+
+      .triage-msg.triage-bot {
+        background: #222;
+        color: #e8e8e8
+      }
+
+      .triage-chat-input {
+        background: #111;
+        color: #e8e8e8;
+        border-color: #333
+      }
+
+      .triage-send-btn,
+      .triage-chat-launcher {
+        background: #e8e8e8;
+        color: #111
+      }
+    }
+  </style>
+  <script type="module">
+    const ENDPOINT = "/api/triage"; // Threat Triage endpoint (uses OPENAI_API_KEY)
+    const btn = Object.assign(document.createElement('button'), { className: 'triage-chat-launcher', textContent: '✦', ariaLabel: 'Open chat' });
+    const panel = document.createElement('div'); panel.className = 'triage-chat-panel';
+    panel.innerHTML = `\n    <div class="triage-chat-header">Ask about Threat Triage</div>\n    <div class="triage-chat-body" id="triage-body">\n      <div class="triage-msg triage-bot">Hi! I can help you explore the Threat Triage tools and docs.</div>\n    </div>\n    <form class="triage-chat-form" id="triage-form">\n      <input class="triage-chat-input" id="triage-input" placeholder="Type your question…" autocomplete="off" />\n      <button class="triage-send-btn">Send</button>\n    </form>`;
+    document.body.append(btn, panel);
+    const bodyEl = panel.querySelector('#triage-body');
+    const form = panel.querySelector('#triage-form');
+    const input = panel.querySelector('#triage-input');
+    function sanitize(html) { const temp = document.createElement('div'); temp.innerHTML = html; temp.querySelectorAll('*').forEach(el => { const tag = el.tagName.toLowerCase(); if (tag === 'a') { const raw = el.getAttribute('href') || ''; try { const url = new URL(raw, location.origin); const isRel = raw.startsWith('/'); const same = url.origin === location.origin; if (!isRel && !same) { el.replaceWith(document.createTextNode(el.textContent || '')); return; } el.setAttribute('target', '_self'); el.setAttribute('rel', 'noopener'); } catch { el.replaceWith(document.createTextNode(el.textContent || '')); } } else { el.replaceWith(document.createTextNode(el.textContent || '')); } }); return temp.innerHTML; }
+    function add(role, text) { const d = document.createElement('div'); d.className = `triage-msg ${role === 'user' ? 'triage-user' : 'triage-bot'}`; d.innerHTML = role === 'assistant' ? sanitize(String(text ?? '')) : String(text ?? ''); bodyEl.appendChild(d); bodyEl.scrollTop = bodyEl.scrollHeight; }
+    let thread = [{ role: 'assistant', content: 'Hello! How can I help with Threat Triage?' }];
+    btn.addEventListener('click', () => { panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex'; if (panel.style.display === 'flex') input.focus(); });
+    form.addEventListener('submit', async (e) => { e.preventDefault(); const q = input.value.trim(); if (!q) return; add('user', q); input.value = ''; const payload = { messages: [...thread, { role: 'user', content: q }] }; try { const res = await fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const json = await res.json(); const reply = json?.choices?.[0]?.message?.content || 'No content returned.'; add('assistant', reply); thread = [...payload.messages, { role: 'assistant', content: reply }]; } catch (err) { console.error(err); add('assistant', 'Sorry—something went wrong. Try again.'); } });
+  </script>
+  <!-- /Floating Chat (Threat Triage) -->
 </body>
 
 </html>

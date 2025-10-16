@@ -27,7 +27,38 @@
   <link rel="me" href="https://github.com/jgwalsh02134" />
   <link rel="me" href="https://orcid.org/0000-0002-4420-5724" />
   <link rel="me" href="https://www.researchgate.net/profile/J-Gregory-Walsh" />
-  
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/favicon-180-precomposed.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/favicon-192.png">
+  <link rel="icon" type="image/png" sizes="152x152" href="assets/favicon/favicon-152-precomposed.png">
+  <link rel="icon" type="image/png" sizes="144x144" href="assets/favicon/favicon-144-precomposed.png">
+  <link rel="icon" type="image/png" sizes="120x120" href="assets/favicon/favicon-120-precomposed.png">
+  <link rel="icon" type="image/png" sizes="114x114" href="assets/favicon/favicon-114-precomposed.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96.png">
+  <link rel="icon" type="image/png" sizes="76x76" href="assets/favicon/favicon-76.png">
+  <link rel="icon" type="image/png" sizes="72x72" href="assets/favicon/favicon-72-precomposed.png">
+  <link rel="icon" type="image/png" sizes="72x72" href="assets/favicon/favicon-72.png">
+  <link rel="icon" type="image/png" sizes="60x60" href="assets/favicon/favicon-60.png">
+  <link rel="icon" type="image/png" sizes="57x57" href="assets/favicon/favicon-57.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="36x36" href="assets/favicon/favicon-36.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+  <link rel="manifest" href="assets/favicon/manifest.json">
+  <!-- mask-icon removed: assets/favicon/safari-pinned-tab.svg not present -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=home_dm2" />
+  <link rel="stylesheet" href="/assets/css/projects.css?v=home_dm2" />
+  <script src="/assets/js/theme.js?v=home_dm2" defer></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -78,10 +109,28 @@
     ]
   }
   </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            'fade-in': 'fadeIn 1s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          }
+        },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+        },
+      }
+    }
+  </script>
 
-  <link rel="icon" href="/assets/favicon.ico" />
-  <link rel="stylesheet" href="/assets/css/style.css" />
-  <script defer src="/assets/js/nav.js"></script>
 </head>
 
 <body class="antialiased leading-relaxed flex flex-col min-h-screen font-sans">
@@ -89,52 +138,57 @@
     class="sr-only focus:not-sr-only focus:bg-indigo-600 focus:text-white focus:p-2 focus:rounded">Skip to main
     content</a>
 
-  <header class="bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/85 shadow-sm sticky top-0 w-full z-50 border-b border-slate-200/70 dark:border-slate-700/80 header-wrap">
-    <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
-      <a href="https://jgwalsh.com/"
-        class="flex items-center gap-3 text-2xl font-semibold text-navy tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">
-        <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." class="h-10 w-10" width="48" height="48"
-          decoding="async" />
+  <header class="bg-gray-50 dark:bg-slate-900 shadow-sm sticky top-0 w-full z-50">
+    <div class="site-header wrap">
+      <a href="/" class="brand text-2xl font-semibold text-navy">
+        <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." loading="lazy" />
         <span>James Gregory Walsh</span>
       </a>
-      <button id="nav-toggle" type="button" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"
-        class="relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100 md:hidden">
-        <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-label="Toggle primary menu icon">
-          <title>Toggle primary navigation</title>
+
+      <button id="mobile-menu-button"
+        class="sm:hidden text-gray-800 focus:outline-none focus:ring-2 focus:ring-sage rounded px-2 py-1"
+        aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
             stroke-linejoin="round" />
         </svg>
       </button>
-      <nav id="primary-nav" hidden aria-label="Primary navigation"
-        class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white/95 px-6 pb-12 pt-24 text-lg text-slate-700 shadow-lg backdrop-blur dark:bg-slate-900/95 md:static md:inset-auto md:z-auto md:flex md:h-auto md:flex-row md:items-center md:gap-2 md:bg-transparent md:px-0 md:py-0 md:text-sm md:shadow-none md:backdrop-blur-0">
-        <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center gap-6 text-center md:mx-0 md:flex-row md:items-center md:justify-end md:gap-2 md:text-left">
-          <a href="https://jgwalsh.com/"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-semibold text-navy md:px-3 md:py-2"
-            aria-current="page">Home</a>
-          <a href="https://jgwalsh.com/about.html"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">About</a>
-          <a href="https://jgwalsh.com/resume.html"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Résumé</a>
-          <a href="https://jgwalsh.com/projects/"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Projects</a>
-          <a href="https://jgwalsh.com/blog/"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Blog</a>
-          <a href="https://jgwalsh.com/contact.html"
-            class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Contact</a>
-          <button id="theme-toggle" class="theme-toggle hidden md:inline-flex" type="button" aria-label="Switch theme"
-            aria-pressed="false">
-            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-          </button>
-          <button id="theme-toggle-mobile"
-            class="w-full rounded-full border border-slate-200 px-4 py-2 text-left theme-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 md:hidden"
-            type="button" aria-pressed="false" aria-label="Switch theme">
-            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-          </button>
-        </div>
+
+      <nav class="main-nav hidden sm:flex text-sm text-slate-700" aria-label="Main navigation">
+        <ul class="flex items-center gap-4">
+          <li><a href="/" class="hover:text-navy px-2 py-1 rounded">Home</a></li>
+          <li><a href="/about.html" class="hover:text-navy px-2 py-1 rounded">About</a></li>
+          <li><a href="/resume.html" class="hover:text-navy px-2 py-1 rounded">Résumé</a></li>
+          <li><a href="/projects/" class="hover:text-navy px-2 py-1 rounded font-bold text-navy" aria-current="page">Projects</a></li>
+          <li><a href="/blog/" class="hover:text-navy px-2 py-1 rounded">Blog</a></li>
+          <li><a href="/contact.html" class="hover:text-navy px-2 py-1 rounded">Contact</a></li>
+          <li>
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
+              <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+            </button>
+          </li>
+        </ul>
       </nav>
     </div>
+
+    <!-- Mobile drawer -->
+    <nav id="mobile-menu" class="sm:hidden hidden px-4 pb-4 text-slate-700" aria-label="Mobile navigation">
+      <ul class="flex flex-col gap-2">
+        <li><a href="/" class="block py-2 text-sm hover:text-navy rounded">Home</a></li>
+        <li><a href="/about.html" class="block py-2 text-sm hover:text-navy rounded">About</a></li>
+        <li><a href="/resume.html" class="block py-2 text-sm hover:text-navy rounded">Résumé</a></li>
+        <li><a href="/projects/" class="block py-2 text-sm hover:text-navy rounded font-bold text-navy" aria-current="page">Projects</a></li>
+        <li><a href="/blog/" class="block py-2 text-sm hover:text-navy rounded">Blog</a></li>
+        <li><a href="/contact.html" class="block py-2 text-sm hover:text-navy rounded">Contact</a></li>
+        <li>
+          <button id="theme-toggle-mobile" class="w-full px-3 py-2 rounded border text-left theme-toggle" type="button"
+            aria-pressed="false" aria-label="Switch theme">
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+          </button>
+        </li>
+      </ul>
+    </nav>
   </header>
-  
 
   <main id="main-content" class="flex-grow home-sheet">
 
@@ -175,35 +229,298 @@
           </p>
         </div>
   <div class="core-grid grid md:grid-cols-1 lg:grid-cols-3 gap-8 text-left">
-          <!doctype html>
-          <html lang="en">
-          <head>
-            <title>James Gregory Walsh — Psychology and Data Analysis for Informed Decisions</title>
-            <meta name="description" content="A dedicated professional leveraging behavioral science, quantitative research, and data-driven insights to enhance organizational strategy, safety, and operational integrity in both public and private sectors." />
-            <link rel="canonical" href="https://jgwalsh.com/" />
-            
-          </head>
-          <body>
-            <!--#include virtual="/partials/header.html" -->
-            <main class="min-h-[calc(100vh-8rem)] flex flex-col justify-center items-center relative overflow-hidden">
-              <div class="absolute -z-10 inset-0 bg-gradient-to-r from-blue-200 via-purple-200 to-indigo-200 blur-3xl opacity-30"></div>
-              <h1 class="text-4xl md:text-6xl font-bold text-center leading-tight max-w-3xl">
-                Psychology and Data Analysis for <br />
-                Informed Decisions
-              </h1>
-              <p class="mt-4 text-center text-lg md:text-xl max-w-2xl text-neutral-700">
-                A dedicated professional leveraging a background in behavioral science, statistical analysis, and data-driven insights to enhance organizational strategy, safety, and operational integrity in both public and private sectors.
-              </p>
-              <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                <a href="/resume.html" class="rounded-full px-6 py-3 text-white font-medium bg-gradient-to-r from-blue-500 to-purple-500 shadow-lg">View Résumé</a>
-                <a href="/contact.html" class="rounded-full px-6 py-3 font-medium border border-neutral-300 bg-white text-neutral-900 shadow">Get in Touch</a>
-                <a href="https://maps.apple.com/?address=75%20Willett%20Street,%20Albany,%20NY%2012210" class="rounded-full px-6 py-3 font-medium bg-neutral-800 text-white shadow">Add to Contacts</a>
-              </div>
-              <div class="mt-12 max-w-5xl w-full flex justify-center">
-                <img src="/assets/img/hero-illustration.svg" alt="" class="w-full h-auto opacity-80" />
-              </div>
-            </main>
-            <!--#include virtual="/partials/footer.html" -->
-          </body>
-          </html>
+          <div class="core-card p-6 rounded-lg shadow-sm competency-card">
+            <h3 class="text-lg font-semibold text-slate-800 mb-3">Behavioral Analysis & Investigative Support</h3>
+            <p class="text-sm text-slate-600 mb-4">Rooted in formal psychological training and clinical work, I bring
+              behavioral insight that informs risk evaluation, threat assessment, and mission-relevant decision-making.
+            </p>
+            <ul class="space-y-3 text-sm text-slate-600">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Clinical Assessment:</strong> Participated in multidisciplinary evaluations of individuals
+                  in psychiatric crisis—documenting clinical observations and mental status findings.</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Crisis Response & De-escalation:</strong> Trained in verbal de-escalation, suicide
+                  prevention, and stabilization techniques within high-acuity psychiatric settings.</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Investigative Psychology:</strong> Academic background in cognitive-behavioral models with
                   practical understanding of their relevance to structured interviews and forensic mental health.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="core-card p-6 rounded-lg shadow-sm competency-card">
+            <h3 class="text-lg font-semibold text-slate-800 mb-3">Quantitative Analysis & Strategic Insight</h3>
+            <p class="text-sm text-slate-600 mb-4">Analytical competencies were developed through undergraduate and
+              graduate-level research, emphasizing methodological rigor and policy-relevant interpretation.</p>
+            <ul class="space-y-3 text-sm text-slate-600">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Statistical Programming:</strong> Proficient in Python and SPSS for modeling, hypothesis
+                  testing, and data management—applied to psychological, health, and public-sector data.</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Data Interpretation & Communication:</strong> Skilled in deriving evidence-based
+                  conclusions from complex datasets and communicating findings through written reports.</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Methodological Integrity:</strong> Trained in research design, measurement, and ethics,
+                  ensuring all analytical work is scientifically valid and reproducible.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="core-card p-6 rounded-lg shadow-sm competency-card">
+            <h3 class="text-lg font-semibold text-slate-800 mb-3">Operational Readiness & Professional Integrity</h3>
+            <p class="text-sm text-slate-600 mb-4">Experienced in environments requiring discretion, composure, and
+              collaborative execution in support of high-stakes institutional objectives.</p>
+            <ul class="space-y-3 text-sm text-slate-600">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Confidentiality & Compliance:</strong> Regularly handled protected health information
+                  under HIPAA and institutional privacy protocols, maintaining strict adherence to legal and ethical
+                  standards.</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Interdisciplinary Collaboration:</strong> Worked closely with psychiatrists, clinical
+                  psychologists, nursing staff, and administrative personnel to implement coordinated plans.</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-teal-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Mission-Driven Service:</strong> Committed to public-sector impact through principled,
+                  data-informed work supporting accountability and institutional trust.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+  </main>
+
+  <footer class="bg-slate-100 text-sm text-slate-600 border-t pt-8 pb-6 px-4 mt-auto">
+    <div class="wrap text-center space-y-4">
+      <nav aria-label="Profiles and social links">
+        <ul class="badges-wrap">
+          <li>
+            <a class="badge" href="https://www.linkedin.com/in/jgregorywalsh" target="_blank" rel="noopener"
+              aria-label="LinkedIn profile">
+              <img src="https://iconsusa.org/assets/icons_copy/linkedin.svg" alt="" loading="lazy" />
+            </a>
+          </li>
+          <li>
+            <a class="badge" href="https://www.usajobs.gov/applicant/profile/" target="_blank"
+              aria-label="USAJobs profile">
+              <img src="https://iconsusa.org/assets/icons_copy/icons8-usa.svg" alt="" loading="lazy" />
+            </a>
+          </li>
+          <li>
+            <a class="badge" href="https://orcid.org/0000-0002-4420-5724" target="_blank" rel="noopener"
+              aria-label="ORCID profile">
+              <img src="https://iconsusa.org/assets/icons_copy/orcid.svg" alt="" loading="lazy" />
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="text-indigo-600">© 2025 James Gregory Walsh — All rights reserved.</div>
+      <div class="flex justify-center items-center gap-2">
+        <span>Albany, NY</span><span>·</span><a href="mailto:jgwalsh@proton.me"
+          class="text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500">jgwalsh@proton.me</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+
+    // --- Helper Function for Mobile Menu ---
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      const isExpanded = !menu.classList.contains('hidden');
+      menu.setAttribute('aria-expanded', isExpanded);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Chart.js Initialization ---
+      const ctx = document.getElementById('project-chart');
+      if (ctx) {
+        const crimeData = {
+          labels: ['2021', '2022', '2023', '2024'],
+          violent: [900, 966, 950, 920],
+          property: [3500, 3450, 3600, 3520]
+        };
+
+        // Create gradient fills
+        const chartCtx = ctx.getContext('2d');
+        const violentGradient = chartCtx.createLinearGradient(0, 0, 0, 400);
+        violentGradient.addColorStop(0, 'rgba(30, 58, 138, 0.4)');
+        violentGradient.addColorStop(1, 'rgba(30, 58, 138, 0)');
+
+        const propertyGradient = chartCtx.createLinearGradient(0, 0, 0, 400);
+        propertyGradient.addColorStop(0, 'rgba(217, 119, 6, 0.4)');
+        propertyGradient.addColorStop(1, 'rgba(217, 119, 6, 0)');
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: crimeData.labels,
+            datasets: [
+              {
+                label: 'Violent Crimes',
+                data: crimeData.violent,
+                borderColor: '#1e3a8a', // Deep Blue
+                backgroundColor: violentGradient,
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2,
+                pointBackgroundColor: '#1e3a8a',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointHoverBackgroundColor: '#ffffff',
+                pointHoverBorderColor: '#1e3a8a',
+              },
+              {
+                label: 'Property Crimes',
+                data: crimeData.property,
+                borderColor: '#d97706', // Amber/Gold
+                backgroundColor: propertyGradient,
+                fill: true,
+                tension: 0.4,
+                borderWidth: 2,
+                pointBackgroundColor: '#d97706',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 7,
+                pointHoverBackgroundColor: '#ffffff',
+                pointHoverBorderColor: '#d97706',
+              }
+            ]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: false,
+                border: { dash: [2, 4], display: false },
+                grid: {
+                  color: 'rgba(100, 116, 139, 0.2)',
+                  tickBorderDash: [2, 4]
+                },
+                ticks: {
+                  color: '#475569',
+                  font: { size: 12, family: 'Inter' },
+                  padding: 10
+                }
+              },
+              x: {
+                grid: { display: false },
+                ticks: {
+                  color: '#475569',
+                  font: { size: 12, family: 'Inter' },
+                  padding: 10
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                align: 'end',
+                labels: {
+                  color: '#33415b',
+                  boxWidth: 14,
+                  padding: 20,
+                  font: { size: 12, family: 'Inter', weight: '500' }
+                }
+              },
+              tooltip: {
+                enabled: true,
+                backgroundColor: '#0f172a',
+                titleColor: '#ffffff',
+                titleFont: { size: 14, family: 'Inter', weight: 'bold' },
+                bodyColor: '#e2e8f0',
+                bodyFont: { size: 12, family: 'Inter' },
+                boxPadding: 8,
+                padding: 12,
+                cornerRadius: 6,
+                intersect: false,
+                mode: 'index',
+                callbacks: {
+                  label: function (context) {
+                    let label = context.dataset.label || '';
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.parsed.y !== null) {
+                      label += new Intl.NumberFormat('en-US').format(context.parsed.y);
+                    }
+                    return label;
+                  }
+                }
+              },
+              title: { display: false }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 1000, easing: 'easeOutQuart' },
+            interaction: {
+              intersect: false,
+              mode: 'index',
+            },
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
+<!-- pages build bump 2025-09-03T02:14:53Z -->
+<!-- build bump 2025-09-03T02:17:27Z -->
+<!-- deploy bump 2025-09-03T02:24:11Z -->

@@ -1,5 +1,0 @@
-node_modules/
-dist/
-.wrangler/
-**/*.min.css
-**/*.scss.d.ts

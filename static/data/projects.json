@@ -1,62 +1,48 @@
-[
-  {
-    "slug": "albany-crime-analysis",
-    "title": "Albany Crime Analysis",
-    "summary": "Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.",
-    "year": 2025,
-    "tags": ["crime", "dashboard", "albany"],
-    "status": "live",
-    "links": {
-      "case": "/projects/albany-crime-analysis/",
-      "repo": "https://github.com/jgwalsh/albany-crime-analysis",
-      "demo": ""
+{
+  "projects": [
+    {
+      "id": "albany-crime-analysis",
+      "title": "Albany Crime Analysis",
+      "summary": "Central hub: interactive visuals (trends, treemap, sunburst, Sankey) + 2021–2024 PDF.",
+      "status": "live",
+      "category": ["Investigations","Data"],
+      "tags": ["Albany","crime","dashboard"],
+      "lastUpdated": "2025-09-04",
+      "thumbnail": "/assets/img/projects/albany-crime.png",
+      "links": { "demo": "/projects/albany-crime-analysis/", "repo": "https://github.com/jgwalsh/albany-crime-analysis" }
     },
-    "thumb": "/assets/images/projects/thumbnails/albany-crime-analysis-5.png",
-    "hero": "/assets/images/projects/albany-crime-analysis/ACA-banner-1.png"
-  },
-  {
-    "slug": "interactive-project-gallery",
-    "title": "Interactive Project Gallery",
-    "summary": "Index of interactive experiments & tools (Threat Triage, Interview Sim, Deception Explorer).",
-    "year": 2025,
-    "tags": ["gallery", "showcase"],
-    "status": "beta",
-    "links": {
-      "case": "/projects/gallery/",
-      "repo": "",
-      "demo": ""
+    {
+      "id": "gallery",
+      "title": "Interactive Project Gallery",
+      "summary": "Index of interactive experiments & tools (Threat Triage, Interview Sim, Deception Explorer).",
+      "status": "beta",
+      "category": ["Tools","Design"],
+      "tags": ["UI","experiments","LLM"],
+      "lastUpdated": "2025-09-04",
+      "thumbnail": "/assets/img/projects/gallery.png",
+      "links": { "demo": "/projects/gallery/" }
     },
-    "thumb": "/assets/images/projects/thumbnails/interactive-project-gal-8.png",
-    "hero": "/assets/images/projects/gallery/hero.jpg"
-  },
-  {
-    "slug": "psyber-nexus",
-    "title": "Psyber Nexus",
-    "summary": "Applied behavioral + cyber investigations hub.",
-    "year": 2025,
-    "tags": ["investigations", "behavioral", "tools"],
-    "status": "alpha",
-    "links": {
-      "case": "/projects/psyber-nexus/",
-      "repo": "",
-      "demo": ""
+    {
+      "id": "psyber-nexus",
+      "title": "Psyber Nexus",
+      "summary": "Applied behavioral + cyber investigations hub.",
+      "status": "alpha",
+      "category": ["Investigations","Data"],
+      "tags": ["behavioral","influence","mapping"],
+      "lastUpdated": "2025-09-01",
+      "thumbnail": "/assets/img/projects/psyber-nexus.png",
+      "links": { "demo": "/projects/psyber-nexus/" }
     },
-    "thumb": "/assets/images/projects/thumbnails/psyber-nexus-project-card-3.png",
-    "hero": "/assets/images/projects/psyber-nexus/hero.jpg"
-  },
-  {
-    "slug": "resource-center",
-    "title": "Resource Center",
-    "summary": "Datasets, documents, and references.",
-    "year": 2025,
-    "tags": ["resources", "docs", "data"],
-    "status": "live",
-    "links": {
-      "case": "/resources/",
-      "repo": "",
-      "demo": ""
-    },
-    "thumb": "/assets/images/projects/thumbnails/resource-center-simple.png",
-    "hero": "/assets/images/projects/resource-center/hero.jpg"
-  }
-]
+    {
+      "id": "resource-center",
+      "title": "Resource Center",
+      "summary": "Datasets, documents, and references.",
+      "status": "live",
+      "category": ["Data"],
+      "tags": ["datasets","docs","references"],
+      "lastUpdated": "2025-05-31",
+      "thumbnail": "/assets/img/projects/resource-center.png",
+      "links": { "demo": "/projects/resources/" }
+    }
+  ]
+}
