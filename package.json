@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
-    "build:css": "npx tailwindcss -i ./assets/css/tailwind.css -o ./assets/css/style.css --minify",
-    "watch:css": "npx tailwindcss -i ./assets/css/tailwind.css -o ./assets/css/style.css --watch"
+    "build:css": "npx tailwindcss -i ./src/style.css -o ./assets/css/style.css --minify",
+    "watch:css": "npx tailwindcss -i ./src/style.css -o ./assets/css/style.css --watch"
   },
   "repository": {
     "type": "git",
