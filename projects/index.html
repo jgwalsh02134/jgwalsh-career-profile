@@ -26,34 +26,8 @@
   <link rel="me" href="https://orcid.org/0000-0002-4420-5724" />
   <link rel="me" href="https://www.researchgate.net/profile/J-Gregory-Walsh" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          animation: {
-            'fade-in': 'fadeIn 0.85s ease-out'
-          },
-          keyframes: {
-            fadeIn: {
-              '0%': { opacity: '0', transform: 'translateY(12px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' }
-            }
-          }
-        },
-        fontFamily: {
-          sans: ['Inter', 'sans-serif']
-        }
-      }
-    }
-  </script>
-
-  <link rel="stylesheet" href="/assets/css/style.css?v=2025-09-06b" />
+  <!--#include virtual="/partials/head.html" -->
   <link rel="stylesheet" href="/assets/css/projects.css?v=2025-09-06b" />
-  <script src="/assets/js/theme.js?v=2025-09-06b" defer></script>
 </head>
 
 <body class="antialiased flex flex-col min-h-screen font-sans" style="background:var(--bg); color:var(--text);">
