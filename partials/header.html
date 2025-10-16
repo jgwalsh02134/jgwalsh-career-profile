@@ -1,0 +1,45 @@
+<header class="bg-gray-50/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-gray-50/85 shadow-sm sticky top-0 w-full z-50 border-b border-slate-200/70 dark:border-slate-700/80 header-wrap">
+  <div class="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+    <a href="https://jgwalsh.com/"
+      class="flex items-center gap-3 text-2xl font-semibold text-navy tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500">
+      <img src="/assets/favicon/favicon-48.png" alt="Monogram J.G.W." class="h-10 w-10" width="48" height="48"
+        decoding="async" />
+      <span>James Gregory Walsh</span>
+    </a>
+    <button id="nav-toggle" type="button" aria-label="Open menu" aria-controls="primary-nav" aria-expanded="false"
+      class="relative z-[60] inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-gray-800 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 dark:text-slate-100 md:hidden">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <title>Toggle primary navigation</title>
+        <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" fill="none" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </button>
+    <nav id="primary-nav" hidden aria-label="Primary navigation"
+      class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white/95 px-6 pb-12 pt-24 text-lg text-slate-700 shadow-lg backdrop-blur dark:bg-slate-900/95 md:static md:inset-auto md:z-auto md:flex md:h-auto md:flex-row md:items-center md:gap-2 md:bg-transparent md:px-0 md:py-0 md:text-sm md:shadow-none md:backdrop-blur-0">
+      <div class="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center gap-6 text-center md:mx-0 md:flex-row md:items-center md:justify-end md:gap-2 md:text-left">
+        <a href="https://jgwalsh.com/"
+          class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 font-semibold text-navy md:px-3 md:py-2"
+          aria-current="page">Home</a>
+        <a href="https://jgwalsh.com/about.html"
+          class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">About</a>
+        <a href="https://jgwalsh.com/resume.html"
+          class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Résumé</a>
+        <a href="https://jgwalsh.com/projects/"
+          class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Projects</a>
+        <a href="https://jgwalsh.com/blog/"
+          class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Blog</a>
+        <a href="https://jgwalsh.com/contact.html"
+          class="px-4 py-2 rounded-full transition-colors hover:text-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 md:px-3 md:py-2">Contact</a>
+        <button id="theme-toggle" class="theme-toggle hidden md:inline-flex" type="button" aria-label="Switch theme"
+          aria-pressed="false">
+          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        </button>
+        <button id="theme-toggle-mobile"
+          class="w-full rounded-full border border-slate-200 px-4 py-2 text-left theme-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 dark:border-slate-700 md:hidden"
+          type="button" aria-pressed="false" aria-label="Switch theme">
+          <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
