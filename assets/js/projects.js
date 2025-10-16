@@ -1,181 +1,258 @@
-const state = {
-  data: [],
-  q: "",
-  typeFilters: new Set(),
-  tagFilters: new Set(),
-  sort: "featured"
-};
+/* global document, history, location, URLSearchParams, fetch */
 
-const els = {
-  grid: document.getElementById("grid"),
-  empty: document.getElementById("empty"),
-  q: document.getElementById("q"),
-  sort: document.getElementById("sort"),
-  filters: document.querySelector(".filters"),
-  app: document.getElementById("projects-app")
-};
+(function () {
+  const grid = document.getElementById('projects-grid');
+  const empty = document.getElementById('projects-empty');
+  const controls = document.getElementById('projects-controls');
 
-init();
-
-async function init() {
-  try {
-    const res = await fetch("/assets/data/projects.json", { cache: "no-store" });
-    state.data = await res.json();
-  } catch (err) {
-    console.error("Failed to load projects.json", err);
-    state.data = [];
+  if (!grid || !empty || !controls) {
+    return;
   }
-  renderFilters(state.data);
-  bind();
-  render();
-  injectSchema(state.data);
-}
 
-function bind() {
-  if (els.q) els.q.addEventListener("input", e => { state.q = e.target.value.trim(); render(); });
-  if (els.sort) els.sort.addEventListener("change", e => { state.sort = e.target.value; render(); });
-}
+  const viewClasses = {
+    grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6',
+    list: 'grid grid-cols-1 gap-4'
+  };
 
-function renderFilters(data) {
-  const types = [...new Set(data.map(d => d.type).filter(Boolean))];
-  const tags  = [...new Set(data.flatMap(d => d.tags || []))].slice(0, 12);
+  const sortOptions = [
+    { value: 'new', label: 'Newest' },
+    { value: 'old', label: 'Oldest' },
+    { value: 'az', label: 'A→Z' }
+  ];
 
-  const mkPill = (label, group) => {
-    const b = document.createElement("button");
-    b.className = "pill";
-    b.type = "button";
-    b.textContent = label;
-    b.setAttribute("data-group", group);
-    b.setAttribute("data-value", label);
-    b.setAttribute("aria-pressed", "false");
-    b.addEventListener("click", () => {
-      const set = group === "type" ? state.typeFilters : state.tagFilters;
-      const on = b.getAttribute("aria-pressed") === "true";
-      b.setAttribute("aria-pressed", String(!on));
-      !on ? set.add(label) : set.delete(label);
+  let projects = [];
+  let view = 'grid';
+  let sort = 'new';
+  let tagFilters = new Set();
+
+  function readQuery() {
+    const params = new URLSearchParams(location.search);
+    const viewParam = params.get('view');
+    view = viewParam === 'list' ? 'list' : 'grid';
+
+    const sortParam = params.get('sort');
+    if (['new', 'old', 'az'].includes(sortParam)) {
+      sort = sortParam;
+    }
+
+    const tagsParam = params.get('tags');
+    tagFilters = new Set(tagsParam ? tagsParam.split(',').filter(Boolean) : []);
+  }
+
+  function writeQuery() {
+    const params = new URLSearchParams();
+    if (tagFilters.size) {
+      params.set('tags', [...tagFilters].join(','));
+    }
+    if (sort !== 'new') {
+      params.set('sort', sort);
+    }
+    if (view !== 'grid') {
+      params.set('view', view);
+    }
+    const query = params.toString();
+    history.replaceState(null, '', query ? `${location.pathname}?${query}` : location.pathname);
+  }
+
+  function styleTagButton(button, isActive) {
+    const base = 'inline-flex items-center rounded-full border px-3 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500';
+    const modifier = isActive
+      ? 'border-slate-900 bg-slate-900 text-white'
+      : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50';
+    button.className = `${base} ${modifier}`;
+    button.setAttribute('aria-pressed', String(isActive));
+  }
+
+  function renderControls() {
+    controls.innerHTML = '';
+
+    const allTags = [...new Set(projects.flatMap((item) => item.tags || []))]
+      .sort((a, b) => a.localeCompare(b));
+
+    if (allTags.length) {
+      const tagWrap = document.createElement('div');
+      tagWrap.className = 'flex flex-wrap items-center gap-2';
+      tagWrap.setAttribute('aria-label', 'Filter by tag');
+
+      allTags.forEach((tag) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = `#${tag}`;
+        styleTagButton(button, tagFilters.has(tag));
+        button.addEventListener('click', () => {
+          if (tagFilters.has(tag)) {
+            tagFilters.delete(tag);
+          } else {
+            tagFilters.add(tag);
+          }
+          styleTagButton(button, tagFilters.has(tag));
+          writeQuery();
+          render();
+        });
+        tagWrap.appendChild(button);
+      });
+
+      controls.appendChild(tagWrap);
+    }
+
+    const sortLabel = document.createElement('label');
+    sortLabel.className = 'flex items-center gap-2 text-sm text-slate-700';
+    sortLabel.setAttribute('for', 'projects-sort');
+    sortLabel.textContent = 'Sort';
+
+    const sortSelect = document.createElement('select');
+    sortSelect.id = 'projects-sort';
+    sortSelect.className = 'rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500';
+    sortOptions.forEach(({ value, label }) => {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = label;
+      sortSelect.appendChild(option);
+    });
+    sortSelect.value = sort;
+    sortSelect.addEventListener('change', (event) => {
+      sort = event.target.value;
+      writeQuery();
       render();
     });
-    return b;
-  };
 
-  els.filters.innerHTML = "";
-  const wrapType = document.createElement("div");
-  wrapType.style.display = "flex"; wrapType.style.gap = ".4rem"; wrapType.setAttribute("aria-label","Type");
-  types.forEach(t => wrapType.appendChild(mkPill(t, "type")));
+    sortLabel.appendChild(sortSelect);
+    controls.appendChild(sortLabel);
 
-  const wrapTags = document.createElement("div");
-  wrapTags.style.display = "flex"; wrapTags.style.gap = ".4rem"; wrapTags.setAttribute("aria-label","Tags");
-  tags.forEach(t => wrapTags.appendChild(mkPill(`#${t}`, "tag")));
+    const viewLabel = document.createElement('label');
+    viewLabel.className = 'flex items-center gap-2 text-sm text-slate-700';
+    viewLabel.setAttribute('for', 'projects-view');
+    viewLabel.textContent = 'View';
 
-  els.filters.append(wrapType, wrapTags);
-}
-
-function render() {
-  const items = filterSortSearch(state.data, state);
-  els.grid.innerHTML = items.map(cardHTML).join("");
-  els.empty.hidden = items.length > 0;
-  attachCardHandlers();
-}
-
-function filterSortSearch(items, state) {
-  let out = items.slice();
-
-  if (state.typeFilters.size) {
-    out = out.filter(d => state.typeFilters.has(d.type));
-  }
-  if (state.tagFilters.size) {
-    out = out.filter(d => (d.tags || []).some(t => state.tagFilters.has(`#${t}`)));
-  }
-
-  if (state.q) {
-    const q = state.q.toLowerCase();
-    out = out
-      .map(d => ({ d, s: score(d, q) }))
-      .filter(x => x.s > 0)
-      .sort((a,b) => b.s - a.s)
-      .map(x => x.d);
-  }
-
-  switch (state.sort) {
-    case "newest": out.sort((a,b) => (b.year||0) - (a.year||0)); break;
-    case "oldest": out.sort((a,b) => (a.year||0) - (b.year||0)); break;
-    case "az": out.sort((a,b) => a.title.localeCompare(b.title)); break;
-    default:
-      out.sort((a,b) => (b.featured === true) - (a.featured === true) || (b.order||0) - (a.order||0));
-  }
-  return out;
-}
-
-function score(d, q) {
-  const hay = (d.title + " " + (d.summary||"") + " " + (d.tags||[]).join(" ")).toLowerCase();
-  if (hay.includes(q)) return 10 + (q.length / 10);
-  const words = q.split(/\s+/).filter(Boolean);
-  let s = 0; words.forEach(w => { if (hay.includes(w)) s += 2; });
-  return s;
-}
-
-function cardHTML(d) {
-  const tagBadges = (d.tags||[]).slice(0,4).map(t => `<span class="badge">#${t}</span>`).join("");
-  const statusClass = d.status ? `status-${d.status}` : "";
-  const tech = (d.tech||[]).slice(0,4).join(" · ");
-  const img = d.thumb ? `<img loading="lazy" class="project-card-image" src="${d.thumb}" alt="${escapeHTML(d.title)} thumbnail">` : "";
-  const primary = d.links?.primary || d.links?.demo || d.links?.github || "#";
-
-  return `
-  <article class="card" tabindex="0">
-    <a class="card-media" href="${primary}">
-      ${img}
-    </a>
-    <div class="card-body">
-      <div class="badges">
-        ${d.badge ? `<span class="badge">${escapeHTML(d.badge)}</span>` : ""}
-        ${d.status ? `<span class="badge ${statusClass}">${escapeHTML(cap(d.status))}</span>` : ""}
-        ${tagBadges}
-      </div>
-      <h3 class="card-title">${escapeHTML(d.title)}</h3>
-      <p class="card-summary">${escapeHTML(d.summary || "")}</p>
-      <div class="meta">
-        ${d.year ? `<span>${d.year}</span>` : ""} ${tech ? `<span>· ${escapeHTML(tech)}</span>` : ""}
-      </div>
-      <div class="actions">
-        ${d.links?.primary ? `<a class="btn primary" href="${d.links.primary}">${escapeHTML(d.cta || "Open")}</a>` : ""}
-        ${d.links?.github ? `<a class="btn" href="${d.links.github}" aria-label="GitHub">GitHub</a>` : ""}
-        ${d.links?.dashboard ? `<a class="btn" href="${d.links.dashboard}">Dashboard</a>` : ""}
-        ${d.links?.pdf ? `<a class="btn" href="${d.links.pdf}">PDF</a>` : ""}
-      </div>
-    </div>
-  </article>`;
-}
-
-function cap(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1) : ""; }
-function escapeHTML(s){ return (s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m])); }
-
-function attachCardHandlers() {
-  document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        const a = card.querySelector(".actions .btn.primary, .card-media");
-        if (a) { a.click(); }
-      }
+    const viewSelect = document.createElement('select');
+    viewSelect.id = 'projects-view';
+    viewSelect.className = 'rounded-md border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500';
+    [['grid', 'Grid'], ['list', 'List']].forEach(([value, label]) => {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = label;
+      viewSelect.appendChild(option);
     });
+    viewSelect.value = view;
+    viewSelect.addEventListener('change', (event) => {
+      view = event.target.value === 'list' ? 'list' : 'grid';
+      writeQuery();
+      render();
+    });
+
+    viewLabel.appendChild(viewSelect);
+    controls.appendChild(viewLabel);
+  }
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[character]));
+  }
+
+  function cardLinks(item) {
+    const links = [];
+    if (item.links?.case) {
+      links.push(`<a href="${escapeHtml(item.links.case)}" class="text-sm font-medium underline">View Case</a>`);
+    }
+    if (item.links?.repo) {
+      links.push(`<a href="${escapeHtml(item.links.repo)}" class="text-sm text-neutral-600 underline">Repo</a>`);
+    }
+    if (item.links?.demo) {
+      links.push(`<a href="${escapeHtml(item.links.demo)}" class="text-sm text-neutral-600 underline">Demo</a>`);
+    }
+    return links.join('');
+  }
+
+  function renderGridCard(item) {
+    const media = item.thumb
+      ? `<img src="${escapeHtml(item.thumb)}" alt="" width="640" height="360" class="rounded-t-2xl aspect-[16/9] object-cover" loading="lazy" decoding="async">`
+      : '<div class="rounded-t-2xl aspect-[16/9] bg-slate-200"></div>';
+
+    return `<article class="group flex flex-col rounded-2xl border bg-white/70 shadow-sm hover:shadow-md transition">
+      ${media}
+      <div class="p-4 sm:p-5">
+        <h3 class="text-lg font-semibold tracking-tight">${escapeHtml(item.title)}</h3>
+        <p class="mt-2 text-sm text-neutral-600 line-clamp-3">${escapeHtml(item.summary)}</p>
+        <div class="mt-4 flex items-center gap-3">${cardLinks(item)}</div>
+      </div>
+    </article>`;
+  }
+
+  function renderListCard(item) {
+    const media = item.thumb
+      ? `<img src="${escapeHtml(item.thumb)}" alt="" width="320" height="180" class="h-24 w-40 rounded-lg object-cover" loading="lazy" decoding="async">`
+      : '<div class="h-24 w-40 rounded-lg bg-slate-200"></div>';
+
+    return `<article class="rounded-2xl border bg-white/70 p-4 sm:p-5 shadow-sm hover:shadow-md transition">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+        ${media}
+        <div class="flex-1">
+          <h3 class="text-lg font-semibold tracking-tight">${escapeHtml(item.title)}</h3>
+          <p class="mt-1 text-sm text-neutral-600">${escapeHtml(item.summary)}</p>
+          <div class="mt-3 flex flex-wrap items-center gap-3">${cardLinks(item)}</div>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function applyFilters(items) {
+    let output = [...items];
+
+    if (tagFilters.size) {
+      output = output.filter((item) => (item.tags || []).some((tag) => tagFilters.has(tag)));
+    }
+
+    if (sort === 'az') {
+      output.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    } else if (sort === 'old') {
+      output.sort((a, b) => (a.year || 0) - (b.year || 0));
+    } else {
+      output.sort((a, b) => (b.year || 0) - (a.year || 0));
+    }
+
+    return output;
+  }
+
+  function render() {
+    grid.className = viewClasses[view] || viewClasses.grid;
+    const items = applyFilters(projects);
+
+    if (!items.length) {
+      grid.innerHTML = '';
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    empty.classList.add('hidden');
+    grid.innerHTML = items.map((item) => (view === 'list' ? renderListCard(item) : renderGridCard(item))).join('');
+  }
+
+  async function loadProjects() {
+    try {
+      const response = await fetch('/static/data/projects.json', { cache: 'no-store' });
+      const json = await response.json();
+      projects = Array.isArray(json) ? json : [];
+    } catch (error) {
+      projects = [];
+    }
+  }
+
+  readQuery();
+
+  loadProjects().then(() => {
+    if (!projects.length) {
+      grid.innerHTML = '';
+      empty.textContent = 'Projects data is unavailable. Please try again later.';
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    renderControls();
+    render();
   });
-}
-
-function injectSchema(list) {
-  const itemList = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": list.map((d, i) => ({
-      "@type": "ListItem",
-      "position": i + 1,
-      "url": d.links?.primary || d.links?.demo || "https://jgwalsh.com/projects"
-    }))
-  };
-  const s = document.createElement("script");
-  s.type = "application/ld+json";
-  s.textContent = JSON.stringify(itemList);
-  document.head.appendChild(s);
-}
-
-
-
+})();
